@@ -18,7 +18,7 @@ First off, thanks for taking the time to contribute! The following is a set of g
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [bloqbit@cubicstudios.xyz].
+This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [bloqbit@cubicstudios.xyz](mailto:bloqbit@cubicstudios.xyz).
 
 ## How Can I Contribute?
 
