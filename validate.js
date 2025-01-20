@@ -2,8 +2,10 @@ console.log('Testing system...');
 
 import dotenv from 'dotenv';
 
-import { ClientModel } from './src/classes.mjs';
+import Classes from './src/classes.mjs';
 import StartClient from './src/index.js';
+
+const { ClientModel } = Classes;
 
 dotenv.config();
 

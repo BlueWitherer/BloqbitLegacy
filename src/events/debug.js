@@ -1,4 +1,4 @@
-import ClientModel from '../classes/ClientModel.js';
+import ClientModel from '../classes/ClientModel.mjs';
 import { Events, WebhookClient } from 'discord.js';
 
 export default {

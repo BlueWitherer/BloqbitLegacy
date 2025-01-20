@@ -1,4 +1,4 @@
-import ClientModel from '../classes/ClientModel.js';
+import ClientModel from '../classes/ClientModel.mjs';
 import { Events, Guild, ActivityType, PresenceUpdateStatus } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 

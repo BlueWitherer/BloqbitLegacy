@@ -1,4 +1,4 @@
-import ClientModel from '../classes/ClientModel.js';
+import ClientModel from '../classes/ClientModel.mjs';
 import { Events, Guild, WebhookClient } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 

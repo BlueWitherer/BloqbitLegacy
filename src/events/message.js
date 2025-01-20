@@ -1,6 +1,6 @@
 import Moderator from '../automated/moderator.js';
 import cache from '../cache.mjs';
-import ClientModel from '../classes/ClientModel.js';
+import ClientModel from '../classes/ClientModel.mjs';
 import { Events, Message, ChannelType, WebhookClient } from 'discord.js';
 
 export default {
