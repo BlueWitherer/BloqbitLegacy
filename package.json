@@ -3,7 +3,7 @@
   "description": "The all-in-one solution for your Discord server.",
   "version": "1.0.0",
   "author": "Cubic Studios",
-  "license": "ISC",
+  "license": "GPL-3.0-only",
   "type": "module",
   "nodeVersion": "23.1.0",
   "dependencies": {

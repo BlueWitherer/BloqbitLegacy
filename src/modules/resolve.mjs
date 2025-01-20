@@ -1,5 +1,5 @@
 import cacheModule from '../cache.mjs';
-import { ModActionType, FilterMode  } from '../classes.mjs';
+import { ModActionType, FilterMode } from '../classes.mjs';
 
 import SysSettings from '../settings.json' with { type: 'json' };
 

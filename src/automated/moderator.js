@@ -1,4 +1,4 @@
-import { Message  } from 'discord.js';
+import { Message } from 'discord.js';
 import SysSettings from '../settings.json' with { type: 'json' };
 
 export default class Moderator {

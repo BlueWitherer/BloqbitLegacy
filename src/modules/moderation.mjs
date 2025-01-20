@@ -4,7 +4,7 @@ import SysSettings from '../settings.json' with { type: 'json' };
 
 import resolve from './resolve.mjs';
 
-import { ModActionType  } from '../classes.mjs';
+import { ModActionType } from '../classes.mjs';
 
 export default {
     /**

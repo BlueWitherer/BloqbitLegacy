@@ -1,5 +1,5 @@
 export default class Logs {
-    constructor () {
+    constructor() {
         return this;
     };
 };

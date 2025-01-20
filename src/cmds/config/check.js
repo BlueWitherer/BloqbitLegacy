@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import SysSettings from '../../settings.json' with { type: 'json' };
-import { BotDatabase, FilterMode, ModActionType, FilterClass  } from '../../classes.mjs';
+import { BotDatabase, FilterMode, ModActionType, FilterClass } from '../../classes.mjs';
 import { ChatInputCommandInteraction, Role, BaseChannel } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';

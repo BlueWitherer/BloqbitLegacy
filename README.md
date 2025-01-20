@@ -1,6 +1,11 @@
 # <img src="icon.ico" width="25" alt="Logo" /> Bloqbit
 The all-in-one solution for your Discord server.
 
+> [<img alt="Latest Version" src="https://img.shields.io/github/v/release/CubicCommunity/Bloqbit?include_prereleases&sort=semver&display_name=release&style=for-the-badge&logo=github&logoColor=ffffff&label=Version">](../../releases/)    [<img alt="Code License" src="https://img.shields.io/github/license/CubicCommunity/Bloqbit?style=for-the-badge&logo=gnu&logoColor=ffffff&label=License">](LICENSE.md)
+>
+> [<img alt="Discord" src="https://img.shields.io/discord/460081436637134859?style=for-the-badge&logo=discord&logoColor=ffffff">
+](https://dsc.gg/cubic)
+
 ### Features
 - Vast automation
 - Moderation tools

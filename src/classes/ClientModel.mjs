@@ -2,8 +2,8 @@ import SysAssets from '../assets.json' with { type: 'json' };
 
 import dotenv from 'dotenv';
 
-import { Client, Collection, IntentsBitField, Partials  } from 'discord.js';
-import { REST  } from '@discordjs/rest';
+import { Client, Collection, IntentsBitField, Partials } from 'discord.js';
+import { REST } from '@discordjs/rest';
 import BotDatabase from './BotDatabase.js';
 
 dotenv.config();

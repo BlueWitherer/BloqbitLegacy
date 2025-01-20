@@ -1,8 +1,8 @@
 import cacheModule from '../cache.mjs';
 
-import { BotDatabase  } from '../classes.mjs';
+import { BotDatabase } from '../classes.mjs';
 
-import { Interaction  } from 'discord.js';
+import { Interaction } from 'discord.js';
 import Mongo from 'mongodb';
 
 import resolve from './resolve.mjs';
