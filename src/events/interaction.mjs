@@ -1,7 +1,10 @@
 import ClientModel from '../classes/ClientModel.mjs';
-const { Interaction } = require("discord.js")
+import Discord from "discord.js";
 import { Events, WebhookClient } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
+import url from 'url';
+
+const { Interaction } = Discord;
 
 export default {
     name: Events.InteractionCreate,
@@ -14,7 +17,7 @@ export default {
      */
     execute: async (bot, interaction) => {
         if (bot.online) {
-            bot.assets = require("../assets.json");
+            bot.assets = await import(url.pathToFileURL("../assets.json").href);
 
             try {
                 if (interaction.isChatInputCommand()) {

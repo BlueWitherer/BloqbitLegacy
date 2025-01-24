@@ -40,7 +40,7 @@ export default {
      * @param {typeof SysSettings} system The settings model for the bot's configuration.
      * @param {BotDatabase} db The database information.
      * 
-     * @returns {void}
+     * @returns {Promise<void>}
      */
     execute: async (interaction, assets, system, db) => {
         const date = Math.floor(Date.now() / 1000);

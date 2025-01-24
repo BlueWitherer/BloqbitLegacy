@@ -1,5 +1,5 @@
 import ClientModel from '../classes/ClientModel.mjs';
-import { Events, Error, WebhookClient } from 'discord.js';
+import { Events, WebhookClient } from 'discord.js';
 
 export default {
     name: Events.Error,
@@ -7,7 +7,7 @@ export default {
     /**
      * 
      * @param {ClientModel} bot 
-     * @param {Error} error 
+     * @param {string} error 
      * @returns {void}
      */
     execute: async (bot, error) => {

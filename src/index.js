@@ -1,4 +1,4 @@
-import Classes from './classes.mjs';
+import { ClientModel, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
 
 import Discord from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
@@ -6,9 +6,11 @@ import { Routes } from 'discord-api-types/v9';
 import fs from 'node:fs';
 import dotenv from 'dotenv';
 import path from 'path';
+import url from 'url';
 import fetch from './modules/fetch.mjs';
 
-const { ClientModel, MessageHandler, ServerHandler, UserHandler } = Classes;
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -43,25 +45,34 @@ export default class StartClient {
                 "status": Discord.PresenceUpdateStatus.DoNotDisturb,
             });
 
+            const importModule = async (filePath) => {
+                try {
+                    const module = await import(filePath);
+                    // Use the module here
+                    console.log(module);
+                } catch (error) {
+                    console.error('Error importing module:', error);
+                }
+            };
+
             try {
                 const foldersPath = path.join(__dirname, 'cmds');
                 const commandFolders = fs.readdirSync(foldersPath);
 
                 for (const folder of commandFolders) {
                     const commandsPath = path.join(foldersPath, folder);
-                    const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
+                    const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.mjs'));
 
                     for (const file of commandFiles) {
                         const filePath = path.join(commandsPath, file);
-                        const command = require(filePath);
+                        const command = await import(url.pathToFileURL(filePath).href);
 
                         if ('data' in command && 'execute' in command) {
                             botModel.commands.push(command.data.toJSON());
+                            botModel.cmds.set(command.data.name, command);
                         } else {
-                            console.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
+                            console.error(`The command at ${filePath} is missing a required "data" or "execute" property.`);
                         };
-
-                        botModel.cmds.set(command.data.name, command);
                     };
                 };
 
@@ -86,12 +97,12 @@ export default class StartClient {
 
             try {
                 const eventsPath = path.join(__dirname, 'events');
-                const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith('.js'));
+                const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith('.mjs'));
 
                 for (const file of eventFiles) {
                     try {
                         const filePath = path.join(eventsPath, file);
-                        const event = require(filePath);
+                        const event = await import(url.pathToFileURL(filePath).href);
 
                         if (event.once) {
                             client?.once(event.name, async (...args) => {

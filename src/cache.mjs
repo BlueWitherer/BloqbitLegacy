@@ -1,5 +1,5 @@
-import MongoClient from 'mongodb';
-import BotDatabase from './classes.mjs';
+import MongoDB from 'mongodb';
+import { BotDatabase } from './classes.mjs';
 import SysSettings from './settings.json' with { type: 'json' };
 
 /**
@@ -65,7 +65,7 @@ export default {
                     console.debug(`[O] Data for server ${system.server} updated. Cache size ${newSize}.`);
                 };
 
-                const dbClient = new MongoClient(db.mongo_uri);
+                const dbClient = new MongoDB.MongoClient(db.mongo_uri);
 
                 const database = dbClient.db("Bloqbit");
                 const collection = database.collection("servers");

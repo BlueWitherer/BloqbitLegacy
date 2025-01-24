@@ -1,5 +1,7 @@
 import ClientModel from '../classes/ClientModel.mjs';
-import { Events, Error, WebhookClient } from 'discord.js';
+import Discord from 'discord.js';
+
+const { Events, WebhookClient } = Discord;
 
 export default {
     name: Events.ShardError,
@@ -7,7 +9,7 @@ export default {
     /**
      * 
      * @param {ClientModel} bot 
-     * @param {Error} error 
+     * @param {string} error 
      * @param {number} shardId
      * 
      * @returns {void}

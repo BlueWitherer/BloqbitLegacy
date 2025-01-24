@@ -1,6 +1,6 @@
 import cacheModule from '../cache.mjs';
 
-import Classes from '../classes.mjs';
+import { BotDatabase } from '../classes.mjs';
 
 import Discord from 'discord.js';
 import Mongo from 'mongodb';
@@ -9,7 +9,6 @@ import resolve from './resolve.mjs';
 import SysAssets from '../assets.json' with { type: 'json' };
 import SysSettings from '../settings.json' with { type: 'json' };
 
-const { BotDatabase } = Classes;
 const { Interaction } = Discord;
 
 export default {

@@ -10,8 +10,7 @@ console.log('Starting up system...');
 
 import dotenv from 'dotenv';
 
-import Classes from './src/classes.mjs';
-const { ClientModel } = Classes;
+import { ClientModel } from './src/classes.mjs';
 import StartClient from './src/index.js';
 
 dotenv.config();

@@ -8,11 +8,11 @@ import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 export default {
     premium: true,
     data: new SlashCommandBuilder()
-        .setName("soft-ban")
-        .setDescription("Softban a user.")
-        .addUserOption(option => option.setName("user").setDescription("User to softban.").setRequired(true))
-        .addStringOption(option => option.setName("reason").setDescription("Reason for softban.").setRequired(true))
-        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+        .setName("kick")
+        .setDescription("Kick a user.")
+        .addUserOption(option => option.setName("user").setDescription("User to kick.").setRequired(true))
+        .addStringOption(option => option.setName("reason").setDescription("Reason for kick.").setRequired(true))
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
     /**
      * 
      * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
@@ -20,19 +20,19 @@ export default {
      * @param {typeof SysSettings} system The settings model for the bot's configuration.
      * @param {BotDatabase} db The database information.
      * 
-     * @returns {void}
+     * @returns {Promise<void>}
      */
     execute: async (interaction, assets, system, db) => {
-        const banreason = interaction.options?.getString("reason");
+        const kickreason = interaction.options?.getString("reason");
         const User = interaction.options?.getUser("user");
         const Member = interaction.options?.getMember("user");
 
-        if (Member.permissions.has([PermissionFlagsBits.BanMembers])) {
+        if (Member.permissions.has([PermissionFlagsBits.KickMembers])) {
             return await interaction.reply({
-                "content": "",
+                "content": null,
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} | You cannot softban another moderator.`,
+                        "description": `${assets.icons.xmark} | You cannot kick another moderator.`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -40,12 +40,7 @@ export default {
             });
         };
 
-        return await interaction.guild?.members?.ban(User?.id, {
-            deleteMessageSeconds: 7 * 86400,
-            reason: `${interaction.user?.username} | Softban - ${banreason}`
-        }).then(async () => {
-            await interaction.guild?.members?.unban(User?.id, `${interaction.user?.username} | Softban - ${banreason}`);
-        }).catch(async (err) => {
+        return interaction.guild?.members?.kick(User.id, `${interaction.user?.username} | Kick - ${kickreason}`).catch(async (err) => {
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} | **${interaction.user?.username}** - An error occurred.`,
                 "ephemeral": true,
@@ -53,19 +48,19 @@ export default {
             console.log(err);
         }).then(async () => {
             await interaction.reply({
-                "content": "",
+                "content": null,
                 "embeds": [
                     {
                         "author": {
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.noentry} | User Softbanned`,
-                        "color": assets.colors.primary,
+                        "title": `${assets.icons.noentry} | User Kicked`,
+                        "color": `${assets.colors.primary}`,
                         "fields": [
                             {
                                 "name": "User",
-                                "value": `**${User?.username}**`,
+                                "value": `**${User.username}**`,
                                 "inline": true,
                             },
                             {
@@ -75,7 +70,7 @@ export default {
                             },
                             {
                                 "name": "Reason",
-                                "value": `${banreason}`,
+                                "value": `${kickreason}`,
                                 "inline": false,
                             },
                         ],
@@ -83,21 +78,21 @@ export default {
                 ],
             });
         }).then(async () => {
-            await User?.send({
-                "content": "",
+            await User.send({
+                "content": null,
                 "embeds": [
                     {
                         "author": {
                             "name": `${User.username}`,
                             "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.noentry} | Soft-banned`,
-                        "description": `You were __soft-banned__ from **${interaction.guild?.name}**.`,
+                        "title": `${assets.icons.noentry} | Kicked`,
+                        "description": `You were __kicked__ from **${interaction.guild?.name}**.`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
                                 "name": `Reason`,
-                                "value": `${banreason}`,
+                                "value": `${kickreason}`,
                                 "inline": false,
                             },
                             {

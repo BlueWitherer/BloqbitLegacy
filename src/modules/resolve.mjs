@@ -1,9 +1,7 @@
 import cacheModule from '../cache.mjs';
-import Classes from '../classes.mjs';
+import { ModActionType, FilterMode } from "../classes.mjs";
 
 import SysSettings from '../settings.json' with { type: 'json' };
-
-const { ModActionType, FilterMode } = Classes;
 
 export default {
     /**
@@ -287,6 +285,17 @@ export default {
         } catch (err) {
             console.error(err);
             return "0";
+        };
+    },
+
+    importJson: async (filePath) => {
+        try {
+            const absolutePath = join(__dirname, filePath);
+            const data = await fs.readFile(absolutePath, 'utf8');
+
+            return JSON.parse(data);
+        } catch (error) {
+            console.error('Error reading JSON file:', error);
         };
     },
 };
