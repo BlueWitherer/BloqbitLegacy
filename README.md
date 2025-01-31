@@ -11,13 +11,25 @@ The all-in-one solution for your Discord server.
 - Moderation tools
 - Games
 
+#### Development
+| Feature         | Status                | Progress  |
+|:---------------:|-----------------------|:---------:|
+| Database        | ✅ Complete           | `100%`    |
+| *Moderation*    | 🔄️ Under Development  | **`45%`** |
+| Leveling        | ⛔ Not Developed      | `--%`     |
+| Economy         | ⛔ Not Developed      | `--%`     |
+| Games           | ⛔ Not Developed      | `--%`     |
+| Welcomer        | ⛔ Not Developed      | `--%`     |
+| Birthdays       | ⛔ Not Developed      | `--%`     |
+| Cleverbot       | ⛔ Not Developed      | `--%`     |
+
 ### Developers
 ###### This program is developed and maintained by members and collaborators of the [<img src="https://i.imgur.com/aHMYUwn.png" width="15" alt="Bloqbit logo" /> Bloqbit](https://bloqbit.cubicstudios.xyz/) team.
 **[<img src="https://i.imgur.com/wf90fS7.jpeg" width="15" style="border-radius: 100%;" alt="Cheeseworks" /> Cheeseworks](https://www.github.com/BlueWitherer/)**
 
 ### Credits
 ###### This program received logistical contributions to assist in development and operations.
-**[<img src="https://i.imgur.com/E1E3fNJ.jpeg" width="15" style="border-radius: 100%;" alt="ArcticWoof" /> ArcticWoof](https://www.github.com/DumbCaveSpider/)**
+**[<img src="https://i.imgur.com/E1E3fNJ.jpeg" width="15" style="border-radius: 100%;" alt="ArcticWoof" /> ArcticWoof](https://www.github.com/DumbCaveSpider/)** - *Beta testing server*
 
 ### Changelog
 ###### What's new?!

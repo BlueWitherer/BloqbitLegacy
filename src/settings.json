@@ -103,6 +103,7 @@
                 "enabled": false,
                 "roles": [],
                 "channels": [],
+                "filterMode": 0,
                 "permFilterMode": 0,
                 "keywords": [],
                 "untilLock": 0,
@@ -126,6 +127,7 @@
             "enabled": false,
             "roles": [],
             "channels": [],
+            "filterMode": 0,
             "permFilterMode": 0,
             "untilPunish": 0,
             "punishment": 0,
@@ -135,6 +137,7 @@
             "enabled": false,
             "roles": [],
             "channels": [],
+            "filterMode": 0,
             "permFilterMode": 0,
             "inChatCooldown": 0,
             "preWarnings": {
@@ -205,5 +208,13 @@
             "channels": [],
             "filterMode": 1
         }
+    },
+    "cleverbot": {
+        "enabled": false,
+        "personality": "",
+        "channels": [],
+        "roles": [],
+        "filterMode": 0,
+        "permFilterMode": 0
     }
 }
