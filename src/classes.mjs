@@ -11,23 +11,6 @@ import LogEventType from './classes/enum/LogEventType.mjs';
 import FilterClass from './classes/enum/FilterClass.mjs';
 import FilterMode from './classes/enum/FilterMode.mjs';
 
-// class Classes {
-//     static ClientModel = ClientModel;
-//     static BotDatabase = BotDatabase;
-
-//     static MessageHandler = MessageHandler;
-//     static UserHandler = UserHandler;
-//     static ServerHandler = ServerHandler;
-
-//     static CommandCategory = CommandCategory;
-//     static ModActionType = ModActionType;
-//     static LogEventType = LogEventType;
-//     static FilterClass = FilterClass;
-//     static FilterMode = FilterMode;
-// };
-
-// export default Classes;
-
 export {
     ClientModel,
     BotDatabase,

@@ -33,6 +33,11 @@ export default {
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
+                                "name": "Shard",
+                                "value": `${shardId}`,
+                                "inline": false,
+                            },
+                            {
                                 "name": "Time of Error",
                                 "value": `<t:${date}:F> • <t:${date}:R>`,
                                 "inline": false,
