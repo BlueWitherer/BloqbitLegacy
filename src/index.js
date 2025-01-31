@@ -35,7 +35,7 @@ export default class StartClient {
             client.user?.setPresence({
                 "activities": [
                     {
-                        "name": `chat`,
+                        "name": `Beta Testing!`,
                         "state": `Active across ${client.guilds.cache.size} servers!`,
                         "type": Discord.ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,
@@ -65,13 +65,14 @@ export default class StartClient {
 
                     for (const file of commandFiles) {
                         const filePath = path.join(commandsPath, file);
-                        const command = await import(url.pathToFileURL(filePath).href);
+                        const command = (await import(url.pathToFileURL(filePath).href)).default;
 
                         if ('data' in command && 'execute' in command) {
                             botModel.commands.push(command.data.toJSON());
                             botModel.cmds.set(command.data.name, command);
                         } else {
                             console.error(`The command at ${filePath} is missing a required "data" or "execute" property.`);
+                            console.debug(command);
                         };
                     };
                 };
@@ -102,7 +103,7 @@ export default class StartClient {
                 for (const file of eventFiles) {
                     try {
                         const filePath = path.join(eventsPath, file);
-                        const event = await import(url.pathToFileURL(filePath).href);
+                        const event = (await import(url.pathToFileURL(filePath).href)).default;
 
                         if (event.once) {
                             client?.once(event.name, async (...args) => {

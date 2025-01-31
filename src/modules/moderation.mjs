@@ -4,7 +4,7 @@ import SysSettings from '../settings.json' with { type: 'json' };
 
 import resolve from './resolve.mjs';
 
-import { ModActionType } from '../classes.mjs';
+import { ModActionType, FilterClass, CommandCategory } from '../classes.mjs';
 
 export default {
     /**
@@ -170,9 +170,6 @@ export default {
         if (system && msg) {
             try {
                 const auto = system.automod;
-                console.debug(`Invite filter: ${ModActionType}`);
-                console.debug(`Invite filter: ${FilterClass}`);
-                console.debug(`Invite filter: ${CommandCategory}`);
 
                 if (auto.enabled && auto.inviteFilter.enabled) {
                     const inviteRegex = new RegExp("\\b(?:https?:\\/\\/)?(?:www\\.)?(?:discord\\.gg\\/[a-zA-Z0-9]+|discord\\.com\\/invite\\/[a-zA-Z0-9]+)\\b", 'g');

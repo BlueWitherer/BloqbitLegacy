@@ -2,7 +2,7 @@ import ClientModel from '../classes/ClientModel.mjs';
 import Discord from "discord.js";
 import { Events, WebhookClient } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
-import url from 'url';
+import assets from "../assets.json" with { type: 'json' }
 
 const { Interaction } = Discord;
 
@@ -17,7 +17,7 @@ export default {
      */
     execute: async (bot, interaction) => {
         if (bot.online) {
-            bot.assets = await import(url.pathToFileURL("../assets.json").href);
+            bot.assets = assets;
 
             try {
                 if (interaction.isChatInputCommand()) {

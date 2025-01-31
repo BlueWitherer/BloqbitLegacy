@@ -163,8 +163,8 @@ export default {
             return {
                 punishment: Number(value),
                 warning: {
-                    name: string(object.name),
-                    value: string(object.value),
+                    name: object.name,
+                    value: object.value,
                 },
             };
         } catch (err) {
