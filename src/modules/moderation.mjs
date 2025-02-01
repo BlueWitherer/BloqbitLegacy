@@ -164,7 +164,7 @@ export default {
     /**
      * 
      * @param {typeof SysSettings} system Server settings object
-     * @param {Discord.Message} msg Discord message to inspect
+     * @param {Discord} msg Discord message to inspect
      */
     inFilter: (system, msg) => {
         if (system && msg) {
@@ -175,6 +175,7 @@ export default {
                     const inviteRegex = new RegExp("\\b(?:https?:\\/\\/)?(?:www\\.)?(?:discord\\.gg\\/[a-zA-Z0-9]+|discord\\.com\\/invite\\/[a-zA-Z0-9]+)\\b", 'g');
 
                     if (inviteRegex.test(msg.content)) {
+                        console.debug(`Message ${msg.id} violates invite rule`);
                         return resolve.warnObj(auto.inviteFilter.punishment, resolve.msgWarning("Server Invite", "Posted a server invite with the message."));
                     } else {
                         return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
