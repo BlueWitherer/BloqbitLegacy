@@ -1,21 +1,25 @@
 {
     "icons": {
         "eball": "🎱",
-        "check": "✅",
-        "xmark": "❌",
-        "info": "ℹ️",
-        "exclamation": "❗",
-        "question": "❓",
+        "check": "<:bb_check:1335277885996400680>",
+        "xmark": "<:bb_xmark:1335277956947509369>",
+        "info": "<:bb_info:1335278327165882388>",
+        "exclamation": "<:bb_exclaim:1335277900823527486>",
+        "question": "<:bb_question:1335277919081201735>",
         "entry": "⭕",
         "noentry": "🚫",
         "update": "🔄",
-        "plus": "➕",
-        "minus": "➖",
-        "dollar": "💰",
+        "plus": "<:bb_plus:1335280224408961096>",
+        "minus": "<:bb_minus:1335280204985401375>",
+        "dollar": "<:bb_dollar:1335278309147279370>",
         "coin": {
             "heads": "<:ico:848176412317712384>",
             "tails": "<:ico:848176411734048799>"
-        }
+        },
+        "play": "<:bb_play:1335279168669356102>",
+        "pause": "<:bb_pause:1335279153267740753>",
+        "stop": "<:bb_stop:1335281116046954547>",
+        "blank": "<:bb_template:1335277939884949605>"
     },
     "colors": {
         "primary": 41983,
@@ -28,12 +32,57 @@
         }
     },
     "social": {
+        "website": "https://bloqbit.cubicstudios.xyz/",
         "company": {
             "youtube": "https://www.youtube.com/c/CubicCommunity/",
             "bluesky": "https://bsky.app/profile/cubicstudios.xyz/"
         },
         "bot": {
             "bluesky": "https://bsky.app/profile/bloqbit.cubicstudios.xyz/"
+        }
+    },
+    "default": {
+        "icons": {
+            "eball": "🎱",
+            "check": "✅",
+            "xmark": "❌",
+            "info": "ℹ️",
+            "exclamation": "❗",
+            "question": "❓",
+            "entry": "⭕",
+            "noentry": "🚫",
+            "update": "🔄",
+            "plus": "➕",
+            "minus": "➖",
+            "dollar": "💰",
+            "coin": {
+                "heads": "<:ico:848176412317712384>",
+                "tails": "<:ico:848176411734048799>"
+            },
+            "play": "▶️",
+            "pause": "⏸️",
+            "stop": "⏹️",
+            "blank": "🔵"
+        },
+        "colors": {
+            "primary": 41983,
+            "secondary": 16711680,
+            "terciary": 126,
+            "strings": {
+                "primary": "#00A3FF",
+                "secondary": "#FAFAFA",
+                "terciary": "#00007E"
+            }
+        },
+        "social": {
+            "website": "https://bloqbit.cubicstudios.xyz/",
+            "company": {
+                "youtube": "https://www.youtube.com/c/CubicCommunity/",
+                "bluesky": "https://bsky.app/profile/cubicstudios.xyz/"
+            },
+            "bot": {
+                "bluesky": "https://bsky.app/profile/bloqbit.cubicstudios.xyz/"
+            }
         }
     }
 }

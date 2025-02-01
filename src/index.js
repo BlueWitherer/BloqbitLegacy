@@ -31,6 +31,8 @@ export default class StartClient {
      * @returns {Promise<ClientModel>}
      */
     activate = async (botModel, testMode) => {
+        if (testMode) botModel.assets = botModel.assets.default;
+
         botModel.client.on(Events.ClientReady, async (client) => {
             client.user?.setPresence({
                 "activities": [
