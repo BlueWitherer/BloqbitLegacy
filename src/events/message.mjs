@@ -1,4 +1,3 @@
-import Moderator from '../automated/moderator.js';
 import cache from '../cache.mjs';
 import ClientModel from '../classes/ClientModel.mjs';
 import { Events, Message, ChannelType, WebhookClient } from 'discord.js';
@@ -57,11 +56,6 @@ export default {
                     ],
                 });
             };
-        } else if (!msg.author?.bot) {
-            const moderation = new Moderator();
-            const settings = cache.fetch(msg.guildId);
-
-            await moderation.totalMessageScan(settings, msg);
         };
     },
 };

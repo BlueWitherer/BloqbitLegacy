@@ -20,7 +20,7 @@ export default {
      * 
      * @param {string} server Server ID for query
      * 
-     * @returns {typeof SysSettings | void} Queried settings object
+     * @returns {typeof SysSettings} Queried settings object
      */
     fetch: (server) => {
         if (server) {
@@ -41,7 +41,7 @@ export default {
      * @param {typeof SysSettings} system Object for query
      * @param {BotDatabase} db Bot database model
      * 
-     * @returns {Promise<typeof SysSettings | void>} New settings object
+     * @returns {Promise<typeof SysSettings>} New settings object
      */
     update: async (system, db) => {
         if (system) {

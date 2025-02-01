@@ -15,7 +15,7 @@ export default {
         try {
             console.debug(message);
         } catch (err) {
-            console.message(err);
+            console.error(err);
         };
 
         return;

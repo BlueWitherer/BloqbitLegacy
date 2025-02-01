@@ -1,13 +1,13 @@
 import { ClientModel, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
 
-import Discord from 'discord.js';
-import { Routes } from 'discord-api-types/v9';
-
 import fs from 'node:fs';
 import dotenv from 'dotenv';
 import path from 'path';
 import url from 'url';
 import fetch from './modules/fetch.mjs';
+
+import { Events, ActivityType, PresenceUpdateStatus, WebhookClient } from 'discord.js';
+import { Routes } from 'discord-api-types/v9';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,18 +31,18 @@ export default class StartClient {
      * @returns {Promise<ClientModel>}
      */
     activate = async (botModel, testMode) => {
-        botModel.client.on(Discord.Events.ClientReady, async (client) => {
+        botModel.client.on(Events.ClientReady, async (client) => {
             client.user?.setPresence({
                 "activities": [
                     {
                         "name": `Beta Testing!`,
                         "state": `Active across ${client.guilds.cache.size} servers!`,
-                        "type": Discord.ActivityType.Streaming,
+                        "type": ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,
                     }
                 ],
                 "afk": false,
-                "status": Discord.PresenceUpdateStatus.DoNotDisturb,
+                "status": PresenceUpdateStatus.DoNotDisturb,
             });
 
             const importModule = async (filePath) => {
@@ -146,7 +146,7 @@ export default class StartClient {
                 console.debug("Starting handlers...");
                 new MessageHandler(client);
 
-                const devWH = new Discord.WebhookClient({ "url": botModel.dev_wh, });
+                const devWH = new WebhookClient({ "url": botModel.dev_wh, });
 
                 await devWH.send({
                     "avatarURL": client.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),

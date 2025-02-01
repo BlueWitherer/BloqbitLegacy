@@ -98,6 +98,42 @@ export default {
 
     /**
      * 
+     * @param {Interaction} interaction Command interaction
+     * @param {typeof SysAssets} assets Assets object
+     * 
+     * @returns {Promise<void>} BotDatabase operation
+     */
+    noPremiumResponse: async (interaction, assets) => {
+        if (interaction && assets) {
+            try {
+                if (interaction.isChatInputCommand()) {
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "title": `${assets.icons.xmark} | Server not Sponsored`,
+                                "description": `This is a sponsors-only command, the server owner must be a sponsor of Bloqbit for anyone to use this.`,
+                                "color": assets.colors.secondary,
+                            },
+                        ],
+                        "ephemeral": true,
+                    });
+
+                    return;
+                } else {
+                    return;
+                };
+            } catch (err) {
+                console.error(err);
+                return;
+            };
+        } else {
+            return;
+        };
+    },
+
+    /**
+     * 
      * @param {Interaction} interaction Command interaction 
      * @param {typeof SysAssets} assets Assets object
      * 

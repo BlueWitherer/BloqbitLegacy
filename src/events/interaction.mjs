@@ -1,8 +1,10 @@
 import ClientModel from '../classes/ClientModel.mjs';
 import Discord from "discord.js";
-import { Events, WebhookClient } from 'discord.js';
+import { Events, WebhookClient, ChatInputCommandInteraction } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 import assets from "../assets.json" with { type: 'json' }
+import cache from '../cache.mjs';
+import { sys } from 'typescript';
 
 const { Interaction } = Discord;
 
@@ -12,7 +14,8 @@ export default {
     /**
      * 
      * @param {ClientModel} bot 
-     * @param {Interaction} interaction 
+     * @param {ChatInputCommandInteraction} interaction
+     * 
      * @returns {void}
      */
     execute: async (bot, interaction) => {
@@ -30,6 +33,14 @@ export default {
                         try {
                             if (command.dev) {
                                 return;
+                            } else if (command.premium) {
+                                const system = cache.fetch(interaction.guildId);
+
+                                if (system.active) {
+                                    await command.execute(interaction, bot.assets, interactionServer, bot.db);
+                                } else {
+                                    await fetch.noPremiumResponse(interaction, bot.assets);
+                                };
                             } else {
                                 await command.execute(interaction, bot.assets, interactionServer, bot.db);
                             };
