@@ -27,7 +27,7 @@ export default {
                     "name": interaction.user?.username,
                     "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })
                 },
-                "title": `${assets.icons.info} | Ping`,
+                "title": `${assets.icons.info} Ping`,
                 "color": assets.colors.primary,
                 "fields": [
                     {

@@ -47,9 +47,9 @@ export default {
                         } catch (err) {
                             console.error(err);
                             if (interaction.replied || interaction.deferred) {
-                                await interaction.followUp({ content: `${bot.assets.icons.xmark} | There was an error while executing this command.`, ephemeral: true });
+                                await interaction.followUp({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
                             } else {
-                                await interaction.reply({ content: `${bot.assets.icons.xmark} | There was an error while executing this command.`, ephemeral: true });
+                                await interaction.reply({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
                             };
                         } finally {
                             if (devWH) {
@@ -89,9 +89,9 @@ export default {
                         await fetch.databaseErrorResponse(interaction, bot.assets);
                     } else {
                         if (interaction.replied || interaction.deferred) {
-                            await interaction.followUp({ content: `${bot.assets.icons.xmark} | There was an error while executing this command.`, ephemeral: true });
+                            await interaction.followUp({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
                         } else {
-                            await interaction.reply({ content: `${bot.assets.icons.xmark} | There was an error while executing this command.`, ephemeral: true });
+                            await interaction.reply({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
                         };
 
                         return;

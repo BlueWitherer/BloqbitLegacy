@@ -29,7 +29,7 @@ export default {
      * @param {array} array The array 
      * @param {any} value The value to query
      * 
-     * @returns {array | void} The array with the value removed
+     * @returns {array void} The array with the value removed
      */
     removeArrayItem: (array, value) => {
         if (array && value !== null) {
@@ -54,7 +54,7 @@ export default {
      * 
      * @param {number} number Number
      * 
-     * @returns {boolean | null} Boolean from number
+     * @returns {boolean null} Boolean from number
      */
     boolNumber: (number) => {
         if (number <= 0 || number >= 1) {

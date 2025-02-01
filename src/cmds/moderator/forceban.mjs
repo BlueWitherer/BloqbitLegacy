@@ -38,7 +38,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} | You cannot ban another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot ban another moderator.`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -48,10 +48,10 @@ export default {
 
         return await interaction.guild?.members?.ban(User, {
             deleteMessageSeconds: 7 * 86400,
-            reason: `${interaction.user?.username} | Ban - ${banreason}`
+            reason: `${interaction.user?.username} Ban - ${banreason}`
         }).catch(async (err) => {
             await interaction.reply({
-                "content": `> ${assets.icons.xmark} | **${interaction.user?.username}** - Invalid ID.`,
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - Invalid ID.`,
                 "ephemeral": true,
             });
             console.log(err);
@@ -64,7 +64,7 @@ export default {
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.noentry} | User Banned`,
+                        "title": `${assets.icons.noentry} User Banned`,
                         "color": assets.colors.primary,
                         "fields": [
                             {

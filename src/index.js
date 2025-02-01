@@ -156,7 +156,7 @@ export default class StartClient {
                             "author": {
                                 "name": `Service Status`,
                             },
-                            "description": `${botModel.assets.default.icons.check} | **${client.user?.displayName}** is now __online__.`,
+                            "description": `${botModel.assets.default.icons.check} **${client.user?.displayName}** is now __online__.`,
                             "color": botModel.assets.colors.primary,
                             "footer": {
                                 "text": client.user?.username,

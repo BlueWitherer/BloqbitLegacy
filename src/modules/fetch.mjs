@@ -24,7 +24,7 @@ export default {
         if (err && interaction) {
             try {
                 await interaction.reply({
-                    "content": `> ${assets.icons.xmark} | **${interaction.user?.username}** - An error occurred.`,
+                    "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
                     "ephemeral": true,
                 });
 
@@ -44,7 +44,7 @@ export default {
      * 
      * @param {string} server ID of the server
      * 
-     * @returns {typeof SysSettings | void} Fetched server settings object
+     * @returns {typeof SysSettings void} Fetched server settings object
      */
     fetchGuild: (server) => {
         if (server) {
@@ -75,7 +75,7 @@ export default {
                         "content": "",
                         "embeds": [
                             {
-                                "title": `${assets.icons.xmark} | Server not registered`,
+                                "title": `${assets.icons.xmark} Server not registered`,
                                 "description": `Due to an internal error, this server has not yet been registered in our database. You can fix this by using \`/reload\`.`,
                                 "color": assets.colors.secondary,
                             },
@@ -111,7 +111,7 @@ export default {
                         "content": "",
                         "embeds": [
                             {
-                                "title": `${assets.icons.xmark} | Server not Sponsored`,
+                                "title": `${assets.icons.xmark} Server not Sponsored`,
                                 "description": `This is a sponsors-only command, the server owner must be a sponsor of Bloqbit for anyone to use this.`,
                                 "color": assets.colors.secondary,
                             },
@@ -148,7 +148,7 @@ export default {
                             "content": null,
                             "embeds": [
                                 {
-                                    "title": `${assets.icons.xmark} | Command Error`,
+                                    "title": `${assets.icons.xmark} Command Error`,
                                     "description": `Due to an internal error, this command could not be fetched, or has not been properly executed. We apologize.`,
                                     "color": assets.colors.secondary,
                                 },
@@ -159,7 +159,7 @@ export default {
                             "content": null,
                             "embeds": [
                                 {
-                                    "title": `${assets.icons.xmark} | Command Error`,
+                                    "title": `${assets.icons.xmark} Command Error`,
                                     "description": `Due to an internal error, this command could not be fetched, or has not been properly executed. We apologize.`,
                                     "color": assets.colors.secondary,
                                 },
@@ -182,18 +182,18 @@ export default {
      * @param {BotDatabase} db Class of the bot's database
      * @param {string} server ID of the server
      * 
-     * @returns {Promise<typeof SysSettings> | void} BotDatabase operation
+     * @returns {Promise<typeof SysSettings> void} BotDatabase operation
      */
     reviseGuild: async (db, server) => {
         if (server) {
             try {
-                console.log(`Step 1 | Initializing entry scan for ${server}`);
+                console.log(`Step 1 Initializing entry scan for ${server}`);
 
                 /**
                  * 
                  * @param {string} server 
                  * 
-                 * @returns {typeof SysSettings | null}
+                 * @returns {typeof SysSettings null}
                  */
                 const check = (server) => {
                     let result = null;
@@ -209,13 +209,13 @@ export default {
 
                 let thisGuild = check(server);
 
-                console.log(`Step 2 | Check if server exists in cache.`);
+                console.log(`Step 2 Check if server exists in cache.`);
                 if (thisGuild) {
-                    console.log(`Step 3 | Server exists in cache, data object preserved.`);
+                    console.log(`Step 3 Server exists in cache, data object preserved.`);
                     console.debug(`Server ${thisGuild.server} found!`);
                 } else {
                     try {
-                        console.log(`Step 3 | Server doesn't exist in cache, creating new save data object.`);
+                        console.log(`Step 3 Server doesn't exist in cache, creating new save data object.`);
                         console.debug(`Connecting to database...`);
 
                         const dbClient = new Mongo.MongoClient(db.mongo_uri);
@@ -227,16 +227,16 @@ export default {
 
                         console.debug(`Checking if save data for server ${server} exists...`);
 
-                        console.log(`Step 4 | Check if server exists in database.`);
+                        console.log(`Step 4 Check if server exists in database.`);
                         if (foundServer) {
-                            console.log(`Step 5 | Server exists in database, copying save data.`);
+                            console.log(`Step 5 Server exists in database, copying save data.`);
                             console.debug(`Data for server ${server} exists, duplicating save...`);
 
                             thisGuild = resolve.deepCopySettings(foundServer);
 
                             console.debug(`Data successfully saved.`);
                         } else {
-                            console.log(`Step 5 | Server doesn't exist in database, creating new save.`);
+                            console.log(`Step 5 Server doesn't exist in database, creating new save.`);
                             console.debug(`Data for server ${server} does not exist, assigning new default settings...`);
 
                             const defaultSettings = SysSettings;
@@ -251,7 +251,7 @@ export default {
                         console.error(err);
                     };
 
-                    console.log(`Step 6 | Updating cache.`);
+                    console.log(`Step 6 Updating cache.`);
 
                     const final = cacheModule.update(thisGuild, db);
                     return final;

@@ -51,7 +51,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} | You cannot moderate another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot moderate another moderator.`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -74,7 +74,7 @@ export default {
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.check} | Username Blocked`,
+                        "title": `${assets.icons.check} Username Blocked`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
@@ -105,7 +105,7 @@ export default {
                             "name": `${user.username}`,
                             "icon_url": `${user.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.exclamation} | Username Blocked`,
+                        "title": `${assets.icons.exclamation} Username Blocked`,
                         "description": `Content in your nickname has been viewed by our moderators as rule-breaking and have blocked it. Please abide by our [rules](https://discord.com/channels/460081436637134859/460082070673424386/882029054033793025) to keep CS a safe and friendly environment for our users.`,
                         "color": assets.colors.primary,
                         "fields": [
@@ -142,7 +142,7 @@ export default {
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.info} | ${user?.username}'s Blocked Username`,
+                        "title": `${assets.icons.info} ${user?.username}'s Blocked Username`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
@@ -196,7 +196,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.info} | Your name has been unblocked. Have fun!`,
+                        "description": `${assets.icons.info} Your name has been unblocked. Have fun!`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -212,7 +212,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} | Set **${user?.username}**'s nickname.`,
+                        "description": `${assets.icons.check} Set **${user?.username}**'s nickname.`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -227,7 +227,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} | Reset **${user?.username}**'s nickname.`,
+                        "description": `${assets.icons.check} Reset **${user?.username}**'s nickname.`,
                         "color": assets.colors.primary,
                     },
                 ],

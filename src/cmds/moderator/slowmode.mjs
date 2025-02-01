@@ -73,7 +73,7 @@ export default {
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} | Slowmode cannot be set to over 12 hours.`,
+                            "description": `${assets.icons.xmark} Slowmode cannot be set to over 12 hours.`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -81,7 +81,7 @@ export default {
                 });
             };
 
-            await interaction.channel?.setRateLimitPerUser(duration, `${interaction.user?.username} | Slowmode set.`);
+            await interaction.channel?.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set.`);
             return await interaction.reply({
                 "content": "",
                 "embeds": [
@@ -90,7 +90,7 @@ export default {
                             "name": interaction.user?.username,
                             "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
                         },
-                        "title": `${assets.icons.check} | Slowmode Set`,
+                        "title": `${assets.icons.check} Slowmode Set`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
@@ -108,7 +108,7 @@ export default {
                 ],
             });
         } else if (interaction.options?.getSubcommand() === "remove") {
-            await interaction.channel?.setRateLimitPerUser(0, `${interaction.user?.username} | Slowmode removed.`);
+            await interaction.channel?.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed.`);
             return await interaction.reply({
                 "content": "",
                 "embeds": [
@@ -117,7 +117,7 @@ export default {
                             "name": interaction.user?.username,
                             "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
                         },
-                        "title": `${assets.icons.check} | Slowmode Removed`,
+                        "title": `${assets.icons.check} Slowmode Removed`,
                         "color": assets.colors.primary,
                         "fields": [
                             {

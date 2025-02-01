@@ -47,7 +47,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} | **${interaction.user?.username}** - Successfully created permanent invite code \`${invite.code}\``,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully created permanent invite code \`${invite.code}\``,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -57,7 +57,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} | **${interaction.user?.username}** - Failed to create invite code.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to create invite code.`,
                         "color": assets.colors.primary,
                     },
                 ],

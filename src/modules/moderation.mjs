@@ -58,40 +58,40 @@ export default {
         switch (level) {
             case ModActionType.Warn:
                 //warn
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator | Author ${message.author?.id} of message ${message.id} warned.`);
+                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} warned.`);
                 break;
 
             case ModActionType.Mute:
                 //mute
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator | Author ${message.author?.id} of message ${message.id} muted.`);
+                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} muted.`);
                 break;
 
             case ModActionType.Timeout:
                 await timeout(member, reason);
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator | Author ${message.author?.id} of message ${message.id} timed out.`);
+                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} timed out.`);
                 break;
 
             case ModActionType.Blacklist:
                 //blacklist
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator | Author ${message.author?.id} of message ${message.id} blacklisted.`);
+                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} blacklisted.`);
                 break;
 
             case ModActionType.Softban:
                 await softban(member, reason);
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator | Author ${message.author?.id} of message ${message.id} soft-banned.`);
+                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} soft-banned.`);
                 break;
 
             case ModActionType.Ban:
                 await ban(member, reason);
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator | Author ${message.author?.id} of message ${message.id} banned.`);
+                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} banned.`);
                 break;
 
             case ModActionType.None:
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator | URL filter punishment for guild ${message.guild?.id} disabled.`);
+                console.debug(`${message.guild?.name} • Priority II Auto-moderator URL filter punishment for guild ${message.guild?.id} disabled.`);
                 break;
 
             default:
-                console.error(`${message.guild?.name} • Priority II Auto-moderator | Server settings not resolvable`);
+                console.error(`${message.guild?.name} • Priority II Auto-moderator Server settings not resolvable`);
                 break;
         };
     },

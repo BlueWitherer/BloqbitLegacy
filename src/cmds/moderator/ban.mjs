@@ -40,7 +40,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} | You cannot ban another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot ban another moderator.`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -51,7 +51,7 @@ export default {
         try {
             return await interaction.guild?.members?.ban(User?.id, {
                 deleteMessageSeconds: 7 * 86400,
-                reason: `${interaction.user?.username} | Ban - ${banreason}`
+                reason: `${interaction.user?.username} Ban - ${banreason}`
             }).then(async () => {
                 await interaction.reply({
                     "content": "",
@@ -61,7 +61,7 @@ export default {
                                 "name": `${interaction.user?.username}`,
                                 "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                             },
-                            "title": `${assets.icons.noentry} | User Banned`,
+                            "title": `${assets.icons.noentry} User Banned`,
                             "color": assets.colors.primary,
                             "fields": [
                                 {
@@ -92,7 +92,7 @@ export default {
                                 "name": `${User.username}`,
                                 "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                             },
-                            "title": `${assets.icons.noentry} | Banned`,
+                            "title": `${assets.icons.noentry} Banned`,
                             "description": `You were __banned__ from **${interaction.guild?.name}**.`,
                             "color": assets.colors.primary,
                             "fields": [

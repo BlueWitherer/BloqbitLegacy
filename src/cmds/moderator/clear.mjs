@@ -53,7 +53,7 @@ export default {
                             "name": interaction.user?.username,
                             "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, }),
                         },
-                        "title": `${assets.icons.check} | Messages Cleared`,
+                        "title": `${assets.icons.check} Messages Cleared`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
@@ -91,7 +91,7 @@ export default {
                             "name": interaction.user?.username,
                             "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, }),
                         },
-                        "title": `${assets.icons.check} | Messages Cleared`,
+                        "title": `${assets.icons.check} Messages Cleared`,
                         "color": assets.colors.primary,
                         "fields": [
                             {

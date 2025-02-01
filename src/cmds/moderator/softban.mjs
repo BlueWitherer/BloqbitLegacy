@@ -32,7 +32,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} | You cannot softban another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot softban another moderator.`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -42,12 +42,12 @@ export default {
 
         return await interaction.guild?.members?.ban(User?.id, {
             deleteMessageSeconds: 7 * 86400,
-            reason: `${interaction.user?.username} | Softban - ${banreason}`
+            reason: `${interaction.user?.username} Softban - ${banreason}`
         }).then(async () => {
-            await interaction.guild?.members?.unban(User?.id, `${interaction.user?.username} | Softban - ${banreason}`);
+            await interaction.guild?.members?.unban(User?.id, `${interaction.user?.username} Softban - ${banreason}`);
         }).catch(async (err) => {
             await interaction.reply({
-                "content": `> ${assets.icons.xmark} | **${interaction.user?.username}** - An error occurred.`,
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
                 "ephemeral": true,
             });
             console.log(err);
@@ -60,7 +60,7 @@ export default {
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.noentry} | User Softbanned`,
+                        "title": `${assets.icons.noentry} User Softbanned`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
@@ -91,7 +91,7 @@ export default {
                             "name": `${User.username}`,
                             "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.noentry} | Soft-banned`,
+                        "title": `${assets.icons.noentry} Soft-banned`,
                         "description": `You were __soft-banned__ from **${interaction.guild?.name}**.`,
                         "color": assets.colors.primary,
                         "fields": [

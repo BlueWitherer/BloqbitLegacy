@@ -60,7 +60,7 @@ export default {
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} | You cannot moderate another moderator.`,
+                            "description": `${assets.icons.xmark} You cannot moderate another moderator.`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -106,7 +106,7 @@ export default {
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} | Timeout cannot be set to over 4 weeks.`,
+                            "description": `${assets.icons.xmark} Timeout cannot be set to over 4 weeks.`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -114,7 +114,7 @@ export default {
                 });
             };
 
-            await Member.timeout(duration, `${interaction.user?.username} | Timeout - ${reason}`);
+            await Member.timeout(duration, `${interaction.user?.username} Timeout - ${reason}`);
             return await interaction.reply({
                 "content": "",
                 "embeds": [
@@ -123,7 +123,7 @@ export default {
                             "name": interaction.user?.username,
                             "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
                         },
-                        "title": `${assets.icons.noentry} | User Timed Out`,
+                        "title": `${assets.icons.noentry} User Timed Out`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
@@ -158,7 +158,7 @@ export default {
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} | You cannot moderate another moderator.`,
+                            "description": `${assets.icons.xmark} You cannot moderate another moderator.`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -166,7 +166,7 @@ export default {
                 });
             };
 
-            await Member?.timeout(0, `${interaction.user?.username} | Timeout removed.`);
+            await Member?.timeout(0, `${interaction.user?.username} Timeout removed.`);
             return await interaction.reply({
                 "content": "",
                 "embeds": [
@@ -175,7 +175,7 @@ export default {
                             "name": interaction.user?.username,
                             "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
                         },
-                        "title": `${assets.icons.check} | Timeout Removed`,
+                        "title": `${assets.icons.check} Timeout Removed`,
                         "color": assets.colors.primary,
                         "fields": [
                             {

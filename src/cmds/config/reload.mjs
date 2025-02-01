@@ -29,7 +29,7 @@ export default {
                 "content": "",
                 "embeds": [
                     {
-                        "title": `${assets.icons.check} | Server Registered`,
+                        "title": `${assets.icons.check} Server Registered`,
                         "description": `Your server, *${interaction.guild?.name}*, has been successfully registered to our database and commands are now available for use.`,
                         "color": assets.colors.primary,
                     },
@@ -45,7 +45,7 @@ export default {
                         "content": "",
                         "embeds": [
                             {
-                                "title": `${assets.icons.check} | Server Registered`,
+                                "title": `${assets.icons.check} Server Registered`,
                                 "description": `Your server, *${interaction.guild?.name}*, has been successfully registered to our database and commands are now available for use.`,
                                 "color": assets.colors.primary,
                             },
@@ -57,7 +57,7 @@ export default {
                         "content": "",
                         "embeds": [
                             {
-                                "title": `${assets.icons.xmark} | Failed To Register`,
+                                "title": `${assets.icons.xmark} Failed To Register`,
                                 "description": `We faced an issue registering your guild, *${interaction.guild?.name}*. We apologize for the inconvenience, please try again later.`,
                                 "color": assets.colors.secondary,
                             },

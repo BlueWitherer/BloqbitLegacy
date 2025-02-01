@@ -32,7 +32,7 @@ export default {
                 "content": null,
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} | You cannot kick another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot kick another moderator.`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -40,9 +40,9 @@ export default {
             });
         };
 
-        return interaction.guild?.members?.kick(User.id, `${interaction.user?.username} | Kick - ${kickreason}`).catch(async (err) => {
+        return interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${kickreason}`).catch(async (err) => {
             await interaction.reply({
-                "content": `> ${assets.icons.xmark} | **${interaction.user?.username}** - An error occurred.`,
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
                 "ephemeral": true,
             });
             console.log(err);
@@ -55,7 +55,7 @@ export default {
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.noentry} | User Kicked`,
+                        "title": `${assets.icons.noentry} User Kicked`,
                         "color": `${assets.colors.primary}`,
                         "fields": [
                             {
@@ -86,7 +86,7 @@ export default {
                             "name": `${User.username}`,
                             "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
                         },
-                        "title": `${assets.icons.noentry} | Kicked`,
+                        "title": `${assets.icons.noentry} Kicked`,
                         "description": `You were __kicked__ from **${interaction.guild?.name}**.`,
                         "color": assets.colors.primary,
                         "fields": [
