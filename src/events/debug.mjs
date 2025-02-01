@@ -1,5 +1,5 @@
 import ClientModel from '../classes/ClientModel.mjs';
-import { Events, WebhookClient } from 'discord.js';
+import { Events } from 'discord.js';
 
 export default {
     name: Events.Debug,

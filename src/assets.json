@@ -63,26 +63,6 @@
             "pause": "⏸️",
             "stop": "⏹️",
             "blank": "🔵"
-        },
-        "colors": {
-            "primary": 41983,
-            "secondary": 16711680,
-            "terciary": 126,
-            "strings": {
-                "primary": "#00A3FF",
-                "secondary": "#FAFAFA",
-                "terciary": "#00007E"
-            }
-        },
-        "social": {
-            "website": "https://bloqbit.cubicstudios.xyz/",
-            "company": {
-                "youtube": "https://www.youtube.com/c/CubicCommunity/",
-                "bluesky": "https://bsky.app/profile/cubicstudios.xyz/"
-            },
-            "bot": {
-                "bluesky": "https://bsky.app/profile/bloqbit.cubicstudios.xyz/"
-            }
         }
     }
 }

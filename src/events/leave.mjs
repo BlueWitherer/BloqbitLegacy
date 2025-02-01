@@ -37,7 +37,7 @@ export default {
                         "author": {
                             "name": `Servers`,
                         },
-                        "description": `${bot.assets.icons.minus} | **${bot.client?.user?.username}** was forced to leave the server __${guild.name}__.`,
+                        "description": `${bot.assets.default.icons.minus} | **${bot.client?.user?.username}** was forced to leave the server __${guild.name}__.`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

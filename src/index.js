@@ -31,8 +31,6 @@ export default class StartClient {
      * @returns {Promise<ClientModel>}
      */
     activate = async (botModel, testMode) => {
-        if (testMode) botModel.assets = botModel.assets.default;
-
         botModel.client.on(Events.ClientReady, async (client) => {
             client.user?.setPresence({
                 "activities": [
@@ -158,7 +156,7 @@ export default class StartClient {
                             "author": {
                                 "name": `Service Status`,
                             },
-                            "description": `${botModel.assets.icons.check} | **${client.user?.displayName}** is now __online__.`,
+                            "description": `${botModel.assets.default.icons.check} | **${client.user?.displayName}** is now __online__.`,
                             "color": botModel.assets.colors.primary,
                             "footer": {
                                 "text": client.user?.username,
