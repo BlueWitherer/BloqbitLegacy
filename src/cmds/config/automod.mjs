@@ -351,7 +351,7 @@ export default {
                     } else {
                         const list = filter.split(",");
 
-                        list.forEach((w) => system.automod.swearFilter.keywords.push(w.replace(/\s+/g, ' ').trim()));
+                        list.forEach((w) => system.automod.swearFilter.keywords.filter((kw) => !system.automod.swearFilter.keywords.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the swear filter.`,
@@ -378,7 +378,7 @@ export default {
                     } else {
                         const list = superFilter.split(",");
 
-                        list.forEach((w) => system.automod.swearFilter.keywordsSuper.push(w.replace(/\s+/g, ' ').trim()));
+                        list.forEach((w) => system.automod.swearFilter.keywordsSuper.filter((kw) => !system.automod.swearFilter.keywordsSuper.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the severe swear filter.`,
@@ -579,7 +579,7 @@ export default {
                     } else {
                         const list = filter.split(",");
 
-                        list.forEach((w) => system.automod.inviteFilter.keywords.push(w.replace(/\s+/g, ' ').trim()));
+                        list.forEach((w) => system.automod.inviteFilter.keywords.filter((kw) => !system.automod.inviteFilter.keywords.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the invite filter.`,
@@ -780,7 +780,7 @@ export default {
                     } else {
                         const list = filter.split(",");
 
-                        list.forEach((w) => system.automod.linkFilter.keywords.push(w.replace(/\s+/g, ' ').trim()));
+                        list.forEach((w) => system.automod.linkFilter.keywords.filter((kw) => !system.automod.linkFilter.keywords.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the link filter.`,
