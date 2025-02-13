@@ -9,7 +9,7 @@ import resolve from '../../modules/resolve.mjs';
 import cache from '../../cache.mjs';
 
 export default {
-    premium: true,
+    premium: false,
     data: new SlashCommandBuilder()
         .setName("automod")
         .setDescription("Configure auto-moderator settings to your server's needs.")
@@ -369,7 +369,7 @@ export default {
             if (superFilter !== null && typeof superFilter === "string") {
                 try {
                     if (superFilter === "<RESET>") {
-                        system.automod.swearFilter.superkeywords.splice(0, system.automod.swearFilter.superkeywords.length);
+                        system.automod.swearFilter.keywordsSuper.splice(0, system.automod.swearFilter.keywordsSuper.length);
 
                         allEmbeds.push({
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the severe swear filter.`,
@@ -378,7 +378,7 @@ export default {
                     } else {
                         const list = superFilter.split(",");
 
-                        list.forEach((w) => system.automod.swearFilter.superkeywords.push(w.replace(/\s+/g, ' ').trim()));
+                        list.forEach((w) => system.automod.swearFilter.keywordsSuper.push(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the severe swear filter.`,

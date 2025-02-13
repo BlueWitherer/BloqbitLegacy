@@ -7,9 +7,7 @@ import StartClient from './src/index.js';
 
 dotenv.config();
 
-const botModel = new ClientModel();
-botModel.token = process.env.TEST_TOKEN;
-botModel.secret = process.env.TEST_SECRET;
+const botModel = new ClientModel(process.env.TEST_TOKEN, process.env.TEST_SECRET);
 botModel.rest.setToken(process.env.TEST_TOKEN);
 
 const start = async () => {

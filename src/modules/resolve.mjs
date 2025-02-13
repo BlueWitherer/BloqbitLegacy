@@ -219,7 +219,7 @@ export default {
 
     /**
      * 
-     * @param {number} mode Filter mode ID.
+     * @param {FilterMode} mode Filter mode ID.
      * 
      * @returns {string} Filter mode name.
      */

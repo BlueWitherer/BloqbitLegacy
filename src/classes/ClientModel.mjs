@@ -13,11 +13,17 @@ dotenv.config();
  * @class Bot model.
  */
 export default class ClientModel {
-    constructor() {
+    /**
+     * 
+     * @param {string} token Bot token.
+     * @param {string} secret Application secret.
+     * @returns 
+     */
+    constructor(token, secret) {
         this.online = false;
 
-        this.token = process.env.PUBLIC_TOKEN;
-        this.secret = process.env.PUBLIC_SECRET;
+        this.token = token;
+        this.secret = secret;
 
         this.dev_wh = process.env.LOG_WH;
 

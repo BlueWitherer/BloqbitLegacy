@@ -7,6 +7,7 @@ import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.mjs';
 
 export default {
+    premium: false,
     data: new SlashCommandBuilder()
         .setName("reload")
         .setDescription("Refresh the server's save data.")
