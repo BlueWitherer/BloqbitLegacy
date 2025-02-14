@@ -58,8 +58,8 @@ export default {
 
             /**
              * 
-             * @param {string} name 
-             * @returns 
+             * @param {typeof SysSettings} thisFilter Filter object.
+             * @param {string} name Singular name of the filter.
              */
             const checkFilter = (thisFilter, name) => {
                 const fields = [{
@@ -113,10 +113,10 @@ export default {
                     .setFooter({
                         "text": `${interaction.user?.username}`,
                         "iconURL": `${interaction.user?.displayAvatarURL({ "forceStatic": false })}`
-                    });
+                    }).data;
             };
 
-            let returnEmbed = {};
+            let returnEmbed = new EmbedBuilder().data;
 
             switch (interaction.options.getString("filter")) {
                 case FilterClass.SWEAR:
