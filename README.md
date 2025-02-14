@@ -32,4 +32,4 @@ The all-in-one solution for your Discord server.
 
 ### Issues
 ###### What's wrong?!
-**[⚠️ Report a problem with the mod](../../issues/)**
+**[⚠️ Report a problem with the bot](../../issues/)**

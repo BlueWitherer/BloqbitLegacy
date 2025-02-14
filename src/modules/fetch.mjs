@@ -4,32 +4,14 @@ import { BotDatabase } from '../classes.mjs';
 
 import Discord from 'discord.js';
 import Mongo from 'mongodb';
-import BadgeMaker from 'badge-maker'
 
 import resolve from './resolve.mjs';
 import SysAssets from '../assets.json' with { type: 'json' };
 import SysSettings from '../settings.json' with { type: 'json' };
 
 const { Interaction } = Discord;
-const { makeBadge, ValidationError } = BadgeMaker;
 
 export default {
-    /**
-     * 
-     * @param {string} label 
-     * @param {string} message 
-     */
-    createBadge: (label, message) => {
-        const format = {
-            label: label,
-            message: message,
-            style: 'for-the-badge',
-        };
-
-        const svg = makeBadge(format);
-        console.log(svg);
-    },
-
     /**
      * 
      * @param {string} err Error message
