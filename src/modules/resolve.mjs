@@ -288,6 +288,28 @@ export default {
         };
     },
 
+    /**
+     * 
+     * @param {number} num Full number
+     * 
+     * @returns {string} Abbreviated number
+     */
+    abbreviateNumber: (num) => {
+        if (num >= 1e9) {
+            return (num / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
+        } else if (num >= 1e6) {
+            return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+        } else if (num >= 1e3) {
+            return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
+        } else {
+            return num.toString();
+        };
+    },
+
+    /**
+     * 
+     * @param {string} filePath Full path to the file
+     */
     importJson: async (filePath) => {
         try {
             const absolutePath = join(__dirname, filePath);

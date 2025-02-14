@@ -6,11 +6,6 @@ The all-in-one solution for your Discord server.
 > [<img alt="Discord" src="https://img.shields.io/discord/460081436637134859?style=for-the-badge&logo=discord&logoColor=ffffff">
 ](https://dsc.gg/cubic)
 
-### Features
-- Vast automation
-- Moderation tools
-- Games
-
 #### Development
 | Feature         | Status                | Progress  |
 |:---------------:|-----------------------|:---------:|
