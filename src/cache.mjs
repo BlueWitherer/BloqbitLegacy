@@ -1,16 +1,16 @@
 import MongoDB from 'mongodb';
-import { BotDatabase } from './classes.mjs';
+import { BotDatabase, Settings } from './classes.mjs';
 import SysSettings from './settings.json' with { type: 'json' };
 
 /**
- * @type {[typeof SysSettings]} Array of cache server settings
+ * @type {[Settings]} Array of cache server settings
  */
 const cache = [];
 
 export default {
     /**
      * 
-     * @returns {[typeof SysSettings]} Array of cache server settings
+     * @returns {[Settings]} Array of cache server settings
      */
     get: () => {
         return cache;
@@ -20,7 +20,7 @@ export default {
      * 
      * @param {string} server Server ID for query
      * 
-     * @returns {typeof SysSettings} Queried settings object
+     * @returns {Settings} Queried settings object
      */
     fetch: (server) => {
         if (server) {
@@ -38,13 +38,13 @@ export default {
 
     /**
      * 
-     * @param {typeof SysSettings} system Object for query
+     * @param {Settings} system Object for query
      * @param {BotDatabase} db Bot database model
      * 
-     * @returns {Promise<typeof SysSettings>} New settings object
+     * @returns {Promise<Settings>} New settings object
      */
     update: async (system, db) => {
-        if (system) {
+        if (system && db) {
             try {
                 console.debug(`[I] Looking if object for server ${system.server} already exists...`);
 
@@ -85,11 +85,11 @@ export default {
 
     /**
      * 
-     * @returns {typeof SysSettings}
+     * @returns {Settings}
      */
     create: () => {
         console.debug(`[...] Creating new settings object...`);
-        return JSON.parse(JSON.stringify(SysSettings));
+        return new Settings();
     },
 
     SysSettings,

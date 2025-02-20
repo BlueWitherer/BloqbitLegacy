@@ -1,24 +1,22 @@
 import cacheModule from '../cache.mjs';
-import { ModActionType, FilterMode } from "../classes.mjs";
-
-import SysSettings from '../settings.json' with { type: 'json' };
+import { ModActionType, FilterMode, Settings } from "../classes.mjs";
 
 export default {
     /**
      * 
      * @param {object} obj The object to copy from
      * 
-     * @returns {typeof SysSettings} The new object with the values copied to it
+     * @returns {Settings} The new object with the values copied to it
      */
     deepCopySettings: (obj) => {
         if (obj === null || typeof obj !== 'object') {
             return obj;
         };
 
-        const objCopy = cacheModule.create();
+        const objCopy = cacheModule.create().toObject();
 
         for (const key in obj) {
-            objCopy[key] = obj[key];
+            if (key !== "_id") objCopy[key] = obj[key];
         };
 
         return objCopy;
@@ -29,7 +27,7 @@ export default {
      * @param {array} array The array 
      * @param {any} value The value to query
      * 
-     * @returns {array void} The array with the value removed
+     * @returns {array | void} The array with the value removed
      */
     removeArrayItem: (array, value) => {
         if (array && value !== null) {

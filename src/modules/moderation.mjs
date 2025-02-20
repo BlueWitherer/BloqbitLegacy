@@ -1,10 +1,8 @@
 import Discord from 'discord.js';
 
-import SysSettings from '../settings.json' with { type: 'json' };
-
 import resolve from './resolve.mjs';
 
-import { ModActionType, FilterClass, CommandCategory } from '../classes.mjs';
+import { ModActionType, FilterClass, CommandCategory, Settings } from '../classes.mjs';
 
 export default {
     /**
@@ -98,7 +96,7 @@ export default {
 
     /**
      * 
-     * @param {typeof SysSettings} system Server settings object
+     * @param {Settings} system Server settings object
      * @param {Discord.Message} msg Discord message to inspect
      */
     blFilter: (system, msg) => {
@@ -131,7 +129,7 @@ export default {
 
     /**
      * 
-     * @param {typeof SysSettings} system Server settings object
+     * @param {Settings} system Server settings object
      * @param {Discord.Message} msg Discord message to inspect
      * 
      * @returns {{ punishment: number, warning: { name: string, value: string }}} Warning object
@@ -163,7 +161,7 @@ export default {
 
     /**
      * 
-     * @param {typeof SysSettings} system Server settings object
+     * @param {Settings} system Server settings object
      * @param {Discord} msg Discord message to inspect
      */
     inFilter: (system, msg) => {
@@ -177,6 +175,48 @@ export default {
                     if (inviteRegex.test(msg.content)) {
                         console.debug(`Message ${msg.id} violates invite rule`);
                         return resolve.warnObj(auto.inviteFilter.punishment, resolve.msgWarning("Server Invite", "Posted a server invite with the message."));
+                    } else {
+                        return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
+                    };
+                } else {
+                    return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
+                };
+            } catch (err) {
+                console.error(err);
+                return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+            };
+        } else {
+            return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+        };
+    },
+
+    /**
+     * 
+     * @param {Settings} system Server settings object
+     * @param {Discord} msg Discord message to inspect
+     */
+    dtFilter: (system, msg) => {
+        if (system && msg) {
+            try {
+                const auto = system.automod;
+
+                if (auto.enabled && auto.inviteFilter.enabled) {
+                    const wordRegex = /\b(\w+)\b/g; // Regex to match words
+                    const wordCounts = {};
+                    let match;
+
+                    // Find and count each word
+                    while ((match = wordRegex.exec(text)) !== null) {
+                        const word = match[1].toLowerCase();
+                        wordCounts[word] = (wordCounts[word] || 0) + 1;
+                    };
+
+                    // Find duplicates
+                    const duplicates = Object.keys(wordCounts).filter(word => wordCounts[word] > 1);
+
+                    if (duplicates.length > 1) {
+                        console.debug(`Message ${msg.id} violates dupe text rule`);
+                        return resolve.warnObj(auto.inviteFilter.punishment, resolve.msgWarning("Duplicate Text", "Posted a message with duplicate text."));
                     } else {
                         return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
                     };

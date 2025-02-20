@@ -1,4 +1,4 @@
-import SysSettings from '../../settings.json' with { type: 'json' };
+
 import { Message, Client, PermissionsBitField, PermissionFlagsBits, Events } from 'discord.js';
 import cache from '../../cache.mjs';
 import moderation from '../../modules/moderation.mjs';
@@ -22,7 +22,7 @@ export default class MessageHandler {
     };
 
     /**
-     * @param {typeof SysSettings} system Server settings.
+     * @param {Settings} system Server settings.
      * @param {Message} message Discord message.
      */
     messageSend = async (system, message) => {
@@ -33,10 +33,12 @@ export default class MessageHandler {
                 const inF = moderation.inFilter(system, message);
                 const liF = moderation.elFilter(system, message);
                 const blF = moderation.blFilter(system, message);
+                const dtF = moderation.dtFilter(system, message);
 
                 if (inF.punishment >= 1) return await moderation.punish(inF.punishment, message.member, inF.warning.value);
                 if (liF.punishment >= 1) return await moderation.punish(liF.punishment, message.member, liF.warning.value);
                 if (blF.punishment >= 1) return await moderation.punish(blF.punishment, message.member, blF.warning.value);
+                if (dtF.punishment >= 1) return await moderation.punish(dtF.punishment, message.member, dtF.warning.value);
             };
         };
     };

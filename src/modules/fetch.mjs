@@ -1,13 +1,12 @@
 import cacheModule from '../cache.mjs';
 
-import { BotDatabase } from '../classes.mjs';
+import { BotDatabase, Settings } from '../classes.mjs';
 
 import Discord from 'discord.js';
 import Mongo from 'mongodb';
 
 import resolve from './resolve.mjs';
 import SysAssets from '../assets.json' with { type: 'json' };
-import SysSettings from '../settings.json' with { type: 'json' };
 
 const { Interaction } = Discord;
 
@@ -44,7 +43,7 @@ export default {
      * 
      * @param {string} server ID of the server
      * 
-     * @returns {typeof SysSettings void} Fetched server settings object
+     * @returns {Settings void} Fetched server settings object
      */
     fetchGuild: (server) => {
         if (server) {
@@ -182,7 +181,7 @@ export default {
      * @param {BotDatabase} db Class of the bot's database
      * @param {string} server ID of the server
      * 
-     * @returns {Promise<typeof SysSettings> void} BotDatabase operation
+     * @returns {Promise<Settings> void} BotDatabase operation
      */
     reviseGuild: async (db, server) => {
         if (server) {
@@ -193,7 +192,7 @@ export default {
                  * 
                  * @param {string} server 
                  * 
-                 * @returns {typeof SysSettings null}
+                 * @returns {Settings | null}
                  */
                 const check = (server) => {
                     let result = null;

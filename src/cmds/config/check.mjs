@@ -1,12 +1,10 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
-import SysSettings from '../../settings.json' with { type: 'json' };
-import { BotDatabase, FilterMode, ModActionType, FilterClass } from '../../classes.mjs';
-import { ChatInputCommandInteraction, Role, BaseChannel } from 'discord.js';
-import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
-import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
+import { BotDatabase, FilterClass, Settings } from '../../classes.mjs';
+import { ChatInputCommandInteraction } from 'discord.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.mjs';
 import resolve from '../../modules/resolve.mjs';
-import cache from '../../cache.mjs';
 
 export default {
     premium: false,
@@ -47,7 +45,7 @@ export default {
      * 
      * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
      * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {typeof SysSettings} system The settings model for the bot's configuration.
+     * @param {Settings} system The settings model for the bot's configuration.
      * @param {BotDatabase} db The database information.
      * 
      * @returns {Promise<void>}
@@ -58,7 +56,7 @@ export default {
 
             /**
              * 
-             * @param {typeof SysSettings} thisFilter Filter object.
+             * @param {Settings} thisFilter Filter object.
              * @param {string} name Singular name of the filter.
              */
             const checkFilter = (thisFilter, name) => {

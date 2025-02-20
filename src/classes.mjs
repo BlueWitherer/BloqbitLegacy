@@ -1,5 +1,6 @@
 import ClientModel from './classes/ClientModel.mjs';
 import BotDatabase from './classes/BotDatabase.mjs';
+import Settings from './classes/Configuration.mjs';
 
 import MessageHandler from './classes/handlers/MessageHandler.mjs';
 import UserHandler from './classes/handlers/UserHandler.mjs';
@@ -14,6 +15,7 @@ import FilterMode from './classes/enum/FilterMode.mjs';
 export {
     ClientModel,
     BotDatabase,
+    Settings,
 
     MessageHandler,
     UserHandler,

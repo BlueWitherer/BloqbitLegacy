@@ -200,7 +200,7 @@ export class Cleverbot {
     };
 };
 
-export class Settings {
+export default class Settings {
     constructor({
         version = 1,
         server = "",
