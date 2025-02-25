@@ -1,12 +1,12 @@
 import cacheModule from '../cache.mjs';
-import { ModActionType, FilterMode, Settings } from "../classes.mjs";
+import { ModActionType, FilterMode, Config } from "../classes.mjs";
 
 export default {
     /**
      * 
      * @param {object} obj The object to copy from
      * 
-     * @returns {Settings} The new object with the values copied to it
+     * @returns {Config} The new object with the values copied to it
      */
     deepCopySettings: (obj) => {
         if (obj === null || typeof obj !== 'object') {

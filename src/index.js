@@ -1,4 +1,4 @@
-import { ClientModel, MessageHandler, ServerHandler, UserHandler, Settings } from './classes.mjs';
+import { ClientModel, MessageHandler, ServerHandler, UserHandler, Config } from './classes.mjs';
 
 import fs from 'node:fs';
 import dotenv from 'dotenv';

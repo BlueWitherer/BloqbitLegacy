@@ -2,7 +2,7 @@ import Discord from 'discord.js';
 
 import resolve from './resolve.mjs';
 
-import { ModActionType, FilterClass, CommandCategory, Settings } from '../classes.mjs';
+import { ModActionType, FilterClass, CommandCategory, Config } from '../classes.mjs';
 
 export default {
     /**
@@ -96,7 +96,7 @@ export default {
 
     /**
      * 
-     * @param {Settings} system Server settings object
+     * @param {Config} system Server settings object
      * @param {Discord.Message} msg Discord message to inspect
      */
     blFilter: (system, msg) => {
@@ -129,7 +129,7 @@ export default {
 
     /**
      * 
-     * @param {Settings} system Server settings object
+     * @param {Config} system Server settings object
      * @param {Discord.Message} msg Discord message to inspect
      * 
      * @returns {{ punishment: number, warning: { name: string, value: string }}} Warning object
@@ -161,7 +161,7 @@ export default {
 
     /**
      * 
-     * @param {Settings} system Server settings object
+     * @param {Config} system Server settings object
      * @param {Discord} msg Discord message to inspect
      */
     inFilter: (system, msg) => {
@@ -192,7 +192,7 @@ export default {
 
     /**
      * 
-     * @param {Settings} system Server settings object
+     * @param {Config} system Server settings object
      * @param {Discord} msg Discord message to inspect
      */
     dtFilter: (system, msg) => {

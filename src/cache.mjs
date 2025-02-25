@@ -1,16 +1,15 @@
 import MongoDB from 'mongodb';
-import { BotDatabase, Settings } from './classes.mjs';
-import SysSettings from './settings.json' with { type: 'json' };
+import { BotDatabase, Config } from './classes.mjs';
 
 /**
- * @type {[Settings]} Array of cache server settings
+ * @type {[Config]} Array of cache server settings
  */
 const cache = [];
 
 export default {
     /**
      * 
-     * @returns {[Settings]} Array of cache server settings
+     * @returns {[Config]} Array of cache server settings
      */
     get: () => {
         return cache;
@@ -20,7 +19,7 @@ export default {
      * 
      * @param {string} server Server ID for query
      * 
-     * @returns {Settings} Queried settings object
+     * @returns {Config} Queried settings object
      */
     fetch: (server) => {
         if (server) {
@@ -38,10 +37,10 @@ export default {
 
     /**
      * 
-     * @param {Settings} system Object for query
+     * @param {Config} system Object for query
      * @param {BotDatabase} db Bot database model
      * 
-     * @returns {Promise<Settings>} New settings object
+     * @returns {Promise<Config>} New settings object
      */
     update: async (system, db) => {
         if (system && db) {
@@ -54,12 +53,12 @@ export default {
                 });
 
                 if (foundObj >= 0) {
-                    console.warn(`[II] Settings object for server ${system.server} exists at index ${foundObj}, replacing...`);
+                    console.warn(`[II] Config object for server ${system.server} exists at index ${foundObj}, replacing...`);
 
                     cache[foundObj] = system;
                     console.debug(`[O] Data for server ${cache[foundObj].server} updated.`);
                 } else {
-                    console.info(`[II] Settings object for ${system.server} not found, creating new object...`);
+                    console.info(`[II] Config object for ${system.server} not found, creating new object...`);
 
                     const newSize = cache.push(system);
                     console.debug(`[O] Data for server ${system.server} updated. Cache size ${newSize}.`);
@@ -85,12 +84,12 @@ export default {
 
     /**
      * 
-     * @returns {Settings}
+     * @returns {Config}
      */
     create: () => {
         console.debug(`[...] Creating new settings object...`);
-        return new Settings();
+        return new Config();
     },
 
-    SysSettings,
+    Config,
 };

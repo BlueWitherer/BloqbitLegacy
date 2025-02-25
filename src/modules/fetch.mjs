@@ -1,6 +1,6 @@
 import cacheModule from '../cache.mjs';
 
-import { BotDatabase, Settings } from '../classes.mjs';
+import { BotDatabase, Config } from '../classes.mjs';
 
 import Discord from 'discord.js';
 import Mongo from 'mongodb';
@@ -43,7 +43,7 @@ export default {
      * 
      * @param {string} server ID of the server
      * 
-     * @returns {Settings void} Fetched server settings object
+     * @returns {Config void} Fetched server settings object
      */
     fetchGuild: (server) => {
         if (server) {
@@ -181,7 +181,7 @@ export default {
      * @param {BotDatabase} db Class of the bot's database
      * @param {string} server ID of the server
      * 
-     * @returns {Promise<Settings> void} BotDatabase operation
+     * @returns {Promise<Config> void} BotDatabase operation
      */
     reviseGuild: async (db, server) => {
         if (server) {
@@ -192,7 +192,7 @@ export default {
                  * 
                  * @param {string} server 
                  * 
-                 * @returns {Settings | null}
+                 * @returns {Config | null}
                  */
                 const check = (server) => {
                     let result = null;
@@ -238,7 +238,7 @@ export default {
                             console.log(`Step 5 Server doesn't exist in database, creating new save.`);
                             console.debug(`Data for server ${server} does not exist, assigning new default settings...`);
 
-                            const defaultSettings = SysSettings;
+                            const defaultSettings = new Config().toObject();
                             defaultSettings.server = server;
 
                             thisGuild = defaultSettings;

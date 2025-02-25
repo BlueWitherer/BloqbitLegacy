@@ -22,7 +22,7 @@ export default class MessageHandler {
     };
 
     /**
-     * @param {Settings} system Server settings.
+     * @param {Config} system Server settings.
      * @param {Message} message Discord message.
      */
     messageSend = async (system, message) => {

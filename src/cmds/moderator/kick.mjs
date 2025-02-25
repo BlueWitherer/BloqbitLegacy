@@ -1,5 +1,5 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
-import { BotDatabase, Settings } from '../../classes.mjs';
+import { BotDatabase, Config } from '../../classes.mjs';
 import { ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
@@ -16,7 +16,7 @@ export default {
      * 
      * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
      * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Settings} system The settings model for the bot's configuration.
+     * @param {Config} system The settings model for the bot's configuration.
      * @param {BotDatabase} db The database information.
      * 
      * @returns {Promise<void>}
