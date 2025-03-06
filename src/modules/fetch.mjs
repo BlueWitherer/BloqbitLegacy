@@ -1,6 +1,6 @@
 import cacheModule from '../cache.mjs';
 
-import { BotDatabase, Config } from '../classes.mjs';
+import { SaveData, Config } from '../classes.mjs';
 
 import Discord from 'discord.js';
 import Mongo from 'mongodb';
@@ -64,7 +64,7 @@ export default {
      * @param {Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
-     * @returns {Promise<void>} BotDatabase operation
+     * @returns {Promise<void>} SaveData operation
      */
     databaseErrorResponse: async (interaction, assets) => {
         if (interaction && assets) {
@@ -100,7 +100,7 @@ export default {
      * @param {Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
-     * @returns {Promise<void>} BotDatabase operation
+     * @returns {Promise<void>} SaveData operation
      */
     noPremiumResponse: async (interaction, assets) => {
         if (interaction && assets) {
@@ -178,10 +178,10 @@ export default {
 
     /**
      * 
-     * @param {BotDatabase} db Class of the bot's database
+     * @param {SaveData} db Class of the bot's database
      * @param {string} server ID of the server
      * 
-     * @returns {Promise<Config> void} BotDatabase operation
+     * @returns {Promise<Config> void} SaveData operation
      */
     reviseGuild: async (db, server) => {
         if (server) {

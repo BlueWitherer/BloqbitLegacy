@@ -1,4 +1,4 @@
-import { ClientModel, MessageHandler, ServerHandler, UserHandler, Config } from './classes.mjs';
+import { BloqbitClient, MessageHandler, ServerHandler, UserHandler, Config } from './classes.mjs';
 
 import fs from 'node:fs';
 import dotenv from 'dotenv';
@@ -14,10 +14,10 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
-export default class StartClient {
+export default class Bot {
     /**
      * 
-     * @returns {ClientModel}
+     * @returns {BloqbitClient}
      */
     constructor() {
         return this;
@@ -25,10 +25,10 @@ export default class StartClient {
 
     /**
      * 
-     * @param {ClientModel} botModel Bot data model.
+     * @param {BloqbitClient} botModel Bot data model.
      * @param {boolean} testMode If the login is only being tested.
      * 
-     * @returns {Promise<ClientModel>}
+     * @returns {Promise<BloqbitClient>}
      */
     activate = async (botModel, testMode) => {
         botModel.client.on(Events.ClientReady, async (client) => {
@@ -192,6 +192,8 @@ export default class StartClient {
                 await client.destroy();
                 process.exit(0);
             };
+
+            console.info("Server is ready!");
         });
 
         await botModel.client?.login(botModel.token);

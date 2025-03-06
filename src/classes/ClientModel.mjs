@@ -1,6 +1,6 @@
 import SysAssets from '../assets.json' with { type: 'json' };
 
-import BotDatabase from './BotDatabase.mjs';
+import SaveData from './SaveData.mjs';
 
 import dotenv from 'dotenv';
 
@@ -12,7 +12,7 @@ dotenv.config();
 /**
  * @class Bot model.
  */
-export default class ClientModel {
+export default class BloqbitClient {
     /**
      * 
      * @param {string} token Bot token.
@@ -27,7 +27,7 @@ export default class ClientModel {
 
         this.dev_wh = process.env.LOG_WH;
 
-        this.db = new BotDatabase();
+        this.db = new SaveData();
 
         this.commands = [];
         this.moderation = [];

@@ -1,5 +1,5 @@
 import cache from '../cache.mjs';
-import ClientModel from '../classes/ClientModel.mjs';
+import BloqbitClient from '../classes/BloqbitClient.mjs';
 import { Events, Message, ChannelType, WebhookClient } from 'discord.js';
 
 export default {
@@ -7,7 +7,7 @@ export default {
     once: false,
     /**
      * 
-     * @param {ClientModel} bot 
+     * @param {BloqbitClient} bot 
      * @param {Message} msg 
      */
     execute: async (bot, msg) => {

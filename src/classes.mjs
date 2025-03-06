@@ -1,5 +1,5 @@
-import ClientModel from './classes/ClientModel.mjs';
-import BotDatabase from './classes/BotDatabase.mjs';
+import BloqbitClient from './classes/BloqbitClient.mjs';
+import SaveData from './classes/SaveData.mjs';
 import Config from './classes/Configuration.mjs';
 
 import MessageHandler from './classes/handlers/MessageHandler.mjs';
@@ -13,8 +13,8 @@ import FilterClass from './classes/enum/FilterClass.mjs';
 import FilterMode from './classes/enum/FilterMode.mjs';
 
 export {
-    ClientModel,
-    BotDatabase,
+    BloqbitClient,
+    SaveData,
     Config,
 
     MessageHandler,

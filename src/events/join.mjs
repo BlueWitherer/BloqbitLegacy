@@ -1,4 +1,4 @@
-import ClientModel from '../classes/ClientModel.mjs';
+import BloqbitClient from '../classes/BloqbitClient.mjs';
 import { Events, Guild, WebhookClient } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 
@@ -7,7 +7,7 @@ export default {
     once: false,
     /**
      * 
-     * @param {ClientModel} bot 
+     * @param {BloqbitClient} bot 
      * @param {Guild} guild 
      * @returns {void}
      */

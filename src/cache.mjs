@@ -1,5 +1,5 @@
 import MongoDB from 'mongodb';
-import { BotDatabase, Config } from './classes.mjs';
+import { SaveData, Config } from './classes.mjs';
 
 /**
  * @type {[Config]} Array of cache server settings
@@ -38,7 +38,7 @@ export default {
     /**
      * 
      * @param {Config} system Object for query
-     * @param {BotDatabase} db Bot database model
+     * @param {SaveData} db Bot database model
      * 
      * @returns {Promise<Config>} New settings object
      */

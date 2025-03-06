@@ -1,4 +1,4 @@
-import ClientModel from '../classes/ClientModel.mjs';
+import BloqbitClient from '../classes/BloqbitClient.mjs';
 import Discord from 'discord.js';
 
 const { Events, WebhookClient } = Discord;
@@ -8,7 +8,7 @@ export default {
     once: false,
     /**
      * 
-     * @param {ClientModel} bot 
+     * @param {BloqbitClient} bot 
      * @param {string} error 
      * @param {number} shardId
      * 
