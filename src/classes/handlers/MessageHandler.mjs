@@ -1,4 +1,3 @@
-
 import { Message, Client, PermissionsBitField, PermissionFlagsBits, Events } from 'discord.js';
 import cache from '../../cache.mjs';
 import moderation from '../../modules/moderation.mjs';

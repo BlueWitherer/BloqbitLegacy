@@ -185,6 +185,8 @@ export default class Bot {
                 console.error(err);
             };
 
+            console.info("Done");
+
             if (testMode) {
                 console.warn("Test mode active.");
                 console.debug("All bot start-up operations successful. No fatal errors detected. Logging off...");
@@ -192,8 +194,6 @@ export default class Bot {
                 await client.destroy();
                 process.exit(0);
             };
-
-            console.info("Server is ready!");
         });
 
         await botModel.client?.login(botModel.token);

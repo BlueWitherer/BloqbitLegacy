@@ -13,7 +13,7 @@ export default {
             return obj;
         };
 
-        const objCopy = cacheModule.create().toObject();
+        const objCopy = new Config().toObject();
 
         for (const key in obj) {
             if (key !== "_id") objCopy[key] = obj[key];

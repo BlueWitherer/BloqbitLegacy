@@ -2,14 +2,14 @@ import MongoDB from 'mongodb';
 import { SaveData, Config } from './classes.mjs';
 
 /**
- * @type {[Config]} Array of cache server settings
+ * @type {Array<Config>} Array of cache server settings
  */
 const cache = [];
 
 export default {
     /**
      * 
-     * @returns {[Config]} Array of cache server settings
+     * @returns {Array<Config>} Array of cache server settings
      */
     get: () => {
         return cache;
@@ -81,15 +81,4 @@ export default {
             return;
         };
     },
-
-    /**
-     * 
-     * @returns {Config}
-     */
-    create: () => {
-        console.debug(`[...] Creating new settings object...`);
-        return new Config();
-    },
-
-    Config,
 };

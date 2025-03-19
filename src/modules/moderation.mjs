@@ -4,6 +4,24 @@ import resolve from './resolve.mjs';
 
 import { ModActionType, FilterClass, CommandCategory, Config } from '../classes.mjs';
 
+/**
+ * @type {Map<String, Array<String>>} User ID, array of message IDs
+ * @description Per-user antispam - mutes user if threshold is met
+ */
+const antispamMap = new Map();
+
+/**
+ * @type {Map<String, Array<String>>} Channel ID, array of message IDs
+ * @description Per-channel antiraid - locks server if threshold is met
+ */
+const antiraidMap = new Map();
+
+/**
+ * @type {Map<String, Array<String>>} Server ID, array of user IDs
+ * @description Per-server antiraid - kicks all users that joined too quickly at once
+ */
+const antialtsMap = new Map();
+
 export default {
     /**
      * 
@@ -11,7 +29,7 @@ export default {
      * @param {Discord.GuildMember} member Server member to receive punishment
      * @param {string} reason Reason behind punishment
      * 
-     * @returns 
+     * @returns {void}
      */
     punish: async (level, member, reason) => {
         if (level > ModActionType.Ban) level = ModActionType.Ban;
