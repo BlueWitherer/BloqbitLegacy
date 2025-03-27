@@ -238,7 +238,7 @@ export default {
                             console.log(`Step 5 Server doesn't exist in database, creating new save.`);
                             console.debug(`Data for server ${server} does not exist, assigning new default settings...`);
 
-                            const defaultSettings = new Config().toObject();
+                            const defaultSettings = new Config({}).toObject();
                             defaultSettings.server = server;
 
                             thisGuild = defaultSettings;
