@@ -1,6 +1,7 @@
 import { Message, Client, PermissionsBitField, PermissionFlagsBits, Events } from 'discord.js';
 import cache from '../../cache.mjs';
 import moderation from '../../modules/moderation.mjs';
+import { Config } from 'classes.mjs';
 
 export default class MessageHandler {
     /**
@@ -34,10 +35,10 @@ export default class MessageHandler {
                 const blF = moderation.blFilter(system, message);
                 const dtF = moderation.dtFilter(system, message);
 
-                if (inF.punishment >= 1) return await moderation.punish(inF.punishment, message.member, inF.warning.value);
-                if (liF.punishment >= 1) return await moderation.punish(liF.punishment, message.member, liF.warning.value);
-                if (blF.punishment >= 1) return await moderation.punish(blF.punishment, message.member, blF.warning.value);
-                if (dtF.punishment >= 1) return await moderation.punish(dtF.punishment, message.member, dtF.warning.value);
+                if (inF.punishment >= 1) return await moderation.punish(inF.punishment, message, inF.warning.value);
+                if (liF.punishment >= 1) return await moderation.punish(liF.punishment, message, liF.warning.value);
+                if (blF.punishment >= 1) return await moderation.punish(blF.punishment, message, blF.warning.value);
+                if (dtF.punishment >= 1) return await moderation.punish(dtF.punishment, message, dtF.warning.value);
             };
         };
     };

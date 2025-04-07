@@ -3,6 +3,7 @@ import Discord from 'discord.js';
 import resolve from './resolve.mjs';
 
 import { ModActionType, FilterClass, CommandCategory, Config } from '../classes.mjs';
+import cache from 'cache.mjs';
 
 /**
  * @type {Map<String, Array<String>>} User ID, array of message IDs
@@ -26,12 +27,12 @@ export default {
     /**
      * 
      * @param {number} level Severity of punishment
-     * @param {Discord.GuildMember} member Server member to receive punishment
+     * @param {Discord.Message} message Server member to receive punishment
      * @param {string} reason Reason behind punishment
      * 
-     * @returns {void}
+     * @returns {Promise<void>}
      */
-    punish: async (level, member, reason) => {
+    punish: async (level, message, reason) => {
         if (level > ModActionType.Ban) level = ModActionType.Ban;
 
         /**
@@ -83,7 +84,7 @@ export default {
                 break;
 
             case ModActionType.Timeout:
-                await timeout(member, reason);
+                await timeout(message.member, reason);
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} timed out.`);
                 break;
 
@@ -93,17 +94,13 @@ export default {
                 break;
 
             case ModActionType.Softban:
-                await softban(member, reason);
+                await softban(message.member, reason);
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} soft-banned.`);
                 break;
 
             case ModActionType.Ban:
-                await ban(member, reason);
+                await ban(message.member, reason);
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} banned.`);
-                break;
-
-            case ModActionType.None:
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator URL filter punishment for guild ${message.guild?.id} disabled.`);
                 break;
 
             default:
@@ -180,7 +177,7 @@ export default {
     /**
      * 
      * @param {Config} system Server settings object
-     * @param {Discord} msg Discord message to inspect
+     * @param {Discord.Message} msg Discord message to inspect
      */
     inFilter: (system, msg) => {
         if (system && msg) {
@@ -211,7 +208,7 @@ export default {
     /**
      * 
      * @param {Config} system Server settings object
-     * @param {Discord} msg Discord message to inspect
+     * @param {Discord.Message} msg Discord message to inspect
      */
     dtFilter: (system, msg) => {
         if (system && msg) {
@@ -224,7 +221,7 @@ export default {
                     let match;
 
                     // Find and count each word
-                    while ((match = wordRegex.exec(text)) !== null) {
+                    while ((match = wordRegex.exec(msg.content)) !== null) {
                         const word = match[1].toLowerCase();
                         wordCounts[word] = (wordCounts[word] || 0) + 1;
                     };
