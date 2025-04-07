@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import cacheModule from '../cache.mjs';
 import { ModeratorActionType, MessageFilterMode, Config } from "../classes.mjs";
 
@@ -32,7 +34,7 @@ export default {
     removeArrayItem: (array, value) => {
         if (array && value !== null) {
             try {
-                index = array.indexOf(value);
+                const index = array.indexOf(value);
 
                 if (index > -1) {
                     array.splice(index, 1);
@@ -52,7 +54,7 @@ export default {
      * 
      * @param {number} number Number
      * 
-     * @returns {boolean null} Boolean from number
+     * @returns {boolean | null} Boolean from number
      */
     boolNumber: (number) => {
         if (number <= 0 || number >= 1) {
@@ -63,7 +65,8 @@ export default {
                     return false;
                 };
             } catch (err) {
-                return console.error(err);
+                console.error(err);
+                return null;
             };
         } else {
             return null;
@@ -87,7 +90,8 @@ export default {
                     return 0;
                 };
             } catch (err) {
-                return console.error(err);
+                console.error(err);
+                return -1;
             };
         } else {
             return -1;
@@ -123,7 +127,8 @@ export default {
             try {
                 return JSON.stringify(parsed);
             } catch (err) {
-                return console.error(err);
+                console.error(err);
+                return "";
             };
         } else {
             return "";
@@ -310,8 +315,10 @@ export default {
      */
     importJson: async (filePath) => {
         try {
-            const absolutePath = join(__dirname, filePath);
-            const data = await fs.readFile(absolutePath, 'utf8');
+            const absolutePath = path.join(__dirname, filePath);
+            const data = fs.readFileSync(absolutePath, {
+                encoding: "utf-8",
+            });
 
             return JSON.parse(data);
         } catch (error) {

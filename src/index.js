@@ -31,7 +31,7 @@ export default class Bot {
             client.user?.setPresence({
                 "activities": [
                     {
-                        "name": `Beta Testing!`,
+                        "name": `Starting...`,
                         "state": `Active across ${client.guilds.cache.size} servers!`,
                         "type": ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,
@@ -170,6 +170,19 @@ export default class Bot {
                 process.exit(1);
             };
 
+            client.user?.setPresence({
+                "activities": [
+                    {
+                        "name": `Finishing up...`,
+                        "state": `Active across ${client.guilds.cache.size} servers!`,
+                        "type": ActivityType.Streaming,
+                        "url": `https://www.youtube.com/@CubicCommunity/`,
+                    }
+                ],
+                "afk": false,
+                "status": PresenceUpdateStatus.Idle,
+            });
+
             try {
                 console.debug("Starting handlers...");
 
@@ -190,6 +203,19 @@ export default class Bot {
 
                 await client.destroy();
                 process.exit(0);
+            } else {
+                client.user?.setPresence({
+                    "activities": [
+                        {
+                            "name": `Alpha Testing!`,
+                            "state": `Active across ${client.guilds.cache.size} servers!`,
+                            "type": ActivityType.Streaming,
+                            "url": `https://www.youtube.com/@CubicCommunity/`,
+                        }
+                    ],
+                    "afk": false,
+                    "status": PresenceUpdateStatus.Online,
+                });
             };
         });
 
