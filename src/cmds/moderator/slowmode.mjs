@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -10,6 +10,7 @@ export default {
         .setName("slowmode")
         .setDescription("Set slowmode in the current channel.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .addSubcommand((c) => c

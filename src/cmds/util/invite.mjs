@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -9,6 +9,7 @@ export default {
         .setName("invite")
         .setDescription("Create a permanent invite for this server.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .addChannelOption((c) => c
             .setName("channel")

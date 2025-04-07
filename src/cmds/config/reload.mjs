@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.mjs';
@@ -11,6 +11,7 @@ export default {
         .setName("reload")
         .setDescription("Refresh the server's save data.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     /**

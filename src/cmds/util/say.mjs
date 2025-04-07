@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -9,6 +9,7 @@ export default {
         .setName("say")
         .setDescription("Send a message in a channel.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .addStringOption((s) => s
             .setName("message")

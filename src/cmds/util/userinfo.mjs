@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default {
@@ -8,6 +8,7 @@ export default {
         .setName("user-info")
         .setDescription("View information about a user.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .addUserOption((u) => u
             .setName("user")

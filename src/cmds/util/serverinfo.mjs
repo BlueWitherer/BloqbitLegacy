@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default {
@@ -8,6 +8,7 @@ export default {
         .setName("server-info")
         .setDescription("View information about the server.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .setNSFW(false),
     /**
      * 
@@ -39,6 +40,8 @@ export default {
 
         var createdAt = Math.floor(interaction.guild?.createdTimestamp / 1000);
 
+        const owner = await interaction.guild?.fetchOwner();
+
         await interaction.reply({
             "content": null,
             "embeds": [
@@ -48,7 +51,7 @@ export default {
                         "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
                     },
                     "title": `${data}${interaction.guild?.name}`,
-                    "description": `${interaction.guild?.description}`,
+                    "description": `${interaction.guild?.description || "-# *No description*"}`,
                     "thumbnail": {
                         "url": `${interaction.guild?.iconURL({ "forceStatic": false, size: 1024 })}`,
                     },
@@ -64,7 +67,7 @@ export default {
                         },
                         {
                             "name": "Server Owner",
-                            "value": `<@!${interaction.guild?.owner?.id}> (**${(await interaction.guild?.fetchOwner()).user?.username}**, ${interaction.guild?.owner?.id})`,
+                            "value": `<@!${owner.user?.id}> (**${owner.user?.username}**, \`${owner.user?.id}\`)`,
                             "inline": true,
                         },
                         {
