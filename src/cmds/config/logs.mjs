@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, ServerLogEventType, Config } from '../../classes.mjs';
-import { ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.mjs';
@@ -13,6 +13,8 @@ export default {
     data: new SlashCommandBuilder()
         .setName("logs")
         .setDescription("Set up server logs.")
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setNSFW(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addSubcommand((c) => c
             .setName("config")

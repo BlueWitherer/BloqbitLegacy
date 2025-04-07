@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -9,6 +9,8 @@ export default {
     data: new SlashCommandBuilder()
         .setName("clear")
         .setDescription("Clear amount of messages in channel.")
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setNSFW(false)
         .addNumberOption((n) => n
             .setName("amount")
             .setDescription("Number of messages to clear.")

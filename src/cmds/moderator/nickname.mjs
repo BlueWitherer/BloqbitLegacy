@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -9,6 +9,8 @@ export default {
     data: new SlashCommandBuilder()
         .setName("nickname")
         .setDescription("Modify a user's nickname.")
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setNSFW(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .addSubcommand((c) => c
             .setName("set")

@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -9,6 +9,8 @@ export default {
     data: new SlashCommandBuilder()
         .setName("force-ban")
         .setDescription("Ban a user outside of the server using their ID.")
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setNSFW(false)
         .addStringOption((o) => o
             .setName("user")
             .setDescription("ID of user to ban.")

@@ -1,12 +1,14 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, Config } from '../../classes.mjs';
-import { ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default {
     data: new SlashCommandBuilder()
         .setName("ping")
-        .setDescription("Ping the bot, test its latency."),
+        .setDescription("Ping the bot, test its latency.")
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setNSFW(false),
     /**
      * 
      * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.

@@ -1,6 +1,6 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
 import { SaveData, MessageFilterClass, Config } from '../../classes.mjs';
-import { ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationIntegrationType, ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.mjs';
@@ -11,6 +11,8 @@ export default {
     data: new SlashCommandBuilder()
         .setName("check")
         .setDescription("View an auto-moderator list.")
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setNSFW(false)
         .addSubcommand((c) => c
             .setName("filters")
             .setDescription("Basic keyword filtering.")
