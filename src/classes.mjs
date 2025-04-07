@@ -6,11 +6,11 @@ import MessageHandler from './classes/handlers/MessageHandler.mjs';
 import UserHandler from './classes/handlers/UserHandler.mjs';
 import ServerHandler from './classes/handlers/ServerHandler.mjs';
 
-import CommandCategory from './classes/enum/CommandCategory.mjs';
-import ModActionType from './classes/enum/ModActionType.mjs';
-import LogEventType from './classes/enum/LogEventType.mjs';
-import FilterClass from './classes/enum/FilterClass.mjs';
-import FilterMode from './classes/enum/FilterMode.mjs';
+import BotCommandCategory from './classes/enum/BotCommandCategory.mjs';
+import ModeratorActionType from './classes/enum/ModeratorActionType.mjs';
+import ServerLogEventType from './classes/enum/ServerLogEventType.mjs';
+import MessageFilterClass from './classes/enum/MessageFilterClass.mjs';
+import MessageFilterMode from './classes/enum/MessageFilterMode.mjs';
 
 export {
     BloqbitClient,
@@ -21,9 +21,9 @@ export {
     UserHandler,
     ServerHandler,
 
-    CommandCategory,
-    ModActionType,
-    LogEventType,
-    FilterClass,
-    FilterMode,
+    BotCommandCategory,
+    ModeratorActionType,
+    ServerLogEventType,
+    MessageFilterClass,
+    MessageFilterMode,
 };

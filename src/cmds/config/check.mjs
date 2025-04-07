@@ -1,5 +1,5 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveData, FilterClass, Config } from '../../classes.mjs';
+import { SaveData, MessageFilterClass, Config } from '../../classes.mjs';
 import { ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
@@ -20,23 +20,23 @@ export default {
                 .addChoices([
                     {
                         name: "Swear Words",
-                        value: FilterClass.SWEAR,
+                        value: MessageFilterClass.SWEAR,
                     },
                     {
                         name: "External URLs",
-                        value: FilterClass.URL,
+                        value: MessageFilterClass.URL,
                     },
                     {
                         name: "Server Invites",
-                        value: FilterClass.INV,
+                        value: MessageFilterClass.INV,
                     },
                     {
                         name: "Duplicate Text",
-                        value: FilterClass.DUPETXT,
+                        value: MessageFilterClass.DUPETXT,
                     },
                     {
                         name: "Mass Mentions",
-                        value: FilterClass.MASSPING,
+                        value: MessageFilterClass.MASSPING,
                     },
                 ])
                 .setRequired(true)))
@@ -117,23 +117,23 @@ export default {
             let returnEmbed = new EmbedBuilder().data;
 
             switch (interaction.options.getString("filter")) {
-                case FilterClass.SWEAR:
+                case MessageFilterClass.SWEAR:
                     returnEmbed = checkFilter(am.swearFilter, "Swear");
                     break;
 
-                case FilterClass.INV:
+                case MessageFilterClass.INV:
                     returnEmbed = checkFilter(am.inviteFilter, "Invite");
                     break;
 
-                case FilterClass.URL:
+                case MessageFilterClass.URL:
                     returnEmbed = checkFilter(am.linkFilter, "Link");
                     break;
 
-                case FilterClass.DUPETXT:
+                case MessageFilterClass.DUPETXT:
                     returnEmbed = checkFilter(am.dupetextFilter, "Dupe Text");
                     break;
 
-                case FilterClass.MASSPING:
+                case MessageFilterClass.MASSPING:
                     returnEmbed = checkFilter(am.massmentionFilter, "Mass Mention");
                     break;
 

@@ -1,5 +1,5 @@
 import cacheModule from '../cache.mjs';
-import { ModActionType, FilterMode, Config } from "../classes.mjs";
+import { ModeratorActionType, MessageFilterMode, Config } from "../classes.mjs";
 
 export default {
     /**
@@ -186,28 +186,28 @@ export default {
      */
     punishmentType: (punish) => {
         switch (punish) {
-            case ModActionType.Ban:
+            case ModeratorActionType.Ban:
                 return "ban";
 
-            case ModActionType.Softban:
+            case ModeratorActionType.Softban:
                 return "softban";
 
-            case ModActionType.Kick:
+            case ModeratorActionType.Kick:
                 return "kick";
 
-            case ModActionType.Blacklist:
+            case ModeratorActionType.Blacklist:
                 return "blacklist";
 
-            case ModActionType.Timeout:
+            case ModeratorActionType.Timeout:
                 return "timeout";
 
-            case ModActionType.Mute:
+            case ModeratorActionType.Mute:
                 return "mute";
 
-            case ModActionType.Warn:
+            case ModeratorActionType.Warn:
                 return "warn";
 
-            case ModActionType.None:
+            case ModeratorActionType.None:
                 return "none";
 
             default:
@@ -217,16 +217,16 @@ export default {
 
     /**
      * 
-     * @param {FilterMode} mode Filter mode ID.
+     * @param {MessageFilterMode} mode Filter mode ID.
      * 
      * @returns {string} Filter mode name.
      */
     filterMode: (mode) => {
         switch (mode) {
-            case FilterMode.INCLUDE:
+            case MessageFilterMode.INCLUDE:
                 return "include";
 
-            case FilterMode.EXCLUDE:
+            case MessageFilterMode.EXCLUDE:
                 return "exclude";
 
             default:

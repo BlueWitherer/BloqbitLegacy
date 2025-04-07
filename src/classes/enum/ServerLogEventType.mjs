@@ -1,7 +1,7 @@
 /**
  * @enum {string} Type of server action to be logged.
  */
-export default class LogEventType {
+class ServerLogEventType {
     static AutoModerator = "automod";
     static Moderator = "mod";
     static ServerInvites = "serverInv";
@@ -43,3 +43,5 @@ export default class LogEventType {
         ];
     };
 };
+
+export default ServerLogEventType;

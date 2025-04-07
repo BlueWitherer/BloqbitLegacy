@@ -1,7 +1,7 @@
 /**
  * @enum {number} Type of filtering.
  */
-export default class FilterMode {
+class MessageFilterMode {
     static INCLUDE = 1;
     static EXCLUDE = 0;
 
@@ -12,3 +12,5 @@ export default class FilterMode {
         ];
     };
 };
+
+export default MessageFilterMode;

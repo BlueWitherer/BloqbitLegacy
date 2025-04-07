@@ -8,27 +8,27 @@ import Mongo from 'mongodb';
 import resolve from './resolve.mjs';
 import SysAssets from '../assets.json' with { type: 'json' };
 
-const { Interaction } = Discord;
-
 export default {
     /**
      * 
      * @param {string} err Error message
-     * @param {Interaction} interaction Command interaction
+     * @param {Discord.Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
-     * @returns {void} Error log
+     * @returns {Promise<void>} Error log
      */
     interactionError: async (err, interaction, assets) => {
         if (err && interaction) {
             try {
-                await interaction.reply({
-                    "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
-                    "ephemeral": true,
-                });
+                if (interaction.type === Discord.InteractionType.ApplicationCommand) {
+                    await interaction.reply({
+                        "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
+                        "ephemeral": true,
+                    });
 
-                console.error(err);
-                return;
+                    console.error(err);
+                    return;
+                };
             } catch (error) {
                 console.error(err);
                 console.error(error);
@@ -43,7 +43,7 @@ export default {
      * 
      * @param {string} server ID of the server
      * 
-     * @returns {Config void} Fetched server settings object
+     * @returns {Config | void} Fetched server settings object
      */
     fetchGuild: (server) => {
         if (server) {
@@ -61,7 +61,7 @@ export default {
 
     /**
      * 
-     * @param {Interaction} interaction Command interaction
+     * @param {Discord.Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
      * @returns {Promise<void>} SaveData operation
@@ -97,7 +97,7 @@ export default {
 
     /**
      * 
-     * @param {Interaction} interaction Command interaction
+     * @param {Discord.Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
      * @returns {Promise<void>} SaveData operation
@@ -133,7 +133,7 @@ export default {
 
     /**
      * 
-     * @param {Interaction} interaction Command interaction 
+     * @param {Discord.Interaction} interaction Command interaction 
      * @param {typeof SysAssets} assets Assets object
      * 
      * @returns {Promise<void>} Command response
@@ -143,7 +143,7 @@ export default {
             try {
                 if (interaction.isChatInputCommand()) {
                     if (interaction.replied) {
-                        return await interaction.followUp({
+                        await interaction.followUp({
                             "content": null,
                             "embeds": [
                                 {
@@ -153,8 +153,10 @@ export default {
                                 },
                             ],
                         });
+
+                        return;
                     } else {
-                        return await interaction.reply({
+                        await interaction.reply({
                             "content": null,
                             "embeds": [
                                 {
@@ -164,7 +166,9 @@ export default {
                                 },
                             ],
                         });
-                    }
+
+                        return;
+                    };
                 } else {
                     return null;
                 };
@@ -181,7 +185,7 @@ export default {
      * @param {SaveData} db Class of the bot's database
      * @param {string} server ID of the server
      * 
-     * @returns {Promise<Config> void} SaveData operation
+     * @returns {Promise<Config>} SaveData operation
      */
     reviseGuild: async (db, server) => {
         if (server) {
@@ -257,10 +261,10 @@ export default {
                 };
             } catch (err) {
                 console.error(err);
-                return null;
+                return new Config();
             };
         } else {
-            return null;
+            return new Config();
         };
     },
 };

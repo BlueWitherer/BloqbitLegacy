@@ -1,5 +1,5 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveData, LogEventType, Config } from '../../classes.mjs';
+import { SaveData, ServerLogEventType, Config } from '../../classes.mjs';
 import { ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
@@ -34,75 +34,75 @@ export default {
                 .addChoices(
                     {
                         name: "Auto-moderator",
-                        value: LogEventType.AutoModerator,
+                        value: ServerLogEventType.AutoModerator,
                     },
                     {
                         name: "Moderator",
-                        value: LogEventType.Moderator,
+                        value: ServerLogEventType.Moderator,
                     },
                     {
                         name: "Server invites",
-                        value: LogEventType.ServerInvites,
+                        value: ServerLogEventType.ServerInvites,
                     },
                     {
                         name: "Member joins",
-                        value: LogEventType.MemberJoin,
+                        value: ServerLogEventType.MemberJoin,
                     },
                     {
                         name: "Member leaves",
-                        value: LogEventType.MemberLeave,
+                        value: ServerLogEventType.MemberLeave,
                     },
                     {
                         name: "Member timed out",
-                        value: LogEventType.MemberTimeout,
+                        value: ServerLogEventType.MemberTimeout,
                     },
                     {
                         name: "Member banned",
-                        value: LogEventType.MemberBan,
+                        value: ServerLogEventType.MemberBan,
                     },
                     {
                         name: "Member nickname updated",
-                        value: LogEventType.MemberNickname,
+                        value: ServerLogEventType.MemberNickname,
                     },
                     {
                         name: "Message deleted",
-                        value: LogEventType.MessageDelete,
+                        value: ServerLogEventType.MessageDelete,
                     },
                     {
                         name: "Message edited",
-                        value: LogEventType.MessageEdit,
+                        value: ServerLogEventType.MessageEdit,
                     },
                     {
                         name: "Message pinned",
-                        value: LogEventType.MessagePin,
+                        value: ServerLogEventType.MessagePin,
                     },
                     {
                         name: "Messages bulk deleted",
-                        value: LogEventType.MessageBulkDelete,
+                        value: ServerLogEventType.MessageBulkDelete,
                     },
                     {
                         name: "Role created",
-                        value: LogEventType.RoleCreate,
+                        value: ServerLogEventType.RoleCreate,
                     },
                     {
                         name: "Role deleted",
-                        value: LogEventType.RoleDelete,
+                        value: ServerLogEventType.RoleDelete,
                     },
                     {
                         name: "Role assigned",
-                        value: LogEventType.RoleGive,
+                        value: ServerLogEventType.RoleGive,
                     },
                     {
                         name: "Role taken",
-                        value: LogEventType.RoleTake,
+                        value: ServerLogEventType.RoleTake,
                     },
                     {
                         name: "Channel created",
-                        value: LogEventType.ChannelCreate,
+                        value: ServerLogEventType.ChannelCreate,
                     },
                     {
                         name: "Channel deleted",
-                        value: LogEventType.ChannelDelete,
+                        value: ServerLogEventType.ChannelDelete,
                     },
                 )
                 .setRequired(true))
@@ -171,71 +171,71 @@ export default {
             const toggle = interaction.options.getBoolean("enable", true);
 
             switch (action) {
-                case LogEventType.AutoModerator:
+                case ServerLogEventType.AutoModerator:
                     system.logs.actions.autoMod = toggle;
                     break;
 
-                case LogEventType.MOD:
+                case ServerLogEventType.MOD:
                     system.logs.actions.moderator = toggle;
                     break;
 
-                case LogEventType.ServerInvites:
+                case ServerLogEventType.ServerInvites:
                     system.logs.actions.invites = toggle;
                     break;
 
-                case LogEventType.MemberJoin:
+                case ServerLogEventType.MemberJoin:
                     system.logs.actions.join = toggle;
                     break;
 
-                case LogEventType.MemberLeave:
+                case ServerLogEventType.MemberLeave:
                     system.logs.actions.leave = toggle;
                     break;
 
-                case LogEventType.MemberTimeout:
+                case ServerLogEventType.MemberTimeout:
                     system.logs.actions.timeout = toggle;
                     break;
 
-                case LogEventType.MemberBan:
+                case ServerLogEventType.MemberBan:
                     system.logs.actions.ban = toggle;
                     break;
 
-                case LogEventType.MemberNickname:
+                case ServerLogEventType.MemberNickname:
                     system.logs.actions.nickname = toggle;
                     break;
 
-                case LogEventType.MessageDelete:
+                case ServerLogEventType.MessageDelete:
                     system.logs.actions.msgDel = toggle;
                     break;
 
-                case LogEventType.MessageEdit:
+                case ServerLogEventType.MessageEdit:
                     system.logs.actions.msgUpd = toggle;
                     break;
 
-                case LogEventType.MessagePin:
+                case ServerLogEventType.MessagePin:
                     system.logs.actions.msgPin = toggle;
                     break;
 
-                case LogEventType.RoleCreate:
+                case ServerLogEventType.RoleCreate:
                     system.logs.actions.rolesAdd = toggle;
                     break;
 
-                case LogEventType.RoleDelete:
+                case ServerLogEventType.RoleDelete:
                     system.logs.actions.rolesRem = toggle;
                     break;
 
-                case LogEventType.RoleGive:
+                case ServerLogEventType.RoleGive:
                     system.logs.actions.rolesAssign = toggle;
                     break;
 
-                case LogEventType.RoleTake:
+                case ServerLogEventType.RoleTake:
                     system.logs.actions.rolesUnassign = toggle;
                     break;
 
-                case LogEventType.ChannelCreate:
+                case ServerLogEventType.ChannelCreate:
                     system.logs.actions.channelAdd = toggle;
                     break;
 
-                case LogEventType.ChannelDelete:
+                case ServerLogEventType.ChannelDelete:
                     system.logs.actions.channelDel = toggle;
                     break;
             };

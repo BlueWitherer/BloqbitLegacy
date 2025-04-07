@@ -1,5 +1,5 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveData, FilterMode, ModActionType, Config } from '../../classes.mjs';
+import { SaveData, MessageFilterMode, ModeratorActionType, Config } from '../../classes.mjs';
 import { ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
@@ -50,35 +50,35 @@ export default {
                 .addChoices(
                     {
                         name: "none",
-                        value: ModActionType.None,
+                        value: ModeratorActionType.None,
                     },
                     {
                         name: "warn",
-                        value: ModActionType.Warn,
+                        value: ModeratorActionType.Warn,
                     },
                     {
                         name: "mute",
-                        value: ModActionType.Mute,
+                        value: ModeratorActionType.Mute,
                     },
                     {
                         name: "timeout",
-                        value: ModActionType.Timeout,
+                        value: ModeratorActionType.Timeout,
                     },
                     {
                         name: "blacklist",
-                        value: ModActionType.Blacklist,
+                        value: ModeratorActionType.Blacklist,
                     },
                     {
                         name: "kick",
-                        value: ModActionType.Kick,
+                        value: ModeratorActionType.Kick,
                     },
                     {
                         name: "softban",
-                        value: ModActionType.Softban,
+                        value: ModeratorActionType.Softban,
                     },
                     {
                         name: "ban",
-                        value: ModActionType.Ban,
+                        value: ModeratorActionType.Ban,
                     },
                 ))
             .addChannelOption((o) => o
@@ -91,11 +91,11 @@ export default {
                 .addChoices(
                     {
                         name: "include",
-                        value: FilterMode.INCLUDE,
+                        value: MessageFilterMode.INCLUDE,
                     },
                     {
                         name: "exclude",
-                        value: FilterMode.EXCLUDE,
+                        value: MessageFilterMode.EXCLUDE,
                     },
                 ))
             .addNumberOption((o) => o
@@ -104,11 +104,11 @@ export default {
                 .addChoices(
                     {
                         name: "include",
-                        value: FilterMode.INCLUDE,
+                        value: MessageFilterMode.INCLUDE,
                     },
                     {
                         name: "exclude",
-                        value: FilterMode.EXCLUDE,
+                        value: MessageFilterMode.EXCLUDE,
                     },
                 )))
         .addSubcommand((c) => c
@@ -136,35 +136,35 @@ export default {
                 .addChoices(
                     {
                         name: "none",
-                        value: ModActionType.None,
+                        value: ModeratorActionType.None,
                     },
                     {
                         name: "warn",
-                        value: ModActionType.Warn,
+                        value: ModeratorActionType.Warn,
                     },
                     {
                         name: "mute",
-                        value: ModActionType.Mute,
+                        value: ModeratorActionType.Mute,
                     },
                     {
                         name: "timeout",
-                        value: ModActionType.Timeout,
+                        value: ModeratorActionType.Timeout,
                     },
                     {
                         name: "blacklist",
-                        value: ModActionType.Blacklist,
+                        value: ModeratorActionType.Blacklist,
                     },
                     {
                         name: "kick",
-                        value: ModActionType.Kick,
+                        value: ModeratorActionType.Kick,
                     },
                     {
                         name: "softban",
-                        value: ModActionType.Softban,
+                        value: ModeratorActionType.Softban,
                     },
                     {
                         name: "ban",
-                        value: ModActionType.Ban,
+                        value: ModeratorActionType.Ban,
                     },
                 ))
             .addChannelOption((o) => o
@@ -209,35 +209,35 @@ export default {
                 .addChoices(
                     {
                         name: "none",
-                        value: ModActionType.None,
+                        value: ModeratorActionType.None,
                     },
                     {
                         name: "warn",
-                        value: ModActionType.Warn,
+                        value: ModeratorActionType.Warn,
                     },
                     {
                         name: "mute",
-                        value: ModActionType.Mute,
+                        value: ModeratorActionType.Mute,
                     },
                     {
                         name: "timeout",
-                        value: ModActionType.Timeout,
+                        value: ModeratorActionType.Timeout,
                     },
                     {
                         name: "blacklist",
-                        value: ModActionType.Blacklist,
+                        value: ModeratorActionType.Blacklist,
                     },
                     {
                         name: "kick",
-                        value: ModActionType.Kick,
+                        value: ModeratorActionType.Kick,
                     },
                     {
                         name: "softban",
-                        value: ModActionType.Softban,
+                        value: ModeratorActionType.Softban,
                     },
                     {
                         name: "ban",
-                        value: ModActionType.Ban,
+                        value: ModeratorActionType.Ban,
                     },
                 ))
             .addChannelOption((o) => o
@@ -250,11 +250,11 @@ export default {
                 .addChoices(
                     {
                         name: "include",
-                        value: FilterMode.INCLUDE,
+                        value: MessageFilterMode.INCLUDE,
                     },
                     {
                         name: "exclude",
-                        value: FilterMode.EXCLUDE,
+                        value: MessageFilterMode.EXCLUDE,
                     },
                 )))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),

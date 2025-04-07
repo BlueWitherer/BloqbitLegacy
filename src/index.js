@@ -1,4 +1,4 @@
-import { BloqbitClient, MessageHandler, ServerHandler, UserHandler, Config } from './classes.mjs';
+import { BloqbitClient, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
 
 import fs from 'node:fs';
 import dotenv from 'dotenv';
@@ -15,10 +15,6 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 export default class Bot {
-    /**
-     * 
-     * @returns {BloqbitClient}
-     */
     constructor() {
         return this;
     };
@@ -86,6 +82,7 @@ export default class Bot {
                             { body: botModel.commands, },
                         );
 
+                        // @ts-ignore
                         console.log(`Successfully reloaded ${data.length} application (/) commands.`);
                     } catch (error) {
                         return console.error(error);

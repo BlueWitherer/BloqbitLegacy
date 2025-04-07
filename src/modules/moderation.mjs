@@ -2,7 +2,7 @@ import Discord from 'discord.js';
 
 import resolve from './resolve.mjs';
 
-import { ModActionType, FilterClass, CommandCategory, Config } from '../classes.mjs';
+import { ModeratorActionType, MessageFilterClass, BotCommandCategory, Config } from '../classes.mjs';
 import cache from 'cache.mjs';
 
 /**
@@ -33,7 +33,7 @@ export default {
      * @returns {Promise<void>}
      */
     punish: async (level, message, reason) => {
-        if (level > ModActionType.Ban) level = ModActionType.Ban;
+        if (level > ModeratorActionType.Ban) level = ModeratorActionType.Ban;
 
         /**
          * 
@@ -73,32 +73,32 @@ export default {
         };
 
         switch (level) {
-            case ModActionType.Warn:
+            case ModeratorActionType.Warn:
                 //warn
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} warned.`);
                 break;
 
-            case ModActionType.Mute:
+            case ModeratorActionType.Mute:
                 //mute
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} muted.`);
                 break;
 
-            case ModActionType.Timeout:
+            case ModeratorActionType.Timeout:
                 await timeout(message.member, reason);
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} timed out.`);
                 break;
 
-            case ModActionType.Blacklist:
+            case ModeratorActionType.Blacklist:
                 //blacklist
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} blacklisted.`);
                 break;
 
-            case ModActionType.Softban:
+            case ModeratorActionType.Softban:
                 await softban(message.member, reason);
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} soft-banned.`);
                 break;
 
-            case ModActionType.Ban:
+            case ModeratorActionType.Ban:
                 await ban(message.member, reason);
                 console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} banned.`);
                 break;
@@ -128,17 +128,17 @@ export default {
                     } else if (blWordsExtra.some((v) => msg.content.includes(v))) {
                         return resolve.warnObj(auto.swearFilter.punishment + 1, resolve.msgWarning("Severe Blacklisted Words", "Used words included in the severe keyword blacklist."));
                     } else {
-                        return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
+                        return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
                     };
                 } else {
-                    return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
+                    return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
                 };
             } catch (err) {
                 console.error(err);
-                return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+                return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Programming error."));
             };
         } else {
-            return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+            return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Programming error."));
         };
     },
 
@@ -160,17 +160,17 @@ export default {
                     if (urlRegex.test(msg.content)) {
                         return resolve.warnObj(auto.linkFilter.punishment, resolve.msgWarning("External URL", "Posted an external URL with the message."));
                     } else {
-                        return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
+                        return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
                     };
                 } else {
-                    return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
+                    return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
                 };
             } catch (err) {
                 console.error(err);
-                return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+                return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Programming error."));
             };
         } else {
-            return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+            return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Programming error."));
         };
     },
 
@@ -191,17 +191,17 @@ export default {
                         console.debug(`Message ${msg.id} violates invite rule`);
                         return resolve.warnObj(auto.inviteFilter.punishment, resolve.msgWarning("Server Invite", "Posted a server invite with the message."));
                     } else {
-                        return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
+                        return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
                     };
                 } else {
-                    return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
+                    return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
                 };
             } catch (err) {
                 console.error(err);
-                return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+                return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Programming error."));
             };
         } else {
-            return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+            return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Programming error."));
         };
     },
 
@@ -233,17 +233,17 @@ export default {
                         console.debug(`Message ${msg.id} violates dupe text rule`);
                         return resolve.warnObj(auto.inviteFilter.punishment, resolve.msgWarning("Duplicate Text", "Posted a message with duplicate text."));
                     } else {
-                        return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
+                        return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Message doesn't violate rule."));
                     };
                 } else {
-                    return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
+                    return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Filter disabled."));
                 };
             } catch (err) {
                 console.error(err);
-                return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+                return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Programming error."));
             };
         } else {
-            return resolve.warnObj(ModActionType.None, resolve.msgWarning("Clear", "Programming error."));
+            return resolve.warnObj(ModeratorActionType.None, resolve.msgWarning("Clear", "Programming error."));
         };
     },
 };

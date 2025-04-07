@@ -1,7 +1,7 @@
 /**
  * @enum {number} Type of moderation action.
  */
-export default class ModActionType {
+class ModeratorActionType {
     static Ban = 7;
     static Softban = 6;
     static Kick = 5;
@@ -24,3 +24,5 @@ export default class ModActionType {
         ];
     };
 };
+
+export default ModeratorActionType;
