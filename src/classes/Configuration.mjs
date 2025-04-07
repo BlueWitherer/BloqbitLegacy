@@ -47,13 +47,13 @@ export class Verification {
 };
 
 export class AntiRaid {
-    constructor({ text = new Filter({}), alts = {}, logs = "" }) {
+    constructor({ text = new Filter({}), alts = { enabled: false, punishment: 0, untilPunish: 0, timeThreshold: 0 }, logs = "" }) {
         this.text = text;
         this.alts = {
-            enabled: alts.enabled || false,
-            punishment: alts.punishment || 0,
-            untilPunish: alts.untilPunish || 0,
-            timeThreshold: alts.timeThreshold || 0
+            enabled: alts.enabled,
+            punishment: alts.punishment,
+            untilPunish: alts.untilPunish,
+            timeThreshold: alts.timeThreshold,
         };
         this.logs = logs;
     };
@@ -153,14 +153,14 @@ export class Logs {
 };
 
 export class Leveling {
-    constructor({ enabled = true, chat = {}, levelMax = 100, levelRewarding = true }) {
+    constructor({ enabled = true, chat = { min: 1, max: 25, roles: [], channels: [], filterMode: 0 }, levelMax = 100, levelRewarding = true }) {
         this.enabled = enabled;
         this.chat = {
-            min: chat.min || 1,
-            max: chat.max || 25,
-            roles: chat.roles || [],
-            channels: chat.channels || [],
-            filterMode: chat.filterMode || 0
+            min: chat.min,
+            max: chat.max,
+            roles: chat.roles,
+            channels: chat.channels,
+            filterMode: chat.filterMode,
         };
         this.levelMax = levelMax;
         this.levelRewarding = levelRewarding;
@@ -168,23 +168,23 @@ export class Leveling {
 };
 
 export class Economy {
-    constructor({ enabled = false, currency = {}, gambling = {}, drops = {} }) {
+    constructor({ enabled = false, currency = { name: "Cash", namePlural: "Cash", symbol: "$", image: "" }, gambling = { enabled: false, min: 5, max: 100 }, drops = { enabled: true, channels: [], filterMode: 1 } }) {
         this.enabled = enabled;
         this.currency = {
-            name: currency.name || "Cash",
-            namePlural: currency.namePlural || "Cash",
-            symbol: currency.symbol || "$",
-            image: currency.image || ""
+            name: currency.name,
+            namePlural: currency.namePlural,
+            symbol: currency.symbol,
+            image: currency.image,
         };
         this.gambling = {
-            enabled: gambling.enabled || false,
-            min: gambling.min || 5,
-            max: gambling.max || 100
+            enabled: gambling.enabled,
+            min: gambling.min,
+            max: gambling.max,
         };
         this.drops = {
-            enabled: drops.enabled || true,
-            channels: drops.channels || [],
-            filterMode: drops.filterMode || 1
+            enabled: drops.enabled,
+            channels: drops.channels,
+            filterMode: drops.filterMode,
         };
     };
 };
@@ -234,6 +234,6 @@ export default class Config {
     };
 
     toObject() {
-        return {...this};
+        return { ...this };
     };
 };

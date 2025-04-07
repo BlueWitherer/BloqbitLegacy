@@ -1,6 +1,7 @@
 /**
  * @enum {number} Type of moderation action.
  */
+// @ts-ignore
 class ModeratorActionType {
     static Ban = 7;
     static Softban = 6;

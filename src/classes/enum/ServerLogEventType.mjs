@@ -1,6 +1,7 @@
 /**
  * @enum {string} Type of server action to be logged.
  */
+// @ts-ignore
 class ServerLogEventType {
     static AutoModerator = "automod";
     static Moderator = "mod";

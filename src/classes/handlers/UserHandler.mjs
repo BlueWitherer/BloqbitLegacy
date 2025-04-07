@@ -1,6 +1,6 @@
 import { Client } from 'discord.js';
 
-export default class UserHandler {
+class UserHandler {
     /**
      * 
      * @param {Client} client Discord bot client.
@@ -9,3 +9,5 @@ export default class UserHandler {
         console.debug("Initiating global user handler...");
     };
 };
+
+export default UserHandler;

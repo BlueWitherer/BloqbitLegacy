@@ -1,6 +1,7 @@
 /**
  * @enum {string} Code name for the type of automated filter.
  */
+// @ts-ignore
 class MessageFilterClass {
     static SWEAR = "swearFilter";
     static URL = "linkFilter";

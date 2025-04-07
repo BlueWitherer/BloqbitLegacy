@@ -1,9 +1,9 @@
 import { Message, Client, PermissionsBitField, PermissionFlagsBits, Events } from 'discord.js';
 import cache from '../../cache.mjs';
 import moderation from '../../modules/moderation.mjs';
-import { Config } from 'classes.mjs';
+import { Config } from '../../classes.mjs';
 
-export default class MessageHandler {
+class MessageHandler {
     /**
      * 
      * @param {Client} client Discord bot client.
@@ -43,3 +43,5 @@ export default class MessageHandler {
         };
     };
 };
+
+export default MessageHandler;

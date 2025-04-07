@@ -1,6 +1,7 @@
 /**
  * @enum {string} Code name of the bot command category.
  */
+// @ts-ignore
 class BotCommandCategory {
     static CONFIG = "config";
     static MOD = "moderator";

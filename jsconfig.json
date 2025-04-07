@@ -5,6 +5,7 @@
         "allowJs": true,
         "checkJs": true,
         "moduleResolution": "node",
+        "resolveJsonModule": true,
         "paths": {
             "*": [
                 "./src/*"

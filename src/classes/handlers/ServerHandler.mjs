@@ -1,6 +1,6 @@
 import { Client } from 'discord.js';
 
-export default class ServerHandler {
+class ServerHandler {
     /**
      * 
      * @param {Client} client Discord bot client.
@@ -9,3 +9,5 @@ export default class ServerHandler {
         console.debug("Initiating global server handler...");
     };
 };
+
+export default ServerHandler;

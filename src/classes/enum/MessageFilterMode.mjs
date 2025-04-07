@@ -1,6 +1,7 @@
 /**
  * @enum {number} Type of filtering.
  */
+// @ts-ignore
 class MessageFilterMode {
     static INCLUDE = 1;
     static EXCLUDE = 0;
