@@ -110,6 +110,17 @@ export default {
 
     /**
      * 
+     * @param {Discord.Message} msg Discord message to add to spam lists
+     * 
+     * @returns {Promise<void>}
+     */
+    antiMessages: (msg) => {
+        console.warn(`Coming soon! Message of ID ${msg.id} will be handled by anti-spam in the near future`);
+        return;
+    },
+
+    /**
+     * 
      * @param {Config} system Server settings object
      * @param {Discord.Message} msg Discord message to inspect
      */

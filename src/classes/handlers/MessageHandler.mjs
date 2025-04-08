@@ -30,6 +30,8 @@ class MessageHandler {
             if (message.author.bot) {
                 return;
             } else {
+                await moderation.antiMessages(message);
+
                 const inF = moderation.inFilter(system, message);
                 const liF = moderation.elFilter(system, message);
                 const blF = moderation.blFilter(system, message);

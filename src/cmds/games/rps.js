@@ -23,7 +23,8 @@ module.exports = {
                 {
                     name: "scissors", value: "s",
                 },
-            ).setRequired(true)),
+            )
+            .setRequired(true)),
     /**
      * 
      * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
