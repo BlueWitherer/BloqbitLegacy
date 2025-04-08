@@ -17,14 +17,14 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, db, oldMsg, newMsg) => {
-        const system = cache.fetch(msg.guild?.id);
+        const system = cache.fetch(newMsg.guild?.id);
 
         if (system) {
             if (system.logs.enabled && (system.logs.actions.msgUpd)) {
                 /**
                  * @type {TextChannel} Configured log channel for this server
                  */
-                const chnl = await msg.guild?.channels.fetch(system.logs.channel);
+                const chnl = await newMsg.guild?.channels.fetch(system.logs.channel);
                 const emb = new EmbedBuilder({
                     "author": {
                         "name": `${newMsg.author?.username}`,
@@ -84,7 +84,7 @@ export default new LogEvent(
                             "embeds": [emb],
                         });
                     } else {
-                        console.error(`Failed to create logs webhook for guild '${msg.guild?.name}' (${msg.guild?.id})`)
+                        console.error(`Failed to create logs webhook for guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`)
                     };
                 } else {
                     await chnl.send({
@@ -93,10 +93,10 @@ export default new LogEvent(
                     });
                 };
             } else {
-                console.error(`Logs for deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                console.error(`Logs for deleted messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
             };
         } else {
-            console.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
+            console.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);
         };
 
         return;
