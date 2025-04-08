@@ -14,6 +14,7 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, msg) => {
+        console.debug(`Handling deleted message log event on guild of ID ${msg.guild?.id}...`)
         const system = fetch.fetchGuild(msg.guild?.id);
 
         if (system) {

@@ -19,11 +19,12 @@ export default {
      * 
      * @param {string} server Server ID for query
      * 
-     * @returns {Config} Queried settings object
+     * @returns {Config | void} Queried settings object
      */
     fetch: (server) => {
         if (server) {
             if (cache.length) {
+                console.debug(`[I] Searching through cache for server of ID ${server}...`);
                 return cache.find((s) => s.server === server);
             } else {
                 console.error(`[X] Cached settings object not available.`);
@@ -40,7 +41,7 @@ export default {
      * @param {Config} system Object for query
      * @param {SaveDataClient} db Bot database model
      * 
-     * @returns {Promise<Config>} New settings object
+     * @returns {Promise<Config | void>} New settings object
      */
     update: async (system, db) => {
         if (system && db) {
