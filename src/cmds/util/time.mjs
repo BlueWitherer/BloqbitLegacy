@@ -53,7 +53,7 @@ module.exports = {
                             },
                             {
                                 "name": `Unix Timestamp`,
-                                "value": `${customUnixDate}`,
+                                "value": `**\`${customUnixDate}\`**`,
                                 "inline": true,
                             },
                         ],
@@ -89,7 +89,7 @@ module.exports = {
                             },
                             {
                                 "name": `Unix Timestamp`,
-                                "value": String(getUnixDate),
+                                "value": `**\`${getUnixDate}\`**`,
                                 "inline": true,
                             },
                         ],

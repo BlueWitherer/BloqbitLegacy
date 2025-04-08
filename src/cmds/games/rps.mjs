@@ -35,7 +35,6 @@ module.exports = {
      * @returns {Promise<void>}
      */
     execute: async (interaction, assets, system, db) => {
-
         const moves = ['r', 'p', 's'];
 
         const human = interaction.user?.username;
@@ -74,17 +73,17 @@ module.exports = {
 
         let winner = 'Unspecified.'
 
-        if (userMove === 'Rock' && (botMove === 'Scissors')) {
+        if ((userMove === 'Rock') && (botMove === 'Scissors')) {
             winner = human;
-        } else if (userMove === 'Scissors' && (botMove === 'Rock')) {
+        } else if ((userMove === 'Scissors') && (botMove === 'Rock')) {
             winner = robot;
-        } else if (userMove === 'Scissors' && (botMove === 'Paper')) {
+        } else if ((userMove === 'Scissors') && (botMove === 'Paper')) {
             winner = human;
-        } else if (userMove === 'Paper' && (botMove === 'Scissors')) {
+        } else if ((userMove === 'Paper') && (botMove === 'Scissors')) {
             winner = robot;
-        } else if (userMove === 'Paper' && (botMove === 'Rock')) {
+        } else if ((userMove === 'Paper') && (botMove === 'Rock')) {
             winner = human;
-        } else if (userMove === 'Rock' && (botMove === 'Paper')) {
+        } else if ((userMove === 'Rock') && (botMove === 'Paper')) {
             winner = robot;
         } else if (userMove === botMove) {
             winner = 'Draw';
