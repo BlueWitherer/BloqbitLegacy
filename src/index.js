@@ -126,17 +126,21 @@ export default class Bot {
                     };
                 };
 
-                const clientGuilds = await botModel.client.guilds.fetch();
+                if (testMode) {
+                    console.info("Skipping database step...");
+                } else {
+                    const clientGuilds = await botModel.client.guilds.fetch();
 
-                for (const inGuild of clientGuilds) {
-                    const inCache = fetch.fetchGuild(inGuild[1].id);
+                    for (const inGuild of clientGuilds) {
+                        const inCache = fetch.fetchGuild(inGuild[1].id);
 
-                    if (inCache) {
-                        console.log(inCache.server);
-                    } else {
-                        const thisGuild = await fetch.reviseGuild(botModel.db, inGuild[1].id);
+                        if (inCache) {
+                            console.log(inCache.server);
+                        } else {
+                            const thisGuild = await fetch.reviseGuild(botModel.db, inGuild[1].id);
 
-                        console.log(thisGuild?.server);
+                            console.log(thisGuild?.server);
+                        };
                     };
                 };
 
