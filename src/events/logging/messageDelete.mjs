@@ -3,7 +3,6 @@ import { Events, Message, TextChannel, EmbedBuilder } from "discord.js"
 import { BloqbitClient, LogEvent } from "../../classes.mjs"
 
 import fetch from "../../modules/fetch.mjs";
-import cache from "../../cache.mjs";
 
 export default new LogEvent(
     Events.MessageDelete,
@@ -15,7 +14,7 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, msg) => {
-        const system = cache.fetch(msg.guild?.id);
+        const system = fetch.fetchGuild(msg.guild?.id);
 
         if (system) {
             if (system.logs.enabled && (system.logs.actions.msgDel)) {
