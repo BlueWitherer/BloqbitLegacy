@@ -1,6 +1,6 @@
-import { Events, Message, WebhookClient, TextChannel, EmbedBuilder } from "discord.js"
+import { Events, Message, TextChannel, EmbedBuilder } from "discord.js"
 
-import { BloqbitClient, LogEvent, SaveDataClient } from "../../classes.mjs"
+import { BloqbitClient, LogEvent } from "../../classes.mjs"
 
 import fetch from "../../modules/fetch.mjs";
 import cache from "../../cache.mjs";
@@ -10,12 +10,11 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {SaveDataClient} db
      * @param {Message} msg 
      * 
      * @returns {Promise<void>}
      */
-    async (bot, db, msg) => {
+    async (bot, msg) => {
         const system = cache.fetch(msg.guild?.id);
 
         if (system) {
@@ -29,9 +28,9 @@ export default new LogEvent(
                         "name": `${msg.author?.username}`,
                         "icon_url": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 1024, "extension": "gif" })}`,
                     },
-                    "title": `${assets.icons.exclamation} | Message Deleted`,
+                    "title": `${bot.assets.icons.exclamation} | Message Deleted`,
                     "description": msg.cleanContent,
-                    "color": assets.colors.primary,
+                    "color": bot.assets.colors.primary,
                     "fields": [
                         {
                             "name": "Jump",
@@ -64,9 +63,9 @@ export default new LogEvent(
                         "proxyURL": fetch.ifProxyImage(msg),
                     },
                 }).data;
-    
+
                 if (system.logs.webhookEnabled) {
-                    const webClient = await fetch.checkLogsWebhook(bot, system, db, chnl);
+                    const webClient = await fetch.checkLogsWebhook(bot, system, bot.db, chnl);
 
                     if (webClient) {
                         await webClient.send({
@@ -79,7 +78,7 @@ export default new LogEvent(
                 } else {
                     await chnl.send({
                         "content": "",
-                        "embeds" :[emb],
+                        "embeds": [emb],
                     });
                 };
             } else {

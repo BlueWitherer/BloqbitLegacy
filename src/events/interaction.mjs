@@ -1,12 +1,8 @@
 import BloqbitClient from '../classes/BloqbitClient.mjs';
-import Discord from "discord.js";
 import { Events, WebhookClient, ChatInputCommandInteraction } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 import assets from "../assets.json" with { type: 'json' }
 import cache from '../cache.mjs';
-import { sys } from 'typescript';
-
-const { Interaction } = Discord;
 
 export default {
     name: Events.InteractionCreate,

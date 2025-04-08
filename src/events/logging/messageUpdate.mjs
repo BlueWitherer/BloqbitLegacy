@@ -1,6 +1,6 @@
-import { Events, Message, WebhookClient, TextChannel, EmbedBuilder } from "discord.js"
+import { Events, Message, TextChannel, EmbedBuilder } from "discord.js"
 
-import { BloqbitClient, LogEvent, SaveDataClient } from "../../classes.mjs"
+import { BloqbitClient, LogEvent } from "../../classes.mjs"
 
 import fetch from "../../modules/fetch.mjs";
 import cache from "../../cache.mjs";
@@ -10,13 +10,12 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {SaveDataClient} db
      * @param {Message} oldMsg 
      * @param {Message} newMsg 
      * 
      * @returns {Promise<void>}
      */
-    async (bot, db, oldMsg, newMsg) => {
+    async (bot, oldMsg, newMsg) => {
         const system = cache.fetch(newMsg.guild?.id);
 
         if (system) {
@@ -30,8 +29,8 @@ export default new LogEvent(
                         "name": `${newMsg.author?.username}`,
                         "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
                     },
-                    "title": `${assets.icons.exclamation} | Message Edited`,
-                    "color": assets.colors.primary,
+                    "title": `${bot.assets.icons.exclamation} | Message Edited`,
+                    "color": bot.assets.colors.primary,
                     "fields": [
                         {
                             "name": "Before",
@@ -76,7 +75,7 @@ export default new LogEvent(
                 }).data;
 
                 if (system.logs.webhookEnabled) {
-                    const webClient = await fetch.checkLogsWebhook(bot, system, db, chnl);
+                    const webClient = await fetch.checkLogsWebhook(bot, system, bot.db, chnl);
 
                     if (webClient) {
                         await webClient.send({
