@@ -36,7 +36,7 @@ export default {
         const Member = interaction.guild?.members?.cache.get(User);
 
         if (Member?.permissions.has([PermissionFlagsBits.BanMembers])) {
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -48,46 +48,57 @@ export default {
             });
         };
 
-        return await interaction.guild?.members?.ban(User, {
-            deleteMessageSeconds: 7 * 86400,
-            reason: `${interaction.user?.username} Ban - ${banreason}`
-        }).catch(async (err) => {
+        let bannedUser = null;
+
+        try {
+            bannedUser = await interaction.guild?.members?.ban(User, {
+                deleteMessageSeconds: 7 * 86400,
+                reason: `${interaction.user?.username} Ban - ${banreason}`
+            });
+        } catch (err) {
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - Invalid ID.`,
                 "ephemeral": true,
             });
-            console.log(err);
-        }).then(async (bannedUser) => {
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+
+            console.error(err);
+
+            return;
+        } finally {
+            if (bannedUser) {
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": `${interaction.user?.username}`,
+                                "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+                            },
+                            "title": `${assets.icons.noentry} User Banned`,
+                            "color": assets.colors.primary,
+                            "fields": [
+                                {
+                                    "name": "User",
+                                    "value": `**${bannedUser?.username}**`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Moderator",
+                                    "value": `**${interaction.user?.username}**`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Reason",
+                                    "value": `${banreason}`,
+                                    "inline": false,
+                                },
+                            ],
                         },
-                        "title": `${assets.icons.noentry} User Banned`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "User",
-                                "value": `**${bannedUser?.username}**`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `**${interaction.user?.username}**`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Reason",
-                                "value": `${banreason}`,
-                                "inline": false,
-                            },
-                        ],
-                    },
-                ],
-            });
-        });
+                    ],
+                });
+            };
+
+            return;
+        };
     },
 };

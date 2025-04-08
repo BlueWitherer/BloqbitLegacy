@@ -9,7 +9,8 @@ export default {
      * 
      * @param {BloqbitClient} bot 
      * @param {Guild} guild 
-     * @returns {void}
+     * 
+     * @returns {Promise<void>}
      */
     execute: async (bot, guild) => {
         const isLogged = fetch.fetchGuild(guild.id);

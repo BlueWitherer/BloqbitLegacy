@@ -47,7 +47,7 @@ export default {
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
                 "ephemeral": true,
             });
-            console.log(err);
+            console.error(err);
         }).then(async () => {
             await interaction.reply({
                 "content": null,

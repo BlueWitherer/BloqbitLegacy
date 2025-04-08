@@ -8,7 +8,8 @@ export default {
      * 
      * @param {BloqbitClient} bot 
      * @param {string} error 
-     * @returns {void}
+     * 
+     * @returns {Promise<void>}
      */
     execute: async (bot, error) => {
         const date = Math.floor(Date.now() / 1000);

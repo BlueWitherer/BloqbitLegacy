@@ -71,7 +71,7 @@ export default {
             };
 
             if (time === 3600 && cooldown > 12) {
-                return await interaction.reply({
+                await interaction.reply({
                     "content": "",
                     "embeds": [
                         {
@@ -81,10 +81,12 @@ export default {
                     ],
                     "ephemeral": true,
                 });
+
+                return;
             };
 
             await interaction.channel?.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set.`);
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -109,9 +111,11 @@ export default {
                     },
                 ],
             });
+
+            return;
         } else if (interaction.options?.getSubcommand() === "remove") {
             await interaction.channel?.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed.`);
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -131,6 +135,10 @@ export default {
                     },
                 ],
             });
+
+            return;
         };
+
+        return;
     },
 };

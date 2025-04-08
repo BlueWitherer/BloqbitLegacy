@@ -9,6 +9,8 @@ export default {
      * 
      * @param {BloqbitClient} bot 
      * @param {Message} msg 
+     * 
+     * @returns {Promise<void>}
      */
     execute: async (bot, msg) => {
         if (msg.guild) {

@@ -12,7 +12,7 @@ export default {
      * @param {string} error 
      * @param {number} shardId
      * 
-     * @returns {void}
+     * @returns {Promise<void>}
      */
     execute: async (bot, error, shardId) => {
         const date = Math.floor(Date.now() / 1000);

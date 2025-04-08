@@ -16,7 +16,7 @@ export default {
      * @param {BloqbitClient} bot 
      * @param {ChatInputCommandInteraction} interaction
      * 
-     * @returns {void}
+     * @returns {Promise<void>}
      */
     execute: async (bot, interaction) => {
         if (bot.online) {

@@ -74,14 +74,16 @@ export default {
             });
 
             setTimeout(async () => {
-                return await interaction.deleteReply();
+                await interaction.deleteReply();
             }, 2500);
+
+            return;
         } else if (user) {
             const msgs = [];
 
             (await interaction.channel?.messages?.fetch({ limit: 100 }))?.filter((m) => m.author?.id === user.id).forEach((mg) => {
                 if (msgs.length >= amount) {
-                    return msgs;
+                    msgs;
                 };
             });
 
@@ -117,8 +119,10 @@ export default {
             });
 
             setTimeout(async () => {
-                return await interaction.deleteReply();
+                await interaction.deleteReply();
             }, 3000);
+
+            return;
         };
     },
 };

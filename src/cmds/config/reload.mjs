@@ -28,7 +28,8 @@ export default {
 
         if (registered) {
             console.log(`Fetched guild ${interaction.guild?.name} (${interaction.guild?.id}) successfully.`);
-            interaction.reply({
+
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -44,7 +45,8 @@ export default {
 
                 if (revised) {
                     console.log(`Manually registered guild ${interaction.guild?.name} (${interaction.guild?.id}) successfully.`);
-                    interaction.reply({
+
+                    await interaction.reply({
                         "content": "",
                         "embeds": [
                             {
@@ -56,7 +58,8 @@ export default {
                     });
                 } else {
                     console.error(`Manual registration of guild ${interaction.guild?.name} (${interaction.guild?.id}) failed.`);
-                    interaction.reply({
+
+                    await interaction.reply({
                         "content": "",
                         "embeds": [
                             {
@@ -69,6 +72,7 @@ export default {
                 };
             } catch (err) {
                 await fetch.commandErrorResponse(interaction, assets);
+
                 console.error(err);
             };
         };

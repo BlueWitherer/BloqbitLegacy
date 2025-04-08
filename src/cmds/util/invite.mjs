@@ -45,7 +45,7 @@ export default {
         };
 
         if (invite) {
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -54,8 +54,10 @@ export default {
                     },
                 ],
             });
+
+            return;
         } else {
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -64,6 +66,8 @@ export default {
                     },
                 ],
             });
+
+            return;
         };
     },
 };

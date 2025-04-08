@@ -20,7 +20,7 @@ export default {
      * @returns {Promise<void>}
      */
     execute: async (interaction, assets, system, db) => {
-        return interaction.reply({
+        await interaction.reply({
             "content": "",
             "ephemeral": true,
             "embeds": [{
@@ -44,5 +44,7 @@ export default {
                 ],
             }],
         });
+
+        return;
     },
 };

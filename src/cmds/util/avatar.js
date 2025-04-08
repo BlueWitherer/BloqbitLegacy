@@ -28,7 +28,7 @@ module.exports = {
         const Member = interaction.options?.getMember("user");
 
         if (User) {
-            interaction.reply({
+            await interaction.reply({
                 "content": null,
                 "embeds": [
                     {
@@ -54,7 +54,7 @@ module.exports = {
 
             return;
         } else {
-            interaction.reply({
+            await interaction.reply({
                 "content": null,
                 "embeds": [
                     {

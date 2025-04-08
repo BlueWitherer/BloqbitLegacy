@@ -535,8 +535,12 @@ export default {
                 } else {
                     await fetch.commandErrorResponse(interaction, assets);
                 };
+
+                return;
             } catch (err) {
                 await fetch.commandErrorResponse(interaction, assets);
+
+                return;
             };
         };
 
@@ -736,8 +740,12 @@ export default {
                 } else {
                     await fetch.commandErrorResponse(interaction, assets);
                 };
+
+                return;
             } catch (err) {
                 await fetch.commandErrorResponse(interaction, assets);
+
+                return;
             };
         };
 
@@ -937,8 +945,12 @@ export default {
                 } else {
                     await fetch.commandErrorResponse(interaction, assets);
                 };
+
+                return;
             } catch (err) {
                 await fetch.commandErrorResponse(interaction, assets);
+
+                return;
             };
         };
 
@@ -963,5 +975,7 @@ export default {
                 await fetch.commandErrorResponse(interaction, assets);
                 break;
         };
+
+        return;
     },
 };

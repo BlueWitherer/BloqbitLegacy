@@ -24,91 +24,27 @@ export default {
      * @returns {Promise<void>}
      */
     execute: async (interaction, assets, system, db) => {
-        const User = interaction.options?.getMember("user");
-
-        const Author = interaction.user;
-        const Member = interaction.member;
+        const Member = interaction.options?.getMember("user");
 
         let MemberPermissions = interaction.member?.permissions?.toArray({ checkAdmin: true, checkOwner: true }).join('` | `');
 
         if (!MemberPermissions) MemberPermissions = 'None'
 
-        if (!User) {
-            var joinedAtU = Math.floor(interaction.member?.joinedTimestamp / 1000);
-            var createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
+        var joinedAt = Math.floor(Member.joinedTimestamp / 1000);
+        var createdAt = Math.floor(Member.user?.createdTimestamp / 1000);
 
-            await interaction.reply({
-                "content": null,
-                "embeds": [
-                    {
-                        "title": `${assets.icons.info} | ${interaction.user?.username}`,
+        if (Member) {
+            if (Member.user?.bot) {
+                let UserPermissions = Member.permissions?.toArray().join('` | `');
+
+                if (!UserPermissions) UserPermissions = 'None'
+
+                await interaction.reply({
+                    "embeds": [{
+                        "title": `${assets.icons.info} | ${Member.user?.username}`,
                         "color": `${assets.colors.primary}`,
                         "thumbnail": {
-                            "url": `${Author.displayAvatarURL({ forceStatic: false })}`,
-                        },
-                        "author": {
-                            "name": `${Author.username}`,
-                            "icon_url": `${Author.displayAvatarURL({ forceStatic: false })}`,
-                        },
-                        "fields": [
-                            {
-                                "name": "User",
-                                "value": `${Author}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Tag",
-                                "value": `${Author.username}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "User ID",
-                                "value": `${Author.id}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Date Created",
-                                "value": `<t:${createdAtU}:F> | <t:${createdAtU}:R>`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Date Joined",
-                                "value": `<t:${joinedAtU}:F> | <t:${joinedAtU}:R>`,
-                                "inline": true,
-                            },
-                            {
-                                "name": `Roles [${Member.roles?.cache.size}]`,
-                                "value": `${Member.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
-                                "inline": false,
-                            },
-                            {
-                                "name": "Server Permissions",
-                                "value": `\`${MemberPermissions}\``,
-                                "inline": false,
-                            },
-                        ],
-                    },
-                ],
-            });
-        };
-
-        var joinedAt = Math.floor(User.joinedTimestamp / 1000);
-        var createdAt = Math.floor(User.user?.createdTimestamp / 1000);
-
-        if (User) {
-
-            let UserPermissions = User.permissions.toArray({ checkAdmin: true, checkOwner: true }).join('` | `');
-
-            if (!UserPermissions) UserPermissions = 'None';
-
-            await interaction.reply({
-                "content": null,
-                "embeds": [
-                    {
-                        "title": `${assets.icons.info} | ${User.user?.username}`,
-                        "color": `${assets.colors.primary}`,
-                        "thumbnail": {
-                            "url": `${User.user?.displayAvatarURL({ forceStatic: false })}`,
+                            "url": `${Member.user?.displayAvatarURL({ forceStatic: false })}`,
                         },
                         "author": {
                             "name": `${interaction.user?.username}`,
@@ -116,18 +52,18 @@ export default {
                         },
                         "fields": [
                             {
-                                "name": "User",
-                                "value": `${User}`,
+                                "name": "Member",
+                                "value": `${Member}`,
                                 "inline": true,
                             },
                             {
                                 "name": "Tag",
-                                "value": `${User.user?.username}`,
+                                "value": `${Member.user?.username}`,
                                 "inline": true,
                             },
                             {
-                                "name": "User ID",
-                                "value": `${User.user?.id}`,
+                                "name": "Member ID",
+                                "value": `${Member.user?.id}`,
                                 "inline": true,
                             },
                             {
@@ -141,8 +77,8 @@ export default {
                                 "inline": true,
                             },
                             {
-                                "name": `Roles [${User.roles?.cache.size}]`,
-                                "value": `${User.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                "name": `Roles [${Member.roles?.cache.size}]`,
+                                "value": `${Member.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
                                 "inline": false,
                             },
                             {
@@ -152,62 +88,126 @@ export default {
                             },
                         ],
                     },
-                ],
-            });
-        } else if (User.user?.bot) {
-            let UserPermissions = User.permissions?.toArray().join('` | `');
+                    ],
+                });
 
-            if (!UserPermissions) UserPermissions = 'None'
+                return;
+            } else {
+                let UserPermissions = Member.permissions.toArray({ checkAdmin: true, checkOwner: true }).join('` | `');
 
-            await interaction.reply({
-                "embeds": [{
-                    "title": `${assets.icons.info} | ${User.user?.username}`,
-                    "color": `${assets.colors.primary}`,
-                    "thumbnail": {
-                        "url": `${User.user?.displayAvatarURL({ forceStatic: false })}`,
-                    },
-                    "author": {
-                        "name": `${interaction.user?.username}`,
-                        "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
-                    },
-                    "fields": [
+                if (!UserPermissions) UserPermissions = 'None';
+
+                await interaction.reply({
+                    "content": null,
+                    "embeds": [
                         {
-                            "name": "User",
-                            "value": `${User}`,
-                            "inline": true,
-                        },
-                        {
-                            "name": "Tag",
-                            "value": `${User.user?.username}`,
-                            "inline": true,
-                        },
-                        {
-                            "name": "User ID",
-                            "value": `${User.user?.id}`,
-                            "inline": true,
-                        },
-                        {
-                            "name": "Date Created",
-                            "value": `<t:${createdAt}:F> | <t:${createdAt}:R>`,
-                            "inline": true,
-                        },
-                        {
-                            "name": "Date Joined",
-                            "value": `<t:${joinedAt}:F> | <t:${joinedAt}:R>`,
-                            "inline": true,
-                        },
-                        {
-                            "name": `Roles [${User.roles?.cache.size}]`,
-                            "value": `${User.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
-                            "inline": false,
-                        },
-                        {
-                            "name": "Server Permissions",
-                            "value": `\`${UserPermissions}\``,
-                            "inline": false,
+                            "title": `${assets.icons.info} | ${Member.user?.username}`,
+                            "color": `${assets.colors.primary}`,
+                            "thumbnail": {
+                                "url": `${Member.user?.displayAvatarURL({ forceStatic: false })}`,
+                            },
+                            "author": {
+                                "name": `${interaction.user?.username}`,
+                                "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
+                            },
+                            "fields": [
+                                {
+                                    "name": "Member",
+                                    "value": `${Member}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Tag",
+                                    "value": `${Member.user?.username}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Member ID",
+                                    "value": `${Member.user?.id}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Date Created",
+                                    "value": `<t:${createdAt}:F> | <t:${createdAt}:R>`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Date Joined",
+                                    "value": `<t:${joinedAt}:F> | <t:${joinedAt}:R>`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": `Roles [${Member.roles?.cache.size}]`,
+                                    "value": `${Member.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                    "inline": false,
+                                },
+                                {
+                                    "name": "Server Permissions",
+                                    "value": `\`${UserPermissions}\``,
+                                    "inline": false,
+                                },
+                            ],
                         },
                     ],
-                },
+                });
+
+                return;
+            };
+        } else {
+            var joinedAtU = Math.floor(interaction.member?.joinedTimestamp / 1000);
+            var createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
+
+            await interaction.reply({
+                "content": null,
+                "embeds": [
+                    {
+                        "title": `${assets.icons.info} | ${interaction.user?.username}`,
+                        "color": `${assets.colors.primary}`,
+                        "thumbnail": {
+                            "url": `${interaction.user.displayAvatarURL({ forceStatic: false })}`,
+                        },
+                        "author": {
+                            "name": `${interaction.user.username}`,
+                            "icon_url": `${interaction.user.displayAvatarURL({ forceStatic: false })}`,
+                        },
+                        "fields": [
+                            {
+                                "name": "Member",
+                                "value": `${interaction.user}`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Tag",
+                                "value": `${interaction.user.username}`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Member ID",
+                                "value": `${interaction.user.id}`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Date Created",
+                                "value": `<t:${createdAtU}:F> | <t:${createdAtU}:R>`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Date Joined",
+                                "value": `<t:${joinedAtU}:F> | <t:${joinedAtU}:R>`,
+                                "inline": true,
+                            },
+                            {
+                                "name": `Roles [${interaction.member.roles?.cache.size}]`,
+                                "value": `${interaction.member.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Server Permissions",
+                                "value": `\`${MemberPermissions}\``,
+                                "inline": false,
+                            },
+                        ],
+                    },
                 ],
             });
         };

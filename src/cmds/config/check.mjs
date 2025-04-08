@@ -141,10 +141,10 @@ export default {
                     break;
 
                 default:
-                    return fetch.commandErrorResponse(interaction, assets);
+                    fetch.commandErrorResponse(interaction, assets);
             };
 
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     returnEmbed,
@@ -153,6 +153,8 @@ export default {
                     "Ephemeral",
                 ],
             });
+
+            return;
         };
     },
 };

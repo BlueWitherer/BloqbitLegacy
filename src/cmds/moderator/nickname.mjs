@@ -49,7 +49,7 @@ export default {
         const Member = interaction.options?.getMember("user");
 
         if (Member?.permissions.has([PermissionFlagsBits.ManageNicknames])) {
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -124,9 +124,13 @@ export default {
                         ],
                     },
                 ],
-            }).catch(() => {
+            }).catch((err) => {
+                console.error(err);
+
                 return;
             });
+
+            return;
         } else if (interaction.options?.getSubcommand() === "view") {
             const user = interaction.options?.getUser("user");
 
@@ -136,7 +140,7 @@ export default {
             let displayed;
             let reason;
 
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -166,6 +170,8 @@ export default {
                     },
                 ],
             });
+
+            return;
         } else if (interaction.options?.getSubcommand() === "unblock") {
             const user = interaction.options?.getUser("user");
             const Member = interaction.options?.getMember("user");
@@ -203,6 +209,8 @@ export default {
                     },
                 ],
             });
+
+            return;
         } else if (interaction.options?.getSubcommand() === "set") {
             const user = interaction.options?.getUser("user");
             const Member = interaction.options?.getMember("user");
@@ -219,6 +227,8 @@ export default {
                     },
                 ],
             });
+
+            return;
         } else if (interaction.options?.getSubcommand() === "reset") {
             const user = interaction.options?.getUser("user");
             const Member = interaction.options?.getMember("user");
@@ -234,6 +244,10 @@ export default {
                     },
                 ],
             });
+
+            return;
         };
+
+        return;
     },
 };

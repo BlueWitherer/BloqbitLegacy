@@ -45,7 +45,7 @@ export default {
                 ],
             });
 
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -55,6 +55,8 @@ export default {
                 ],
                 "ephemeral": true,
             });
+
+            return;
         } else if (channel) {
             await channel.send({
                 "content": "",
@@ -66,7 +68,7 @@ export default {
                 ],
             });
 
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -75,8 +77,10 @@ export default {
                     },
                 ],
             });
+
+            return;
         } else if (!channel) {
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -85,6 +89,8 @@ export default {
                     },
                 ],
             });
+
+            return;
         };
     },
 };

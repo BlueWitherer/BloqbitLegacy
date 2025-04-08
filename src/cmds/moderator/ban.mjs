@@ -37,7 +37,7 @@ export default {
         const Member = interaction.options?.getMember("user");
 
         if (Member?.permissions.has([PermissionFlagsBits.BanMembers])) {
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -50,7 +50,7 @@ export default {
         };
 
         try {
-            return await interaction.guild?.members?.ban(User?.id, {
+            await interaction.guild?.members?.ban(User?.id, {
                 deleteMessageSeconds: 7 * 86400,
                 reason: `${interaction.user?.username} Ban - ${banreason}`
             }).then(async () => {
@@ -113,7 +113,14 @@ export default {
                 });
             });
         } catch (err) {
-            return null;
+            await interaction.reply({
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - Invalid user.`,
+                "ephemeral": true,
+            });
+
+            console.error(err);
+
+            return;
         } finally {
             if (system.logs.enabled && system.logs.actions.moderator) {
                 /**
@@ -158,6 +165,8 @@ export default {
                     });
                 };
             };
+
+            return;
         };
     },
 };

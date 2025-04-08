@@ -58,7 +58,7 @@ export default {
             const reason = interaction.options?.getString("reason");
 
             if (Member.permissions.has([PermissionFlagsBits.ModerateMembers])) {
-                return await interaction.reply({
+                await interaction.reply({
                     "content": "",
                     "embeds": [
                         {
@@ -68,6 +68,8 @@ export default {
                     ],
                     "ephemeral": true,
                 });
+
+                return;
             };
 
             const duration = Math.floor(cooldown * time);
@@ -104,7 +106,7 @@ export default {
             };
 
             if (type === "weeks" && cooldown > 4 || type === "days" && cooldown > 28) {
-                return await interaction.reply({
+                await interaction.reply({
                     "content": "",
                     "embeds": [
                         {
@@ -114,10 +116,12 @@ export default {
                     ],
                     "ephemeral": true,
                 });
+
+                return;
             };
 
             await Member.timeout(duration, `${interaction.user?.username} Timeout - ${reason}`);
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -152,11 +156,13 @@ export default {
                     },
                 ],
             });
+
+            return;
         } else if (interaction.options?.getSubcommand() === "remove") {
             const Member = interaction.options?.getMember("user");
 
             if (Member.permissions.has([PermissionFlagsBits.ModerateMembers])) {
-                return await interaction.reply({
+                await interaction.reply({
                     "content": "",
                     "embeds": [
                         {
@@ -169,7 +175,7 @@ export default {
             };
 
             await Member?.timeout(0, `${interaction.user?.username} Timeout removed.`);
-            return await interaction.reply({
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -194,6 +200,10 @@ export default {
                     },
                 ],
             });
+
+            return;
         };
+
+        return;
     },
 };
