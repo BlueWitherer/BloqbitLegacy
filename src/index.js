@@ -1,7 +1,6 @@
-import { BloqbitClient, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
+import { BloqbitClient, LogEvent, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
 
 import fs from 'node:fs';
-import dotenv from 'dotenv';
 import path from 'path';
 import url from 'url';
 import fetch from './modules/fetch.mjs';
@@ -12,14 +11,13 @@ import { Routes } from 'discord-api-types/v9';
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config();
-
 export default class Bot {
     constructor() {
         return this;
     };
 
     /**
+     * Starts up Bloqbit
      * 
      * @param {BloqbitClient} botModel Bot data model.
      * @param {boolean} testMode If the login is only being tested.
@@ -41,16 +39,6 @@ export default class Bot {
                 "status": PresenceUpdateStatus.DoNotDisturb,
             });
 
-            const importModule = async (filePath) => {
-                try {
-                    const module = await import(filePath);
-                    // Use the module here
-                    console.log(module);
-                } catch (error) {
-                    console.error('Error importing module:', error);
-                }
-            };
-
             try {
                 const foldersPath = path.join(__dirname, 'cmds');
                 const commandFolders = fs.readdirSync(foldersPath);
@@ -60,17 +48,21 @@ export default class Bot {
                     const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.mjs'));
 
                     for (const file of commandFiles) {
-                        const filePath = path.join(commandsPath, file);
-                        const command = (await import(url.pathToFileURL(filePath).href)).default;
+                        try {
+                            const filePath = path.join(commandsPath, file);
+                            const command = (await import(url.pathToFileURL(filePath).href)).default;
 
-                        if ('data' in command && 'execute' in command) {
-                            botModel.commands.push(command.data.toJSON());
-                            botModel.cmds.set(command.data.name, command);
+                            if ('data' in command && 'execute' in command) {
+                                botModel.commands.push(command.data.toJSON());
+                                botModel.cmds.set(command.data.name, command);
 
-                            console.debug(`Loaded command /${command.data.name}`);
-                        } else {
-                            console.error(`The command at ${filePath} is missing a required "data" or "execute" property.`);
-                            console.debug(command);
+                                console.debug(`Loaded command /${command.data.name}`);
+                            } else {
+                                console.error(`The command at ${filePath} is missing a required "data" or "execute" property.`);
+                                console.debug(command);
+                            };
+                        } catch (err) {
+                            console.error(err);
                         };
                     };
                 };
@@ -124,7 +116,7 @@ export default class Bot {
 
                         console.debug(`Loaded event listener for ${event.name}.`);
                     } catch (error) {
-                        return console.error(error);
+                        console.error(error);
                     };
                 };
 
@@ -171,6 +163,33 @@ export default class Bot {
 
                 botModel.online = true;
                 console.log(`Bot user ${client.user?.username} is online.`);
+            } catch (err) {
+                console.error(err);
+                process.exit(1);
+            };
+
+            try {
+                const logsPath = path.join(__dirname, 'events/logging');
+                const logEventFiles = fs.readdirSync(logsPath).filter(file => file.endsWith('.mjs'));
+
+                for (const file of logEventFiles) {
+                    try {
+                        const filePath = path.join(logsPath, file);
+
+                        /**
+                         * @type {LogEvent}
+                         */
+                        const logEvent = (await import(url.pathToFileURL(filePath).href)).default;
+
+                        client.on(logEvent.event.toString(), (...args) => {
+                            logEvent.execute(botModel, botModel.db, ...args);
+                        });
+
+                        console.log(`Log event loaded: ${logEvent.event.toString()}`);
+                    } catch (err) {
+                        console.error(err);
+                    };
+                };
             } catch (err) {
                 console.error(err);
                 process.exit(1);

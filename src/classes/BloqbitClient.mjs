@@ -1,13 +1,9 @@
 import SysAssets from '../assets.json' with { type: 'json' };
 
-import SaveData from './SaveData.mjs';
-
-import dotenv from 'dotenv';
+import SaveDataClient from './SaveDataClient.mjs';
 
 import { Client, Collection, IntentsBitField, Partials } from 'discord.js';
 import { REST } from '@discordjs/rest';
-
-dotenv.config();
 
 /**
  * @class Bot model.
@@ -15,19 +11,20 @@ dotenv.config();
 export default class BloqbitClient {
     /**
      * 
-     * @param {string} token Bot token.
-     * @param {string} secret Application secret.
-     * @returns 
+     * @param {string} token Bot token
+     * @param {string} secret Application secret
+     * @param {string} web Developer log webhook URL
+     * @param {string} db MongoDB database URI
      */
-    constructor(token, secret) {
+    constructor(token, secret, web, db) {
         this.online = false;
 
         this.token = token;
         this.secret = secret;
 
-        this.dev_wh = process.env.LOG_WH;
+        this.dev_wh = web;
 
-        this.db = new SaveData();
+        this.db = new SaveDataClient(db);
 
         this.commands = [];
         this.moderation = [];

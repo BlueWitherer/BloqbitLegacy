@@ -7,7 +7,7 @@ import Bot from './src/index.js';
 
 dotenv.config();
 
-const botModel = new BloqbitClient(process.env.TEST_TOKEN, process.env.TEST_SECRET);
+const botModel = new BloqbitClient(process.env.TEST_TOKEN, process.env.TEST_SECRET, process.env.LOG_WH, process.env.MONGO_URI);
 botModel.rest.setToken(process.env.TEST_TOKEN);
 
 const start = async () => {
@@ -20,5 +20,7 @@ const start = async () => {
         await start();
     } catch (error) {
         return console.error(error);
+    } finally {
+        return;
     };
 })();

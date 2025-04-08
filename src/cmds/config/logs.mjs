@@ -1,5 +1,5 @@
 import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveData, ServerLogEventType, Config } from '../../classes.mjs';
+import { SaveDataClient, ServerLogEventType, Config } from '../../classes.mjs';
 import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
@@ -119,7 +119,7 @@ export default {
      * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
      * @param {typeof SysAssets} assets The configuration of the client's visual assets.
      * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveData} db The database information.
+     * @param {SaveDataClient} db The database information.
      * 
      * @returns {Promise<void>}
      */
@@ -275,6 +275,10 @@ export default {
         switch (subCmd) {
             case "config":
                 await configCmd();
+                break;
+
+            case "action_type":
+                await actionCmd();
                 break;
 
             default:

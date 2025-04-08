@@ -1,6 +1,6 @@
 import cacheModule from '../cache.mjs';
 
-import { SaveData, Config } from '../classes.mjs';
+import { SaveDataClient, Config, BloqbitClient } from '../classes.mjs';
 
 import Discord from 'discord.js';
 import Mongo from 'mongodb';
@@ -10,6 +10,37 @@ import SysAssets from '../assets.json' with { type: 'json' };
 
 export default {
     /**
+     * Returns URL of the first image found in a message
+     * 
+     * @param {Discord.Message} msg Discord.Message to search for image in
+     * 
+     * @returns {string | null} Image URL
+     */
+    ifImage: (msg) => {
+        if (msg.attachments?.size > 0) {
+            return msg.attachments?.first().url;
+        } else {
+            return null;
+        };
+    },
+
+    /**
+     * Returns proxy URL of the first image found in a message
+     * 
+     * @param {Discord.Message} msg Discord.Message to search for image in
+     * 
+     * @returns {string | null} Proxy image URL
+     */
+    ifProxyImage: (msg) => {
+        if (msg.attachments?.size > 0) {
+            return msg.attachments?.first().proxyURL;
+        } else {
+            return null;
+        };
+    },
+
+    /**
+     * Handles errors with interactions
      * 
      * @param {string} err Error message
      * @param {Discord.Interaction} interaction Command interaction
@@ -40,6 +71,7 @@ export default {
     },
 
     /**
+     * Gets the configuration object of the server
      * 
      * @param {string} server ID of the server
      * 
@@ -60,11 +92,12 @@ export default {
     },
 
     /**
+     * Handles errors with interactions if the server isn't registered already
      * 
      * @param {Discord.Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
-     * @returns {Promise<void>} SaveData operation
+     * @returns {Promise<void>} SaveDataClient operation
      */
     databaseErrorResponse: async (interaction, assets) => {
         if (interaction && assets) {
@@ -96,11 +129,12 @@ export default {
     },
 
     /**
+     * Error if a server owner isn't a subscriber
      * 
      * @param {Discord.Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
-     * @returns {Promise<void>} SaveData operation
+     * @returns {Promise<void>} SaveDataClient operation
      */
     noPremiumResponse: async (interaction, assets) => {
         if (interaction && assets) {
@@ -132,6 +166,7 @@ export default {
     },
 
     /**
+     * Generic command error response
      * 
      * @param {Discord.Interaction} interaction Command interaction 
      * @param {typeof SysAssets} assets Assets object
@@ -181,11 +216,12 @@ export default {
     },
 
     /**
+     * Registers a server to the system's database and/or cache
      * 
-     * @param {SaveData} db Class of the bot's database
+     * @param {SaveDataClient} db Class of the bot's database
      * @param {string} server ID of the server
      * 
-     * @returns {Promise<Config>} SaveData operation
+     * @returns {Promise<Config>} SaveDataClient operation
      */
     reviseGuild: async (db, server) => {
         if (server) {
@@ -266,5 +302,49 @@ export default {
         } else {
             return new Config();
         };
+    },
+
+    /**
+     * Get the webhook for the logs channel, or create one if there isn't one
+     * 
+     * @param {BloqbitClient} bot
+     * @param {Config} system 
+     * @param {SaveDataClient} db 
+     * @param {Discord.TextChannel} chnl
+     * 
+     * @returns {Promise<Discord.WebhookClient | void>}
+     */
+    checkLogsWebhook: async (bot, system, db, chnl) => {
+        /**
+        * @type {Discord.WebhookClient}
+        */
+        let webClient;
+
+        if (system.logs.webhook) {
+            webClient = new Discord.WebhookClient({ "url": system.logs.webhook });
+
+            console.debug(`Found logs webhook for channel #${chnl.name} (${chnl.id})`);
+        } else {
+            console.debug(`Logs webhook for channel #${chnl.name} (${chnl.id}) not found, creating...`);
+
+            const newWeb = await chnl.createWebhook({
+                "name": "Bloqbit",
+                "avatar": bot.client.user.displayAvatarURL({
+                    "size": 1024,
+                    "extension": "jpg",
+                    "forceStatic": true,
+                }),
+                "reason": `Webhooks enabled for logs, webhook not found. Creating...`,
+            });
+
+            system.logs.webhook = newWeb.url;
+            await cacheModule.update(system, db);
+
+            webClient = new Discord.WebhookClient({ "url": system.logs.webhook });
+
+            console.debug(`Created logs webhook for channel #${chnl.name} (${chnl.id}) and updated save data`);
+        };
+
+        return webClient;
     },
 };

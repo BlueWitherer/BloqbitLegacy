@@ -1,6 +1,7 @@
 import BloqbitClient from './classes/BloqbitClient.mjs';
-import SaveData from './classes/SaveData.mjs';
 import Config from './classes/Configuration.mjs';
+import LogEvent from './classes/LogEvent.mjs'
+import SaveDataClient from './classes/SaveDataClient.mjs';
 
 import MessageHandler from './classes/handlers/MessageHandler.mjs';
 import UserHandler from './classes/handlers/UserHandler.mjs';
@@ -14,8 +15,9 @@ import MessageFilterMode from './classes/enum/MessageFilterMode.mjs';
 
 export {
     BloqbitClient,
-    SaveData,
     Config,
+    LogEvent,
+    SaveDataClient,
 
     MessageHandler,
     UserHandler,
