@@ -6,7 +6,7 @@ import fetch from "../../modules/fetch.mjs";
 import cache from "../../cache.mjs";
 
 export default new LogEvent(
-    Events.MessageDelete,
+    Events.MessageUpdate,
     /**
      * 
      * @param {BloqbitClient} bot
