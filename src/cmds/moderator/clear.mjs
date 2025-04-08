@@ -81,7 +81,7 @@ export default {
         } else if (user) {
             const msgs = [];
 
-            (await interaction.channel?.messages?.fetch({ limit: 200 }))?.filter((m) => m.author?.id === user.id).forEach((mg) => {
+            (await interaction.channel?.messages?.fetch({ limit: 100 }))?.filter((m) => m.author?.id === user.id).forEach((mg) => {
                 if (msgs.length >= amount) {
                     msgs;
                 };
