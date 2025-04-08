@@ -66,6 +66,8 @@ export default class Bot {
                         if ('data' in command && 'execute' in command) {
                             botModel.commands.push(command.data.toJSON());
                             botModel.cmds.set(command.data.name, command);
+
+                            console.debug(`Loaded command /${command.data.name}`);
                         } else {
                             console.error(`The command at ${filePath} is missing a required "data" or "execute" property.`);
                             console.debug(command);

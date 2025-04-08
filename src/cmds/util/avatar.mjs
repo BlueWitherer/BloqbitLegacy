@@ -3,7 +3,7 @@ import { SaveData, Config } from '../../classes.mjs';
 import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("avatar")
         .setDescription("View a user's profile picture.")
