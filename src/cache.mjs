@@ -12,6 +12,7 @@ export default {
      * @returns {Array<Config>} Array of cache server settings
      */
     get: () => {
+        console.info(`[O] Getting cache...`);
         return cache;
     },
 
@@ -67,12 +68,12 @@ export default {
                     console.warn(`[II] Config object for server ${system.server} exists at index ${foundObj}, replacing...`);
 
                     cache[foundObj] = system;
-                    console.debug(`[O] Data for server ${cache[foundObj].server} updated.`);
+                    console.info(`[O] Data for server ${cache[foundObj].server} updated.`);
                 } else {
-                    console.info(`[II] Config object for ${system.server} not found, creating new object...`);
+                    console.debug(`[II] Config object for ${system.server} not found, creating new object...`);
 
                     const newSize = cache.push(system);
-                    console.debug(`[O] Data for server ${system.server} updated. Cache size ${newSize}.`);
+                    console.info(`[O] Data for server ${system.server} updated. Cache size ${newSize}.`);
                 };
 
                 const dbClient = new MongoDB.MongoClient(db.mongo_uri);
