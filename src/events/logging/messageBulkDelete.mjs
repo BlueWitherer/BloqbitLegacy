@@ -17,7 +17,7 @@ export default new LogEvent(
     async (bot, msgs, channel) => {
         const msg = msgs.first();
 
-        if (msg.guildId) {
+        if (msg.guild) {
             console.debug(`Handling bulk deleted message log event on guild of ID ${msg.guildId}...`);
             const system = fetch.fetchGuild(msg.guildId);
 

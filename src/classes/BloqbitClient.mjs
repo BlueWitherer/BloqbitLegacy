@@ -2,7 +2,7 @@ import SysAssets from '../assets.json' with { type: 'json' };
 
 import SaveDataClient from './SaveDataClient.mjs';
 
-import { Client, Collection, IntentsBitField, Partials } from 'discord.js';
+import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { REST } from '@discordjs/rest';
 
 /**
@@ -36,19 +36,19 @@ export default class BloqbitClient {
 
         this.client = new Client({
             intents: [
-                IntentsBitField.Flags.GuildExpressions,
-                IntentsBitField.Flags.GuildPresences,
-                IntentsBitField.Flags.GuildVoiceStates,
-                IntentsBitField.Flags.GuildIntegrations,
-                IntentsBitField.Flags.GuildMembers,
-                IntentsBitField.Flags.GuildWebhooks,
-                IntentsBitField.Flags.GuildModeration,
-                IntentsBitField.Flags.GuildMessageReactions,
-                IntentsBitField.Flags.GuildMessageTyping,
-                IntentsBitField.Flags.GuildMessages,
-                IntentsBitField.Flags.Guilds,
-                IntentsBitField.Flags.MessageContent,
-                IntentsBitField.Flags.DirectMessages,
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildExpressions,
+                GatewayIntentBits.GuildPresences,
+                GatewayIntentBits.GuildVoiceStates,
+                GatewayIntentBits.GuildIntegrations,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildWebhooks,
+                GatewayIntentBits.GuildModeration,
+                GatewayIntentBits.GuildMessageReactions,
+                GatewayIntentBits.GuildMessageTyping,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.MessageContent,
+                GatewayIntentBits.DirectMessages,
             ],
             partials: [
                 Partials.Channel,

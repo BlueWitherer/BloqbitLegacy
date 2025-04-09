@@ -15,7 +15,7 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, oldMsg, newMsg) => {
-        if (oldMsg.guildId && newMsg.guildId) {
+        if (oldMsg.guild && newMsg.guild) {
             console.debug(`Handling edited message log event on guild of ID ${newMsg.guildId || oldMsg.guildId}...`);
             const system = fetch.fetchGuild(newMsg.guildId || oldMsg.guildId);
 
