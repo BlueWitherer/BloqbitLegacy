@@ -13,6 +13,12 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, msg) => {
+        if (msg.partial) try {
+            msg = await msg.fetch(true);
+        } catch (err) {
+            console.error(err);
+        };
+
         if (msg.guild) {
             console.debug(`Handling deleted message log event on guild of ID ${msg.guildId}...`);
             const system = fetch.fetchGuild(msg.guildId);
@@ -70,7 +76,7 @@ export default new LogEvent(
 
             return;
         } else {
-            console.error(`Message not in a guild`);
+            console.error(`Message of ID ${msg.id} not in a guild`);
             return;
         };
     });

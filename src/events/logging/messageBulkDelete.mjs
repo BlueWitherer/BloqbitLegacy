@@ -46,7 +46,7 @@ export default new LogEvent(
 
             return;
         } else {
-            console.error(`Message not in a guild`);
+            console.error(`Message of ID ${msg.id} not in a guild`);
             return;
         };
     });

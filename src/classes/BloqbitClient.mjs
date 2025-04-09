@@ -54,9 +54,9 @@ export default class BloqbitClient {
                 Partials.Channel,
                 Partials.Message,
                 Partials.User,
+                Partials.Reaction,
                 Partials.GuildMember,
                 Partials.GuildScheduledEvent,
-                Partials.Reaction,
                 Partials.ThreadMember,
             ],
         });
