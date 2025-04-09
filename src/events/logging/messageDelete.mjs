@@ -13,7 +13,7 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, msg) => {
-        if (msg.inGuild().valueOf()) {
+        if (msg.guildId) {
             console.debug(`Handling deleted message log event on guild of ID ${msg.guildId}...`);
             const system = fetch.fetchGuild(msg.guildId);
 
