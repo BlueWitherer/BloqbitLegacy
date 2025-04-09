@@ -5,12 +5,16 @@ export class Roles {
         this.blacklist = blacklist;
         this.mute = mute;
         this.member = member;
+
+        return this;
     };
 };
 
 export class WelcomeMessage {
     constructor({ content = "" }) {
         this.content = content;
+
+        return this;
     };
 };
 
@@ -21,6 +25,8 @@ export class Welcome {
         this.channel = channel;
         this.webhook = webhook;
         this.message = message;
+
+        return this;
     };
 };
 
@@ -35,6 +41,8 @@ export class Filter {
         this.keywords = keywords;
         this.keywordsSuper = keywordsSuper;
         this.logs = logs;
+
+        return this;
     };
 };
 
@@ -43,6 +51,8 @@ export class Verification {
         this.enabled = enabled;
         this.channel = channel;
         this.logs = logs;
+
+        return this;
     };
 };
 
@@ -56,6 +66,8 @@ export class AntiRaid {
             timeThreshold: alts.timeThreshold,
         };
         this.logs = logs;
+
+        return this;
     };
 };
 
@@ -88,6 +100,8 @@ export class AutoMod {
         this.antialt = antialt;
         this.antichain = antichain;
         this.antiping = antiping;
+
+        return this;
     };
 };
 
@@ -138,6 +152,8 @@ export class LogsActions {
         this.channelDel = channelDel;
         this.channelUpd = channelUpd;
         this.channelAdd = channelAdd;
+
+        return this;
     };
 };
 
@@ -149,6 +165,8 @@ export class Logs {
         this.webhook = webhook;
         this.inbox = inbox;
         this.actions = actions;
+
+        return this;
     };
 };
 
@@ -164,6 +182,8 @@ export class Leveling {
         };
         this.levelMax = levelMax;
         this.levelRewarding = levelRewarding;
+
+        return this;
     };
 };
 
@@ -186,6 +206,8 @@ export class Economy {
             channels: drops.channels,
             filterMode: drops.filterMode,
         };
+
+        return this;
     };
 };
 
@@ -197,6 +219,8 @@ export class Cleverbot {
         this.roles = roles;
         this.filterMode = filterMode;
         this.permFilterMode = permFilterMode;
+
+        return this;
     };
 };
 
@@ -231,6 +255,8 @@ export default class Config {
         this.leveling = leveling;
         this.economy = economy;
         this.cleverbot = cleverbot;
+
+        return this;
     };
 
     toObject() {

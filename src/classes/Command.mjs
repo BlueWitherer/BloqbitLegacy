@@ -1,7 +1,8 @@
 import Discord, { ChatInputCommandInteraction } from 'discord.js';
 
 import SysAssets from '../assets.json' with { type: 'json' };
-import { Config, SaveDataClient } from 'classes.mjs';
+import SaveDataClient from './SaveDataClient.mjs';
+import Config from './Configuration.mjs';
 
 class Command {
     /**
