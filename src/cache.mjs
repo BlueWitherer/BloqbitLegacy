@@ -30,9 +30,9 @@ export default {
                 const found = cache.find((s) => s.server === server);
 
                 if (found) {
-                    console.info(`[O] Cache for server ${server} found ${found.toObject()}`);
+                    console.info(`[O] Cache for server ${found.server} found`);
 
-                    return found.toObject();
+                    return found;
                 } else {
                     console.error(`[X] Cached settings object for server ${server} not found`);
                     return;
