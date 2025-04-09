@@ -1,4 +1,4 @@
-import { Events, Message, EmbedBuilder, ReadonlyCollection, OmitPartialGroupDMChannel, PartialMessage } from "discord.js"
+import { Events, Message, EmbedBuilder } from "discord.js"
 
 import { BloqbitClient, LogEvent } from "../../classes.mjs"
 
@@ -9,38 +9,44 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {ReadonlyCollection<string, OmitPartialGroupDMChannel<Message<boolean> | PartialMessage>>} msgs
+     * @param {import('discord.js').ReadonlyCollection<import('discord.js').Snowflake, import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>>} msgs
+     * @param {import('discord.js').GuildTextBasedChannel} channel
      * 
      * @returns {Promise<void>}
      */
-    async (bot, msgs) => {
+    async (bot, msgs, channel) => {
         const msg = msgs.first();
 
-        console.debug(`Handling bulk deleted message log event on guild of ID ${msg.guildId}...`);
-        const system = fetch.fetchGuild(msg.guildId);
+        if (msg.inGuild().valueOf()) {
+            console.debug(`Handling bulk deleted message log event on guild of ID ${msg.guildId}...`);
+            const system = fetch.fetchGuild(msg.guildId);
 
-        if (system) {
-            if (system.logs.enabled && (system.logs.actions.msgBulkDel)) {
-                const emb = new EmbedBuilder({
-                    "title": `${bot.assets.icons.exclamation} | Messages Bulk Deleted`,
-                    "description": `**${msgs.size}** messages deleted.`,
-                    "color": bot.assets.colors.primary,
-                    "fields": [
-                        {
-                            "name": "Channel",
-                            "value": `<#${String(msg.channel?.id || msg.thread.id)}>`,
-                            "inline": true,
-                        },
-                    ],
-                }).data;
+            if (system) {
+                if (system.logs.enabled && (system.logs.actions.msgBulkDel)) {
+                    const emb = new EmbedBuilder({
+                        "title": `${bot.assets.icons.exclamation} | Messages Bulk Deleted`,
+                        "description": `**${msgs.size}** messages deleted.`,
+                        "color": bot.assets.colors.primary,
+                        "fields": [
+                            {
+                                "name": "Channel",
+                                "value": `<#${String(msg.channel?.id || msg.thread.id)}>`,
+                                "inline": true,
+                            },
+                        ],
+                    }).data;
 
-                await fetch.sendLog(bot, system, emb, msg.guild);
+                    await fetch.sendLog(bot, system, emb, msg.guild);
+                } else {
+                    console.error(`Logs for bulk-deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                };
             } else {
-                console.error(`Logs for bulk-deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                console.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
             };
-        } else {
-            console.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
-        };
 
-        return;
+            return;
+        } else {
+            console.error(`Message not in a guild`);
+            return;
+        };
     });

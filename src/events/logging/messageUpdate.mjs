@@ -9,74 +9,79 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {Message} oldMsg 
-     * @param {Message} newMsg 
+     * @param {import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>} oldMsg 
+     * @param {import('discord.js').OmitPartialGroupDMChannel<Message>} newMsg 
      * 
      * @returns {Promise<void>}
      */
     async (bot, oldMsg, newMsg) => {
-        console.debug(`Handling edited message log event on guild of ID ${newMsg.guildId || oldMsg.guildId}...`);
-        const system = fetch.fetchGuild(newMsg.guildId || oldMsg.guildId);
+        if (oldMsg.inGuild().valueOf() && newMsg.inGuild().valueOf()) {
+            console.debug(`Handling edited message log event on guild of ID ${newMsg.guildId || oldMsg.guildId}...`);
+            const system = fetch.fetchGuild(newMsg.guildId || oldMsg.guildId);
 
-        if (system) {
-            if (system.logs.enabled && (system.logs.actions.msgUpd)) {
-                const emb = new EmbedBuilder({
-                    "author": {
-                        "name": `${newMsg.author?.username}`,
-                        "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
-                    },
-                    "title": `${bot.assets.icons.exclamation} | Message Edited`,
-                    "color": bot.assets.colors.primary,
-                    "fields": [
-                        {
-                            "name": "Before",
-                            "value": oldMsg.content,
-                            "inline": false,
+            if (system) {
+                if (system.logs.enabled && (system.logs.actions.msgUpd)) {
+                    const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${newMsg.author?.username}`,
+                            "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
                         },
-                        {
-                            "name": "After",
-                            "value": newMsg.content,
-                            "inline": false,
+                        "title": `${bot.assets.icons.exclamation} | Message Edited`,
+                        "color": bot.assets.colors.primary,
+                        "fields": [
+                            {
+                                "name": "Before",
+                                "value": oldMsg.content,
+                                "inline": false,
+                            },
+                            {
+                                "name": "After",
+                                "value": newMsg.content,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Jump",
+                                "value": `[Proceed](${newMsg.url})`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Author",
+                                "value": `<@!${newMsg.author?.id}>`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Channel",
+                                "value": `<#${String(newMsg.channel?.id || newMsg.thread.id)}>`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Originally Sent",
+                                "value": `<t:${Math.floor(oldMsg.createdTimestamp / 1000)}:F> • <t:${Math.floor(oldMsg.createdTimestamp / 1000)}:R>`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Message ID",
+                                "value": newMsg.id,
+                                "inline": true,
+                            },
+                        ],
+                        "image": {
+                            "url": fetch.ifImage(oldMsg),
+                            "proxyURL": fetch.ifProxyImage(oldMsg),
                         },
-                        {
-                            "name": "Jump",
-                            "value": `[Proceed](${newMsg.url})`,
-                            "inline": false,
-                        },
-                        {
-                            "name": "Author",
-                            "value": `<@!${newMsg.author?.id}>`,
-                            "inline": true,
-                        },
-                        {
-                            "name": "Channel",
-                            "value": `<#${String(newMsg.channel?.id || newMsg.thread.id)}>`,
-                            "inline": true,
-                        },
-                        {
-                            "name": "Originally Sent",
-                            "value": `<t:${Math.floor(oldMsg.createdTimestamp / 1000)}:F> • <t:${Math.floor(oldMsg.createdTimestamp / 1000)}:R>`,
-                            "inline": true,
-                        },
-                        {
-                            "name": "Message ID",
-                            "value": newMsg.id,
-                            "inline": true,
-                        },
-                    ],
-                    "image": {
-                        "url": fetch.ifImage(oldMsg),
-                        "proxyURL": fetch.ifProxyImage(oldMsg),
-                    },
-                }).data;
+                    }).data;
 
-                await fetch.sendLog(bot, system, emb, newMsg.guild);
+                    await fetch.sendLog(bot, system, emb, newMsg.guild);
+                } else {
+                    console.error(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
+                };
             } else {
-                console.error(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
+                console.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);
             };
-        } else {
-            console.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);
-        };
 
-        return;
+            return;
+        } else {
+            console.error(`Message not in a guild`);
+            return;
+        };
     });

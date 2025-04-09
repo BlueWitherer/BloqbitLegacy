@@ -62,6 +62,7 @@ export default class Bot {
                             console.debug(`Loaded command /${command.data.name}`);
                         } catch (err) {
                             console.error(err);
+                            if (testMode) process.exit(1);
                         };
                     };
                 };
@@ -78,7 +79,8 @@ export default class Bot {
                         // @ts-ignore
                         console.log(`Successfully reloaded ${data.length} application (/) commands.`);
                     } catch (error) {
-                        return console.error(error);
+                        console.error(error);
+                        if (testMode) process.exit(1);
                     };
                 })();
             } catch (error) {
@@ -100,7 +102,8 @@ export default class Bot {
                                 try {
                                     return await event.execute(botModel, ...args);
                                 } catch (error) {
-                                    return console.error(error);
+                                    console.error(error);
+                                    if (testMode) process.exit(1);
                                 };
                             });
                         } else {
@@ -108,7 +111,8 @@ export default class Bot {
                                 try {
                                     return await event.execute(botModel, ...args);
                                 } catch (error) {
-                                    return console.error(error);
+                                    console.error(error);
+                                    if (testMode) process.exit(1);
                                 };
                             });
                         };
@@ -116,6 +120,7 @@ export default class Bot {
                         console.debug(`Loaded event listener for ${event.name}.`);
                     } catch (error) {
                         console.error(error);
+                        if (testMode) process.exit(1);
                     };
                 };
 
@@ -125,15 +130,19 @@ export default class Bot {
                     const clientGuilds = await botModel.client.guilds.fetch();
 
                     for (const inGuild of clientGuilds) {
-                        const inCache = fetch.fetchGuild(inGuild[1].id);
+                        try {
+                            const inCache = fetch.fetchGuild(inGuild[1].id);
 
-                        if (inCache) {
-                            console.log(inCache.server);
-                        } else {
-                            const thisGuild = await fetch.reviseGuild(botModel.db, inGuild[1].id);
+                            if (inCache) {
+                                console.log(inCache.server);
+                            } else {
+                                const thisGuild = await fetch.reviseGuild(botModel.db, inGuild[1].id);
 
-                            // @ts-ignore
-                            console.log(thisGuild.server);
+                                // @ts-ignore
+                                console.log(thisGuild.server);
+                            };
+                        } catch (err) {
+                            console.error(err);
                         };
                     };
                 };
