@@ -24,8 +24,18 @@ export default {
     fetch: (server) => {
         if (server) {
             if (cache.length) {
-                console.debug(`[I] Searching through cache for server of ID ${server}...`);
-                return cache.find((s) => s.server === server);
+                console.debug(`[I] Searching through cache of size ${cache.length} for server of ID ${server}...`);
+
+                const found = cache.find((s) => s.server === server);
+
+                if (found) {
+                    console.info(`[O] Cache for server ${server} found ${found}`);
+
+                    return found;
+                } else {
+                    console.error(`[X] Cached settings object for server ${server} not found`);
+                    return;
+                };
             } else {
                 console.error(`[X] Cached settings object not available.`);
                 return;

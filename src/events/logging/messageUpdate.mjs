@@ -74,9 +74,11 @@ export default new LogEvent(
                     await fetch.sendLog(bot, system, emb, newMsg.guild);
                 } else {
                     console.error(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
+                    return;
                 };
             } else {
                 console.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);
+                return;
             };
 
             return;
