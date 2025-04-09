@@ -221,7 +221,7 @@ export default {
      * @param {SaveDataClient} db Class of the bot's database
      * @param {string} server ID of the server
      * 
-     * @returns {Promise<Config>} SaveDataClient operation
+     * @returns {Promise<Config | void>} SaveDataClient operation
      */
     reviseGuild: async (db, server) => {
         if (server) {
@@ -305,46 +305,82 @@ export default {
     },
 
     /**
-     * Get the webhook for the logs channel, or create one if there isn't one
+     * Send a log to the server's configured logs channel
      * 
-     * @param {BloqbitClient} bot
+     * @param {BloqbitClient} bot 
      * @param {Config} system 
-     * @param {SaveDataClient} db 
-     * @param {Discord.TextChannel} chnl
+     * @param {Discord.APIEmbed} emb 
+     * @param {Discord.Guild} guild 
      * 
-     * @returns {Promise<Discord.WebhookClient | void>}
+     * @returns {Promise<void>}
      */
-    checkLogsWebhook: async (bot, system, db, chnl) => {
+    sendLog: async (bot, system, emb, guild) => {
+        const chnl = await guild.channels?.fetch(system.logs.channel);
+
         /**
-        * @type {Discord.WebhookClient}
-        */
-        let webClient;
+         * Get the webhook for the logs channel, or create one if there isn't one
+         * 
+         * @param {BloqbitClient} bot
+         * @param {Config} system 
+         * @param {SaveDataClient} db 
+         * @param {Discord.TextChannel} chnl
+         * 
+         * @returns {Promise<Discord.WebhookClient | void>}
+         */
+        const checkLogsWebhook = async (bot, system, db, chnl) => {
+            /**
+            * @type {Discord.WebhookClient}
+            */
+            let webClient;
 
-        if (system.logs.webhook) {
-            webClient = new Discord.WebhookClient({ "url": system.logs.webhook });
+            if (system.logs.webhook) {
+                webClient = new Discord.WebhookClient({ "url": system.logs.webhook });
 
-            console.debug(`Found logs webhook for channel #${chnl.name} (${chnl.id})`);
-        } else {
-            console.debug(`Logs webhook for channel #${chnl.name} (${chnl.id}) not found, creating...`);
+                console.debug(`Found logs webhook for channel #${chnl.name} (${chnl.id})`);
+            } else {
+                console.debug(`Logs webhook for channel #${chnl.name} (${chnl.id}) not found, creating...`);
 
-            const newWeb = await chnl.createWebhook({
-                "name": "Bloqbit",
-                "avatar": bot.client.user.displayAvatarURL({
-                    "size": 1024,
-                    "extension": "jpg",
-                    "forceStatic": true,
-                }),
-                "reason": `Webhooks enabled for logs, webhook not found. Creating...`,
-            });
+                const newWeb = await chnl.createWebhook({
+                    "name": "Bloqbit",
+                    "avatar": bot.client.user.displayAvatarURL({
+                        "size": 1024,
+                        "extension": "jpg",
+                        "forceStatic": true,
+                    }),
+                    "reason": `Webhooks enabled for logs, webhook not found. Creating...`,
+                });
 
-            system.logs.webhook = newWeb.url;
-            await cacheModule.update(system, db);
+                system.logs.webhook = newWeb.url;
+                await cacheModule.update(system, db);
 
-            webClient = new Discord.WebhookClient({ "url": system.logs.webhook });
+                webClient = new Discord.WebhookClient({ "url": system.logs.webhook });
 
-            console.debug(`Created logs webhook for channel #${chnl.name} (${chnl.id}) and updated save data`);
+                console.debug(`Created logs webhook for channel #${chnl.name} (${chnl.id}) and updated save data`);
+            };
+
+            return webClient;
         };
 
-        return webClient;
+        if (chnl.type === Discord.ChannelType.GuildText) {
+            if (system.logs.webhookEnabled) {
+                const webClient = await checkLogsWebhook(bot, system, bot.db, chnl);
+
+                if (webClient) {
+                    await webClient.send({
+                        "content": "",
+                        "embeds": [emb],
+                    });
+                } else {
+                    console.error(`Failed to create logs webhook for guild '${guild?.name}' (${guild?.id})`)
+                };
+            } else {
+                await chnl.send({
+                    "content": "",
+                    "embeds": [emb],
+                });
+            };
+        } else {
+            console.error(`Logs channel #${chnl.name} (${chnl.id}) of guild ${guild.name} (${guild.id}) is not correct type`);
+        };
     },
 };

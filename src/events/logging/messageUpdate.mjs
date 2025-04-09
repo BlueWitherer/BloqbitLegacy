@@ -15,14 +15,11 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, oldMsg, newMsg) => {
-        const system = fetch.fetchGuild(oldMsg.guild?.id || newMsg.guild?.id);
+        console.debug(`Handling edited message log event on guild of ID ${newMsg.guildId || oldMsg.guildId}...`);
+        const system = fetch.fetchGuild(newMsg.guildId || oldMsg.guildId);
 
         if (system) {
             if (system.logs.enabled && (system.logs.actions.msgUpd)) {
-                /**
-                 * @type {TextChannel} Configured log channel for this server
-                 */
-                const chnl = await newMsg.guild?.channels.fetch(system.logs.channel);
                 const emb = new EmbedBuilder({
                     "author": {
                         "name": `${newMsg.author?.username}`,
@@ -68,30 +65,14 @@ export default new LogEvent(
                         },
                     ],
                     "image": {
-                        "url": img,
-                        "proxyURL": ifProxyImage(oldMsg),
+                        "url": fetch.ifImage(oldMsg),
+                        "proxyURL": fetch.ifProxyImage(oldMsg),
                     },
                 }).data;
 
-                if (system.logs.webhookEnabled) {
-                    const webClient = await fetch.checkLogsWebhook(bot, system, bot.db, chnl);
-
-                    if (webClient) {
-                        await webClient.send({
-                            "content": "",
-                            "embeds": [emb],
-                        });
-                    } else {
-                        console.error(`Failed to create logs webhook for guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`)
-                    };
-                } else {
-                    await chnl.send({
-                        "content": "",
-                        "embeds": [emb],
-                    });
-                };
+                await fetch.sendLog(bot, system, emb, newMsg.guild);
             } else {
-                console.error(`Logs for deleted messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
+                console.error(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
             };
         } else {
             console.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);

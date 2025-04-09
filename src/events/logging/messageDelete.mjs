@@ -14,8 +14,8 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, msg) => {
-        console.debug(`Handling deleted message log event on guild of ID ${msg.guild?.id}...`)
-        const system = fetch.fetchGuild(msg.guild?.id);
+        console.debug(`Handling deleted message log event on guild of ID ${msg.guildId}...`);
+        const system = fetch.fetchGuild(msg.guildId);
 
         if (system) {
             if (system.logs.enabled && (system.logs.actions.msgDel)) {
@@ -64,23 +64,7 @@ export default new LogEvent(
                     },
                 }).data;
 
-                if (system.logs.webhookEnabled) {
-                    const webClient = await fetch.checkLogsWebhook(bot, system, bot.db, chnl);
-
-                    if (webClient) {
-                        await webClient.send({
-                            "content": "",
-                            "embeds": [emb],
-                        });
-                    } else {
-                        console.error(`Failed to create logs webhook for guild '${msg.guild?.name}' (${msg.guild?.id})`)
-                    };
-                } else {
-                    await chnl.send({
-                        "content": "",
-                        "embeds": [emb],
-                    });
-                };
+                await fetch.sendLog(bot, system, emb, msg.guild);
             } else {
                 console.error(`Logs for deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
             };
