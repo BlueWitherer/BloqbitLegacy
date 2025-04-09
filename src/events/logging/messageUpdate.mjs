@@ -1,4 +1,4 @@
-import { Events, Message, TextChannel, EmbedBuilder } from "discord.js"
+import { Events, Message, EmbedBuilder } from "discord.js"
 
 import { BloqbitClient, LogEvent } from "../../classes.mjs"
 
@@ -30,12 +30,12 @@ export default new LogEvent(
                     "fields": [
                         {
                             "name": "Before",
-                            "value": oldMsg.cleanContent,
+                            "value": oldMsg.content,
                             "inline": false,
                         },
                         {
                             "name": "After",
-                            "value": newMsg.cleanContent,
+                            "value": newMsg.content,
                             "inline": false,
                         },
                         {
@@ -79,5 +79,4 @@ export default new LogEvent(
         };
 
         return;
-    },
-);
+    });

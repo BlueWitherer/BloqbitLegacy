@@ -1,4 +1,4 @@
-import { BloqbitClient, LogEvent, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
+import { BloqbitClient, Command, Config, LogEvent, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
 
 import fs from 'node:fs';
 import path from 'path';
@@ -50,17 +50,16 @@ export default class Bot {
                     for (const file of commandFiles) {
                         try {
                             const filePath = path.join(commandsPath, file);
+
+                            /**
+                             * @type {Command}
+                             */
                             const command = (await import(url.pathToFileURL(filePath).href)).default;
 
-                            if ('data' in command && 'execute' in command) {
-                                botModel.commands.push(command.data.toJSON());
-                                botModel.cmds.set(command.data.name, command);
+                            botModel.commands.push(command.data.toJSON());
+                            botModel.cmds.set(command.data.name, command);
 
-                                console.debug(`Loaded command /${command.data.name}`);
-                            } else {
-                                console.error(`The command at ${filePath} is missing a required "data" or "execute" property.`);
-                                console.debug(command);
-                            };
+                            console.debug(`Loaded command /${command.data.name}`);
                         } catch (err) {
                             console.error(err);
                         };
@@ -133,7 +132,8 @@ export default class Bot {
                         } else {
                             const thisGuild = await fetch.reviseGuild(botModel.db, inGuild[1].id);
 
-                            console.log(thisGuild?.server);
+                            // @ts-ignore
+                            console.log(thisGuild.server);
                         };
                     };
                 };

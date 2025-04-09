@@ -1,11 +1,10 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { Command } from '../../classes.mjs';
+import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 
-export default {
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("say")
         .setDescription("Send a message in a channel.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
@@ -21,16 +20,7 @@ export default {
             .addChannelTypes([ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildAnnouncement, ChannelType.GuildStageVoice])
             .setRequired(false))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const channel = interaction.options?.getChannel("channel");
         const message = interaction.options?.getString("message");
 
@@ -92,5 +82,4 @@ export default {
 
             return;
         };
-    },
-};
+    });

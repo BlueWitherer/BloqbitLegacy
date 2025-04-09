@@ -1,4 +1,4 @@
-import { Events, Message, TextChannel, EmbedBuilder, ReadonlyCollection, OmitPartialGroupDMChannel, PartialMessage } from "discord.js"
+import { Events, Message, EmbedBuilder, ReadonlyCollection, OmitPartialGroupDMChannel, PartialMessage } from "discord.js"
 
 import { BloqbitClient, LogEvent } from "../../classes.mjs"
 
@@ -21,14 +21,10 @@ export default new LogEvent(
 
         if (system) {
             if (system.logs.enabled && (system.logs.actions.msgBulkDel)) {
-                /**
-                 * @type {TextChannel} Configured log channel for this server
-                 */
-                const chnl = await msg.guild?.channels.fetch(system.logs.channel);
                 const emb = new EmbedBuilder({
-                    "title": `${assets.icons.exclamation} | Messages Bulk Deleted`,
+                    "title": `${bot.assets.icons.exclamation} | Messages Bulk Deleted`,
                     "description": `**${msgs.size}** messages deleted.`,
-                    "color": assets.colors.primary,
+                    "color": bot.assets.colors.primary,
                     "fields": [
                         {
                             "name": "Channel",
@@ -47,5 +43,4 @@ export default new LogEvent(
         };
 
         return;
-    },
-);
+    });

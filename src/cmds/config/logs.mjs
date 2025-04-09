@@ -1,16 +1,13 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, ServerLogEventType, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { ServerLogEventType, Command } from '../../classes.mjs';
+import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.mjs';
 import resolve from '../../modules/resolve.mjs';
 import cache from '../../cache.mjs';
 
-export default {
-    premium: false,
-    cooldown: 0,
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("logs")
         .setDescription("Set up server logs.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
@@ -114,16 +111,7 @@ export default {
                 .setDescription("Toggle detection of this action.")
                 .setRequired(true)))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const subCmd = interaction.options?.getSubcommand(true);
 
         const configCmd = async () => {
@@ -285,5 +273,4 @@ export default {
                 await fetch.commandErrorResponse(interaction, assets);
                 break;
         };
-    },
-};
+    });

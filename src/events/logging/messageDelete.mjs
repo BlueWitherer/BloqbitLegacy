@@ -1,4 +1,4 @@
-import { Events, Message, TextChannel, EmbedBuilder } from "discord.js"
+import { Events, Message, EmbedBuilder } from "discord.js"
 
 import { BloqbitClient, LogEvent } from "../../classes.mjs"
 
@@ -19,10 +19,6 @@ export default new LogEvent(
 
         if (system) {
             if (system.logs.enabled && (system.logs.actions.msgDel)) {
-                /**
-                 * @type {TextChannel} Configured log channel for this server
-                 */
-                const chnl = await msg.guild?.channels.fetch(system.logs.channel);
                 const emb = new EmbedBuilder({
                     "author": {
                         "name": `${msg.author?.username}`,
@@ -73,5 +69,4 @@ export default new LogEvent(
         };
 
         return;
-    },
-);
+    });

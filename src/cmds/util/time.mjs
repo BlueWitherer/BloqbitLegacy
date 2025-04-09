@@ -1,10 +1,9 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { Command } from '../../classes.mjs';
+import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
-export default {
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("time")
         .setDescription("View a timestamp.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
@@ -14,16 +13,7 @@ export default {
             .setName("time")
             .setDescription("The unix timestamp to view.")
             .setRequired(false)),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const customUnixDate = interaction.options?.getNumber("time");
 
         var getUnixDate = Math.floor(new Date().getTime() / 1000);
@@ -102,5 +92,4 @@ export default {
 
             return;
         };
-    },
-};
+    });

@@ -1,15 +1,13 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, MessageFilterMode, ModeratorActionType, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { MessageFilterMode, ModeratorActionType, Command } from '../../classes.mjs';
+import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.mjs';
 import resolve from '../../modules/resolve.mjs';
 import cache from '../../cache.mjs';
 
-export default {
-    premium: false,
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("automod")
         .setDescription("Configure auto-moderator settings to your server's needs.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
@@ -261,16 +259,7 @@ export default {
                     },
                 )))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const subCmd = interaction.options?.getSubcommand(true);
 
         const toggleCmd = async () => {
@@ -977,5 +966,4 @@ export default {
         };
 
         return;
-    },
-};
+    });

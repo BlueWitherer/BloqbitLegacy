@@ -1,12 +1,10 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { Command } from '../../classes.mjs';
+import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
-export default {
-    premium: true,
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("soft-ban")
         .setDescription("Softban a user.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
@@ -15,16 +13,7 @@ export default {
         .addUserOption(option => option.setName("user").setDescription("User to softban.").setRequired(true))
         .addStringOption(option => option.setName("reason").setDescription("Reason for softban.").setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const banreason = interaction.options?.getString("reason");
         const User = interaction.options?.getUser("user");
         const Member = interaction.options?.getMember("user");
@@ -119,5 +108,4 @@ export default {
                 return;
             });
         });
-    },
-};
+    });

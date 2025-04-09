@@ -1,29 +1,18 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { Command } from '../../classes.mjs';
+import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.mjs';
 
-export default {
-    premium: false,
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("reload")
         .setDescription("Refresh the server's save data.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const registered = fetch.fetchGuild(interaction.guild?.id);
 
         if (registered) {
@@ -76,5 +65,4 @@ export default {
                 console.error(err);
             };
         };
-    },
-};
+    });

@@ -5,7 +5,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
-    premium: true,
+    
     data: new SlashCommandBuilder()
         .setName("clear")
         .setDescription("Clear amount of messages in channel.")

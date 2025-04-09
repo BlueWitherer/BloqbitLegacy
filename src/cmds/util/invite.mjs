@@ -1,11 +1,10 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { Command } from '../../classes.mjs';
+import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 
-export default {
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("invite")
         .setDescription("Create a permanent invite for this server.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
@@ -16,16 +15,7 @@ export default {
             .setDescription("Channel to create the invite in.")
             .addChannelTypes([ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildStageVoice, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.GuildMedia]))
         .setDefaultMemberPermissions(PermissionFlagsBits.CreateInstantInvite),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const channel = interaction.options?.getChannel("channel", false);
 
         let invite = null;
@@ -69,5 +59,4 @@ export default {
 
             return;
         };
-    },
-};
+    });

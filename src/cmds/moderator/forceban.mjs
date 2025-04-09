@@ -5,7 +5,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
-    premium: true,
+    
     data: new SlashCommandBuilder()
         .setName("force-ban")
         .setDescription("Ban a user outside of the server using their ID.")
