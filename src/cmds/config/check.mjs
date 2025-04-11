@@ -90,7 +90,7 @@ export default new Command(
                 if (thisFilter.roles?.length) {
                     fields.push({
                         "name": "Roles",
-                        "value": `<#${thisFilter.roles.join(">,<#")}>`,
+                        "value": `<@&${thisFilter.roles.join(">,<#")}>`,
                         "inline": false,
                     },);
                 };

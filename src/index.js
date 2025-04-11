@@ -89,6 +89,33 @@ export default class Bot {
             };
 
             try {
+                const logsPath = path.join(__dirname, 'events/logging');
+                const logEventFiles = fs.readdirSync(logsPath).filter(file => file.endsWith('.mjs'));
+
+                for (const file of logEventFiles) {
+                    try {
+                        const filePath = path.join(logsPath, file);
+
+                        /**
+                         * @type {LogEvent}
+                         */
+                        const logEvent = (await import(url.pathToFileURL(filePath).href)).default;
+
+                        client.on(logEvent.event.toString(), (...args) => {
+                            logEvent.execute(botModel, botModel.db, ...args);
+                        });
+
+                        console.log(`Log event loaded: ${logEvent.event.toString()}`);
+                    } catch (err) {
+                        console.error(err);
+                    };
+                };
+            } catch (err) {
+                console.error(err);
+                process.exit(1);
+            };
+
+            try {
                 const eventsPath = path.join(__dirname, 'events');
                 const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith('.mjs'));
 
@@ -172,33 +199,6 @@ export default class Bot {
 
                 botModel.online = true;
                 console.log(`Bot user ${client.user?.username} is online.`);
-            } catch (err) {
-                console.error(err);
-                process.exit(1);
-            };
-
-            try {
-                const logsPath = path.join(__dirname, 'events/logging');
-                const logEventFiles = fs.readdirSync(logsPath).filter(file => file.endsWith('.mjs'));
-
-                for (const file of logEventFiles) {
-                    try {
-                        const filePath = path.join(logsPath, file);
-
-                        /**
-                         * @type {LogEvent}
-                         */
-                        const logEvent = (await import(url.pathToFileURL(filePath).href)).default;
-
-                        client.on(logEvent.event.toString(), (...args) => {
-                            logEvent.execute(botModel, botModel.db, ...args);
-                        });
-
-                        console.log(`Log event loaded: ${logEvent.event.toString()}`);
-                    } catch (err) {
-                        console.error(err);
-                    };
-                };
             } catch (err) {
                 console.error(err);
                 process.exit(1);
