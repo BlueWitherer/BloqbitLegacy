@@ -5,8 +5,10 @@ import path from 'path';
 import url from 'url';
 import fetch from './modules/fetch.mjs';
 
-import { Events, ActivityType, PresenceUpdateStatus, WebhookClient } from 'discord.js';
+import { Events, ActivityType, PresenceUpdateStatus, WebhookClient, Guild } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
+
+import Guilded from 'guilded.js';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,7 +27,7 @@ export default class Bot {
      * @returns {Promise<BloqbitClient>}
      */
     activate = async (botModel, testMode) => {
-        botModel.client.on(Events.ClientReady, async (client) => {
+        botModel.client?.on(Events.ClientReady, async (client) => {
             client.user?.setPresence({
                 "activities": [
                     {
@@ -249,11 +251,32 @@ export default class Bot {
                     "status": PresenceUpdateStatus.Online,
                 });
 
-                console.info("Done");
+                console.info(`Client ${client.user?.displayName} online`);
             };
         });
 
-        await botModel.client?.login(botModel.token);
+        botModel.clientGil?.on("ready", () => {
+            if (testMode) {
+                botModel.clientGil?.disconnect();
+                process.exit(0);
+            } else {
+                botModel.clientGil?.setStatus({
+                    content: "Hello, Guilded!",
+                    emoteId: 47,
+                    expiresAt: null,
+                });
+
+                console.info(`Guilded client ${botModel.clientGil?.user?.name} online`);
+            };
+        });
+
+        try {
+            await botModel.client?.login(botModel.token);
+            botModel.clientGil?.login();
+        } catch (err) {
+            console.error(err);
+        };
+
         return botModel;
     };
 };

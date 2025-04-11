@@ -16,7 +16,7 @@ import Bot from './src/index.js';
 
 dotenv.config();
 
-const botModel = new BloqbitClient(process.env.PUBLIC_TOKEN, process.env.PUBLIC_TOKEN, process.env.LOG_WH, process.env.MONGO_URI);
+const botModel = new BloqbitClient(process.env.PUBLIC_TOKEN, process.env.PUBLIC_TOKEN, process.env.LOG_WH, process.env.MONGO_URI, process.env.PUBLIC_GUILDED_TOKEN);
 botModel.rest.setToken(process.env.PUBLIC_TOKEN);
 
 // Get the port from the environment or default to 3000

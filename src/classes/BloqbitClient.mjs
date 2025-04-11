@@ -5,6 +5,8 @@ import SaveDataClient from './SaveDataClient.mjs';
 import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { REST } from '@discordjs/rest';
 
+import Guilded from 'guilded.js';
+
 /**
  * @class Bot model.
  */
@@ -15,8 +17,9 @@ export default class BloqbitClient {
      * @param {string} secret Application secret
      * @param {string} web Developer log webhook URL
      * @param {string} db MongoDB database URI
+     * @param {string} gil Guilded bot token
      */
-    constructor(token, secret, web, db) {
+    constructor(token, secret, web, db, gil) {
         this.online = false;
 
         this.token = token;
@@ -59,6 +62,29 @@ export default class BloqbitClient {
                 Partials.GuildScheduledEvent,
                 Partials.ThreadMember,
             ],
+        });
+
+        this.clientGil = new Guilded.Client({
+            token: gil,
+
+            cache: {
+                cacheCalendars: true,
+                cacheCalendarsRsvps: true,
+                cacheChannels: true,
+                cacheForumTopics: true,
+                cacheMemberBans: true,
+                cacheMessageReactions: true,
+                cacheMessages: true,
+                cacheServers: true,
+                cacheSocialLinks: true,
+                cacheWebhooks: true,
+                fetchMessageAuthorOnCreate: true,
+                removeCalendarRsvpOnDelete: true,
+                removeCalendarsOnDelete: true,
+                removeChannelOnDelete: true,
+                removeMemberBanOnUnban: true,
+                removeMemberOnLeave: true,
+            },
         });
 
         return this;
