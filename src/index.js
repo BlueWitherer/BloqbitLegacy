@@ -229,8 +229,6 @@ export default class Bot {
                 console.error(err);
             };
 
-            console.info("Done");
-
             if (testMode) {
                 console.warn("Test mode active.");
                 console.debug("All bot start-up operations successful. No fatal errors detected. Logging off...");
@@ -250,6 +248,8 @@ export default class Bot {
                     "afk": false,
                     "status": PresenceUpdateStatus.Online,
                 });
+
+                console.info("Done");
             };
         });
 

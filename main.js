@@ -31,18 +31,20 @@ const server = http.createServer((req, res) => {
 const start = async () => {
     try {
         const src = new Bot();
+        const bot = await src.activate(botModel, false);
 
         server.listen(PORT, () => {
             console.info(`Server is running on port ${PORT}`);
         });
 
-        // Handle graceful shutdown signals (e.g., SIGINT, SIGTERM)
         process.on('SIGINT', async () => {
             console.info('Received SIGINT. Shutting down gracefully...');
 
             server.close(() => {
                 console.info('Server has been stopped.');
-                process.exit(0); // Exit with success code
+
+                bot.client.destroy();
+                process.exit(0);
             });
         });
 
@@ -51,14 +53,14 @@ const start = async () => {
 
             server.close(() => {
                 console.info('Server has been stopped.');
-                process.exit(0); // Exit with success code
+
+                bot.client.destroy();
+                process.exit(0);
             });
         });
-
-        return await src.activate(botModel, false);
     } catch (err) {
         console.error(`Failed to start the server - ${err}`);
-        process.exit(1); // Exit with error code
+        process.exit(1);
     };
 };
 

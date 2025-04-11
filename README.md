@@ -18,10 +18,6 @@ The all-in-one solution for your Discord server.
 | Birthdays       | ⛔ Not Developed      | `--%`     |
 | Cleverbot       | ⛔ Not Developed      | `--%`     |
 
-### Developers
-###### This program is developed and maintained by members and collaborators of the [<img src="https://i.imgur.com/aHMYUwn.png" width="15" alt="Bloqbit logo" /> Bloqbit](https://bloqbit.cubicstudios.xyz/) team.
-**[<img src="https://i.imgur.com/wf90fS7.jpeg" width="15" style="border-radius: 100%;" alt="Cheeseworks" /> Cheeseworks](https://www.github.com/BlueWitherer/)**
-
 ### Credits
 ###### This program received logistical contributions to assist in development and operations.
 **[<img src="https://i.imgur.com/E1E3fNJ.jpeg" width="15" style="border-radius: 100%;" alt="ArcticWoof" /> ArcticWoof](https://www.github.com/DumbCaveSpider/)** - *Beta testing server*
@@ -33,3 +29,6 @@ The all-in-one solution for your Discord server.
 ### Issues
 ###### What's wrong?!
 **[⚠️ Report a problem with the bot](../../issues/)**
+
+### Developers
+###### This program is developed and maintained by **[Cubic Studios](https://www.cubicstudios.xyz/)**, and members and collaborators of the [<img src="https://i.imgur.com/aHMYUwn.png" width="15" alt="Bloqbit logo" /> Bloqbit](https://bloqbit.cubicstudios.xyz/) team.
