@@ -66,7 +66,6 @@ export default class BloqbitClient {
 
         this.clientGil = new Guilded.Client({
             token: gil,
-
             cache: {
                 cacheCalendars: true,
                 cacheCalendarsRsvps: true,
