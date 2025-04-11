@@ -86,6 +86,8 @@ export default class BloqbitClient {
             },
         });
 
+        this.rest.setToken(token);
+
         return this;
     };
 };
