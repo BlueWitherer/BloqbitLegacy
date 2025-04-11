@@ -26,8 +26,8 @@ const start = async () => {
 (async () => {
     try {
         await start();
-    } catch (error) {
-        return console.error(error);
+    } catch (err) {
+        return console.error(err);
     } finally {
         return;
     };

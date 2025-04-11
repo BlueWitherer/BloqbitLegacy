@@ -342,7 +342,7 @@ export default {
 
                 const newWeb = await chnl.createWebhook({
                     "name": "Bloqbit",
-                    "avatar": bot.client.user.displayAvatarURL({
+                    "avatar": bot.client.user?.displayAvatarURL({
                         "size": 1024,
                         "extension": "jpg",
                         "forceStatic": true,

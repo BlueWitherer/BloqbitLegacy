@@ -2,7 +2,7 @@ import { Command } from '../../classes.mjs';
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
-export default new Command (
+export default new Command(
     new SlashCommandBuilder()
         .setName("avatar")
         .setDescription("View a user's profile picture.")
@@ -29,7 +29,7 @@ export default new Command (
                         "title": `${assets.icons.info} | ${User.username}'s Avatar`,
                         "color": assets.colors.primary,
                         "image": {
-                            "url": `${Member.avatar}`,
+                            "url": `${Member.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
                             "width": 1024,
                             "height": 1024,
                         },
@@ -55,7 +55,7 @@ export default new Command (
                         "title": `${assets.icons.info} | ${interaction.user?.username}'s Avatar`,
                         "color": assets.colors.primary,
                         "image": {
-                            "url": `${interaction.member?.avatar}`,
+                            "url": `${interaction.member?.avatarURL({ "forceStatic": false, size: 1024 })}`,
                             "width": 1024,
                             "height": 1024,
                         },
