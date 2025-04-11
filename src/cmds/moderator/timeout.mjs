@@ -63,7 +63,7 @@ export default new Command(
 
             const duration = Math.floor(cooldown * time);
 
-            var date = Date.now();
+            let date = Date.now();
             const until = Math.floor((date / 1000) + (duration / 1000));
 
             let type = "seconds";

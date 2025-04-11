@@ -1,4 +1,4 @@
-import { BloqbitClient, Command, Config, LogEvent, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
+import { BloqbitClient, Command, LogEvent, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
 
 import fs from 'node:fs';
 import path from 'path';

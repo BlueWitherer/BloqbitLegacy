@@ -1,4 +1,3 @@
-import cache from '../cache.mjs';
 import BloqbitClient from '../classes/BloqbitClient.mjs';
 import { Events, Message, ChannelType, WebhookClient } from 'discord.js';
 

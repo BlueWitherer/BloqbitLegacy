@@ -16,8 +16,8 @@ export default new Command(
     async (interaction, assets, system, db) => {
         const customUnixDate = interaction.options?.getNumber("time");
 
-        var getUnixDate = Math.floor(new Date().getTime() / 1000);
-        var localDateString = String(new Date().toLocaleDateString() + `, ` + new Date().toLocaleTimeString());
+        let getUnixDate = Math.floor(new Date().getTime() / 1000);
+        let localDateString = String(new Date().toLocaleDateString() + `, ` + new Date().toLocaleTimeString());
 
         if (customUnixDate) {
             await interaction.reply({

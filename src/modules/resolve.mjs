@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import cacheModule from '../cache.mjs';
 import { ModeratorActionType, MessageFilterMode, Config } from "../classes.mjs";
 
 export default {

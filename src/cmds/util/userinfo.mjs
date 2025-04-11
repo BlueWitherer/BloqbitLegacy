@@ -20,8 +20,8 @@ export default new Command(
 
         if (!MemberPermissions) MemberPermissions = 'None'
 
-        var joinedAt = Math.floor(Member.joinedTimestamp / 1000);
-        var createdAt = Math.floor(Member.user?.createdTimestamp / 1000);
+        let joinedAt = Math.floor(Member.joinedTimestamp / 1000);
+        let createdAt = Math.floor(Member.user?.createdTimestamp / 1000);
 
         if (Member) {
             if (Member.user?.bot) {
@@ -144,8 +144,8 @@ export default new Command(
                 return;
             };
         } else {
-            var joinedAtU = Math.floor(interaction.member?.joinedTimestamp / 1000);
-            var createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
+            let joinedAtU = Math.floor(interaction.member?.joinedTimestamp / 1000);
+            let createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
 
             await interaction.reply({
                 "content": null,

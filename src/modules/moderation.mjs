@@ -2,7 +2,7 @@ import Discord from 'discord.js';
 
 import resolve from './resolve.mjs';
 
-import { ModeratorActionType, MessageFilterClass, BotCommandCategory, Config } from '../classes.mjs';
+import { ModeratorActionType, Config } from '../classes.mjs';
 
 /**
  * @type {Map<String, Array<String>>} User ID, array of message IDs

@@ -28,7 +28,7 @@ export default new Command(
             data.push('<:badge_verifiedpartnered:824329742597226608> ');
         };
 
-        var createdAt = Math.floor(interaction.guild?.createdTimestamp / 1000);
+        let createdAt = Math.floor(interaction.guild?.createdTimestamp / 1000);
 
         const owner = await interaction.guild?.fetchOwner();
 
