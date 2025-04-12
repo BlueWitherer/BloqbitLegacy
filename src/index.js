@@ -5,10 +5,8 @@ import path from 'path';
 import url from 'url';
 import fetch from './modules/fetch.mjs';
 
-import { Events, ActivityType, PresenceUpdateStatus, WebhookClient, Guild } from 'discord.js';
+import { Events, ActivityType, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
-
-import Guilded from 'guilded.js';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,6 +56,7 @@ export default class Bot {
                              */
                             const command = (await import(url.pathToFileURL(filePath).href)).default;
 
+                            // @ts-ignore
                             botModel.commands.push(command.data.toJSON());
                             botModel.cmds.set(command.data.name, command);
 
