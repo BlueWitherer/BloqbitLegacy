@@ -8,6 +8,8 @@ import fetch from './modules/fetch.mjs';
 import { Events, ActivityType, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
 
+import Guilded from 'guilded.js';
+
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -254,6 +256,28 @@ export default class Bot {
             };
         });
 
+        botModel.clientGil = new Guilded.Client({
+            "token": process.env.PUBLIC_GUILDED_TOKEN || process.env.TEST_GUILDED_TOKEN,
+            "cache": {
+                cacheCalendars: true,
+                cacheCalendarsRsvps: true,
+                cacheChannels: true,
+                cacheForumTopics: true,
+                cacheMemberBans: true,
+                cacheMessageReactions: true,
+                cacheMessages: true,
+                cacheServers: true,
+                cacheSocialLinks: true,
+                cacheWebhooks: true,
+                fetchMessageAuthorOnCreate: true,
+                removeCalendarRsvpOnDelete: true,
+                removeCalendarsOnDelete: true,
+                removeChannelOnDelete: true,
+                removeMemberBanOnUnban: true,
+                removeMemberOnLeave: true,
+            },
+        });
+
         botModel.clientGil?.on("ready", () => {
             if (testMode) {
                 botModel.clientGil?.disconnect();
@@ -274,6 +298,7 @@ export default class Bot {
             botModel.clientGil?.login();
         } catch (err) {
             console.error(err);
+            if (testMode) process.exit(1);
         };
 
         return botModel;

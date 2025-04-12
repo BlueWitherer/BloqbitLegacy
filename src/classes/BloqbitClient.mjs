@@ -7,7 +7,7 @@ import { REST } from '@discordjs/rest';
 
 import Guilded from 'guilded.js';
 
-import { Command } from 'classes.mjs';
+import { Command } from '../classes.mjs';
 
 /**
  * @class Bot model.
