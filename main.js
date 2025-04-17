@@ -6,6 +6,8 @@ process.on('unhandledRejection', (reason) => {
     console.error('Unhandled Rejection:', reason);
 });
 
+import "./console.mjs";
+
 console.log('Starting up system...');
 
 import http from 'http';

@@ -277,7 +277,7 @@ export default class Bot {
         } finally {
             if (testMode) {
                 console.warn("Test mode active.");
-                console.debug("All bot start-up operations successful. No fatal errors detected. Logging off...");
+                console.info("All bot start-up operations successful. No fatal errors detected. Logging off...");
 
                 process.exit(0);
             };
