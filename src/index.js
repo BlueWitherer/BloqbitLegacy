@@ -271,14 +271,16 @@ export default class Bot {
             // botModel.clientGil?.login({
             //     "fresh": true,
             // });
-
-            console.warn("Test mode active.");
-            console.debug("All bot start-up operations successful. No fatal errors detected. Logging off...");
-
-            if (testMode) process.exit(0);
         } catch (err) {
             console.error(err);
             if (testMode) process.exit(1);
+        } finally {
+            if (testMode) {
+                console.warn("Test mode active.");
+                console.debug("All bot start-up operations successful. No fatal errors detected. Logging off...");
+
+                process.exit(0);
+            };
         };
 
         return botModel;
