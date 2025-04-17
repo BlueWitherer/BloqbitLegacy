@@ -1,6 +1,6 @@
 import "./console.mjs";
 
-console.log('Testing system...');
+console.debug('Testing system...');
 
 import dotenv from 'dotenv';
 

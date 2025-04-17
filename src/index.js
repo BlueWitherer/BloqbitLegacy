@@ -27,6 +27,8 @@ export default class Bot {
      * @returns {Promise<BloqbitClient>}
      */
     activate = async (botModel, testMode) => {
+        if (testMode) console.warn("Test mode active.");
+
         botModel.client?.on(Events.ClientReady, async (client) => {
             client.user?.setPresence({
                 "activities": [
@@ -276,10 +278,11 @@ export default class Bot {
             if (testMode) process.exit(1);
         } finally {
             if (testMode) {
-                console.warn("Test mode active.");
                 console.info("All bot start-up operations successful. No fatal errors detected. Logging off...");
 
                 process.exit(0);
+            } else {
+                console.info("Bloqbit is ready!");
             };
         };
 
