@@ -320,8 +320,8 @@ export default {
             });
 
             return JSON.parse(data);
-        } catch (error) {
-            console.error('Error reading JSON file:', error);
+        } catch (err) {
+            console.error('Error reading JSON file: ', err);
         };
     },
 };

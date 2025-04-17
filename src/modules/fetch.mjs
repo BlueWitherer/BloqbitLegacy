@@ -60,9 +60,8 @@ export default {
                     console.error(err);
                     return;
                 };
-            } catch (error) {
+            } catch (err) {
                 console.error(err);
-                console.error(error);
                 return;
             };
         } else {

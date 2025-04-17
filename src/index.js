@@ -74,7 +74,7 @@ export default class Bot {
 
                 (async () => {
                     try {
-                        console.log(`Started refreshing ${botModel.commands.length} application (/) commands.`);
+                        console.log(`Refreshing ${botModel.commands.length} application (/) commands...`);
 
                         const data = await botModel.rest.put(
                             Routes.applicationCommands(client?.user?.id),
@@ -82,14 +82,14 @@ export default class Bot {
                         );
 
                         // @ts-ignore
-                        console.log(`Successfully reloaded ${data.length} application (/) commands.`);
-                    } catch (error) {
-                        console.error(error);
+                        console.info(`Successfully reloaded ${data.length} application (/) commands`);
+                    } catch (err) {
+                        console.error(err);
                         if (testMode) process.exit(1);
                     };
                 })();
-            } catch (error) {
-                console.error(error);
+            } catch (err) {
+                console.error(err);
                 process.exit(1);
             };
 
@@ -110,7 +110,7 @@ export default class Bot {
                             logEvent.execute(botModel, botModel.db, ...args);
                         });
 
-                        console.log(`Log event loaded: ${logEvent.event.toString()}`);
+                        console.debug(`Log event loaded for ${logEvent.event.toString()}`);
                     } catch (err) {
                         console.error(err);
                     };
@@ -133,8 +133,8 @@ export default class Bot {
                             client?.once(event.name, async (...args) => {
                                 try {
                                     return await event.execute(botModel, ...args);
-                                } catch (error) {
-                                    console.error(error);
+                                } catch (err) {
+                                    console.error(err);
                                     if (testMode) process.exit(1);
                                 };
                             });
@@ -142,16 +142,16 @@ export default class Bot {
                             client?.on(event.name, async (...args) => {
                                 try {
                                     return await event.execute(botModel, ...args);
-                                } catch (error) {
-                                    console.error(error);
+                                } catch (err) {
+                                    console.error(err);
                                     if (testMode) process.exit(1);
                                 };
                             });
                         };
 
                         console.debug(`Loaded event listener for ${event.name}.`);
-                    } catch (error) {
-                        console.error(error);
+                    } catch (err) {
+                        console.error(err);
                         if (testMode) process.exit(1);
                     };
                 };

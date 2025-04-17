@@ -1,3 +1,5 @@
+import "./console.mjs";
+
 process.on('uncaughtException', (err) => {
     console.error('Unhandled Exception:', err);
 });
@@ -5,8 +7,6 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', (reason) => {
     console.error('Unhandled Rejection:', reason);
 });
-
-import "./console.mjs";
 
 console.log('Starting up system...');
 
