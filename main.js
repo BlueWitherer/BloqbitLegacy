@@ -18,15 +18,13 @@ import Bot from './src/index.js';
 
 dotenv.config();
 
-const botModel = new BloqbitClient(process.env.PUBLIC_TOKEN, process.env.PUBLIC_SECRET, process.env.LOG_WH, process.env.MONGO_URI, process.env.PUBLIC_GUILDED_TOKEN);
+const botModel = new BloqbitClient(process.env.MAIN_TOKEN, process.env.MAIN_SECRET, process.env.LOG_WH, process.env.MONGO_URI, process.env.MAIN_GUILDED_TOKEN);
 
-// Get the port from the environment or default to 3000
 const PORT = parseInt(process.env.PORT) || 3000;
 
-// Create the HTTP server with modern async syntax
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Server is running.\n');
+    res.end('Server is running\n');
 });
 
 const start = async () => {
@@ -41,10 +39,10 @@ const start = async () => {
         process.on('SIGINT', async () => {
             console.info('Received SIGINT. Shutting down gracefully...');
 
-            server.close(() => {
-                console.info('Server has been stopped.');
+            server.close(async () => {
+                console.info('Server has been stopped');
 
-                bot.client.destroy();
+                await bot.client?.destroy();
                 process.exit(0);
             });
         });
@@ -52,15 +50,15 @@ const start = async () => {
         process.on('SIGTERM', async () => {
             console.info('Received SIGTERM. Shutting down gracefully...');
 
-            server.close(() => {
-                console.info('Server has been stopped.');
+            server.close(async () => {
+                console.info('Server has been stopped');
 
-                bot.client.destroy();
+                await bot.client?.destroy();
                 process.exit(0);
             });
         });
     } catch (err) {
-        console.error(`Failed to start the server - ${err}`);
+        console.error(`Failed to start the server: ${err}`);
         process.exit(1);
     };
 };

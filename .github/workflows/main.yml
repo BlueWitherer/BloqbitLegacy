@@ -23,11 +23,8 @@ jobs:
 
       - name: Validate Bloqbit login process
         env:
-          PUBLIC_TOKEN: ${{ secrets.PUBLIC_TOKEN }}
-          PUBLIC_SECRET: ${{ secrets.PUBLIC_SECRET }}
           TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+          TEST_GUILDED_TOKEN: ${{ secrets.TEST_GUILDED_TOKEN }}
           TEST_SECRET: ${{ secrets.TEST_SECRET }}
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          AI_TOKEN: ${{ secrets.AI_TOKEN }}
-          LOG_WH: ${{ secrets.LOG_WH }}
+          TEST_WH: ${{ secrets.TEST_LOG_WH }}
         run: npm run test

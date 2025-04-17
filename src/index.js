@@ -8,8 +8,6 @@ import fetch from './modules/fetch.mjs';
 import { Events, ActivityType, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
 
-import Guilded from 'guilded.js';
-
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -270,9 +268,9 @@ export default class Bot {
 
         try {
             await botModel.client?.login(botModel.token);
-            // botModel.clientGil?.login({
-            //     "fresh": true,
-            // });
+            botModel.clientGil?.login({
+                "fresh": true,
+            });
         } catch (err) {
             console.error(err);
             if (testMode) process.exit(1);
