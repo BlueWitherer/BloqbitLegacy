@@ -145,27 +145,29 @@ export default class BloqbitClient {
 
         this.tokenGil = gil;
 
-        this.clientGil = new Guilded.Client({
-            token: gil,
-            cache: {
-                cacheCalendars: true,
-                cacheCalendarsRsvps: true,
-                cacheChannels: true,
-                cacheForumTopics: true,
-                cacheMemberBans: true,
-                cacheMessageReactions: true,
-                cacheMessages: true,
-                cacheServers: true,
-                cacheSocialLinks: true,
-                cacheWebhooks: true,
-                fetchMessageAuthorOnCreate: true,
-                removeCalendarRsvpOnDelete: true,
-                removeCalendarsOnDelete: true,
-                removeChannelOnDelete: true,
-                removeMemberBanOnUnban: true,
-                removeMemberOnLeave: true,
-            },
-        });
+        this.clientGil = null; 
+        
+        // new Guilded.Client({
+        //     token: gil,
+        //     cache: {
+        //         cacheCalendars: true,
+        //         cacheCalendarsRsvps: true,
+        //         cacheChannels: true,
+        //         cacheForumTopics: true,
+        //         cacheMemberBans: true,
+        //         cacheMessageReactions: true,
+        //         cacheMessages: true,
+        //         cacheServers: true,
+        //         cacheSocialLinks: true,
+        //         cacheWebhooks: true,
+        //         fetchMessageAuthorOnCreate: true,
+        //         removeCalendarRsvpOnDelete: true,
+        //         removeCalendarsOnDelete: true,
+        //         removeChannelOnDelete: true,
+        //         removeMemberBanOnUnban: true,
+        //         removeMemberOnLeave: true,
+        //     },
+        // });
 
         this.rest.setToken(token);
 
