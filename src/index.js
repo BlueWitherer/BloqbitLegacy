@@ -233,11 +233,7 @@ export default class Bot {
             };
 
             if (testMode) {
-                console.warn("Test mode active.");
-                console.debug("All bot start-up operations successful. No fatal errors detected. Logging off...");
-
                 await client.destroy();
-                process.exit(0);
             } else {
                 client.user?.setPresence({
                     "activities": [
@@ -252,14 +248,13 @@ export default class Bot {
                     "status": PresenceUpdateStatus.Online,
                 });
 
-                console.info(`Client ${client.user?.displayName} online`);
+                console.info(`Client ${client.user?.displayName} now online`);
             };
         });
 
         botModel.clientGil?.on("ready", () => {
             if (testMode) {
                 botModel.clientGil?.disconnect();
-                process.exit(0);
             } else {
                 botModel.clientGil?.setStatus({
                     content: "Hello, Guilded!",
@@ -267,15 +262,20 @@ export default class Bot {
                     expiresAt: null,
                 });
 
-                console.info(`Guilded client ${botModel.clientGil?.user?.name} online`);
+                console.info(`Guilded client ${botModel.clientGil?.user?.name} now online`);
             };
         });
 
         try {
             await botModel.client?.login(botModel.token);
-            botModel.clientGil?.login({
-                "fresh": true,
-            });
+            // botModel.clientGil?.login({
+            //     "fresh": true,
+            // });
+
+            console.warn("Test mode active.");
+            console.debug("All bot start-up operations successful. No fatal errors detected. Logging off...");
+
+            if (testMode) process.exit(0);
         } catch (err) {
             console.error(err);
             if (testMode) process.exit(1);

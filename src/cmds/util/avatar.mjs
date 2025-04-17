@@ -55,7 +55,7 @@ export default new Command(
                         "title": `${assets.icons.info} | ${interaction.user?.username}'s Avatar`,
                         "color": assets.colors.primary,
                         "image": {
-                            "url": `${interaction.member?.avatarURL({ "forceStatic": false, size: 1024 })}`,
+                            "url": `${interaction.member?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
                             "width": 1024,
                             "height": 1024,
                         },
