@@ -55,7 +55,7 @@ export default {
                     {
                         "author": {
                             "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.noentry} User Kicked`,
                         "color": `${assets.colors.primary}`,
@@ -86,7 +86,7 @@ export default {
                     {
                         "author": {
                             "name": `${User.username}`,
-                            "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+                            "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.noentry} Kicked`,
                         "description": `You were __kicked__ from **${interaction.guild?.name}**.`,

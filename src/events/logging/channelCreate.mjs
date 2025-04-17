@@ -26,7 +26,12 @@ export default new LogEvent(
                         "fields": [
                             {
                                 "name": "Channel",
-                                "value": `<#${String(channel.id)}>`,
+                                "value": `<#${channel.id}>`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Channel ID",
+                                "value": `\`${channel.id}\``,
                                 "inline": true,
                             },
                         ],

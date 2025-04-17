@@ -63,7 +63,7 @@ export default new Command(
                     {
                         "author": {
                             "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.check} Username Blocked`,
                         "color": assets.colors.primary,
@@ -94,7 +94,7 @@ export default new Command(
                     {
                         "author": {
                             "name": `${user.username}`,
-                            "icon_url": `${user.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+                            "icon_url": `${user.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.exclamation} Username Blocked`,
                         "description": `Content in your nickname has been viewed by our moderators as rule-breaking and have blocked it. Please abide by our [rules](https://discord.com/channels/460081436637134859/460082070673424386/882029054033793025) to keep CS a safe and friendly environment for our users.`,
@@ -135,7 +135,7 @@ export default new Command(
                     {
                         "author": {
                             "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.info} ${user?.username}'s Blocked Username`,
                         "color": assets.colors.primary,
@@ -171,7 +171,7 @@ export default new Command(
                     {
                         "author": {
                             "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false, size: 1024 })}`,
+                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false, size: 64 })}`,
                         },
                         "fields": [
                             {

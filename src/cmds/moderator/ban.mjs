@@ -49,7 +49,7 @@ export default new Command(
                         {
                             "author": {
                                 "name": `${interaction.user?.username}`,
-                                "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+                                "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                             },
                             "title": `${assets.icons.noentry} User Banned`,
                             "color": assets.colors.primary,
@@ -80,7 +80,7 @@ export default new Command(
                         {
                             "author": {
                                 "name": `${User.username}`,
-                                "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 1024 })}`
+                                "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                             },
                             "title": `${assets.icons.noentry} Banned`,
                             "description": `You were __banned__ from **${interaction.guild?.name}**.`,

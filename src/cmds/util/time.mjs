@@ -26,7 +26,7 @@ export default new Command(
                     {
                         "author": {
                             "name": interaction.user?.username,
-                            "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })
+                            "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })
                         },
                         "title": `${assets.icons.info} | Defined Time`,
                         "color": assets.colors.primary,
@@ -62,7 +62,7 @@ export default new Command(
                     {
                         "author": {
                             "name": interaction.user?.username,
-                            "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })
+                            "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })
                         },
                         "title": `${assets.icons.info} | Current Time`,
                         "color": assets.colors.primary,

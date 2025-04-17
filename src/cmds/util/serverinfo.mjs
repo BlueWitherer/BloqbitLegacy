@@ -43,10 +43,10 @@ export default new Command(
                     "title": `${data}${interaction.guild?.name}`,
                     "description": `${interaction.guild?.description || "-# *No description*"}`,
                     "thumbnail": {
-                        "url": `${interaction.guild?.iconURL({ "forceStatic": false, size: 1024 })}`,
+                        "url": `${interaction.guild?.iconURL({ "forceStatic": false, size: 64 })}`,
                     },
                     "image": {
-                        "url": interaction.guild?.bannerURL({ size: 1024 }),
+                        "url": interaction.guild?.bannerURL({ size: 64 }),
                     },
                     "color": `${assets.colors.primary}`,
                     "fields": [

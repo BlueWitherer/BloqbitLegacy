@@ -30,7 +30,7 @@ export default new LogEvent(
                         "fields": [
                             {
                                 "name": "Channel",
-                                "value": `<#${String(msg.channel?.id || msg.thread.id)}>`,
+                                "value": `<#${String(msg.channel?.id || msg.thread?.id)}>`,
                                 "inline": true,
                             },
                         ],

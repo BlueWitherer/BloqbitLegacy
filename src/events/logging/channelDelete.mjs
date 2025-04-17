@@ -19,14 +19,14 @@ export default new LogEvent(
             const system = fetch.fetchGuild(channel.guild?.id || channel.guildId);
 
             if (system) {
-                if (system.logs.enabled && (system.logs.actions.channelAdd)) {
+                if (system.logs.enabled && (system.logs.actions.channelDel)) {
                     const emb = new EmbedBuilder({
                         "title": `${bot.assets.icons.minus} | Channel Deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
                                 "name": "Channel",
-                                "value": `**#${String(channel.name)}**`,
+                                "value": `**#${channel.name}**`,
                                 "inline": true,
                             },
                         ],

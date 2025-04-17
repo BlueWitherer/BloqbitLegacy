@@ -24,7 +24,7 @@ export default new LogEvent(
                     const emb = new EmbedBuilder({
                         "author": {
                             "name": `${newMsg.author?.username}`,
-                            "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
+                            "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.info} | Message Edited`,
                         "color": bot.assets.colors.terciary,
@@ -51,7 +51,7 @@ export default new LogEvent(
                             },
                             {
                                 "name": "Channel",
-                                "value": `<#${String(newMsg.channel?.id || newMsg.thread.id)}>`,
+                                "value": `<#${String(newMsg.channel?.id || newMsg.thread?.id)}>`,
                                 "inline": true,
                             },
                             {
