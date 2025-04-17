@@ -20,8 +20,8 @@ export default new LogEvent(
         };
 
         if (msg.guild) {
-            console.debug(`Handling deleted message log event on guild of ID ${msg.guildId}...`);
-            const system = fetch.fetchGuild(msg.guildId);
+            console.debug(`Handling deleted message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);
+            const system = fetch.fetchGuild(msg.guild?.id || msg.guildId);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.msgDel)) {
@@ -30,9 +30,9 @@ export default new LogEvent(
                             "name": `${msg.author?.username}`,
                             "icon_url": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 1024, "extension": "gif" })}`,
                         },
-                        "title": `${bot.assets.icons.exclamation} | Message Deleted`,
+                        "title": `${bot.assets.icons.minus} | Message Deleted`,
                         "description": msg.cleanContent,
-                        "color": bot.assets.colors.primary,
+                        "color": bot.assets.colors.secondary,
                         "fields": [
                             {
                                 "name": "Jump",

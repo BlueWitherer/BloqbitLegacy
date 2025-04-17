@@ -16,8 +16,8 @@ export default new LogEvent(
      */
     async (bot, oldMsg, newMsg) => {
         if (oldMsg.guild && newMsg.guild) {
-            console.debug(`Handling edited message log event on guild of ID ${newMsg.guildId || oldMsg.guildId}...`);
-            const system = fetch.fetchGuild(newMsg.guildId || oldMsg.guildId);
+            console.debug(`Handling edited message log event on guild of ID ${(newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)}...`);
+            const system = fetch.fetchGuild((newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId));
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.msgUpd)) {
@@ -26,8 +26,8 @@ export default new LogEvent(
                             "name": `${newMsg.author?.username}`,
                             "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
                         },
-                        "title": `${bot.assets.icons.exclamation} | Message Edited`,
-                        "color": bot.assets.colors.primary,
+                        "title": `${bot.assets.icons.info} | Message Edited`,
+                        "color": bot.assets.colors.terciary,
                         "fields": [
                             {
                                 "name": "Before",

@@ -256,28 +256,6 @@ export default class Bot {
             };
         });
 
-        botModel.clientGil = new Guilded.Client({
-            "token": process.env.PUBLIC_GUILDED_TOKEN || process.env.TEST_GUILDED_TOKEN,
-            "cache": {
-                cacheCalendars: true,
-                cacheCalendarsRsvps: true,
-                cacheChannels: true,
-                cacheForumTopics: true,
-                cacheMemberBans: true,
-                cacheMessageReactions: true,
-                cacheMessages: true,
-                cacheServers: true,
-                cacheSocialLinks: true,
-                cacheWebhooks: true,
-                fetchMessageAuthorOnCreate: true,
-                removeCalendarRsvpOnDelete: true,
-                removeCalendarsOnDelete: true,
-                removeChannelOnDelete: true,
-                removeMemberBanOnUnban: true,
-                removeMemberOnLeave: true,
-            },
-        });
-
         botModel.clientGil?.on("ready", () => {
             if (testMode) {
                 botModel.clientGil?.disconnect();
@@ -295,7 +273,9 @@ export default class Bot {
 
         try {
             await botModel.client?.login(botModel.token);
-            botModel.clientGil?.login();
+            botModel.clientGil?.login({
+                "fresh": true,
+            });
         } catch (err) {
             console.error(err);
             if (testMode) process.exit(1);

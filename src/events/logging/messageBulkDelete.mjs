@@ -18,15 +18,15 @@ export default new LogEvent(
         const msg = msgs.first();
 
         if (msg.guild) {
-            console.debug(`Handling bulk deleted message log event on guild of ID ${msg.guildId}...`);
-            const system = fetch.fetchGuild(msg.guildId);
+            console.debug(`Handling bulk deleted message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);
+            const system = fetch.fetchGuild(msg.guild?.id || msg.guildId);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.msgBulkDel)) {
                     const emb = new EmbedBuilder({
-                        "title": `${bot.assets.icons.exclamation} | Messages Bulk Deleted`,
+                        "title": `${bot.assets.icons.xmark} | Messages Bulk Deleted`,
                         "description": `**${msgs.size}** messages deleted.`,
-                        "color": bot.assets.colors.primary,
+                        "color": bot.assets.colors.secondary,
                         "fields": [
                             {
                                 "name": "Channel",
