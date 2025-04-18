@@ -38,7 +38,7 @@ export default new LogEvent(
 
                     await fetch.sendLog(bot, system, emb, channel.guild);
                 } else {
-                    console.error(`Logs for deleted channels not enabled in guild '${channel.guild?.name}' (${channel.guild?.id})`);
+                    console.warn(`Logs for deleted channels not enabled in guild '${channel.guild?.name}' (${channel.guild?.id})`);
                     return;
                 };
             } else {

@@ -24,7 +24,11 @@ export default new Command(
             .addChannelOption((o) => o
                 .setName("channel")
                 .setDescription("Set the channel in which server-wide actions will be logged.")
-                .addChannelTypes([ChannelType.GuildText, ChannelType.GuildVoice])))
+                .setRequired(false))
+            .addBooleanOption((o) => o
+                .setName("webhook")
+                .setDescription("Use a webhook.")
+                .setRequired(false)))
         .addSubcommand((c) => c
             .setName("action_type")
             .setDescription("Configure whether or not a certain type of action should be logged and where it'll be logged.")
@@ -114,9 +118,13 @@ export default new Command(
     async (interaction, assets, system, db) => {
         const subCmd = interaction.options?.getSubcommand(true);
 
+        /**
+         * Config sub-command
+         */
         const configCmd = async () => {
             const toggle = interaction.options?.getBoolean("enable", true);
             const channel = interaction.options?.getChannel("channel", false);
+            const webhook = interaction.options?.getBoolean("webhook", false);
 
             const allEmbeds = [];
 
@@ -134,6 +142,15 @@ export default new Command(
 
                 allEmbeds.push({
                     "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${channel.name}\`__ as the logging channel.`,
+                    "color": assets.colors.primary,
+                });
+            };
+
+            if (webhook !== null) {
+                system.logs.webhookEnabled = toggle;
+
+                allEmbeds.push({
+                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(webhook)}__ use of the webhook for logs.`,
                     "color": assets.colors.primary,
                 });
             };
@@ -157,6 +174,9 @@ export default new Command(
             };
         };
 
+        /**
+         * Action type sub-command
+         */
         const actionCmd = async () => {
             const action = interaction.options.getString("action", true);
             const toggle = interaction.options.getBoolean("enable", true);
@@ -166,7 +186,7 @@ export default new Command(
                     system.logs.actions.autoMod = toggle;
                     break;
 
-                case ServerLogEventType.MOD:
+                case ServerLogEventType.Moderator:
                     system.logs.actions.moderator = toggle;
                     break;
 

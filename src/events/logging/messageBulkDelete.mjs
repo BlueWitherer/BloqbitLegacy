@@ -42,7 +42,7 @@ export default new LogEvent(
 
                     await fetch.sendLog(bot, system, emb, msg.guild);
                 } else {
-                    console.error(`Logs for bulk-deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                    console.warn(`Logs for bulk-deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
                     return;
                 };
             } else {
