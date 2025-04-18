@@ -68,7 +68,7 @@ export default new Command(
             return;
         } else if (user) {
             const msgs = await interaction.channel?.messages?.fetch({
-                "limit": amount,
+                "limit": 100,
             });
 
             const memberMsgs = msgs.filter((m) => m.author?.id === user.id);

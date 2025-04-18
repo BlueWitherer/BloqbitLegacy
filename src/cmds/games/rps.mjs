@@ -14,69 +14,44 @@ export default new Command(
             .setDescription("What you'll play.")
             .addChoices(
                 {
-                    name: "rock", value: "r",
+                    name: "Rock",
+                    value: "r",
                 },
                 {
-                    name: "paper", value: "p",
+                    name: "Paper",
+                    value: "p",
                 },
                 {
-                    name: "scissors", value: "s",
+                    name: "Scissors",
+                    value: "s",
                 },
             )
             .setRequired(true)),
     async (interaction, assets, system, db) => {
-        const moves = ['r', 'p', 's'];
+        const moves = {
+            r: "Rock",
+            p: "Paper",
+            s: "Scissors",
+        };
 
         const human = interaction.user?.username;
         const robot = interaction.client?.user?.username;
 
-        let userMove = interaction.options?.getString("move");
-        let botMove = moves[Math.floor(Math.random() * moves.length)];
+        let userMove = moves[interaction.options?.getString("move").toLowerCase()];
+        let botMove = moves[Object.keys(moves)[Math.floor(Math.random() * Object.keys(moves).length)]];
 
-        switch (botMove) {
-            case 'r':
-                botMove = "Rock"
-                break;
-
-            case 'p':
-                botMove = "Paper"
-                break;
-
-            case 's':
-                botMove = "Scissors"
-                break;
+        const outcomes = {
+            Rock: { Scissors: human, Paper: robot },
+            Scissors: { Paper: human, Rock: robot },
+            Paper: { Rock: human, Scissors: robot },
         };
 
-        switch (userMove.toLowerCase()) {
-            case 'r':
-                userMove = "Rock"
-                break;
+        let winner;
 
-            case 'p':
-                userMove = "Paper"
-                break;
-
-            case 's':
-                userMove = "Scissors"
-                break;
-        };
-
-        let winner = 'Unspecified.'
-
-        if ((userMove === 'Rock') && (botMove === 'Scissors')) {
-            winner = human;
-        } else if ((userMove === 'Scissors') && (botMove === 'Rock')) {
-            winner = robot;
-        } else if ((userMove === 'Scissors') && (botMove === 'Paper')) {
-            winner = human;
-        } else if ((userMove === 'Paper') && (botMove === 'Scissors')) {
-            winner = robot;
-        } else if ((userMove === 'Paper') && (botMove === 'Rock')) {
-            winner = human;
-        } else if ((userMove === 'Rock') && (botMove === 'Paper')) {
-            winner = robot;
-        } else if (userMove === botMove) {
+        if (userMove === botMove) {
             winner = 'Draw';
+        } else {
+            winner = outcomes[userMove][botMove];
         };
 
         await interaction.reply({

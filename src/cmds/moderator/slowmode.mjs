@@ -39,7 +39,7 @@ export default new Command(
 
             const duration = Math.floor(cooldown * time);
 
-            let type = string();
+            let type = "seconds";
 
             switch (interaction.options?.getNumber("time")) {
                 case (1):
@@ -52,6 +52,10 @@ export default new Command(
 
                 case (3600):
                     type = "hours";
+                    break;
+
+                default:
+                    type = "seconds";
                     break;
             };
 
