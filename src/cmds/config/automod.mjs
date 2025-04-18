@@ -314,7 +314,7 @@ export default new Command(
 
             const allEmbeds = [];
 
-            if (toggle !== null && typeof toggle === "boolean") {
+            if (toggle !== null) {
                 try {
                     system.automod.swearFilter.enabled = toggle;
 
@@ -330,7 +330,7 @@ export default new Command(
                 };
             };
 
-            if (filter !== null && typeof filter === "string") {
+            if (filter !== null) {
                 try {
                     if (filter === "<RESET>") {
                         system.automod.swearFilter.keywords.splice(0, system.automod.swearFilter.keywords.length);
@@ -357,7 +357,7 @@ export default new Command(
                 };
             };
 
-            if (superFilter !== null && typeof superFilter === "string") {
+            if (superFilter !== null) {
                 try {
                     if (superFilter === "<RESET>") {
                         system.automod.swearFilter.keywordsSuper.splice(0, system.automod.swearFilter.keywordsSuper.length);
@@ -384,7 +384,7 @@ export default new Command(
                 };
             };
 
-            if (channel !== null && typeof channel === "object") {
+            if (channel !== null) {
                 try {
                     const foundChannel = system.automod.swearFilter.channels.findIndex((c) => c === channel.id);
 
@@ -413,7 +413,7 @@ export default new Command(
                 };
             };
 
-            if (role !== null && typeof role === "object") {
+            if (role !== null) {
                 try {
                     const foundRole = system.automod.swearFilter.roles.findIndex((r) => r === role.id);
 
@@ -442,7 +442,7 @@ export default new Command(
                 };
             };
 
-            if (punishment !== null && typeof punishment === "number") {
+            if (punishment !== null) {
                 try {
                     system.automod.swearFilter.punishment === punishment;
 
@@ -458,7 +458,7 @@ export default new Command(
                 };
             };
 
-            if (logChannel !== null && typeof logChannel === "object") {
+            if (logChannel !== null) {
                 try {
                     system.automod.swearFilter.logs = logChannel.id;
 
@@ -474,7 +474,7 @@ export default new Command(
                 };
             };
 
-            if (filterMode !== null && typeof filterMode === "number") {
+            if (filterMode !== null) {
                 try {
                     system.automod.swearFilter.filterMode = filterMode;
 
@@ -490,7 +490,7 @@ export default new Command(
                 };
             };
 
-            if (permissionFilterMode !== null && typeof permissionFilterMode === "number") {
+            if (permissionFilterMode !== null) {
                 try {
                     system.automod.swearFilter.permFilterMode = permissionFilterMode;
 
@@ -546,7 +546,7 @@ export default new Command(
 
             const allEmbeds = [];
 
-            if (toggle !== null && typeof toggle === "boolean") {
+            if (toggle !== null) {
                 try {
                     system.automod.inviteFilter.enabled = toggle;
 
@@ -562,7 +562,7 @@ export default new Command(
                 };
             };
 
-            if (filter !== null && typeof filter === "string") {
+            if (filter !== null) {
                 try {
                     if (filter === "<RESET>") {
                         system.automod.inviteFilter.keywords.splice(0, system.automod.inviteFilter.keywords.length);
@@ -589,7 +589,7 @@ export default new Command(
                 };
             };
 
-            if (channel !== null && typeof channel === "object") {
+            if (channel !== null) {
                 try {
                     const foundChannel = system.automod.inviteFilter.channels.findIndex((c) => c === channel.id);
 
@@ -618,7 +618,7 @@ export default new Command(
                 };
             };
 
-            if (role !== null && typeof role === "object") {
+            if (role !== null) {
                 try {
                     const foundRole = system.automod.inviteFilter.roles.findIndex((r) => r === role.id);
 
@@ -647,7 +647,7 @@ export default new Command(
                 };
             };
 
-            if (punishment !== null && typeof punishment === "number") {
+            if (punishment !== null) {
                 try {
                     system.automod.inviteFilter.punishment === punishment;
 
@@ -663,7 +663,7 @@ export default new Command(
                 };
             };
 
-            if (logChannel !== null && typeof logChannel === "object") {
+            if (logChannel !== null) {
                 try {
                     system.automod.inviteFilter.logs = logChannel.id;
 
@@ -679,7 +679,7 @@ export default new Command(
                 };
             };
 
-            if (filterMode !== null && typeof filterMode === "number") {
+            if (filterMode !== null) {
                 try {
                     system.automod.inviteFilter.filterMode = filterMode;
 
@@ -695,7 +695,7 @@ export default new Command(
                 };
             };
 
-            if (permissionFilterMode !== null && typeof permissionFilterMode === "number") {
+            if (permissionFilterMode !== null) {
                 try {
                     system.automod.inviteFilter.permFilterMode = permissionFilterMode;
 
@@ -751,7 +751,7 @@ export default new Command(
 
             const allEmbeds = [];
 
-            if (toggle !== null && typeof toggle === "boolean") {
+            if (toggle !== null) {
                 try {
                     system.automod.linkFilter.enabled = toggle;
 
@@ -767,7 +767,7 @@ export default new Command(
                 };
             };
 
-            if (filter !== null && typeof filter === "string") {
+            if (filter !== null) {
                 try {
                     if (filter === "<RESET>") {
                         system.automod.linkFilter.keywords.splice(0, system.automod.linkFilter.keywords.length);
@@ -794,7 +794,7 @@ export default new Command(
                 };
             };
 
-            if (channel !== null && typeof channel === "object") {
+            if (channel !== null) {
                 try {
                     const foundChannel = system.automod.linkFilter.channels.findIndex((c) => c === channel.id);
 
@@ -823,7 +823,7 @@ export default new Command(
                 };
             };
 
-            if (role !== null && typeof role === "object") {
+            if (role !== null) {
                 try {
                     const foundRole = system.automod.linkFilter.roles.findIndex((r) => r === role.id);
 
@@ -852,7 +852,7 @@ export default new Command(
                 };
             };
 
-            if (punishment !== null && typeof punishment === "number") {
+            if (punishment !== null) {
                 try {
                     system.automod.linkFilter.punishment === punishment;
 
@@ -868,7 +868,7 @@ export default new Command(
                 };
             };
 
-            if (logChannel !== null && typeof logChannel === "object") {
+            if (logChannel !== null) {
                 try {
                     system.automod.linkFilter.logs = logChannel.id;
 
@@ -884,7 +884,7 @@ export default new Command(
                 };
             };
 
-            if (filterMode !== null && typeof filterMode === "number") {
+            if (filterMode !== null) {
                 try {
                     system.automod.linkFilter.filterMode = filterMode;
 
@@ -900,7 +900,7 @@ export default new Command(
                 };
             };
 
-            if (permissionFilterMode !== null && typeof permissionFilterMode === "number") {
+            if (permissionFilterMode !== null) {
                 try {
                     system.automod.linkFilter.permFilterMode = permissionFilterMode;
 

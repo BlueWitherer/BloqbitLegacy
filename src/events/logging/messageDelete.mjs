@@ -57,7 +57,7 @@ export default new LogEvent(
                             {
                                 "name": "Originally Sent",
                                 "value": `<t:${Math.floor(msg.createdTimestamp / 1000)}:F> • <t:${Math.floor(msg.createdTimestamp / 1000)}:R>`,
-                                "inline": true,
+                                "inline": false,
                             },
                         ],
                         "image": {

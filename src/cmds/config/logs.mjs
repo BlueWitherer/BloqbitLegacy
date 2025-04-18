@@ -116,11 +116,11 @@ export default new Command(
 
         const configCmd = async () => {
             const toggle = interaction.options?.getBoolean("enable", true);
-            const channel = interaction.options?.getChannel("channel", true);
+            const channel = interaction.options?.getChannel("channel", false);
 
             const allEmbeds = [];
 
-            if (toggle !== null && typeof toggle === "boolean") {
+            if (toggle !== null) {
                 system.logs.enabled = toggle;
 
                 allEmbeds.push({
@@ -129,7 +129,7 @@ export default new Command(
                 });
             };
 
-            if (channel !== null && typeof channel === "object") {
+            if (channel !== null) {
                 system.logs.channel = channel.id;
 
                 allEmbeds.push({

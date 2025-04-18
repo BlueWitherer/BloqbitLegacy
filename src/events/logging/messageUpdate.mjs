@@ -55,14 +55,14 @@ export default new LogEvent(
                                 "inline": true,
                             },
                             {
-                                "name": "Originally Sent",
-                                "value": `<t:${Math.floor(oldMsg.createdTimestamp / 1000)}:F> • <t:${Math.floor(oldMsg.createdTimestamp / 1000)}:R>`,
+                                "name": "Message ID",
+                                "value": `\`${newMsg.id}\``,
                                 "inline": true,
                             },
                             {
-                                "name": "Message ID",
-                                "value": newMsg.id,
-                                "inline": true,
+                                "name": "Originally Sent",
+                                "value": `<t:${Math.floor(oldMsg.createdTimestamp / 1000)}:F> • <t:${Math.floor(oldMsg.createdTimestamp / 1000)}:R>`,
+                                "inline": false,
                             },
                         ],
                         "image": {
