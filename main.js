@@ -18,7 +18,7 @@ import Bot from './src/index.js';
 
 dotenv.config();
 
-const botModel = new BloqbitClient(process.env.MAIN_TOKEN, process.env.MAIN_SECRET, process.env.LOG_WH, process.env.MONGO_URI, process.env.MAIN_GUILDED_TOKEN);
+const botModel = new BloqbitClient(process.env.MAIN_TOKEN, process.env.MAIN_SECRET, process.env.MAIN_LOG_WH, process.env.MONGO_URI, process.env.MAIN_GUILDED_TOKEN);
 
 const PORT = parseInt(process.env.PORT) || 3000;
 

@@ -9,11 +9,11 @@ const originalConsoleMethods = {
 
 // ANSI escape codes for coloring
 const colors = {
+    white: '\x1b[37m',    // White for log
     gray: '\x1b[90m',     // Gray for debug
     cyan: '\x1b[36m',     // Cyan for info
-    yellow: '\x1b[33m',   // Yellow for warn
-    red: '\x1b[31m',      // Red for error
-    reset: '\x1b[0m',     // Reset to default
+    yellow: '\x1b[93m',   // Yellow for warn
+    red: '\x1b[91m',      // Red for error
 };
 
 // Function to format timestamp
@@ -32,25 +32,25 @@ const getTimestamp = () => {
 // Modify console methods to add tags, timestamps, and coloring
 console.log = (...args) => {
     const timestamp = getTimestamp();
-    originalConsoleMethods.log(`${colors.reset}${timestamp} ${colors.reset}[LOG] ${args.join(' ')}${colors.reset}`);
+    originalConsoleMethods.log(`${colors.white}${timestamp} ${colors.white}[LOG] ${args.join(`${colors.white} `)}${colors.white}`);
 };
 
 console.debug = (...args) => {
     const timestamp = getTimestamp();
-    originalConsoleMethods.debug(`${colors.reset}${timestamp} ${colors.gray}[DEBUG] ${args.join(' ')}${colors.reset}`);
+    originalConsoleMethods.debug(`${colors.white}${timestamp} ${colors.gray}[DEBUG] ${args.join(`${colors.gray} `)}${colors.white}`);
 };
 
 console.info = (...args) => {
     const timestamp = getTimestamp();
-    originalConsoleMethods.info(`${colors.reset}${timestamp} ${colors.cyan}[INFO] ${args.join(' ')}${colors.reset}`);
+    originalConsoleMethods.info(`${colors.white}${timestamp} ${colors.cyan}[INFO] ${args.join(`${colors.cyan} `)}${colors.white}`);
 };
 
 console.warn = (...args) => {
     const timestamp = getTimestamp();
-    originalConsoleMethods.warn(`${colors.reset}${timestamp} ${colors.yellow}[WARN] ${args.join(' ')}${colors.reset}`);
+    originalConsoleMethods.warn(`${colors.white}${timestamp} ${colors.yellow}[WARN] ${args.join(`${colors.yellow} `)}${colors.white}`);
 };
 
 console.error = (...args) => {
     const timestamp = getTimestamp();
-    originalConsoleMethods.error(`${colors.reset}${timestamp} ${colors.red}[ERROR] ${args.join(' ')}${colors.reset}`);
+    originalConsoleMethods.error(`${colors.white}${timestamp} ${colors.red}[ERROR] ${args.join(`${colors.red} `)}${colors.white}`);
 };

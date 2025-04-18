@@ -94,7 +94,7 @@ export default class BloqbitClient {
      * 
      * @param {string} token Discord bot token
      * @param {string} secret Discord application secret
-     * @param {string} web Developer log Discord webhook URL
+     * @param {string} web Developer logging Discord webhook URL
      * @param {string} data MongoDB database URI
      * @param {string} gil Guilded bot token
      */
