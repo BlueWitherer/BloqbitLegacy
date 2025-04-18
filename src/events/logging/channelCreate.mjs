@@ -21,6 +21,10 @@ export default new LogEvent(
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.channelAdd)) {
                     const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${channel.guild?.name}`,
+                            "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
+                        },
                         "title": `${bot.assets.icons.plus} | Channel Created`,
                         "color": bot.assets.colors.primary,
                         "fields": [

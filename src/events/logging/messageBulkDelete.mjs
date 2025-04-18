@@ -24,6 +24,10 @@ export default new LogEvent(
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.msgBulkDel)) {
                     const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${msg.guild?.name}`,
+                            "icon_url": `${msg.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
+                        },
                         "title": `${bot.assets.icons.xmark} | Messages Bulk Deleted`,
                         "description": `**${msgs.size}** messages deleted.`,
                         "color": bot.assets.colors.secondary,

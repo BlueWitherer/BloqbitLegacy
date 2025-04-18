@@ -28,7 +28,7 @@ export default new LogEvent(
                     const emb = new EmbedBuilder({
                         "author": {
                             "name": `${msg.author?.username}`,
-                            "icon_url": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64, "extension": "gif" })}`,
+                            "icon_url": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.minus} | Message Deleted`,
                         "description": msg.cleanContent,

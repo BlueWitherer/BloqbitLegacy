@@ -23,7 +23,7 @@ export default new LogEvent(
                     const emb = new EmbedBuilder({
                         "author": {
                             "name": `${role.guild?.name}`,
-                            "icon_url": `${role.guild.iconURL({ "forceStatic": false, "size": 128 })}`,
+                            "icon_url": `${role.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
                         },
                         "title": `${bot.assets.icons.minus} | Role Deleted`,
                         "color": bot.assets.colors.secondary,

@@ -71,7 +71,8 @@ export default new Command(
                 "limit": 100,
             });
 
-            const memberMsgs = msgs.filter((m) => m.author?.id === user.id);
+            const filteredMsgs = msgs.filter((m) => m.author?.id === user.id);
+            const memberMsgs = new Collection([...filteredMsgs.entries()].slice(0, amount));
 
             if (interaction.channel.isTextBased()) await interaction.channel?.bulkDelete(memberMsgs);
 

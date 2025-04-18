@@ -21,6 +21,10 @@ export default new LogEvent(
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.channelDel)) {
                     const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${channel.guild?.name}`,
+                            "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
+                        },
                         "title": `${bot.assets.icons.minus} | Channel Deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
