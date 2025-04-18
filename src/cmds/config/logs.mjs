@@ -202,6 +202,10 @@ export default new Command(
                     system.logs.actions.msgUpd = toggle;
                     break;
 
+                case ServerLogEventType.MessageBulkDelete:
+                    system.logs.actions.msgBulkDel = toggle;
+                    break;
+
                 case ServerLogEventType.MessagePin:
                     system.logs.actions.msgPin = toggle;
                     break;
