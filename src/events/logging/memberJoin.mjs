@@ -22,8 +22,8 @@ export default new LogEvent(
                 if (system.logs.enabled && (system.logs.actions.join)) {
                     const emb = new EmbedBuilder({
                         "author": {
-                            "name": `${member.guild?.name}`,
-                            "icon_url": `${member.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
+                            "name": `${member.user?.username}`,
+                            "icon_url": `${member.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.plus} | User Joined`,
                         "color": bot.assets.colors.primary,

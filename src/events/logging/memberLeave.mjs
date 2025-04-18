@@ -22,11 +22,11 @@ export default new LogEvent(
                 if (system.logs.enabled && (system.logs.actions.leave)) {
                     const emb = new EmbedBuilder({
                         "author": {
-                            "name": `${member.guild?.name}`,
-                            "icon_url": `${member.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
+                            "name": `${member.user?.username}`,
+                            "icon_url": `${member.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.minus} | User Left`,
-                        "color": bot.assets.colors.primary,
+                        "color": bot.assets.colors.secondary,
                         "fields": [
                             {
                                 "name": "User",
