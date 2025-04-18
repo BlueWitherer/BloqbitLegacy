@@ -1,12 +1,10 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { ApplicationIntegrationType, Collection, InteractionContextType, TextChannel } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { Command } from '../../classes.mjs';
 
-export default {
-    
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("clear")
         .setDescription("Clear amount of messages in channel.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
@@ -23,29 +21,19 @@ export default {
             .setDescription("User whose messages to clear.")
             .setRequired(false))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const amount = interaction.options?.getNumber("amount") || 0;
         const user = interaction.options?.getUser("user");
 
         const botMember = interaction.guild?.members.cache.get(interaction.client.user?.id);
 
         if (!user && botMember?.permissions.has("ManageMessages")) {
-            const msgs = await interaction.channel?.messages.fetch({
+            const msgs = await interaction.channel?.messages?.fetch({
                 "limit": amount,
+                "bulkDeletable": true,
             });
 
-            msgs?.forEach(async (m) => {
-                await m.delete();
-            });
+            if (interaction.channel.isTextBased()) await interaction.channel.bulkDelete(msgs);
 
             await interaction.reply({
                 "content": "",
@@ -60,7 +48,7 @@ export default {
                         "fields": [
                             {
                                 "name": "Amount",
-                                "value": `${amount}`,
+                                "value": `${msgs.size}`,
                                 "inline": true,
                             },
                             {
@@ -79,13 +67,13 @@ export default {
 
             return;
         } else if (user) {
-            const msgs = [];
-
-            (await interaction.channel?.messages?.fetch({ limit: 100 }))?.filter((m) => m.author?.id === user.id).forEach((mg) => {
-                if (msgs.length >= amount) {
-                    msgs;
-                };
+            const msgs = await interaction.channel?.messages?.fetch({
+                "limit": amount,
             });
+
+            const memberMsgs = msgs.filter((m) => m.author?.id === user.id);
+
+            if (interaction.channel.isTextBased()) await interaction.channel?.bulkDelete(memberMsgs);
 
             await interaction.reply({
                 "content": "",
@@ -100,7 +88,7 @@ export default {
                         "fields": [
                             {
                                 "name": "Amount",
-                                "value": `${amount}`,
+                                "value": `${memberMsgs.size}`,
                                 "inline": true,
                             },
                             {
@@ -125,4 +113,4 @@ export default {
             return;
         };
     },
-};
+);

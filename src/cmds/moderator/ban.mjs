@@ -126,7 +126,7 @@ export default new Command(
                                 "author": {
                                     "name": "Moderation Action",
                                 },
-                                "description": `**${interaction.user?.username}** has made a moderation action on \`${User.username}\``,
+                                "description": `**${interaction.user?.username}** has taken a moderation action on \`${User.username}\``,
                                 "color": assets.colors.terciary,
                                 "fields": [
                                     {

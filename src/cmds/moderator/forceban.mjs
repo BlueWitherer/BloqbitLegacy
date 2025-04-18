@@ -1,12 +1,10 @@
-import SysAssets from '../../assets.json' with { type: 'json' };
-import { SaveDataClient, Config } from '../../classes.mjs';
-import { ApplicationIntegrationType, ChatInputCommandInteraction, InteractionContextType } from 'discord.js';
+import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { Command } from '../../classes.mjs';
 
-export default {
-    
-    data: new SlashCommandBuilder()
+export default new Command(
+    new SlashCommandBuilder()
         .setName("force-ban")
         .setDescription("Ban a user outside of the server using their ID.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
@@ -21,16 +19,7 @@ export default {
             .setDescription("Reason for ban.")
             .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction The interaction for the slash command.
-     * @param {typeof SysAssets} assets The configuration of the client's visual assets.
-     * @param {Config} system The settings model for the bot's configuration.
-     * @param {SaveDataClient} db The database information.
-     * 
-     * @returns {Promise<void>}
-     */
-    execute: async (interaction, assets, system, db) => {
+    async (interaction, assets, system, db) => {
         const banreason = interaction.options?.getString("reason") || "";
         const User = interaction.options?.getString("user") || "";
         const Member = interaction.guild?.members?.cache.get(User);
@@ -100,5 +89,4 @@ export default {
 
             return;
         };
-    },
-};
+    });
