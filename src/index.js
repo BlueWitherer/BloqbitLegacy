@@ -105,7 +105,7 @@ export default class Bot {
                         const logEvent = (await import(url.pathToFileURL(filePath).href)).default;
 
                         client.on(logEvent.event.toString(), (...args) => {
-                            logEvent.execute(botModel, botModel.db, ...args);
+                            logEvent.execute(botModel, ...args);
                         });
 
                         console.debug(`Log event loaded for ${logEvent.event.toString()}`);
