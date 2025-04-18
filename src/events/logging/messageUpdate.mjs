@@ -71,7 +71,7 @@ export default new LogEvent(
                         },
                     }).data;
 
-                    await fetch.sendLog(bot, system, emb, newMsg.guild);
+                    if (!newMsg.author?.bot) await fetch.sendLog(bot, system, emb, newMsg.guild);
                 } else {
                     console.error(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                     return;

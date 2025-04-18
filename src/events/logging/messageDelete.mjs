@@ -66,7 +66,7 @@ export default new LogEvent(
                         },
                     }).data;
 
-                    await fetch.sendLog(bot, system, emb, msg.guild);
+                    if (!msg.author?.bot) await fetch.sendLog(bot, system, emb, msg.guild);
                 } else {
                     console.error(`Logs for deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
                     return;
