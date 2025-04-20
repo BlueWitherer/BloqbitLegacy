@@ -99,6 +99,10 @@ export default new Command(
                 };
 
                 return new EmbedBuilder()
+                    .setAuthor({
+                        "name": `${interaction.user?.username}`,
+                        "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
+                    })
                     .setTitle(`${name} Filter for ${interaction.guild?.name}`)
                     .setDescription(`**${resolve.abled(thisFilter.enabled)}**`)
                     .setColor(assets.colors.primary)
@@ -148,6 +152,130 @@ export default new Command(
             });
 
             return;
+        } else if (interaction.options.getSubcommand() == "logs") {
+            const loggingIn = () => {
+                if (system.logs.enabled && system.logs.channel) return ` and are currently being sent in <#${system.logs.channel}>`;
+            };
+
+            const returnEmbed = new EmbedBuilder()
+                .setAuthor({
+                    "name": `${interaction.user?.username}`,
+                    "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
+                })
+                .setTitle(`Set of active logs for ${interaction.guild?.name}`)
+                .setDescription(`Logs are currently **${resolve.abled(system.logs.enabled)}**${loggingIn()}!`)
+                .setFields([
+                    {
+                        "name": "Bloqbit Auto-moderator",
+                        "value": `**${resolve.abled(system.logs.actions.autoMod)}**`, // General
+                        "inline": true,
+                    },
+                    {
+                        "name": "Moderator actions",
+                        "value": `**${resolve.abled(system.logs.actions.moderator)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Server invites",
+                        "value": `**${resolve.abled(system.logs.actions.invites)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Member joins",
+                        "value": `**${resolve.abled(system.logs.actions.join)}**`, // Members
+                        "inline": false,
+                    },
+                    {
+                        "name": "Member leaves",
+                        "value": `**${resolve.abled(system.logs.actions.leave)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Member timed out",
+                        "value": `**${resolve.abled(system.logs.actions.timeout)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Member banned",
+                        "value": `**${resolve.abled(system.logs.actions.ban)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Member nickname updated",
+                        "value": `**${resolve.abled(system.logs.actions.nickname)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Message deleted",
+                        "value": `**${resolve.abled(system.logs.actions.msgDel)}**`, // Messages
+                        "inline": false,
+                    },
+                    {
+                        "name": "Message edited",
+                        "value": `**${resolve.abled(system.logs.actions.msgUpd)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Message pinned",
+                        "value": `**${resolve.abled(system.logs.actions.msgPin)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Messages bulk deleted",
+                        "value": `**${resolve.abled(system.logs.actions.msgBulkDel)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "All reactions removed from message",
+                        "value": `**${resolve.abled(system.logs.actions.remAllReact)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Role created",
+                        "value": `**${resolve.abled(system.logs.actions.rolesAdd)}**`, // Roles
+                        "inline": false,
+                    },
+                    {
+                        "name": "Role deleted",
+                        "value": `**${resolve.abled(system.logs.actions.rolesRem)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Role assigned",
+                        "value": `**${resolve.abled(system.logs.actions.rolesAssign)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Role taken",
+                        "value": `**${resolve.abled(system.logs.actions.rolesUnassign)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Channel created",
+                        "value": `**${resolve.abled(system.logs.actions.channelAdd)}**`, // Channels
+                        "inline": false,
+                    },
+                    {
+                        "name": "Channel updated",
+                        "value": `**${resolve.abled(system.logs.actions.channelUpd)}**`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Channel deleted",
+                        "value": `**${resolve.abled(system.logs.actions.channelDel)}**`,
+                        "inline": true,
+                    },
+                ]).data;
+
+            await interaction.reply({
+                "content": "",
+                "embeds": [
+                    returnEmbed,
+                ],
+                "flags": [
+                    "Ephemeral",
+                ],
+            });
         } else {
             await fetch.commandErrorResponse(interaction, assets);
             return;

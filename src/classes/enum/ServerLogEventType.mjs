@@ -15,11 +15,13 @@ class ServerLogEventType {
     static MessageEdit = "msgUpd";
     static MessagePin = "msgPin";
     static MessageBulkDelete = "msgBulkDel";
+    static MessageRemoveReactions = "remAllReact";
     static RoleCreate = "rolesAdd";
     static RoleDelete = "rolesRem";
     static RoleGive = "rolesAssign";
     static RoleTake = "rolesUnassign";
     static ChannelCreate = "channelAdd";
+    static ChannelUpdate = "channelUpd";
     static ChannelDelete = "channelRem";
 
     static values() {
@@ -35,11 +37,13 @@ class ServerLogEventType {
             this.MessageEdit,
             this.MessagePin,
             this.MessageBulkDelete,
+            this.MessageRemoveReactions,
             this.RoleCreate,
             this.RoleDelete,
             this.RoleGive,
             this.RoleTake,
             this.ChannelCreate,
+            this.ChannelUpdate,
             this.ChannelDelete,
         ];
     };

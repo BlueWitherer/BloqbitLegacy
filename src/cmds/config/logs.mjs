@@ -37,11 +37,11 @@ export default new Command(
                 .setDescription("The type of action that will be logged.")
                 .addChoices(
                     {
-                        name: "Auto-moderator",
+                        name: "Bloqbit Auto-moderator",
                         value: ServerLogEventType.AutoModerator,
                     },
                     {
-                        name: "Moderator",
+                        name: "Moderator actions",
                         value: ServerLogEventType.Moderator,
                     },
                     {

@@ -43,33 +43,33 @@ console.debug = (...args) => {
     const timestamp = getTimestamp();
     const message = recolorMultilineLog(args.join(' '), colors.gray);
 
-    originalConsoleMethods.debug(`${timestamp} ${colors.gray}${colors.bold}DEBUG${colors.reset}${colors.gray} | ${message}${colors.reset}`);
+    originalConsoleMethods.debug(`${timestamp}${colors.gray} | ${colors.bold}DEBUG${colors.reset}${colors.gray} | ${message}${colors.reset}`);
 };
 
 console.log = (...args) => {
     const timestamp = getTimestamp();
     const message = recolorMultilineLog(args.join(' '), colors.white);
 
-    originalConsoleMethods.log(`${timestamp} ${colors.white}${colors.bold}LOG${colors.reset}${colors.white} | ${message}${colors.reset}`);
+    originalConsoleMethods.log(`${timestamp}${colors.white} | ${colors.bold}LOG${colors.reset}${colors.white} | ${message}${colors.reset}`);
 };
 
 console.info = (...args) => {
     const timestamp = getTimestamp();
     const message = recolorMultilineLog(args.join(' '), colors.cyan);
 
-    originalConsoleMethods.info(`${timestamp} ${colors.cyan}${colors.bold}INFO${colors.reset}${colors.cyan} | ${message}${colors.reset}`);
+    originalConsoleMethods.info(`${timestamp}${colors.cyan} | ${colors.bold}INFO${colors.reset}${colors.cyan} | ${message}${colors.reset}`);
 };
 
 console.warn = (...args) => {
     const timestamp = getTimestamp();
     const message = recolorMultilineLog(args.join(' '), colors.yellow);
 
-    originalConsoleMethods.warn(`${timestamp} ${colors.yellow}${colors.bold}WARN${colors.reset}${colors.yellow} | ${message}${colors.reset}`);
+    originalConsoleMethods.warn(`${timestamp}${colors.yellow} | ${colors.bold}WARN${colors.reset}${colors.yellow} | ${message}${colors.reset}`);
 };
 
 console.error = (...args) => {
     const timestamp = getTimestamp();
     const message = recolorMultilineLog(args.join(' '), colors.red);
 
-    originalConsoleMethods.error(`${timestamp} ${colors.red}${colors.bold}ERROR${colors.reset}${colors.red} | ${message}${colors.reset}`);
+    originalConsoleMethods.error(`${timestamp}${colors.red} | ${colors.bold}ERROR${colors.reset}${colors.red} | ${message}${colors.reset}`);
 };
