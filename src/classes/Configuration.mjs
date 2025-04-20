@@ -128,7 +128,11 @@ export class LogsActions {
         serverUpd = false,
         channelDel = false,
         channelUpd = false,
-        channelAdd = false
+        channelAdd = false,
+        vcJoin = false,
+        vcMove = false,
+        vcLeave = false,
+        rolesUpd = false,
     }) {
         this.autoMod = autoMod;
         this.moderator = moderator;
@@ -152,6 +156,10 @@ export class LogsActions {
         this.channelDel = channelDel;
         this.channelUpd = channelUpd;
         this.channelAdd = channelAdd;
+        this.vcJoin = vcJoin;
+        this.vcMove = vcMove;
+        this.vcLeave = vcLeave;
+        this.rolesUpd = rolesUpd;
 
         return this;
     };

@@ -55,8 +55,8 @@ export default {
                     await interaction.reply({
                         "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
                         "flags": [
-                    "Ephemeral",
-                ],
+                            "Ephemeral",
+                        ],
                     });
 
                     console.error(err);
@@ -114,8 +114,8 @@ export default {
                             },
                         ],
                         "flags": [
-                    "Ephemeral",
-                ],
+                            "Ephemeral",
+                        ],
                     });
 
                     return;
@@ -153,8 +153,8 @@ export default {
                             },
                         ],
                         "flags": [
-                    "Ephemeral",
-                ],
+                            "Ephemeral",
+                        ],
                     });
 
                     return;
@@ -254,6 +254,7 @@ export default {
                 let thisGuild = check(server);
 
                 console.log(`Step 2 Check if server exists in cache.`);
+
                 if (thisGuild) {
                     console.log(`Step 3 Server exists in cache, data object preserved.`);
                     console.debug(`Server ${thisGuild.server} found!`);
@@ -276,8 +277,9 @@ export default {
                             console.log(`Step 5 Server exists in database, copying save data.`);
                             console.debug(`Data for server ${server} exists, duplicating save...`);
 
-                            // @ts-ignore
-                            thisGuild = new Config(foundServer);
+                            const { _id, ...conf } = foundServer;
+
+                            thisGuild = new Config(conf);
 
                             console.debug(`Data successfully saved.`);
                         } else {

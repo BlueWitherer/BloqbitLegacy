@@ -33,7 +33,7 @@ const start = async () => {
         const bot = await src.activate(botModel, false);
 
         server.listen(PORT, () => {
-            console.info(`Server is running on port ${PORT}`);
+            console.log(`Server is running on port ${PORT}`);
         });
 
         process.on('SIGINT', async () => {

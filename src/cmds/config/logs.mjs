@@ -65,6 +65,10 @@ export default new Command(
                         value: ServerLogEventType.MemberBan,
                     },
                     {
+                        name: "Member kicked",
+                        value: ServerLogEventType.MemberKick,
+                    },
+                    {
                         name: "Member nickname updated",
                         value: ServerLogEventType.MemberNickname,
                     },
@@ -89,6 +93,10 @@ export default new Command(
                         value: ServerLogEventType.RoleCreate,
                     },
                     {
+                        name: "Role updated",
+                        value: ServerLogEventType.RoleUpdate,
+                    },
+                    {
                         name: "Role deleted",
                         value: ServerLogEventType.RoleDelete,
                     },
@@ -105,8 +113,24 @@ export default new Command(
                         value: ServerLogEventType.ChannelCreate,
                     },
                     {
+                        name: "Channel updated",
+                        value: ServerLogEventType.ChannelUpdate,
+                    },
+                    {
                         name: "Channel deleted",
                         value: ServerLogEventType.ChannelDelete,
+                    },
+                    {
+                        name: "Voice user joined",
+                        value: ServerLogEventType.VoiceJoin,
+                    },
+                    {
+                        name: "Voice user moved",
+                        value: ServerLogEventType.VoiceMove,
+                    },
+                    {
+                        name: "Voice user left",
+                        value: ServerLogEventType.VoiceLeave,
                     },
                 )
                 .setRequired(true))
@@ -181,79 +205,7 @@ export default new Command(
             const action = interaction.options.getString("action", true);
             const toggle = interaction.options.getBoolean("enable", true);
 
-            switch (action) {
-                case ServerLogEventType.AutoModerator:
-                    system.logs.actions.autoMod = toggle;
-                    break;
-
-                case ServerLogEventType.Moderator:
-                    system.logs.actions.moderator = toggle;
-                    break;
-
-                case ServerLogEventType.ServerInvites:
-                    system.logs.actions.invites = toggle;
-                    break;
-
-                case ServerLogEventType.MemberJoin:
-                    system.logs.actions.join = toggle;
-                    break;
-
-                case ServerLogEventType.MemberLeave:
-                    system.logs.actions.leave = toggle;
-                    break;
-
-                case ServerLogEventType.MemberTimeout:
-                    system.logs.actions.timeout = toggle;
-                    break;
-
-                case ServerLogEventType.MemberBan:
-                    system.logs.actions.ban = toggle;
-                    break;
-
-                case ServerLogEventType.MemberNickname:
-                    system.logs.actions.nickname = toggle;
-                    break;
-
-                case ServerLogEventType.MessageDelete:
-                    system.logs.actions.msgDel = toggle;
-                    break;
-
-                case ServerLogEventType.MessageEdit:
-                    system.logs.actions.msgUpd = toggle;
-                    break;
-
-                case ServerLogEventType.MessageBulkDelete:
-                    system.logs.actions.msgBulkDel = toggle;
-                    break;
-
-                case ServerLogEventType.MessagePin:
-                    system.logs.actions.msgPin = toggle;
-                    break;
-
-                case ServerLogEventType.RoleCreate:
-                    system.logs.actions.rolesAdd = toggle;
-                    break;
-
-                case ServerLogEventType.RoleDelete:
-                    system.logs.actions.rolesRem = toggle;
-                    break;
-
-                case ServerLogEventType.RoleGive:
-                    system.logs.actions.rolesAssign = toggle;
-                    break;
-
-                case ServerLogEventType.RoleTake:
-                    system.logs.actions.rolesUnassign = toggle;
-                    break;
-
-                case ServerLogEventType.ChannelCreate:
-                    system.logs.actions.channelAdd = toggle;
-                    break;
-
-                case ServerLogEventType.ChannelDelete:
-                    system.logs.actions.channelDel = toggle;
-                    break;
-            };
+            system.logs.actions[action] = toggle;
 
             const update = await cache.update(system, db);
 

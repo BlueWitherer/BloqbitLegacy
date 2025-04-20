@@ -229,6 +229,11 @@ export default new Command(
                         "inline": true,
                     },
                     {
+                        "name": "Role updated",
+                        "value": `**${resolve.abled(system.logs.actions.rolesUpd, true)}**`,
+                        "inline": true,
+                    },
+                    {
                         "name": "Role deleted",
                         "value": `**${resolve.abled(system.logs.actions.rolesRem, true)}**`,
                         "inline": true,
