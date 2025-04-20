@@ -33,7 +33,9 @@ export default new Command(
                         "color": assets.colors.primary,
                     },
                 ],
-                "ephemeral": true,
+                "flags": [
+                    "Ephemeral",
+                ],
             });
         };
 
@@ -47,7 +49,9 @@ export default new Command(
         } catch (err) {
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - Invalid ID.`,
-                "ephemeral": true,
+                "flags": [
+                    "Ephemeral",
+                ],
             });
 
             console.error(err);

@@ -54,7 +54,9 @@ export default {
                 if (interaction.type === Discord.InteractionType.ApplicationCommand) {
                     await interaction.reply({
                         "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
-                        "ephemeral": true,
+                        "flags": [
+                    "Ephemeral",
+                ],
                     });
 
                     console.error(err);
@@ -111,7 +113,9 @@ export default {
                                 "color": assets.colors.secondary,
                             },
                         ],
-                        "ephemeral": true,
+                        "flags": [
+                    "Ephemeral",
+                ],
                     });
 
                     return;
@@ -148,7 +152,9 @@ export default {
                                 "color": assets.colors.secondary,
                             },
                         ],
-                        "ephemeral": true,
+                        "flags": [
+                    "Ephemeral",
+                ],
                     });
 
                     return;

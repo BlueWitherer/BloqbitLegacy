@@ -72,7 +72,9 @@ export default new Command(
                             "color": assets.colors.primary,
                         },
                     ],
-                    "ephemeral": true,
+                    "flags": [
+                        "Ephemeral",
+                    ],
                 });
 
                 return;

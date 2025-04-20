@@ -41,6 +41,9 @@ export default new Command(
                     },
                 ])
                 .setRequired(true)))
+        .addSubcommand((c) => c
+            .setName("logs")
+            .setDescription("Configuration for server logging."))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     async (interaction, assets, system, db) => {
         if (interaction.options.getSubcommand() == "filters") {
@@ -130,7 +133,7 @@ export default new Command(
                     break;
 
                 default:
-                    fetch.commandErrorResponse(interaction, assets);
+                    await fetch.commandErrorResponse(interaction, assets);
                     return;
             };
 
@@ -144,6 +147,9 @@ export default new Command(
                 ],
             });
 
+            return;
+        } else {
+            await fetch.commandErrorResponse(interaction, assets);
             return;
         };
     });

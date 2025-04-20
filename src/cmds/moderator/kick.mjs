@@ -27,14 +27,18 @@ export default new Command(
                         "color": assets.colors.primary,
                     },
                 ],
-                "ephemeral": true,
+                "flags": [
+                    "Ephemeral",
+                ],
             });
         };
 
         return interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${kickreason}`).catch(async (err) => {
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
-                "ephemeral": true,
+                "flags": [
+                    "Ephemeral",
+                ],
             });
             console.error(err);
         }).then(async () => {

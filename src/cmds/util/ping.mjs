@@ -12,7 +12,9 @@ export default new Command(
     async (interaction, assets, system, db) => {
         await interaction.reply({
             "content": "",
-            "ephemeral": true,
+            "flags": [
+                "Ephemeral",
+            ],
             "embeds": [{
                 "author": {
                     "name": interaction.user?.username,
