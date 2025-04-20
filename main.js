@@ -37,10 +37,10 @@ const start = async () => {
         });
 
         process.on('SIGINT', async () => {
-            console.info('Received SIGINT. Shutting down gracefully...');
+            console.warn('Received SIGINT. Shutting down gracefully...');
 
             server.close(async () => {
-                console.info('Server has been stopped');
+                console.log('Server has been stopped');
 
                 await bot.client?.destroy();
                 process.exit(0);
@@ -48,10 +48,10 @@ const start = async () => {
         });
 
         process.on('SIGTERM', async () => {
-            console.info('Received SIGTERM. Shutting down gracefully...');
+            console.warn('Received SIGTERM. Shutting down gracefully...');
 
             server.close(async () => {
-                console.info('Server has been stopped');
+                console.log('Server has been stopped');
 
                 await bot.client?.destroy();
                 process.exit(0);

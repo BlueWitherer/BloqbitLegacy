@@ -5,26 +5,6 @@ import { ModeratorActionType, MessageFilterMode, Config } from "../classes.mjs";
 export default {
     /**
      * 
-     * @param {object} obj The object to copy from
-     * 
-     * @returns {Config} The new object with the values copied to it
-     */
-    deepCopySettings: (obj) => {
-        if (obj === null || typeof obj !== 'object') {
-            return obj;
-        };
-
-        const objCopy = new Config({}).toObject();
-
-        for (const key in obj) {
-            if (key !== "_id") objCopy[key] = obj[key];
-        };
-
-        return objCopy;
-    },
-
-    /**
-     * 
      * @param {array} array The array 
      * @param {any} value The value to query
      * 

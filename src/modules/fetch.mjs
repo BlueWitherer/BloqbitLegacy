@@ -276,14 +276,15 @@ export default {
                             console.log(`Step 5 Server exists in database, copying save data.`);
                             console.debug(`Data for server ${server} exists, duplicating save...`);
 
-                            thisGuild = resolve.deepCopySettings(foundServer);
+                            // @ts-ignore
+                            thisGuild = new Config(foundServer);
 
                             console.debug(`Data successfully saved.`);
                         } else {
                             console.log(`Step 5 Server doesn't exist in database, creating new save.`);
                             console.debug(`Data for server ${server} does not exist, assigning new default settings...`);
 
-                            const defaultSettings = new Config({}).toObject();
+                            const defaultSettings = new Config({});
                             defaultSettings.server = server;
 
                             thisGuild = defaultSettings;
@@ -297,7 +298,7 @@ export default {
 
                     console.log(`Step 6 Updating cache.`);
 
-                    const final = cacheModule.update(thisGuild, db);
+                    const final = await cacheModule.update(thisGuild, db);
                     return final;
                 };
             } catch (err) {

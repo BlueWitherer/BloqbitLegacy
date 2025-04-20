@@ -158,7 +158,7 @@ export class LogsActions {
 };
 
 export class Logs {
-    constructor({ enabled = false, webhookEnabled = false, channel = "", webhook = "", inbox = "", actions = new LogsActions({}) }) {
+    constructor({ enabled = false, webhookEnabled = true, channel = "", webhook = "", inbox = "", actions = new LogsActions({}) }) {
         this.enabled = enabled;
         this.webhookEnabled = webhookEnabled;
         this.channel = channel;
@@ -257,9 +257,5 @@ export default class Config {
         this.cleverbot = cleverbot;
 
         return this;
-    };
-
-    toObject() {
-        return { ...this };
     };
 };
