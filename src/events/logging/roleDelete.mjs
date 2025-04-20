@@ -25,7 +25,7 @@ export default new LogEvent(
                             "name": `${role.guild?.name}`,
                             "icon_url": `${role.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
                         },
-                        "title": `${bot.assets.icons.minus} | Role Deleted`,
+                        "title": `${bot.assets.icons.minus} Role Deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

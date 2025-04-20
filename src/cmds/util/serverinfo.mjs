@@ -77,7 +77,7 @@ export default new Command(
                         },
                         {
                             "name": "Date Created",
-                            "value": `<t:${createdAt}:F> | <t:${createdAt}:R>`,
+                            "value": `<t:${createdAt}:F> • <t:${createdAt}:R>`,
                             "inline": true,
                         },
                     ],

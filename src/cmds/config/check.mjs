@@ -99,7 +99,7 @@ export default new Command(
                 };
 
                 return new EmbedBuilder()
-                    .setTitle(`${name} Filter for ${interaction.guild?.name}`)
+                    .setTitle(`${assets.icons.info} ${name} Filter for ${interaction.guild?.name}`)
                     .setDescription(`**${resolve.abled(thisFilter.enabled)}**`)
                     .setColor(assets.colors.primary)
                     .addFields(fields)

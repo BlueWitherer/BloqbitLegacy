@@ -25,7 +25,7 @@ export default new LogEvent(
                             "name": `${member.user?.username}`,
                             "icon_url": `${member.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.minus} | User Left`,
+                        "title": `${bot.assets.icons.minus} User Left`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

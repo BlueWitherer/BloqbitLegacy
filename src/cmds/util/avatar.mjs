@@ -26,7 +26,7 @@ export default new Command(
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`
                         },
-                        "title": `${assets.icons.info} | ${User.username}'s Avatar`,
+                        "title": `${assets.icons.info} ${User.username}'s Avatar`,
                         "color": assets.colors.primary,
                         "image": {
                             "url": `${Member.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
@@ -52,7 +52,7 @@ export default new Command(
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`
                         },
-                        "title": `${assets.icons.info} | ${interaction.user?.username}'s Avatar`,
+                        "title": `${assets.icons.info} ${interaction.user?.username}'s Avatar`,
                         "color": assets.colors.primary,
                         "image": {
                             "url": `${interaction.member?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,

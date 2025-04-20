@@ -25,7 +25,7 @@ export default new LogEvent(
                             "name": `${channel.guild?.name}`,
                             "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
                         },
-                        "title": `${bot.assets.icons.plus} | Channel Created`,
+                        "title": `${bot.assets.icons.plus} Channel Created`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {

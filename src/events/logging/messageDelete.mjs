@@ -30,7 +30,7 @@ export default new LogEvent(
                             "name": `${msg.author?.username}`,
                             "icon_url": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.minus} | Message Deleted`,
+                        "title": `${bot.assets.icons.minus} Message Deleted`,
                         "description": msg.cleanContent,
                         "color": bot.assets.colors.secondary,
                         "fields": [

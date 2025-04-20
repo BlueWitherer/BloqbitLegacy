@@ -25,7 +25,7 @@ export default new LogEvent(
                             "name": `${ban.user?.username}`,
                             "icon_url": `${ban.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.check} | User Unbanned`,
+                        "title": `${bot.assets.icons.check} User Unbanned`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {

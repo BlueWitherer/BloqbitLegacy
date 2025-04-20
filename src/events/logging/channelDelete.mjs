@@ -25,7 +25,7 @@ export default new LogEvent(
                             "name": `${channel.guild?.name}`,
                             "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
                         },
-                        "title": `${bot.assets.icons.minus} | Channel Deleted`,
+                        "title": `${bot.assets.icons.minus}Channel Deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

@@ -31,14 +31,14 @@ export default new Command(
 
                 await interaction.reply({
                     "embeds": [{
-                        "title": `${assets.icons.info} | ${Member.user?.username}`,
-                        "color": `${assets.colors.primary}`,
-                        "thumbnail": {
-                            "url": `${Member.user?.displayAvatarURL({ forceStatic: false })}`,
-                        },
                         "author": {
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
+                        },
+                        "title": `${assets.icons.info} ${Member.user?.username}`,
+                        "color": `${assets.colors.primary}`,
+                        "thumbnail": {
+                            "url": `${Member.user?.displayAvatarURL({ forceStatic: false })}`,
                         },
                         "fields": [
                             {
@@ -58,12 +58,12 @@ export default new Command(
                             },
                             {
                                 "name": "Account Created",
-                                "value": `<t:${createdAt}:F> | <t:${createdAt}:R>`,
+                                "value": `<t:${createdAt}:F> • <t:${createdAt}:R>`,
                                 "inline": true,
                             },
                             {
                                 "name": "Joined Server",
-                                "value": `<t:${joinedAt}:F> | <t:${joinedAt}:R>`,
+                                "value": `<t:${joinedAt}:F> • <t:${joinedAt}:R>`,
                                 "inline": true,
                             },
                             {
@@ -91,7 +91,7 @@ export default new Command(
                     "content": null,
                     "embeds": [
                         {
-                            "title": `${assets.icons.info} | ${Member.user?.username}`,
+                            "title": `${assets.icons.info} ${Member.user?.username}`,
                             "color": `${assets.colors.primary}`,
                             "thumbnail": {
                                 "url": `${Member.user?.displayAvatarURL({ forceStatic: false })}`,
@@ -118,12 +118,12 @@ export default new Command(
                                 },
                                 {
                                     "name": "Account Created",
-                                    "value": `<t:${createdAt}:F> | <t:${createdAt}:R>`,
+                                    "value": `<t:${createdAt}:F> • <t:${createdAt}:R>`,
                                     "inline": true,
                                 },
                                 {
                                     "name": "Joined Server",
-                                    "value": `<t:${joinedAt}:F> | <t:${joinedAt}:R>`,
+                                    "value": `<t:${joinedAt}:F> • <t:${joinedAt}:R>`,
                                     "inline": true,
                                 },
                                 {
@@ -151,7 +151,7 @@ export default new Command(
                 "content": null,
                 "embeds": [
                     {
-                        "title": `${assets.icons.info} | ${interaction.user?.username}`,
+                        "title": `${assets.icons.info} ${interaction.user?.username}`,
                         "color": `${assets.colors.primary}`,
                         "thumbnail": {
                             "url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
@@ -178,12 +178,12 @@ export default new Command(
                             },
                             {
                                 "name": "Account Created",
-                                "value": `<t:${createdAtU}:F> | <t:${createdAtU}:R>`,
+                                "value": `<t:${createdAtU}:F> • <t:${createdAtU}:R>`,
                                 "inline": true,
                             },
                             {
                                 "name": "Joined Server",
-                                "value": `<t:${joinedAtU}:F> | <t:${joinedAtU}:R>`,
+                                "value": `<t:${joinedAtU}:F> • <t:${joinedAtU}:R>`,
                                 "inline": true,
                             },
                             {
