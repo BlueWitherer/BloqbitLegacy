@@ -99,10 +99,6 @@ export default new Command(
                 };
 
                 return new EmbedBuilder()
-                    .setAuthor({
-                        "name": `${interaction.user?.username}`,
-                        "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
-                    })
                     .setTitle(`${name} Filter for ${interaction.guild?.name}`)
                     .setDescription(`**${resolve.abled(thisFilter.enabled)}**`)
                     .setColor(assets.colors.primary)
@@ -158,111 +154,108 @@ export default new Command(
             };
 
             const returnEmbed = new EmbedBuilder()
-                .setAuthor({
-                    "name": `${interaction.user?.username}`,
-                    "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
-                })
-                .setTitle(`Set of active logs for ${interaction.guild?.name}`)
+                .setTitle(`${assets.icons.info} Set of active logs for ${interaction.guild?.name}`)
                 .setDescription(`Logs are currently **${resolve.abled(system.logs.enabled)}**${loggingIn()}!`)
+                .setColor(assets.colors.primary)
                 .setFields([
                     {
                         "name": "Bloqbit Auto-moderator",
-                        "value": `**${resolve.abled(system.logs.actions.autoMod)}**`, // General
+                        "value": `**${resolve.abled(system.logs.actions.autoMod, true)}**`, // General
                         "inline": true,
                     },
                     {
                         "name": "Moderator actions",
-                        "value": `**${resolve.abled(system.logs.actions.moderator)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.moderator, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Server invites",
-                        "value": `**${resolve.abled(system.logs.actions.invites)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.invites, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Member joins",
-                        "value": `**${resolve.abled(system.logs.actions.join)}**`, // Members
-                        "inline": false,
+                        "value": `**${resolve.abled(system.logs.actions.join, true)}**`, // Members
+                        "inline": true,
                     },
                     {
                         "name": "Member leaves",
-                        "value": `**${resolve.abled(system.logs.actions.leave)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.leave, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Member timed out",
-                        "value": `**${resolve.abled(system.logs.actions.timeout)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.timeout, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Member banned",
-                        "value": `**${resolve.abled(system.logs.actions.ban)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.ban, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Member nickname updated",
-                        "value": `**${resolve.abled(system.logs.actions.nickname)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.nickname, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Message deleted",
-                        "value": `**${resolve.abled(system.logs.actions.msgDel)}**`, // Messages
-                        "inline": false,
+                        "value": `**${resolve.abled(system.logs.actions.msgDel, true)}**`, // Messages
+                        "inline": true,
                     },
                     {
                         "name": "Message edited",
-                        "value": `**${resolve.abled(system.logs.actions.msgUpd)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.msgUpd, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Message pinned",
-                        "value": `**${resolve.abled(system.logs.actions.msgPin)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.msgPin, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Messages bulk deleted",
-                        "value": `**${resolve.abled(system.logs.actions.msgBulkDel)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.msgBulkDel, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "All reactions removed from message",
-                        "value": `**${resolve.abled(system.logs.actions.remAllReact)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.remAllReact, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Role created",
-                        "value": `**${resolve.abled(system.logs.actions.rolesAdd)}**`, // Roles
-                        "inline": false,
+                        "value": `**${resolve.abled(system.logs.actions.rolesAdd, true)}**`, // Roles
+                        "inline": true,
                     },
                     {
                         "name": "Role deleted",
-                        "value": `**${resolve.abled(system.logs.actions.rolesRem)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.rolesRem, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Role assigned",
-                        "value": `**${resolve.abled(system.logs.actions.rolesAssign)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.rolesAssign, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Role taken",
-                        "value": `**${resolve.abled(system.logs.actions.rolesUnassign)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.rolesUnassign, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Channel created",
-                        "value": `**${resolve.abled(system.logs.actions.channelAdd)}**`, // Channels
-                        "inline": false,
+                        "value": `**${resolve.abled(system.logs.actions.channelAdd, true)}**`, // Channels
+                        "inline": true,
                     },
                     {
                         "name": "Channel updated",
-                        "value": `**${resolve.abled(system.logs.actions.channelUpd)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.channelUpd, true)}**`,
                         "inline": true,
                     },
                     {
                         "name": "Channel deleted",
-                        "value": `**${resolve.abled(system.logs.actions.channelDel)}**`,
+                        "value": `**${resolve.abled(system.logs.actions.channelDel, true)}**`,
                         "inline": true,
                     },
                 ]).data;
@@ -276,6 +269,8 @@ export default new Command(
                     "Ephemeral",
                 ],
             });
+
+            return;
         } else {
             await fetch.commandErrorResponse(interaction, assets);
             return;

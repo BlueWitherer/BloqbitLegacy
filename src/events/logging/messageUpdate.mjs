@@ -72,8 +72,51 @@ export default new LogEvent(
                     }).data;
 
                     if (!newMsg.author?.bot && !(oldMsg.content === newMsg.content)) await fetch.sendLog(bot, system, emb, newMsg.guild);
+                } else if (system.logs.enabled && (system.logs.actions.msgPin)) {
+                    const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${newMsg.author?.username}`,
+                            "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                        },
+                        "title": `${bot.assets.icons.info} | Message Pinned`,
+                        "description": newMsg.cleanContent,
+                        "color": bot.assets.colors.primary,
+                        "fields": [
+                            {
+                                "name": "Jump",
+                                "value": `[Proceed](${newMsg.url})`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Author",
+                                "value": `<@!${newMsg.author?.id}>`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Channel",
+                                "value": `<#${String(newMsg.channel?.id || newMsg.thread?.id)}>`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Message ID",
+                                "value": `\`${newMsg.id}\``,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Originally Sent",
+                                "value": `<t:${Math.floor(oldMsg.createdTimestamp / 1000)}:F> • <t:${Math.floor(oldMsg.createdTimestamp / 1000)}:R>`,
+                                "inline": false,
+                            },
+                        ],
+                        "image": {
+                            "url": fetch.ifImage(oldMsg),
+                            "proxyURL": fetch.ifProxyImage(oldMsg),
+                        },
+                    }).data;
+
+                    if (newMsg.pinned && !oldMsg.pinned) await fetch.sendLog(bot, system, emb, newMsg.guild);
                 } else {
-                    console.warn(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
+                    console.warn(`Logs for edited messages or pinned messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                     return;
                 };
             } else {

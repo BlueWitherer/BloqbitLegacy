@@ -220,15 +220,35 @@ export default {
 
     /**
      * 
-     * @param {boolean} bool Boolean
+     * @param {boolean} bool If-enabled boolean
+     * @param {boolean} emote Include emote
      * 
-     * @returns {string} "enabled" or "disabled"
+     * @returns {string} "enabled" or "disabled" with or without emote
      */
-    abled: (bool) => {
+    abled: (bool, emote = false) => {
+        /**
+         * 
+         * @param {boolean} e Emote
+         * @param {boolean} b If enabled
+         * 
+         * @returns {string}
+         */
+        const addEmote = (e, b) => {
+            if (e) {
+                if (b) {
+                    return "✅ ";
+                } else {
+                    return "❌ ";
+                };
+            } else {
+                return "";
+            };
+        };
+
         if (bool) {
-            return "enabled";
+            return addEmote(emote, bool) + "enabled";
         } else {
-            return "disabled";
+            return addEmote(emote, bool) + "disabled";
         };
     },
 
