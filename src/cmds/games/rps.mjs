@@ -34,8 +34,8 @@ export default new Command(
             s: "Scissors",
         };
 
-        const human = interaction.user?.username;
-        const robot = interaction.client?.user?.username;
+        const human = "🎉 " + interaction.user?.username;
+        const robot = "💔 " + interaction.client?.user?.username;
 
         let userMove = moves[interaction.options?.getString("move").toLowerCase()];
         let botMove = moves[Object.keys(moves)[Math.floor(Math.random() * Object.keys(moves).length)]];
@@ -49,7 +49,7 @@ export default new Command(
         let winner;
 
         if (userMove === botMove) {
-            winner = 'Draw';
+            winner = '📛 Draw';
         } else {
             winner = outcomes[userMove][botMove];
         };
