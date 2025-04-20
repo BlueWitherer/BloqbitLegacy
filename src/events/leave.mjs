@@ -1,5 +1,5 @@
 import BloqbitClient from '../classes/BloqbitClient.mjs';
-import { Events, Guild } from 'discord.js';
+import { Events, Guild, WebhookClient } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 
 export default {
@@ -19,9 +19,7 @@ export default {
             return;
         } else {
             try {
-                const connect = await fetch.openConnect(bot.db);
-
-                await fetch.closeConnect(connect);
+                await fetch.reviseGuild(bot.db, guild.id);
             } catch (err) {
                 console.error(err);
             };
@@ -59,7 +57,7 @@ export default {
                 "activities": [
                     {
                         "name": `chat`,
-                        "state": `Active across ${client.guilds.cache.size} servers!`,
+                        "state": `Active across ${client.guilds.cache?.size} servers!`,
                         "type": Discord.ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,
                     }

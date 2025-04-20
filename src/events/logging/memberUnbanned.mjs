@@ -44,8 +44,9 @@ export default new LogEvent(
                     await fetch.sendLog(bot, system, emb, ban.guild);
                 } else {
                     console.warn(`Logs for unbans not enabled in guild '${ban.guild?.name}' (${ban.guild?.id})`);
-                    return;
                 };
+
+                return;
             } else {
                 console.error(`Server '${ban.guild?.name}' (${ban.guild?.id}) not registered in database`);
                 return;

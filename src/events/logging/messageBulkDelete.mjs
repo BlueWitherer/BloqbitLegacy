@@ -43,8 +43,9 @@ export default new LogEvent(
                     await fetch.sendLog(bot, system, emb, msg.guild);
                 } else {
                     console.warn(`Logs for bulk-deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
-                    return;
                 };
+
+                return;
             } else {
                 console.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
                 return;

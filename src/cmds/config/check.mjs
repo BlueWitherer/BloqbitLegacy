@@ -46,7 +46,9 @@ export default new Command(
             .setDescription("Configuration for server logging."))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     async (interaction, assets, system, db) => {
-        if (interaction.options.getSubcommand() == "filters") {
+        const cmd = interaction.options?.getSubcommand(true);
+
+        const filtersCmd = async () => {
             const am = system.automod;
 
             /**
@@ -111,7 +113,7 @@ export default new Command(
 
             let returnEmbed = new EmbedBuilder().data;
 
-            switch (interaction.options.getString("filter")) {
+            switch (interaction.options?.getString("filter")) {
                 case MessageFilterClass.SWEAR:
                     returnEmbed = checkFilter(am.swearFilter, "Swear");
                     break;
@@ -148,7 +150,9 @@ export default new Command(
             });
 
             return;
-        } else if (interaction.options.getSubcommand() == "logs") {
+        };
+
+        const logsCmd = async () => {
             const loggingIn = () => {
                 if (system.logs.enabled && system.logs.channel) return ` and are currently being sent in <#${system.logs.channel}>`;
             };
@@ -276,8 +280,21 @@ export default new Command(
             });
 
             return;
-        } else {
-            await fetch.commandErrorResponse(interaction, assets);
-            return;
         };
+
+        switch (cmd) {
+            case "filters":
+                await filtersCmd();
+                break;
+
+            case "logs":
+                await logsCmd();
+                break;
+
+            default:
+                await fetch.commandErrorResponse(interaction, assets);
+                break;
+        };
+
+        return;
     });

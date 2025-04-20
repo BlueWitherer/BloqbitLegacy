@@ -5,7 +5,6 @@ import { SaveDataClient, Config, BloqbitClient } from '../classes.mjs';
 import Discord from 'discord.js';
 import Mongo from 'mongodb';
 
-import resolve from './resolve.mjs';
 import SysAssets from '../assets.json' with { type: 'json' };
 
 export default {

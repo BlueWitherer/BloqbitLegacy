@@ -72,7 +72,11 @@ export default new LogEvent(
                     }).data;
 
                     if (!newMsg.author?.bot && !(oldMsg.content === newMsg.content)) await fetch.sendLog(bot, system, emb, newMsg.guild);
-                } else if (system.logs.enabled && (system.logs.actions.msgPin)) {
+                } else {
+                    console.warn(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
+                };
+
+                if (system.logs.enabled && (system.logs.actions.msgPin)) {
                     const emb = new EmbedBuilder({
                         "author": {
                             "name": `${newMsg.author?.username}`,
@@ -116,9 +120,10 @@ export default new LogEvent(
 
                     if (newMsg.pinned && !oldMsg.pinned) await fetch.sendLog(bot, system, emb, newMsg.guild);
                 } else {
-                    console.warn(`Logs for edited messages or pinned messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
-                    return;
+                    console.warn(`Logs for pinned messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };
+
+                return;
             } else {
                 console.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);
                 return;

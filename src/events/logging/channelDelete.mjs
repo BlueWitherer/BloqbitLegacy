@@ -39,8 +39,9 @@ export default new LogEvent(
                     await fetch.sendLog(bot, system, emb, channel.guild);
                 } else {
                     console.warn(`Logs for deleted channels not enabled in guild '${channel.guild?.name}' (${channel.guild?.id})`);
-                    return;
                 };
+
+                return;
             } else {
                 console.error(`Server '${channel.guild?.name}' (${channel.guild?.id}) not registered in database`);
                 return;

@@ -22,7 +22,7 @@ export default new Command(
     async (interaction, assets, system, db) => {
         const banreason = interaction.options?.getString("reason") || "";
         const User = interaction.options?.getString("user") || "";
-        const Member = interaction.guild?.members?.cache.get(User);
+        const Member = interaction.guild?.members?.cache?.get(User);
 
         if (Member?.permissions.has([PermissionFlagsBits.BanMembers])) {
             await interaction.reply({

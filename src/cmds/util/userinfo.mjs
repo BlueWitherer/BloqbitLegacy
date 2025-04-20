@@ -67,8 +67,8 @@ export default new Command(
                                 "inline": true,
                             },
                             {
-                                "name": `Roles [${Member.roles?.cache.size}]`,
-                                "value": `${Member.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                "name": `Roles [${Member.roles?.cache?.size}]`,
+                                "value": `${Member.roles?.cache?.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
                                 "inline": false,
                             },
                             {
@@ -127,8 +127,8 @@ export default new Command(
                                     "inline": true,
                                 },
                                 {
-                                    "name": `Roles [${Member.roles?.cache.size}]`,
-                                    "value": `${Member.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                    "name": `Roles [${Member.roles?.cache?.size}]`,
+                                    "value": `${Member.roles?.cache?.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
                                     "inline": false,
                                 },
                                 {
@@ -187,8 +187,8 @@ export default new Command(
                                 "inline": true,
                             },
                             {
-                                "name": `Roles [${interaction.member.roles?.cache.size}]`,
-                                "value": `${interaction.member.roles?.cache.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                "name": `Roles [${interaction.member.roles?.cache?.size}]`,
+                                "value": `${interaction.member.roles?.cache?.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
                                 "inline": false,
                             },
                             {

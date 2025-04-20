@@ -44,8 +44,9 @@ export default new LogEvent(
                     await fetch.sendLog(bot, system, emb, member.guild);
                 } else {
                     console.warn(`Logs for member leaves not enabled in guild '${member.guild?.name}' (${member.guild?.id})`);
-                    return;
                 };
+
+                return;
             } else {
                 console.error(`Server '${member.guild?.name}' (${member.guild?.id}) not registered in database`);
                 return;

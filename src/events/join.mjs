@@ -19,11 +19,7 @@ export default {
             return;
         } else {
             try {
-                const connect = await fetch.openConnect(bot.db);
-
-                await fetch.reviseGuild(connect, bot, guild.id);
-
-                await fetch.closeConnect(connect);
+                await fetch.reviseGuild(bot.db, guild.id);
             } catch (err) {
                 console.error(err);
             };
@@ -61,7 +57,7 @@ export default {
                 "activities": [
                     {
                         "name": `chat`,
-                        "state": `Active across ${client.guilds.cache.size} servers!`,
+                        "state": `Active across ${client.guilds.cache?.size} servers!`,
                         "type": Discord.ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,
                     }

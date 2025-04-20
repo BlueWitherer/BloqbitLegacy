@@ -534,7 +534,7 @@ export default new Command(
         };
 
         const invitesCmd = async () => {
-            const toggle = interaction.options.getBoolean("enable", true);
+            const toggle = interaction.options?.getBoolean("enable", true);
 
             const filter = interaction.options?.getString("filter");
             const channel = interaction.options?.getChannel("toggle_channel");
@@ -739,7 +739,7 @@ export default new Command(
         };
 
         const linksCmd = async () => {
-            const toggle = interaction.options.getBoolean("enable", true);
+            const toggle = interaction.options?.getBoolean("enable", true);
 
             const filter = interaction.options?.getString("filter");
             const channel = interaction.options?.getChannel("toggle_channel");

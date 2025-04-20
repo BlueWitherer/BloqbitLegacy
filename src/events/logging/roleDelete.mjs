@@ -44,8 +44,9 @@ export default new LogEvent(
                     await fetch.sendLog(bot, system, emb, role.guild);
                 } else {
                     console.warn(`Logs for deleted roles not enabled in guild '${role.guild?.name}' (${role.guild?.id})`);
-                    return;
                 };
+
+                return;
             } else {
                 console.error(`Server '${role.guild?.name}' (${role.guild?.id}) not registered in database`);
                 return;

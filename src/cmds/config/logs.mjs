@@ -202,8 +202,8 @@ export default new Command(
          * Action type sub-command
          */
         const actionCmd = async () => {
-            const action = interaction.options.getString("action", true);
-            const toggle = interaction.options.getBoolean("enable", true);
+            const action = interaction.options?.getString("action", true);
+            const toggle = interaction.options?.getBoolean("enable", true);
 
             system.logs.actions[action] = toggle;
 

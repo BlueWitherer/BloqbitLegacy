@@ -1,7 +1,7 @@
 // Save original console methods
 const originalConsoleMethods = {
-    log: console.log,
     debug: console.debug,
+    log: console.log,
     info: console.info,
     warn: console.warn,
     error: console.error,
@@ -9,8 +9,8 @@ const originalConsoleMethods = {
 
 // ANSI escape codes for coloring
 const colors = {
-    white: '\x1b[37m',    // White for log
     gray: '\x1b[90m',     // Gray for debug
+    white: '\x1b[37m',    // White for log
     cyan: '\x1b[36m',     // Cyan for info
     yellow: '\x1b[93m',   // Yellow for warn
     red: '\x1b[91m',      // Red for error
@@ -18,7 +18,11 @@ const colors = {
     reset: '\x1b[0m',     // Reset to default
 };
 
-// Function to format timestamp
+/**
+ * Function to format timestamp
+ * 
+ * @returns {string}
+ */
 const getTimestamp = () => {
     const now = new Date();
 
@@ -32,7 +36,14 @@ const getTimestamp = () => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} UTC`;
 };
 
-// Helper to recolor multi-line logs
+/**
+ * Helper to recolor multi-line logs
+ * 
+ * @param {string} text 
+ * @param {string} color 
+ * 
+ * @returns {string}
+ */
 const recolorMultilineLog = (text, color) => {
     const lines = text.split('\n');
     return lines.map(line => `${color}${line}${colors.reset}`).join('\n');

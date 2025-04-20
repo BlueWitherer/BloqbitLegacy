@@ -1,24 +1,24 @@
-import Discord from 'discord.js';
+import { GuildMember, Message } from 'discord.js';
 
 import resolve from './resolve.mjs';
 
 import { ModeratorActionType, Config } from '../classes.mjs';
 
 /**
+ * Per-user antispam - mutes user if threshold is met
  * @type {Map<String, Array<String>>} User ID, array of message IDs
- * @description Per-user antispam - mutes user if threshold is met
  */
 const antispamMap = new Map();
 
 /**
+ * Per-channel antiraid - locks server if threshold is met
  * @type {Map<String, Array<String>>} Channel ID, array of message IDs
- * @description Per-channel antiraid - locks server if threshold is met
  */
 const antiraidMap = new Map();
 
 /**
+ * Per-server antiraid - kicks all users that joined too quickly at once
  * @type {Map<String, Array<String>>} Server ID, array of user IDs
- * @description Per-server antiraid - kicks all users that joined too quickly at once
  */
 const antialtsMap = new Map();
 
@@ -26,7 +26,7 @@ export default {
     /**
      * 
      * @param {number} level Severity of punishment
-     * @param {Discord.Message} message Server member to receive punishment
+     * @param {Message} message Server member to receive punishment
      * @param {string} reason Reason behind punishment
      * 
      * @returns {Promise<void>}
@@ -36,7 +36,7 @@ export default {
 
         /**
          * 
-         * @param {Discord.GuildMember} m Member to ban
+         * @param {GuildMember} m Member to ban
          * @param {string} r Reason for ban
          */
         const ban = async (m, r) => {
@@ -48,7 +48,7 @@ export default {
 
         /**
          * 
-         * @param {Discord.GuildMember} m Member to softban
+         * @param {GuildMember} m Member to softban
          * @param {string} r Reason for softban
          */
         const softban = async (m, r) => {
@@ -59,12 +59,12 @@ export default {
                 "deleteMessageSeconds": 7 * 86400,
             });
 
-            await g.members.unban(m.user, r);
+            await g.members?.unban(m.user, r);
         };
 
         /**
          * 
-         * @param {Discord.GuildMember} m Member to timeout
+         * @param {GuildMember} m Member to timeout
          * @param {string} r Reason for timeout
          */
         const timeout = async (m, r) => {
@@ -110,19 +110,18 @@ export default {
 
     /**
      * 
-     * @param {Discord.Message} msg Discord message to add to spam lists
+     * @param {Message} msg Discord message to add to spam lists
      * 
      * @returns {Promise<void>}
      */
     antiMessages: (msg) => {
-        console.warn(`Coming soon! Message of ID ${msg.id} will be handled by anti-spam in the near future`);
         return;
     },
 
     /**
      * 
      * @param {Config} system Server settings object
-     * @param {Discord.Message} msg Discord message to inspect
+     * @param {Message} msg Discord message to inspect
      */
     blFilter: (system, msg) => {
         if (system && msg) {
@@ -155,7 +154,7 @@ export default {
     /**
      * 
      * @param {Config} system Server settings object
-     * @param {Discord.Message} msg Discord message to inspect
+     * @param {Message} msg Discord message to inspect
      * 
      * @returns {{ punishment: number, warning: { name: string, value: string }}} Warning object
      */
@@ -187,7 +186,7 @@ export default {
     /**
      * 
      * @param {Config} system Server settings object
-     * @param {Discord.Message} msg Discord message to inspect
+     * @param {Message} msg Discord message to inspect
      */
     inFilter: (system, msg) => {
         if (system && msg) {
@@ -218,7 +217,7 @@ export default {
     /**
      * 
      * @param {Config} system Server settings object
-     * @param {Discord.Message} msg Discord message to inspect
+     * @param {Message} msg Discord message to inspect
      */
     dtFilter: (system, msg) => {
         if (system && msg) {

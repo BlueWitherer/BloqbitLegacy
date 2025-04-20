@@ -32,7 +32,7 @@ export default class Bot {
                 "activities": [
                     {
                         "name": `Starting...`,
-                        "state": `Active across ${client.guilds.cache.size} servers!`,
+                        "state": `Active across ${client.guilds?.cache?.size} servers!`,
                         "type": ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,
                     }
@@ -157,7 +157,7 @@ export default class Bot {
                 if (testMode) {
                     console.info("Skipping database step...");
                 } else {
-                    const clientGuilds = await botModel.client.guilds.fetch();
+                    const clientGuilds = await botModel.client.guilds?.fetch();
 
                     for (const inGuild of clientGuilds) {
                         try {
@@ -211,7 +211,7 @@ export default class Bot {
                 "activities": [
                     {
                         "name": `Finishing up...`,
-                        "state": `Active across ${client.guilds.cache.size} servers!`,
+                        "state": `Active across ${client.guilds?.cache?.size} servers!`,
                         "type": ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,
                     }
@@ -239,7 +239,7 @@ export default class Bot {
                     "activities": [
                         {
                             "name": `Alpha Testing!`,
-                            "state": `Active across ${client.guilds.cache.size} servers!`,
+                            "state": `Active across ${client.guilds?.cache?.size} servers!`,
                             "type": ActivityType.Streaming,
                             "url": `https://www.youtube.com/@CubicCommunity/`,
                         }
