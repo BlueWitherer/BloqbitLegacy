@@ -12,18 +12,6 @@ export default {
      * @returns {Promise<void>}
      */
     execute: async (bot, msg) => {
-        if (msg.guild) {
-            msg.channel?.messages?.fetch({ limit: 100 })
-                .then(() => {
-                    console.log(`Message sent by @${msg.author?.username} (${msg.author?.id}) in #${msg.channel?.name} (${msg.channel?.id}) Message Count: ${msg.channel?.messages?.cache?.size}`);
-                });
-        } else if (msg.channel?.type === ChannelType.DM) {
-            msg.channel?.messages?.fetch({ limit: 100 })
-                .then(() => {
-                    console.log(`Direct message sent by @${msg.author?.username} (${msg.author?.id}) to @${bot.client?.user?.username} Message Count: ${msg.channel?.messages?.cache?.size}`);
-                });
-        };
-
         if (msg.channel?.type === ChannelType.DM || msg.channel?.type === ChannelType.GroupDM) {
             const devWH = new WebhookClient({ url: bot.dev_wh });
 

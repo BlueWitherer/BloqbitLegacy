@@ -252,16 +252,10 @@ export default class Bot {
             };
         });
 
-        botModel.clientGil?.on("ready", () => {
+        botModel.clientGil?.on("ready", async () => {
             if (testMode) {
                 botModel.clientGil?.disconnect();
             } else {
-                botModel.clientGil?.setStatus({
-                    content: "Hello, Guilded!",
-                    emoteId: 47,
-                    expiresAt: null,
-                });
-
                 console.info(`Guilded client ${botModel.clientGil?.user?.name} now online`);
             };
         });
