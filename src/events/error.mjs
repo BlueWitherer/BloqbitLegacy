@@ -13,7 +13,6 @@ export default {
      */
     execute: async (bot, error) => {
         const date = Math.floor(Date.now() / 1000);
-
         const devWH = new WebhookClient({ url: bot.dev_wh });
 
         try {

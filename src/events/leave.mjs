@@ -65,7 +65,7 @@ export default {
                     }
                 ],
                 "afk": false,
-                "status": PresenceUpdateStatus.DoNotDisturb,
+                "status": PresenceUpdateStatus.Online,
             });
         } catch (err) {
             console.error(err);

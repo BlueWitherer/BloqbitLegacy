@@ -45,11 +45,8 @@ export default new LogEvent(
                 } else {
                     console.warn(`Logs for member joins not enabled in guild '${member.guild?.name}' (${member.guild?.id})`);
                 };
-
-                return;
             } else {
                 console.error(`Server '${member.guild?.name}' (${member.guild?.id}) not registered in database`);
-                return;
             };
 
             return;

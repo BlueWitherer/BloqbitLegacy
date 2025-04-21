@@ -45,11 +45,8 @@ export default new LogEvent(
                 } else {
                     console.warn(`Logs for created roles not enabled in guild '${role.guild?.name}' (${role.guild?.id})`);
                 };
-
-                return;
             } else {
                 console.error(`Server '${role.guild?.name}' (${role.guild?.id}) not registered in database`);
-                return;
             };
 
             return;

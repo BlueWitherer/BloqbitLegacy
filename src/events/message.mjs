@@ -12,39 +12,45 @@ export default {
      * @returns {Promise<void>}
      */
     execute: async (bot, msg) => {
-        if (msg.channel?.type === ChannelType.DM || msg.channel?.type === ChannelType.GroupDM) {
-            const devWH = new WebhookClient({ url: bot.dev_wh });
+        const date = Math.floor(Date.now() / 1000);
+        const devWH = new WebhookClient({ url: bot.dev_wh });
 
-            if (msg.author?.bot) {
-                console.warn(`Direct messenger ${msg.author?.username} (${msg.author?.id}) is a bot or invalid.`);
-            } else if (devWH) {
-                const date = Math.floor(Date.now() / 1000);
-
-                await devWH.send({
-                    "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
-                    "content": "",
-                    "embeds": [
-                        {
-                            "author": {
-                                "name": "Direct Message",
-                            },
-                            "color": bot.assets.colors.terciary,
-                            "description": msg.content,
-                            "fields": [
-                                {
-                                    "name": "Sent At",
-                                    "value": `<t:${date}:F> • <t:${date}:R>`,
-                                    "inline": false,
+        try {
+            if (msg.channel?.type === ChannelType.DM || msg.channel?.type === ChannelType.GroupDM) {
+    
+                if (msg.author?.bot) {
+                    console.warn(`Direct messenger ${msg.author?.username} (${msg.author?.id}) is a bot or invalid.`);
+                } else if (devWH) {
+                    await devWH.send({
+                        "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
+                        "content": "",
+                        "embeds": [
+                            {
+                                "author": {
+                                    "name": "Direct Message",
                                 },
-                            ],
-                            "footer": {
-                                "text": msg.author?.username,
-                                "icon_url": msg.author?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
+                                "color": bot.assets.colors.terciary,
+                                "description": msg.content,
+                                "fields": [
+                                    {
+                                        "name": "Sent At",
+                                        "value": `<t:${date}:F> • <t:${date}:R>`,
+                                        "inline": false,
+                                    },
+                                ],
+                                "footer": {
+                                    "text": msg.author?.username,
+                                    "icon_url": msg.author?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
+                                },
                             },
-                        },
-                    ],
-                });
+                        ],
+                    });
+                };
             };
+        } catch (err) {
+            console.error(err);
         };
+
+        return;
     },
 };

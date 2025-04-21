@@ -122,11 +122,8 @@ export default new LogEvent(
                 } else {
                     console.warn(`Logs for pinned messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };
-
-                return;
             } else {
                 console.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);
-                return;
             };
 
             return;

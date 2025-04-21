@@ -111,6 +111,7 @@ export default class Bot {
                         console.debug(`Log event loaded for ${logEvent.event.toString()}`);
                     } catch (err) {
                         console.error(err);
+                        if (testMode) process.exit(1);
                     };
                 };
             } catch (err) {
@@ -177,8 +178,31 @@ export default class Bot {
                     };
                 };
 
-                console.debug("Starting handlers...");
-                new MessageHandler(client);
+                client.user?.setPresence({
+                    "activities": [
+                        {
+                            "name": `Finishing up...`,
+                            "state": `Active across ${client.guilds?.cache?.size} servers!`,
+                            "type": ActivityType.Streaming,
+                            "url": `https://www.youtube.com/@CubicCommunity/`,
+                        }
+                    ],
+                    "afk": false,
+                    "status": PresenceUpdateStatus.Idle,
+                });
+
+                try {
+                    console.debug("Starting handlers...");
+
+                    new MessageHandler(client);
+                    new ServerHandler(client);
+                    new UserHandler(client);
+
+                    console.debug("Handlers successfully started");
+                } catch (err) {
+                    console.error(err);
+                    if (testMode) process.exit(1);
+                };
 
                 const devWH = new WebhookClient({ "url": botModel.dev_wh, });
 
@@ -205,31 +229,6 @@ export default class Bot {
             } catch (err) {
                 console.error(err);
                 process.exit(1);
-            };
-
-            client.user?.setPresence({
-                "activities": [
-                    {
-                        "name": `Finishing up...`,
-                        "state": `Active across ${client.guilds?.cache?.size} servers!`,
-                        "type": ActivityType.Streaming,
-                        "url": `https://www.youtube.com/@CubicCommunity/`,
-                    }
-                ],
-                "afk": false,
-                "status": PresenceUpdateStatus.Idle,
-            });
-
-            try {
-                console.debug("Starting handlers...");
-
-                new MessageHandler(client);
-                new ServerHandler(client);
-                new UserHandler(client);
-
-                console.debug("Handlers successfully started");
-            } catch (err) {
-                console.error(err);
             };
 
             if (testMode) {

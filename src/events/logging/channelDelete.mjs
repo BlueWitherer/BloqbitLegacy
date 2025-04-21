@@ -40,11 +40,8 @@ export default new LogEvent(
                 } else {
                     console.warn(`Logs for deleted channels not enabled in guild '${channel.guild?.name}' (${channel.guild?.id})`);
                 };
-
-                return;
             } else {
                 console.error(`Server '${channel.guild?.name}' (${channel.guild?.id}) not registered in database`);
-                return;
             };
 
             return;
