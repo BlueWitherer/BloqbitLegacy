@@ -16,7 +16,7 @@ export default {
         const isLogged = fetch.fetchGuild(guild.id);
 
         if (isLogged) {
-            console.debug(`Incoming guild ${guild.id} registered in cache`);
+            console.log(`Incoming guild ${guild.id} registered in cache`);
         } else {
             try {
                 await fetch.reviseGuild(bot.db, guild.id);
@@ -58,7 +58,7 @@ export default {
             bot.client?.user?.setPresence({
                 "activities": [
                     {
-                        "name": `chat`,
+                        "name": `Alpha Testing!`,
                         "state": `Active across ${srvs.size} servers!`,
                         "type": ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,

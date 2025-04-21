@@ -235,11 +235,13 @@ export default class Bot {
             if (testMode) {
                 await client.destroy();
             } else {
+                const srvs = await client.guilds?.fetch();
+
                 client.user?.setPresence({
                     "activities": [
                         {
                             "name": `Alpha Testing!`,
-                            "state": `Active across ${client.guilds?.cache?.size} servers!`,
+                            "state": `Active across ${srvs.size} servers!`,
                             "type": ActivityType.Streaming,
                             "url": `https://www.youtube.com/@CubicCommunity/`,
                         }
