@@ -10,7 +10,7 @@ export default new Command(
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false),
     async (interaction, assets, system, db) => {
-        let data = [];
+        const data = [];
 
         if (interaction.guild?.premiumSubscriptionCount === 1) {
             data.push('<:boosttier0:824330219757895760> ');
@@ -28,7 +28,7 @@ export default new Command(
             data.push('<:badge_verifiedpartnered:824329742597226608> ');
         };
 
-        let createdAt = Math.floor(interaction.guild?.createdTimestamp / 1000);
+        const createdAt = Math.floor(interaction.guild?.createdTimestamp / 1000);
 
         const owner = await interaction.guild?.fetchOwner();
 

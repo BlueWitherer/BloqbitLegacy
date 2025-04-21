@@ -264,7 +264,7 @@ export default {
         if (number < 1 || 1 < number) {
             return plural;
         } else {
-            return singular
+            return singular;
         };
     },
 

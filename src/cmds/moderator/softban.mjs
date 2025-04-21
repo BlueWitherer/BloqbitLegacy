@@ -108,7 +108,8 @@ export default new Command(
                         ],
                     },
                 ],
-            }).catch(() => {
+            }).catch((err) => {
+                console.error(err);
                 return;
             });
         });

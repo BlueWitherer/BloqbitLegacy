@@ -115,6 +115,7 @@ export default {
      * @returns {Promise<void>}
      */
     antiMessages: (msg) => {
+        console.warn("Anti-spam in W.I.P.");
         return;
     },
 

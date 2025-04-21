@@ -25,7 +25,7 @@ export default new Command(
         const amount = interaction.options?.getNumber("amount") || 0;
         const user = interaction.options?.getUser("user");
 
-        const botMember = interaction.guild?.members?.cache?.get(interaction.client.user?.id);
+        const botMember = interaction.guild?.members?.cache?.get(interaction.client?.user?.id);
 
         if (!user && botMember?.permissions.has("ManageMessages")) {
             const msgs = await interaction.channel?.messages?.fetch({

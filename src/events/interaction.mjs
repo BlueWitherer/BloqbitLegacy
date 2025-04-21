@@ -1,7 +1,7 @@
 import BloqbitClient from '../classes/BloqbitClient.mjs';
 import { Events, WebhookClient, ChatInputCommandInteraction } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
-import assets from "../assets.json" with { type: 'json' }
+import assets from "../assets.json" with { type: 'json' };
 import cache from '../cache.mjs';
 
 export default {
@@ -95,6 +95,7 @@ export default {
                 };
             } catch (err) {
                 console.error(err);
+
                 await fetch.commandErrorResponse(interaction, bot.assets);
                 return;
             };

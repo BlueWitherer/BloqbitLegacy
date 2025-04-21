@@ -18,16 +18,16 @@ export default new Command(
 
         let MemberPermissions = interaction.member?.permissions?.toArray({ checkAdmin: true, checkOwner: true }).join('` | `');
 
-        if (!MemberPermissions) MemberPermissions = 'None'
+        if (!MemberPermissions) MemberPermissions = 'None';
 
-        let joinedAt = Math.floor(Member.joinedTimestamp / 1000);
-        let createdAt = Math.floor(Member.user?.createdTimestamp / 1000);
+        const joinedAt = Math.floor(Member.joinedTimestamp / 1000);
+        const createdAt = Math.floor(Member.user?.createdTimestamp / 1000);
 
         if (Member) {
             if (Member.user?.bot) {
                 let UserPermissions = Member.permissions?.toArray().join('` | `');
 
-                if (!UserPermissions) UserPermissions = 'None'
+                if (!UserPermissions) UserPermissions = 'None';
 
                 await interaction.reply({
                     "embeds": [{
@@ -144,8 +144,8 @@ export default new Command(
                 return;
             };
         } else {
-            let joinedAtU = Math.floor(interaction.member?.joinedTimestamp / 1000);
-            let createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
+            const joinedAtU = Math.floor(interaction.member?.joinedTimestamp / 1000);
+            const createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
 
             await interaction.reply({
                 "content": null,

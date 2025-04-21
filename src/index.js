@@ -157,7 +157,7 @@ export default class Bot {
                 if (testMode) {
                     console.info("Skipping database step...");
                 } else {
-                    const clientGuilds = await botModel.client.guilds?.fetch();
+                    const clientGuilds = await botModel.client?.guilds?.fetch();
 
                     for (const inGuild of clientGuilds) {
                         try {

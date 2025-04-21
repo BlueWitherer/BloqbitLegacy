@@ -349,7 +349,7 @@ export default {
 
                 const newWeb = await chnl.createWebhook({
                     "name": "Bloqbit",
-                    "avatar": bot.client.user?.displayAvatarURL({
+                    "avatar": bot.client?.user?.displayAvatarURL({
                         "size": 1024,
                         "extension": "jpg",
                         "forceStatic": true,
@@ -378,7 +378,7 @@ export default {
                         "embeds": [emb],
                     });
                 } else {
-                    console.error(`Failed to create logs webhook for guild '${guild?.name}' (${guild?.id})`)
+                    console.error(`Failed to create logs webhook for guild '${guild?.name}' (${guild?.id})`);
                 };
             } else {
                 await chnl.send({

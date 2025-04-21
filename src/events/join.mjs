@@ -1,5 +1,5 @@
 import BloqbitClient from '../classes/BloqbitClient.mjs';
-import { Events, Guild, WebhookClient } from 'discord.js';
+import { Events, Guild, WebhookClient, ActivityType, PresenceUpdateStatus } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 
 export default {
@@ -16,7 +16,7 @@ export default {
         const isLogged = fetch.fetchGuild(guild.id);
 
         if (isLogged) {
-            return;
+            console.debug(`Incoming guild ${guild.id} registered in cache`);
         } else {
             try {
                 await fetch.reviseGuild(bot.db, guild.id);
@@ -53,17 +53,19 @@ export default {
                 ],
             });
 
-            bot.client.user?.setPresence({
+            const srvs = await bot.client?.guilds?.fetch();
+
+            bot.client?.user?.setPresence({
                 "activities": [
                     {
                         "name": `chat`,
-                        "state": `Active across ${client.guilds.cache?.size} servers!`,
-                        "type": Discord.ActivityType.Streaming,
+                        "state": `Active across ${srvs.size} servers!`,
+                        "type": ActivityType.Streaming,
                         "url": `https://www.youtube.com/@CubicCommunity/`,
                     }
                 ],
                 "afk": false,
-                "status": Discord.PresenceUpdateStatus.DoNotDisturb,
+                "status": PresenceUpdateStatus.DoNotDisturb,
             });
         } catch (err) {
             console.error(err);

@@ -37,8 +37,8 @@ export default new Command(
         const human = "🎉 " + interaction.user?.username;
         const robot = "💔 " + interaction.client?.user?.username;
 
-        let userMove = moves[interaction.options?.getString("move").toLowerCase()];
-        let botMove = moves[Object.keys(moves)[Math.floor(Math.random() * Object.keys(moves).length)]];
+        const userMove = moves[interaction.options?.getString("move").toLowerCase()];
+        const botMove = moves[Object.keys(moves)[Math.floor(Math.random() * Object.keys(moves).length)]];
 
         const outcomes = {
             Rock: { Scissors: human, Paper: robot },

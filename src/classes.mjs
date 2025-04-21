@@ -1,7 +1,7 @@
 import BloqbitClient from './classes/BloqbitClient.mjs';
-import Command from './classes/Command.mjs'
+import Command from './classes/Command.mjs';
 import Config from './classes/Configuration.mjs';
-import LogEvent from './classes/LogEvent.mjs'
+import LogEvent from './classes/LogEvent.mjs';
 import SaveDataClient from './classes/SaveDataClient.mjs';
 
 import MessageHandler from './classes/handlers/MessageHandler.mjs';
