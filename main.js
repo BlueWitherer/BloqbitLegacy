@@ -1,11 +1,15 @@
 import "./console.mjs";
 
 process.on('uncaughtException', (err) => {
-    console.error('Unhandled Exception:', err);
+    console.error('Unhandled Exception:', err.message, err.stack);
 });
 
 process.on('unhandledRejection', (reason) => {
     console.error('Unhandled Rejection:', reason);
+});
+
+process.on('warning', (warning) => {
+    console.warn('Warning detected:', warning.name, warning.message, warning.stack);
 });
 
 console.log('Starting up system...');
@@ -23,6 +27,8 @@ const botModel = new BloqbitClient(process.env.MAIN_TOKEN, process.env.MAIN_SECR
 const PORT = parseInt(process.env.PORT) || 3000;
 
 const server = http.createServer((req, res) => {
+    console.debug(`Request details:\nURL: ${req.url}\nMethod: ${req.method}\nHeaders:`, req.headers);
+
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Server is running\n');
 });
