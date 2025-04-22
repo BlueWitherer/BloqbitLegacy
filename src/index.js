@@ -25,7 +25,7 @@ export default class Bot {
      * @returns {Promise<BloqbitClient>}
      */
     activate = async (botModel, testMode) => {
-        if (testMode) console.warn("Test mode active.");
+        if (testMode) console.log("Test mode active.");
 
         botModel.client?.on(Events.ClientReady, async (client) => {
             client.user?.setPresence({
