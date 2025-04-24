@@ -25,7 +25,7 @@ export default {
                         "author": {
                             "name": `Warning`,
                         },
-                        "description": message,
+                        "description": `\`\`\`\n${message}\n\`\`\``,
                         "color": bot.assets.colors.terciary,
                         "fields": [
                             {

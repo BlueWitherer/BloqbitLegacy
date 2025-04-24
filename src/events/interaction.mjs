@@ -1,5 +1,5 @@
 import BloqbitClient from '../classes/BloqbitClient.mjs';
-import { Events, WebhookClient, ChatInputCommandInteraction } from 'discord.js';
+import { Events, WebhookClient } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 import cache from '../cache.mjs';
 
@@ -9,7 +9,7 @@ export default {
     /**
      * 
      * @param {BloqbitClient} bot 
-     * @param {ChatInputCommandInteraction} interaction
+     * @param {import('discord.js').Interaction} interaction
      * 
      * @returns {Promise<void>}
      */
@@ -45,34 +45,32 @@ export default {
                                 await interaction.reply({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
                             };
                         } finally {
-                            if (devWH) {
-                                const date = Math.floor(Date.now() / 1000);
+                            const date = Math.floor(Date.now() / 1000);
 
-                                await devWH.send({
-                                    "avatarURL": interaction.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 128 }),
-                                    "content": "",
-                                    "embeds": [
-                                        {
-                                            "author": {
-                                                "name": "Interaction",
-                                            },
-                                            "color": bot.assets.colors.terciary,
-                                            "description": `**${interaction.commandName}**`,
-                                            "fields": [
-                                                {
-                                                    "name": "Used At",
-                                                    "value": `<t:${date}:F> • <t:${date}:R>`,
-                                                    "inline": false,
-                                                },
-                                            ],
-                                            "footer": {
-                                                "text": interaction.user?.username,
-                                                "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
-                                            },
+                            await devWH.send({
+                                "avatarURL": interaction.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 128 }),
+                                "content": "",
+                                "embeds": [
+                                    {
+                                        "author": {
+                                            "name": "Interaction",
                                         },
-                                    ],
-                                });
-                            };
+                                        "color": bot.assets.colors.terciary,
+                                        "description": `Used **/${interaction.commandName}** in guild __${interaction.guild?.name}__`,
+                                        "fields": [
+                                            {
+                                                "name": "Used At",
+                                                "value": `<t:${date}:F> • <t:${date}:R>`,
+                                                "inline": false,
+                                            },
+                                        ],
+                                        "footer": {
+                                            "text": interaction.user?.username,
+                                            "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
+                                        },
+                                    },
+                                ],
+                            });
                         };
 
                         return;
@@ -82,13 +80,25 @@ export default {
                         await fetch.databaseErrorResponse(interaction, bot.assets);
                     } else {
                         if (interaction.replied || interaction.deferred) {
-                            await interaction.followUp({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
+                            await interaction.followUp({
+                                "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
+                                "flags": [
+                                    "Ephemeral",
+                                ],
+                            });
                         } else {
-                            await interaction.reply({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
+                            await interaction.reply({
+                                "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
+                                "flags": [
+                                    "Ephemeral",
+                                ],
+                            });
                         };
 
                         return;
                     };
+                } else {
+                    console.error(`Interaction '${interaction.commandName}' (${interaction.id}) not a command`);
                 };
             } catch (err) {
                 console.error(err);

@@ -1,7 +1,5 @@
 import BloqbitClient from '../classes/BloqbitClient.mjs';
-import Discord from 'discord.js';
-
-const { Events, WebhookClient } = Discord;
+import { Events, WebhookClient } from 'discord.js';
 
 export default {
     name: Events.ShardError,
@@ -28,7 +26,7 @@ export default {
                         "author": {
                             "name": `Shard Error`,
                         },
-                        "description": error,
+                        "description": `\`\`\`\n${error}\n\`\`\``,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
