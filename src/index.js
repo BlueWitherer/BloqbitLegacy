@@ -29,6 +29,13 @@ export default class Bot {
 
         // @ts-ignore
         botModel.client?.on(Events.ClientReady, async (client) => {
+            if (botModel.online) {
+                console.warn(`Client ${client.user?.username} is already online, resetting boolean...`);
+                botModel.online = false;
+            } else {
+                console.info(`Client ${client.user?.username} is starting up...`);
+            };
+
             client.user?.setPresence({
                 "activities": [
                     {
@@ -60,8 +67,8 @@ export default class Bot {
                             const command = (await import(url.pathToFileURL(filePath).href)).default;
 
                             // @ts-ignore
-                            botModel.commands.push(command.data.toJSON());
-                            botModel.cmds.set(command.data.name, command);
+                            botModel.commands.push(command.data?.toJSON());
+                            botModel.cmds.set(command.data?.name, command);
 
                             console.debug(`Loaded command /${command.data.name}`);
                         } catch (err) {
@@ -202,7 +209,6 @@ export default class Bot {
                     ],
                 });
 
-                botModel.online = true;
                 console.log(`Bot user ${client.user?.username} is online`);
             } catch (err) {
                 console.error(err);
@@ -232,11 +238,16 @@ export default class Bot {
         });
 
         botModel.clientGil?.on("ready", async () => {
-            if (testMode) {
-                botModel.clientGil?.disconnect();
+            if (botModel.online) {
+                console.warn(`Guilded client ${botModel.clientGil?.user?.name} is already online, resetting boolean...`);
+                botModel.online = false;
             } else {
-                console.info(`Guilded client ${botModel.clientGil?.user?.name} now online`);
+                console.info(`Guilded client ${botModel.clientGil?.user?.name} is starting up...`);
             };
+
+            console.info(`Guilded client ${botModel.clientGil?.user?.name} now online`);
+
+            if (testMode) botModel.clientGil?.disconnect();
         });
 
         try {
@@ -253,6 +264,7 @@ export default class Bot {
 
                 process.exit(0);
             } else {
+                botModel.online = true;
                 console.info("Bloqbit is ready!");
             };
         };
