@@ -69,7 +69,6 @@
     "start": "node --loader ts-node/esm main.ts",
     "prestart": "npm run build",
     "dev": "ts-node --esm main.ts",
-    "clean": "rimraf dist",
     "prepare": "npm run clean && npm run build"
   },
   "repository": {
