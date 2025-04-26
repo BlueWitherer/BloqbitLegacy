@@ -17,21 +17,21 @@ export default new LogEvent(
     async (bot, oldMsg, newMsg) => {
         if (oldMsg.guild && newMsg.guild) {
             console.debug(`Handling edited message log event on guild of ID ${(newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)}...`);
-            const system = fetch.fetchGuild((newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId));
+            const system = await fetch.fetchGuild(((newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)) ?? '', bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.msgUpd)) {
                     const emb = new EmbedBuilder({
                         "author": {
                             "name": `${newMsg.author?.username}`,
-                            "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                            "iconURL": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.info} Message Edited`,
                         "color": bot.assets.colors.terciary,
                         "fields": [
                             {
                                 "name": "Before",
-                                "value": oldMsg.cleanContent,
+                                "value": `${oldMsg.cleanContent}`,
                                 "inline": false,
                             },
                             {
@@ -66,8 +66,8 @@ export default new LogEvent(
                             },
                         ],
                         "image": {
-                            "url": fetch.ifImage(oldMsg),
-                            "proxyURL": fetch.ifProxyImage(oldMsg),
+                            "url": fetch.ifImage(oldMsg instanceof Message ? oldMsg : await oldMsg.fetch()) || "",
+                            "proxyURL": fetch.ifProxyImage(oldMsg instanceof Message ? oldMsg : await oldMsg.fetch()) || "",
                         },
                     }).data;
 
@@ -83,7 +83,7 @@ export default new LogEvent(
                             "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.info} Message Pinned`,
-                        "description": newMsg.cleanContent,
+                        "description": `${newMsg.cleanContent}`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {
@@ -113,8 +113,8 @@ export default new LogEvent(
                             },
                         ],
                         "image": {
-                            "url": fetch.ifImage(oldMsg),
-                            "proxyURL": fetch.ifProxyImage(oldMsg),
+                            "url": fetch.ifImage(oldMsg instanceof Message ? oldMsg : await oldMsg.fetch()) || "",
+                            "proxyURL": fetch.ifProxyImage(oldMsg instanceof Message ? oldMsg : await oldMsg.fetch()) || "",
                         },
                     }).data;
 

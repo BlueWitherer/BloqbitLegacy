@@ -15,8 +15,8 @@ export default new LogEvent(
      */
     async (bot, role) => {
         if (role.guild) {
-            console.debug(`Handling created role log event on guild of ID ${role.guild?.id || role.guildId}...`);
-            const system = fetch.fetchGuild(role.guild?.id || role.guildId);
+            console.debug(`Handling created role log event on guild of ID ${role.guild?.id}...`);
+            const system = await fetch.fetchGuild(role.guild?.id ?? '', bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.rolesAdd)) {

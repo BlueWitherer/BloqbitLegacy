@@ -1,18 +1,19 @@
-import { Message, Client, PermissionsBitField, PermissionFlagsBits, Events } from 'discord.js';
+import { Message, Client, Events } from 'discord.js';
 import cache from '../../cache.mjs';
 import moderation from '../../modules/moderation.mjs';
-import { Config } from '../../classes.mjs';
+import { Config, SaveDataClient } from '../../classes.mjs';
 
 class MessageHandler {
     /**
      * 
      * @param {Client} client Discord bot client.
+     * @param {SaveDataClient} db Database settings.
      */
-    constructor(client) {
+    constructor(client, db) {
         console.debug("Initiating global message handler...");
 
         client.on(Events.MessageCreate, async (m) => {
-            const s = cache.fetch(m.guild?.id);
+            const s = await cache.fetch(m.guild?.id ?? '', db);
 
             if (s && m) {
                 console.debug(`Handling message of ID ${m.id}...`);

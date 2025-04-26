@@ -33,7 +33,7 @@ export default new Command(
         const owner = await interaction.guild?.fetchOwner();
 
         await interaction.reply({
-            "content": null,
+            "content": "",
             "embeds": [
                 {
                     "author": {

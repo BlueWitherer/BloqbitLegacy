@@ -21,15 +21,15 @@ export default new Command(
             .setRequired(false))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
     async (interaction, assets, system, db) => {
-        const channel = interaction.options?.getChannel("channel");
-        const message = interaction.options?.getString("message");
+        const channel = interaction.options?.getChannel("channel", false, [ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.GuildStageVoice, ChannelType.GuildVoice]);
+        const message = interaction.options?.getString("message", true);
 
-        if (channel === interaction.channel) {
-            await channel?.send({
+        if (channel && channel === interaction.channel && channel.isTextBased() && 'send' in channel) {
+            await channel.send({
                 "content": "",
                 "embeds": [
                     {
-                        "description": message,
+                        "description": `${message}`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -49,7 +49,7 @@ export default new Command(
             });
 
             return;
-        } else if (channel) {
+        } else if (channel && 'send' in channel) {
             await channel.send({
                 "content": "",
                 "embeds": [

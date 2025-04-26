@@ -6,13 +6,28 @@
         "checkJs": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
+        "baseUrl": ".",
         "paths": {
             "*": [
-                "./src/*"
+                "src/*"
             ]
-        }
+        },
+        "lib": [
+            "ESNext",
+        ],
+        "strict": true,
+        "skipLibCheck": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
     },
     "include": [
-        "src/**/*.js"
-    ]
+        "src/**/*.js",
+        "src/**/*.mjs",
+        "src/**/*.json",
+        "src/**/*.ts",
+    ],
+    "exclude": [
+        "node_modules",
+        "reserves"
+    ],
 }

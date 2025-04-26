@@ -27,6 +27,7 @@ export default class Bot {
     activate = async (botModel, testMode) => {
         if (testMode) console.log("Test mode active.");
 
+        // @ts-ignore
         botModel.client?.on(Events.ClientReady, async (client) => {
             client.user?.setPresence({
                 "activities": [
@@ -162,7 +163,7 @@ export default class Bot {
 
                     for (const inGuild of clientGuilds) {
                         try {
-                            const inCache = fetch.fetchGuild(inGuild[1].id);
+                            const inCache = await fetch.fetchGuild(inGuild[1].id, botModel.db);
 
                             if (inCache) {
                                 console.log(inCache.server);
@@ -194,9 +195,9 @@ export default class Bot {
                 try {
                     console.debug("Starting handlers...");
 
-                    new MessageHandler(client);
-                    new ServerHandler(client);
-                    new UserHandler(client);
+                    new MessageHandler(client, botModel.db);
+                    new ServerHandler(client, botModel.db);
+                    new UserHandler(client, botModel.db);
 
                     console.debug("Handlers successfully started");
                 } catch (err) {

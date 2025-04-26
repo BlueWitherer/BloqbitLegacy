@@ -463,7 +463,7 @@ export default new Command(
                     system.automod.swearFilter.logs = logChannel.id;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${channel.name}\`__ as the logging channel for the swear filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the swear filter.`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
@@ -668,7 +668,7 @@ export default new Command(
                     system.automod.inviteFilter.logs = logChannel.id;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${channel.name}\`__ as the logging channel for the invite filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the invite filter.`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
@@ -873,7 +873,7 @@ export default new Command(
                     system.automod.linkFilter.logs = logChannel.id;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${channel.name}\`__ as the logging channel for the link filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the link filter.`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {

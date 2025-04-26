@@ -1,5 +1,5 @@
 import { Command } from '../../classes.mjs';
-import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
+import { ApplicationIntegrationType, InteractionContextType, PermissionsBitField } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -18,8 +18,8 @@ export default new Command(
         const User = interaction.options?.getUser("user");
         const Member = interaction.options?.getMember("user");
 
-        if (Member.permissions.has([PermissionFlagsBits.BanMembers])) {
-            return await interaction.reply({
+        if (Member?.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.BanMembers)) {
+            await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -33,7 +33,7 @@ export default new Command(
             });
         };
 
-        return await interaction.guild?.members?.ban(User?.id, {
+        if (User) await interaction.guild?.members?.ban(User?.id, {
             deleteMessageSeconds: 7 * 86400,
             reason: `${interaction.user?.username} Softban - ${banreason}`
         }).then(async () => {

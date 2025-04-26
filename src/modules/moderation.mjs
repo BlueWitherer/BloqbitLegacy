@@ -71,40 +71,42 @@ export default {
             await m.timeout(7 * 86400000, r);
         };
 
-        switch (level) {
-            case ModeratorActionType.Warn:
-                //warn
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} warned.`);
-                break;
+        if (message.member) {
+            switch (level) {
+                case ModeratorActionType.Warn:
+                    //warn
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} warned.`);
+                    break;
 
-            case ModeratorActionType.Mute:
-                //mute
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} muted.`);
-                break;
+                case ModeratorActionType.Mute:
+                    //mute
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} muted.`);
+                    break;
 
-            case ModeratorActionType.Timeout:
-                await timeout(message.member, reason);
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} timed out.`);
-                break;
+                case ModeratorActionType.Timeout:
+                    await timeout(message.member, reason);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} timed out.`);
+                    break;
 
-            case ModeratorActionType.Blacklist:
-                //blacklist
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} blacklisted.`);
-                break;
+                case ModeratorActionType.Blacklist:
+                    //blacklist
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} blacklisted.`);
+                    break;
 
-            case ModeratorActionType.Softban:
-                await softban(message.member, reason);
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} soft-banned.`);
-                break;
+                case ModeratorActionType.Softban:
+                    await softban(message.member, reason);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} soft-banned.`);
+                    break;
 
-            case ModeratorActionType.Ban:
-                await ban(message.member, reason);
-                console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} banned.`);
-                break;
+                case ModeratorActionType.Ban:
+                    await ban(message.member, reason);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} banned.`);
+                    break;
 
-            default:
-                console.error(`${message.guild?.name} • Priority II Auto-moderator Server settings not resolvable`);
-                break;
+                default:
+                    console.error(`${message.guild?.name} • Priority II Auto-moderator Server settings not resolvable`);
+                    break;
+            };
         };
     },
 
@@ -112,7 +114,7 @@ export default {
      * 
      * @param {Message} msg Discord message to add to spam lists
      * 
-     * @returns {Promise<void>}
+     * @returns {void}
      */
     antiMessages: (msg) => {
         console.warn("Anti-spam in W.I.P.");
@@ -227,6 +229,10 @@ export default {
 
                 if (auto.enabled && auto.inviteFilter.enabled) {
                     const wordRegex = /\b(\w+)\b/g; // Regex to match words
+
+                    /**
+                     * @type {Object<string, number>} Word counts
+                     */
                     const wordCounts = {};
                     let match;
 

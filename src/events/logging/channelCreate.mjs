@@ -16,7 +16,7 @@ export default new LogEvent(
     async (bot, channel) => {
         if (channel.guild) {
             console.debug(`Handling created channel log event on guild of ID ${channel.guild?.id || channel.guildId}...`);
-            const system = fetch.fetchGuild(channel.guild?.id || channel.guildId);
+            const system = await fetch.fetchGuild(channel.guild?.id || channel.guildId, bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.channelAdd)) {

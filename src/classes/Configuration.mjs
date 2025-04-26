@@ -1,5 +1,5 @@
 export class Roles {
-    constructor({ immune = [], pingFree = [], blacklist = "", mute = "", member = "" }) {
+    constructor({ immune = /** @type {string[]} */ ([]), pingFree = /** @type {string[]} */ ([]), blacklist = "", mute = "", member = "" }) {
         this.immune = immune;
         this.pingFree = pingFree;
         this.blacklist = blacklist;
@@ -31,7 +31,7 @@ export class Welcome {
 };
 
 export class Filter {
-    constructor({ enabled = false, roles = [], channels = [], filterMode = 0, permFilterMode = 0, punishment = 0, keywords = [], keywordsSuper = [], logs = "" }) {
+    constructor({ enabled = false, roles = /** @type {string[]} */ ([]), channels = /** @type {string[]} */ ([]), filterMode = 0, permFilterMode = 0, punishment = 0, keywords = /** @type {string[]} */ ([]), keywordsSuper = /** @type {string[]} */ ([]), logs = "" }) {
         this.enabled = enabled;
         this.roles = roles;
         this.channels = channels;
@@ -220,7 +220,7 @@ export class Economy {
 };
 
 export class Cleverbot {
-    constructor({ enabled = false, personality = "", channels = [], roles = [], filterMode = 0, permFilterMode = 0 }) {
+    constructor({ enabled = false, personality = "", channels = /** @type {string[]} */ ([]), roles = /** @type {string[]} */ ([]), filterMode = 0, permFilterMode = 0 }) {
         this.enabled = enabled;
         this.personality = personality;
         this.channels = channels;

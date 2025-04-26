@@ -16,7 +16,7 @@ export default new LogEvent(
     async (bot, member) => {
         if (member.guild) {
             console.debug(`Handling member leave log event on guild of ID ${member.guild?.id}...`);
-            const system = fetch.fetchGuild(member.guild?.id);
+            const system = await fetch.fetchGuild(member.guild?.id, bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.leave)) {
@@ -35,7 +35,9 @@ export default new LogEvent(
                             },
                             {
                                 "name": "Joined At",
-                                "value": `<t:${Math.floor(member.joinedTimestamp / 1000)}:F> • <t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+                                "value": member.joinedTimestamp
+                                    ? `<t:${Math.floor(member.joinedTimestamp / 1000)}:F> • <t:${Math.floor(member.joinedTimestamp / 1000)}:R>`
+                                    : "Unknown",
                                 "inline": true,
                             },
                         ],

@@ -13,13 +13,14 @@ export default {
      * 
      * @param {Discord.Message} msg Discord.Message to search for image in
      * 
-     * @returns {string | null} Image URL
+     * @returns {string | void} Image URL
      */
     ifImage: (msg) => {
         if (msg.attachments?.size > 0) {
-            return msg.attachments?.first().url;
+            const f = msg.attachments?.first();
+            if (f) return f.url;
         } else {
-            return null;
+            return;
         };
     },
 
@@ -28,13 +29,14 @@ export default {
      * 
      * @param {Discord.Message} msg Discord.Message to search for image in
      * 
-     * @returns {string | null} Proxy image URL
+     * @returns {string | void} Proxy image URL
      */
     ifProxyImage: (msg) => {
         if (msg.attachments?.size > 0) {
-            return msg.attachments?.first().proxyURL;
+            const f = msg.attachments?.first();
+            if (f) return f.proxyURL;
         } else {
-            return null;
+            return;
         };
     },
 
@@ -74,13 +76,14 @@ export default {
      * Gets the configuration object of the server
      * 
      * @param {string} server ID of the server
+     * @param {SaveDataClient} db Class of the bot's database
      * 
-     * @returns {Config | void} Fetched server settings object
+     * @returns {Promise<Config | void>} Fetched server settings object
      */
-    fetchGuild: (server) => {
+    fetchGuild: async (server, db) => {
         if (server) {
             try {
-                const res = cacheModule.fetch(server);
+                const res = await cacheModule.fetch(server, db);
                 return res;
             } catch (err) {
                 console.error(err);
@@ -183,7 +186,7 @@ export default {
                 if (interaction.isChatInputCommand()) {
                     if (interaction.replied) {
                         await interaction.followUp({
-                            "content": null,
+                            "content": "",
                             "embeds": [
                                 {
                                     "title": `${assets.icons.xmark} Command Error`,
@@ -196,7 +199,7 @@ export default {
                         return;
                     } else {
                         await interaction.reply({
-                            "content": null,
+                            "content": "",
                             "embeds": [
                                 {
                                     "title": `${assets.icons.xmark} Command Error`,
@@ -209,13 +212,13 @@ export default {
                         return;
                     };
                 } else {
-                    return null;
+                    return;
                 };
             } catch (err) {
                 return console.error(err);
             };
         } else {
-            return null;
+            return;
         };
     },
 
@@ -235,13 +238,14 @@ export default {
                 /**
                  * 
                  * @param {string} server 
+                 * @param {SaveDataClient} db
                  * 
-                 * @returns {Config | null}
+                 * @returns {Promise<Config | null>}
                  */
-                const check = (server) => {
+                const check = async (server, db) => {
                     let result = null;
 
-                    const guild = cacheModule.fetch(server);
+                    const guild = await cacheModule.fetch(server, db);
 
                     if (guild) {
                         result = guild;
@@ -250,7 +254,7 @@ export default {
                     return result;
                 };
 
-                let thisGuild = check(server);
+                let thisGuild = await check(server, db);
 
                 console.log(`Step 2 Check if server exists in cache.`);
 
@@ -299,6 +303,7 @@ export default {
 
                     console.log(`Step 6 Updating cache.`);
 
+                    // @ts-ignore
                     const final = await cacheModule.update(thisGuild, db);
                     return final;
                 };
@@ -368,26 +373,30 @@ export default {
             return webClient;
         };
 
-        if (chnl.type === Discord.ChannelType.GuildText) {
-            if (system.logs.webhookEnabled) {
-                const webClient = await checkLogsWebhook(bot, system, bot.db, chnl);
+        if (chnl) {
+            if (chnl.type === Discord.ChannelType.GuildText) {
+                if (system.logs.webhookEnabled) {
+                    const webClient = await checkLogsWebhook(bot, system, bot.db, chnl);
 
-                if (webClient) {
-                    await webClient.send({
+                    if (webClient) {
+                        await webClient.send({
+                            "content": "",
+                            "embeds": [emb],
+                        });
+                    } else {
+                        console.error(`Failed to create logs webhook for guild '${guild?.name}' (${guild?.id})`);
+                    };
+                } else {
+                    await chnl.send({
                         "content": "",
                         "embeds": [emb],
                     });
-                } else {
-                    console.error(`Failed to create logs webhook for guild '${guild?.name}' (${guild?.id})`);
                 };
             } else {
-                await chnl.send({
-                    "content": "",
-                    "embeds": [emb],
-                });
+                console.error(`Logs channel #${chnl.name} (${chnl.id}) of guild ${guild.name} (${guild.id}) is not correct type`);
             };
         } else {
-            console.error(`Logs channel #${chnl.name} (${chnl.id}) of guild ${guild.name} (${guild.id}) is not correct type`);
+            console.error(`Logs channel not found for guild ${guild.name} (${guild.id})`);
         };
     },
 };

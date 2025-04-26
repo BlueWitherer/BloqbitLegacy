@@ -20,8 +20,8 @@ export default new Command(
             .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     async (interaction, assets, system, db) => {
-        const banreason = interaction.options?.getString("reason") || "";
-        const User = interaction.options?.getString("user") || "";
+        const banreason = interaction.options?.getString("reason") ?? '';
+        const User = interaction.options?.getString("user") ?? '';
         const Member = interaction.guild?.members?.cache?.get(User);
 
         if (Member?.permissions.has([PermissionFlagsBits.BanMembers])) {
@@ -39,12 +39,41 @@ export default new Command(
             });
         };
 
-        let bannedUser = null;
-
         try {
-            bannedUser = await interaction.guild?.members?.ban(User, {
+            const bannedUser = await interaction.guild?.members?.ban(User, {
                 deleteMessageSeconds: 7 * 86400,
                 reason: `${interaction.user?.username} Ban - ${banreason}`
+            });
+
+            await interaction.reply({
+                "content": "",
+                "embeds": [
+                    {
+                        "author": {
+                            "name": `${interaction.user?.username}`,
+                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
+                        },
+                        "title": `${assets.icons.noentry} User Banned`,
+                        "color": assets.colors.primary,
+                        "fields": [
+                            {
+                                "name": "User",
+                                "value": `**${typeof bannedUser === 'object' && 'user' in bannedUser ? bannedUser.user?.username : bannedUser}**`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Moderator",
+                                "value": `**${interaction.user?.username}**`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Reason",
+                                "value": `${banreason}`,
+                                "inline": false,
+                            },
+                        ],
+                    },
+                ],
             });
         } catch (err) {
             await interaction.reply({
@@ -55,41 +84,6 @@ export default new Command(
             });
 
             console.error(err);
-
-            return;
-        } finally {
-            if (bannedUser) {
-                await interaction.reply({
-                    "content": "",
-                    "embeds": [
-                        {
-                            "author": {
-                                "name": `${interaction.user?.username}`,
-                                "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
-                            },
-                            "title": `${assets.icons.noentry} User Banned`,
-                            "color": assets.colors.primary,
-                            "fields": [
-                                {
-                                    "name": "User",
-                                    "value": `**${bannedUser?.username}**`,
-                                    "inline": true,
-                                },
-                                {
-                                    "name": "Moderator",
-                                    "value": `**${interaction.user?.username}**`,
-                                    "inline": true,
-                                },
-                                {
-                                    "name": "Reason",
-                                    "value": `${banreason}`,
-                                    "inline": false,
-                                },
-                            ],
-                        },
-                    ],
-                });
-            };
 
             return;
         };

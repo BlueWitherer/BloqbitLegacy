@@ -17,9 +17,9 @@ export default new LogEvent(
     async (bot, msgs, channel) => {
         const msg = msgs.first();
 
-        if (channel.guild) {
+        if (channel.guild && msg) {
             console.debug(`Handling bulk deleted message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);
-            const system = fetch.fetchGuild(msg.guild?.id || msg.guildId);
+            const system = await fetch.fetchGuild((msg.guild?.id || msg.guildId) ?? '', bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.msgBulkDel)) {
@@ -40,7 +40,11 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    await fetch.sendLog(bot, system, emb, msg.guild);
+                    if (msg.guild) {
+                        await fetch.sendLog(bot, system, emb, msg.guild);
+                    } else {
+                        console.error(`Guild is null for message ID ${msg.id}`);
+                    };
                 } else {
                     console.warn(`Logs for bulk-deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
                 };
@@ -50,7 +54,7 @@ export default new LogEvent(
 
             return;
         } else {
-            console.error(`Message of ID ${msg.id} not in a guild`);
+            if (msg) console.error(`Message of ID ${msg.id} not in a guild`);
             return;
         };
     });

@@ -21,17 +21,17 @@ export default new LogEvent(
 
         if (msg.guild) {
             console.debug(`Handling deleted message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);
-            const system = fetch.fetchGuild(msg.guild?.id || msg.guildId);
+            const system = await fetch.fetchGuild((msg.guild?.id || msg.guildId) ?? '', bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.msgDel)) {
                     const emb = new EmbedBuilder({
                         "author": {
                             "name": `${msg.author?.username}`,
-                            "icon_url": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                            "iconURL": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.minus} Message Deleted`,
-                        "description": msg.cleanContent,
+                        "description": `${msg.cleanContent}`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
@@ -61,8 +61,8 @@ export default new LogEvent(
                             },
                         ],
                         "image": {
-                            "url": fetch.ifImage(msg),
-                            "proxyURL": fetch.ifProxyImage(msg),
+                            "url": fetch.ifImage(msg instanceof Message ? msg : await msg.fetch()) || "",
+                            "proxyURL": fetch.ifProxyImage(msg instanceof Message ? msg : await msg.fetch()) || "",
                         },
                     }).data;
 

@@ -14,9 +14,9 @@ export default new LogEvent(
      * @returns {Promise<void>}
      */
     async (bot, channel) => {
-        if (channel.guild) {
+        if (!(channel instanceof DMChannel) && channel.guild) {
             console.debug(`Handling deleted channel log event on guild of ID ${channel.guild?.id || channel.guildId}...`);
-            const system = fetch.fetchGuild(channel.guild?.id || channel.guildId);
+            const system = await fetch.fetchGuild(channel.guild?.id || channel.guildId, bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.channelDel)) {

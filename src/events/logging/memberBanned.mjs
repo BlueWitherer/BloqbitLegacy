@@ -16,7 +16,7 @@ export default new LogEvent(
     async (bot, ban) => {
         if (ban.guild) {
             console.debug(`Handling ban log event on guild of ID ${ban.guild?.id}...`);
-            const system = fetch.fetchGuild(ban.guild?.id);
+            const system = await fetch.fetchGuild(ban.guild?.id, bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.ban)) {
@@ -51,7 +51,7 @@ export default new LogEvent(
 
             return;
         } else {
-            console.error(`Member of ID ${ban.id} not in a guild`);
+            console.error(`Member of ID ${ban.user?.id} not in a guild`);
             return;
         };
     });

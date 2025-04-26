@@ -1,87 +1,89 @@
-import MongoDB from 'mongodb';
+import { MongoClient } from 'mongodb';
 import { SaveDataClient, Config } from './classes.mjs';
 
+// MongoDB client instance
 /**
- * @type {Array<Config>} Array of cache server settings
+ * @type {MongoClient}
  */
-const cache = [];
+let dbClient;
+
+/**
+ * @param {string} mongoUri
+ */
+const getDatabaseClient = async (mongoUri) => {
+    if (!dbClient) {
+        dbClient = new MongoClient(mongoUri);
+        await dbClient.connect();
+    };
+
+    return dbClient.db("Bloqbit");
+};
 
 export default {
     /**
-     * 
-     * @returns {Array<Config>} Array of cache server settings
-     */
-    get: () => {
-        console.info(`[O] Getting cache...`);
-        return cache;
-    },
-
-    /**
+     * Fetch settings for a server from database.
      * 
      * @param {string} server Server ID for query
+     * @param {SaveDataClient} db Bot database model
      * 
-     * @returns {Config | void} Queried settings object
+     * @returns {Promise<Config | void>} Queried settings object
      */
-    fetch: (server) => {
-        if (server) {
-            if (cache.length) {
-                console.debug(`[I] Searching through cache of size ${cache.length} for server of ID ${server}...`);
+    fetch: async (server, db) => {
+        if (server && db) {
+            try {
+                const database = await getDatabaseClient(db.mongo_uri);
+                const collection = database.collection("servers");
 
-                const found = cache.find((s) => s.server === server);
+                console.debug(`[I] Querying database for server ID ${server}...`);
+                const found = await collection.findOne({ server: server });
 
                 if (found) {
-                    console.info(`[O] Cache for server ${found.server} found`);
+                    const { _id, ...conf } = found;
 
-                    return found;
+                    const res = new Config(conf);
+
+                    console.info(`[O] Settings for server ${server} found.`);
+                    return res;
                 } else {
-                    console.error(`[X] Cached settings object for server ${server} not found`);
+                    console.error(`[X] Settings for server ${server} not found.`);
                     return;
                 };
-            } else {
-                console.error(`[X] Cached settings object not available.`);
+            } catch (err) {
+                console.error(err);
                 return;
             };
         } else {
-            console.error(`[X] Query ID not provided.`);
+            console.error(`[X] Query ID or database model not provided.`);
             return;
         };
     },
 
     /**
+     * Update settings for a server.
      * 
      * @param {Config} system Object for query
      * @param {SaveDataClient} db Bot database model
      * 
-     * @returns {Promise<Config | void>} New settings object
+     * @returns {Promise<Config | void>} Updated settings object
      */
     update: async (system, db) => {
         if (system && db) {
             try {
-                console.debug(`[I] Looking if object for server ${system.server} already exists...`);
-
-                const foundObj = cache.findIndex((so) => {
-                    console.debug(`[...] Comparing cached object ${so.server} with query object ${system.server}...`);
-                    return system.server === so.server;
-                });
-
-                if (foundObj >= 0) {
-                    console.warn(`[II] Config object for server ${system.server} exists at index ${foundObj}, replacing...`);
-
-                    cache[foundObj] = system;
-                    console.info(`[O] Data for server ${cache[foundObj].server} updated.`);
-                } else {
-                    console.debug(`[II] Config object for ${system.server} not found, creating new object...`);
-
-                    const newSize = cache.push(system);
-                    console.info(`[O] Data for server ${system.server} updated. Cache size ${newSize}.`);
-                };
-
-                const dbClient = new MongoDB.MongoClient(db.mongo_uri);
-
-                const database = dbClient.db("Bloqbit");
+                const database = await getDatabaseClient(db.mongo_uri);
                 const collection = database.collection("servers");
 
-                await collection.updateOne({ server: system.server }, { $set: system });
+                console.debug(`[I] Updating database for server ID ${system.server}...`);
+                const result = await collection.updateOne(
+                    { server: system.server },
+                    { $set: system },
+                    { upsert: true },
+                );
+
+                if (result.upsertedCount > 0) {
+                    console.info(`[O] New settings for server ${system.server} inserted into database.`);
+                } else {
+                    console.info(`[O] Settings for server ${system.server} updated.`);
+                };
 
                 return system;
             } catch (err) {
@@ -89,7 +91,7 @@ export default {
                 return;
             };
         } else {
-            console.error(`[X] Query object not provided.`);
+            console.error(`[X] Query object or database model not provided.`);
             return;
         };
     },

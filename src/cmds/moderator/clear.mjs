@@ -30,36 +30,47 @@ export default new Command(
         if (!user && botMember?.permissions.has("ManageMessages")) {
             const msgs = await interaction.channel?.messages?.fetch({
                 "limit": amount,
-                "bulkDeletable": true,
             });
 
-            if (interaction.channel.isTextBased()) await interaction.channel.bulkDelete(msgs);
+            if (msgs) {
+                if (interaction.channel instanceof TextChannel) await interaction.channel.bulkDelete(msgs);
 
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": interaction.user?.username,
-                            "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, }),
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": interaction.user?.username,
+                                "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, }),
+                            },
+                            "title": `${assets.icons.check} Messages Cleared`,
+                            "color": assets.colors.primary,
+                            "fields": [
+                                {
+                                    "name": "Amount",
+                                    "value": `${msgs.size}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Moderator",
+                                    "value": `<@!${interaction.user?.id}>`,
+                                    "inline": true,
+                                },
+                            ],
                         },
-                        "title": `${assets.icons.check} Messages Cleared`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "Amount",
-                                "value": `${msgs.size}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${interaction.user?.id}>`,
-                                "inline": true,
-                            },
-                        ],
-                    },
-                ],
-            });
+                    ],
+                });
+            } else {
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "description": `${assets.icons.xmark} No messages to clear.`,
+                            "color": assets.colors.secondary,
+                        },
+                    ],
+                });
+            };
 
             setTimeout(async () => {
                 await interaction.deleteReply();
@@ -71,45 +82,57 @@ export default new Command(
                 "limit": 100,
             });
 
-            const filteredMsgs = msgs.filter((m) => m.author?.id === user.id);
-            const memberMsgs = new Collection([...filteredMsgs.entries()].slice(0, amount));
+            if (msgs) {
+                const filteredMsgs = msgs.filter((m) => m.author?.id === user.id);
+                const memberMsgs = new Collection([...filteredMsgs.entries()].slice(0, amount));
 
-            if (interaction.channel.isTextBased()) await interaction.channel?.bulkDelete(memberMsgs);
+                if (interaction.channel instanceof TextChannel) await interaction.channel?.bulkDelete(memberMsgs);
 
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": interaction.user?.username,
-                            "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, }),
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": interaction.user?.username,
+                                "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, }),
+                            },
+                            "title": `${assets.icons.check} Messages Cleared`,
+                            "color": assets.colors.primary,
+                            "fields": [
+                                {
+                                    "name": "Amount",
+                                    "value": `${memberMsgs.size}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Moderator",
+                                    "value": `<@!${interaction.user?.id}>`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "User",
+                                    "value": `<@!${user.id}>`,
+                                    "inline": true,
+                                },
+                            ],
                         },
-                        "title": `${assets.icons.check} Messages Cleared`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "Amount",
-                                "value": `${memberMsgs.size}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${interaction.user?.id}>`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "User",
-                                "value": `<@!${user.id}>`,
-                                "inline": true,
-                            },
-                        ],
-                    },
-                ],
-            });
+                    ],
+                });
 
-            setTimeout(async () => {
-                await interaction.deleteReply();
-            }, 3000);
+                setTimeout(async () => {
+                    await interaction.deleteReply();
+                }, 3000);
+            } else {
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "description": `${assets.icons.xmark} No messages to clear.`,
+                            "color": assets.colors.secondary,
+                        },
+                    ],
+                });
+            };
 
             return;
         };

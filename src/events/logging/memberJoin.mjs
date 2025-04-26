@@ -16,7 +16,7 @@ export default new LogEvent(
     async (bot, member) => {
         if (member.guild) {
             console.debug(`Handling member join log event on guild of ID ${member.guild?.id}...`);
-            const system = fetch.fetchGuild(member.guild?.id);
+            const system = await fetch.fetchGuild(member.guild?.id, bot.db);
 
             if (system) {
                 if (system.logs.enabled && (system.logs.actions.join)) {

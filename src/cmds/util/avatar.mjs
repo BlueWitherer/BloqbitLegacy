@@ -1,5 +1,5 @@
 import { Command } from '../../classes.mjs';
-import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
+import { ApplicationIntegrationType, GuildMember, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default new Command(
@@ -19,7 +19,7 @@ export default new Command(
 
         if (User) {
             await interaction.reply({
-                "content": null,
+                "content": "",
                 "embeds": [
                     {
                         "author": {
@@ -29,7 +29,7 @@ export default new Command(
                         "title": `${assets.icons.info} ${User.username}'s Avatar`,
                         "color": assets.colors.primary,
                         "image": {
-                            "url": `${Member.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
+                            "url": `${Member instanceof GuildMember ? Member.displayAvatarURL({ "forceStatic": false, size: 1024 }) : User.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
                             "width": 1024,
                             "height": 1024,
                         },
@@ -45,7 +45,7 @@ export default new Command(
             return;
         } else {
             await interaction.reply({
-                "content": null,
+                "content": "",
                 "embeds": [
                     {
                         "author": {
@@ -55,7 +55,7 @@ export default new Command(
                         "title": `${assets.icons.info} ${interaction.user?.username}'s Avatar`,
                         "color": assets.colors.primary,
                         "image": {
-                            "url": `${interaction.member?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
+                            "url": `${interaction.member instanceof GuildMember ? interaction.member.displayAvatarURL({ "forceStatic": false, size: 1024 }) : interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
                             "width": 1024,
                             "height": 1024,
                         },

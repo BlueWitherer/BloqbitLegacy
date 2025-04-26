@@ -205,7 +205,13 @@ export default new Command(
             const action = interaction.options?.getString("action", true);
             const toggle = interaction.options?.getBoolean("enable", true);
 
-            system.logs.actions[action] = toggle;
+            if (system.logs.actions && action in system.logs.actions) {
+                // @ts-ignore
+                system.logs.actions[action] = toggle;
+            } else {
+                await fetch.commandErrorResponse(interaction, assets);
+                return;
+            };
 
             const update = await cache.update(system, db);
 

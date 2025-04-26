@@ -25,7 +25,7 @@ export default new Command(
         const User = interaction.options?.getUser("user");
         const Member = interaction.options?.getMember("user");
 
-        if (Member?.permissions.has([PermissionFlagsBits.BanMembers])) {
+        if (Member && typeof Member.permissions !== 'string' && Member.permissions?.has(PermissionFlagsBits.BanMembers)) {
             await interaction.reply({
                 "content": "",
                 "embeds": [
@@ -41,7 +41,7 @@ export default new Command(
         };
 
         try {
-            await interaction.guild?.members?.ban(User?.id, {
+            await interaction.guild?.members?.ban(User?.id ?? '', {
                 deleteMessageSeconds: 7 * 86400,
                 reason: `${interaction.user?.username} Ban - ${banreason}`
             }).then(async () => {
@@ -116,21 +116,19 @@ export default new Command(
             return;
         } finally {
             if (system.logs.enabled && system.logs.actions.moderator) {
-                /**
-                 * @type {import("discord.js").TextChannel} Logging channel.
-                 */
                 const logChannel = await interaction.guild?.channels?.fetch(system.logs.channel);
                 const date = Math.floor(Date.now() / 1000);
 
-                if (logChannel) {
+                if (logChannel?.isTextBased()) {
                     await logChannel.send({
                         "content": "",
                         "embeds": [
                             {
                                 "author": {
-                                    "name": "Moderation Action",
+                                    "name": interaction.user?.username,
+                                    "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
                                 },
-                                "description": `**${interaction.user?.username}** has taken a moderation action on \`${User.username}\``,
+                                "description": `**${interaction.user?.username}** has taken a moderation action on \`${User?.username}\``,
                                 "color": assets.colors.terciary,
                                 "fields": [
                                     {
@@ -149,10 +147,6 @@ export default new Command(
                                         "inline": false,
                                     },
                                 ],
-                                "footer": {
-                                    "text": interaction.user?.username,
-                                    "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
-                                },
                             },
                         ],
                     });

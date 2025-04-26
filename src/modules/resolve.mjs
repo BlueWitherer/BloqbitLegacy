@@ -5,7 +5,7 @@ import { ModeratorActionType, MessageFilterMode } from "../classes.mjs";
 export default {
     /**
      * 
-     * @param {array} array The array 
+     * @param {Array<any>} array The array 
      * @param {any} value The value to query
      * 
      * @returns {array | void} The array with the value removed

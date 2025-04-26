@@ -41,7 +41,7 @@ export default {
                             },
                         ],
                         "footer": {
-                            "text": bot.client?.user?.username,
+                            "text": bot.client?.user?.username ?? "Unknown User",
                             "icon_url": bot.client?.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
                         },
                     },

@@ -1,4 +1,4 @@
-import Discord, { ChatInputCommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 
 import SysAssets from '../assets.json' with { type: 'json' };
 import SaveDataClient from './SaveDataClient.mjs';
@@ -6,7 +6,7 @@ import Config from './Configuration.mjs';
 
 class Command {
     /**
-     * @type {Discord.SlashCommandOptionsOnlyBuilder}
+     * @type {SlashCommandBuilder | import('discord.js').SlashCommandSubcommandsOnlyBuilder | import('discord.js').SlashCommandOptionsOnlyBuilder}
      */
     data;
 
@@ -37,12 +37,12 @@ class Command {
     dev = false;
 
     /**
-     * @param {Discord.SlashCommandOptionsOnlyBuilder} dat Data of the command
+     * @param {SlashCommandBuilder | import('discord.js').SlashCommandSubcommandsOnlyBuilder | import('discord.js').SlashCommandOptionsOnlyBuilder} dat Data of the command
      * @param {ExecuteCommand} exec Function to execute for this command
      * @param {boolean} prem Whether this command is reserved for supporters
      * @param {boolean} dv Whether this command is reserved for developers
      */
-    constructor(dat, exec, prem, dv) {
+    constructor(dat, exec, prem = false, dv = false) {
         this.data = dat;
         this.execute = exec;
         this.premium = prem || false;

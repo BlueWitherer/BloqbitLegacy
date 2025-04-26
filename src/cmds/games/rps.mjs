@@ -28,6 +28,10 @@ export default new Command(
             )
             .setRequired(true)),
     async (interaction, assets, system, db) => {
+        /**
+         * @type {Record<string, string>}
+         * @description Moves for the game
+         */
         const moves = {
             r: "Rock",
             p: "Paper",
@@ -37,9 +41,13 @@ export default new Command(
         const human = "🎉 " + interaction.user?.username;
         const robot = "💔 " + interaction.client?.user?.username;
 
-        const userMove = moves[interaction.options?.getString("move").toLowerCase()];
+        const userMove = moves[interaction.options?.getString("move", true).toLowerCase()];
         const botMove = moves[Object.keys(moves)[Math.floor(Math.random() * Object.keys(moves).length)]];
 
+        /**
+         * @type {Record<string, Record<string, string>>}
+         * @description Outcomes of the game
+         */
         const outcomes = {
             Rock: { Scissors: human, Paper: robot },
             Scissors: { Paper: human, Rock: robot },
@@ -55,7 +63,7 @@ export default new Command(
         };
 
         await interaction.reply({
-            "content": null,
+            "content": "",
             "embeds": [
                 {
                     "author": {

@@ -47,10 +47,7 @@ export default {
                     });
                 };
             } else {
-                const msgs = await msg.channel?.messages?.fetch({
-                    "limit": 100,
-                    "force": true,
-                });
+                const msgs = await msg.channel?.messages?.fetch({ "limit": 100 });
 
                 console.debug(`Fetched ${msgs?.size} messages from guild channel`);
             };

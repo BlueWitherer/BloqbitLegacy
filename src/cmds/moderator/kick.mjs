@@ -1,4 +1,4 @@
-import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
+import { ApplicationIntegrationType, InteractionContextType, PermissionsBitField } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { Command } from '../../classes.mjs';
@@ -10,17 +10,23 @@ export default new Command(
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
-        .addUserOption(option => option.setName("user").setDescription("User to kick.").setRequired(true))
-        .addStringOption(option => option.setName("reason").setDescription("Reason for kick.").setRequired(true))
+        .addUserOption((o) => o
+            .setName("user")
+            .setDescription("User to kick.")
+            .setRequired(true))
+        .addStringOption((o) => o
+            .setName("reason")
+            .setDescription("Reason for kick.")
+            .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
     async (interaction, assets, system, db) => {
         const kickreason = interaction.options?.getString("reason");
         const User = interaction.options?.getUser("user");
         const Member = interaction.options?.getMember("user");
 
-        if (Member.permissions.has([PermissionFlagsBits.KickMembers])) {
-            return await interaction.reply({
-                "content": null,
+        if (Member && Member.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.KickMembers)) {
+            await interaction.reply({
+                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} You cannot kick another moderator.`,
@@ -33,7 +39,7 @@ export default new Command(
             });
         };
 
-        return interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${kickreason}`).catch(async (err) => {
+        if (User) await interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${kickreason}`).catch(async (err) => {
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
                 "flags": [
@@ -42,8 +48,8 @@ export default new Command(
             });
             console.error(err);
         }).then(async () => {
-            await interaction.reply({
-                "content": null,
+            if (User) await interaction.reply({
+                "content": "",
                 "embeds": [
                     {
                         "author": {
@@ -51,7 +57,7 @@ export default new Command(
                             "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.noentry} User Kicked`,
-                        "color": `${assets.colors.primary}`,
+                        "color": assets.colors.primary,
                         "fields": [
                             {
                                 "name": "User",
@@ -73,8 +79,8 @@ export default new Command(
                 ],
             });
         }).then(async () => {
-            await User.send({
-                "content": null,
+            if (User) await User.send({
+                "content": "",
                 "embeds": [
                     {
                         "author": {
@@ -103,4 +109,5 @@ export default new Command(
                 return;
             });
         });
-    });
+    },
+);

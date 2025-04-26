@@ -13,7 +13,7 @@ export default new Command(
         .setNSFW(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     async (interaction, assets, system, db) => {
-        const registered = fetch.fetchGuild(interaction.guild?.id);
+        const registered = await fetch.fetchGuild(interaction.guild?.id ?? '', db);
 
         if (registered) {
             console.log(`Fetched guild ${interaction.guild?.name} (${interaction.guild?.id}) successfully.`);
@@ -30,7 +30,7 @@ export default new Command(
             });
         } else {
             try {
-                const revised = await fetch.reviseGuild(db, interaction.guildId);
+                const revised = await fetch.reviseGuild(db, interaction.guildId ?? '');
 
                 if (revised) {
                     console.log(`Manually registered guild ${interaction.guild?.name} (${interaction.guild?.id}) successfully.`);

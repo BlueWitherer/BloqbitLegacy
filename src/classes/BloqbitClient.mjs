@@ -50,11 +50,6 @@ export default class BloqbitClient {
     commands;
 
     /**
-     * @type {Array}
-     */
-    moderation;
-
-    /**
      * Object of emote and color assets
      * @type {typeof SysAssets}
      */
@@ -109,7 +104,6 @@ export default class BloqbitClient {
         this.db = new SaveDataClient(data);
 
         this.commands = [];
-        this.moderation = [];
 
         this.assets = SysAssets;
 

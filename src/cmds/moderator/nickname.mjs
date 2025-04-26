@@ -1,5 +1,5 @@
 import { Command } from '../../classes.mjs';
-import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
+import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -37,7 +37,7 @@ export default new Command(
         const date = Math.floor(Date.now() / 1000);
         const Member = interaction.options?.getMember("user");
 
-        if (Member?.permissions.has([PermissionFlagsBits.ManageNicknames])) {
+        if (Member?.permissions instanceof PermissionsBitField && Member.permissions.has([PermissionFlagsBits.ManageNicknames])) {
             await interaction.reply({
                 "content": "",
                 "embeds": [
@@ -57,7 +57,11 @@ export default new Command(
             const Member = interaction.options?.getMember("user");
             const reason = interaction.options?.getString("reason", true);
 
-            await Member.setNickname(system);
+            if (Member instanceof GuildMember) {
+                await Member.setNickname("||Blocked Name||", `${interaction.user?.username} Blocked Name - ${reason}`);
+            } else {
+                console.error("Member is not a GuildMember.");
+            };
 
             await interaction.reply({
                 "content": "",
@@ -131,7 +135,7 @@ export default new Command(
             let displayed;
             let reason;
 
-            await interaction.reply({
+            if (mod && displayed && reason) await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
@@ -144,7 +148,7 @@ export default new Command(
                         "fields": [
                             {
                                 "name": "Reason",
-                                "value": reason,
+                                "value": `${reason}`,
                                 "inline": false,
                             },
                             {
@@ -154,7 +158,7 @@ export default new Command(
                             },
                             {
                                 "name": "Moderator",
-                                "value": `<@!${mod.user?.id}>`,
+                                "value": `<@!${mod}>`,
                                 "inline": false,
                             },
                         ],
@@ -207,7 +211,11 @@ export default new Command(
             const Member = interaction.options?.getMember("user");
             const name = interaction.options?.getString("name");
 
-            await Member?.setNickname(name);
+            if (Member instanceof GuildMember) {
+                await Member.setNickname(name);
+            } else {
+                console.error("Member is not a GuildMember.");
+            };
 
             await interaction.reply({
                 "content": "",
@@ -224,7 +232,11 @@ export default new Command(
             const user = interaction.options?.getUser("user");
             const Member = interaction.options?.getMember("user");
 
-            await Member?.setNickname(null);
+            if (Member instanceof GuildMember) {
+                await Member.setNickname(null, `${interaction.user?.username} - Reset Nickname`);
+            } else {
+                console.error("Member is not a GuildMember.");
+            };
 
             await interaction.reply({
                 "content": "",

@@ -21,17 +21,25 @@ export default new Command(
         let invite = null;
 
         if (channel) {
-            invite = await channel.createInvite({
-                maxAge: 0,
-                maxUses: 0,
-                unique: true,
-            });
+            if ((channel.type === ChannelType.GuildText || channel.type === ChannelType.GuildAnnouncement) && 'createInvite' in channel) {
+                invite = await channel.createInvite({
+                    maxAge: 0,
+                    maxUses: 0,
+                    unique: true,
+                });
+            } else {
+                throw new Error("Selected channel does not support creating invites.");
+            };
         } else {
-            invite = await interaction.channel?.createInvite({
-                maxAge: 0,
-                maxUses: 0,
-                unique: true,
-            });
+            if ((interaction.channel?.type === ChannelType.GuildText || interaction.channel?.type === ChannelType.GuildAnnouncement) && 'createInvite' in interaction.channel) {
+                invite = await interaction.channel.createInvite({
+                    maxAge: 0,
+                    maxUses: 0,
+                    unique: true,
+                });
+            } else {
+                throw new Error("The current channel does not support creating invites.");
+            };
         };
 
         if (invite) {

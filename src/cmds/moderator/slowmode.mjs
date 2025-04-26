@@ -1,5 +1,5 @@
 import { Command } from '../../classes.mjs';
-import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
+import { ApplicationIntegrationType, InteractionContextType, ChannelType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -80,56 +80,88 @@ export default new Command(
                 return;
             };
 
-            await interaction.channel?.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set.`);
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": interaction.user?.username,
-                            "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+            if (interaction.channel?.isTextBased() && interaction.channel?.type === ChannelType.GuildText) {
+                await interaction.channel.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set.`);
+
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": interaction.user?.username,
+                                "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+                            },
+                            "title": `${assets.icons.check} Slowmode Set`,
+                            "color": assets.colors.primary,
+                            "fields": [
+                                {
+                                    "name": "Duration",
+                                    "value": `${cooldown} ${type}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Moderator",
+                                    "value": `<@!${interaction.user?.id}>`,
+                                    "inline": true,
+                                },
+                            ],
                         },
-                        "title": `${assets.icons.check} Slowmode Set`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "Duration",
-                                "value": `${cooldown} ${type}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${interaction.user?.id}>`,
-                                "inline": true,
-                            },
-                        ],
-                    },
-                ],
-            });
+                    ],
+                });
+            } else {
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "description": `${assets.icons.xmark} Slowmode cannot be set in this channel.`,
+                            "color": assets.colors.primary,
+                        },
+                    ],
+                    "flags": [
+                        "Ephemeral",
+                    ],
+                });
+            };
 
             return;
         } else if (interaction.options?.getSubcommand() === "remove") {
-            await interaction.channel?.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed.`);
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": interaction.user?.username,
-                            "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
-                        },
-                        "title": `${assets.icons.check} Slowmode Removed`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${interaction.user?.id}>`,
-                                "inline": true,
+            if (interaction.channel?.isTextBased() && interaction.channel?.type === ChannelType.GuildText) {
+                await interaction.channel.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed.`);
+
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": interaction.user?.username,
+                                "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
                             },
-                        ],
-                    },
-                ],
-            });
+                            "title": `${assets.icons.check} Slowmode Removed`,
+                            "color": assets.colors.primary,
+                            "fields": [
+                                {
+                                    "name": "Moderator",
+                                    "value": `<@!${interaction.user?.id}>`,
+                                    "inline": true,
+                                },
+                            ],
+                        },
+                    ],
+                });
+            } else {
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "description": `${assets.icons.xmark} Slowmode cannot be removed in this channel.`,
+                            "color": assets.colors.primary,
+                        },
+                    ],
+                    "flags": [
+                        "Ephemeral",
+                    ],
+                });
+            };
 
             return;
         };

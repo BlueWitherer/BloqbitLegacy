@@ -1,5 +1,5 @@
 import { Command } from '../../classes.mjs';
-import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
+import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
@@ -46,7 +46,7 @@ export default new Command(
             const time = interaction.options?.getNumber("time") || 1;
             const reason = interaction.options?.getString("reason");
 
-            if (Member.permissions.has([PermissionFlagsBits.ModerateMembers])) {
+            if (Member?.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
                 await interaction.reply({
                     "content": "",
                     "embeds": [
@@ -113,48 +113,64 @@ export default new Command(
                 return;
             };
 
-            await Member.timeout(duration, `${interaction.user?.username} Timeout - ${reason}`);
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": interaction.user?.username,
-                            "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+            if (Member instanceof GuildMember) {
+                await Member.timeout(duration, `${interaction.user?.username} Timeout - ${reason}`);
+
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": interaction.user?.username,
+                                "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+                            },
+                            "title": `${assets.icons.noentry} User Timed Out`,
+                            "color": assets.colors.primary,
+                            "fields": [
+                                {
+                                    "name": "User",
+                                    "value": Member?.user?.username,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Until",
+                                    "value": `<t:${until}:R>`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Reason",
+                                    "value": `${reason}`,
+                                    "inline": false,
+                                },
+                                {
+                                    "name": "Moderator",
+                                    "value": `<@!${interaction.user?.id}>`,
+                                    "inline": true,
+                                },
+                            ],
                         },
-                        "title": `${assets.icons.noentry} User Timed Out`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "User",
-                                "value": Member?.user?.username,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Until",
-                                "value": `<t:${until}:R>`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Reason",
-                                "value": `${reason}`,
-                                "inline": false,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${interaction.user?.id}>`,
-                                "inline": true,
-                            },
-                        ],
-                    },
-                ],
-            });
+                    ],
+                });
+            } else {
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "description": `${assets.icons.xmark} Unable to timeout the user. Invalid member type.`,
+                            "color": assets.colors.primary,
+                        },
+                    ],
+                    "flags": [
+                        "Ephemeral",
+                    ],
+                });
+            };
 
             return;
         } else if (interaction.options?.getSubcommand() === "remove") {
             const Member = interaction.options?.getMember("user");
 
-            if (Member.permissions.has([PermissionFlagsBits.ModerateMembers])) {
+            if (Member && Member.permissions instanceof PermissionsBitField && Member.permissions.has([PermissionFlagsBits.ModerateMembers])) {
                 await interaction.reply({
                     "content": "",
                     "embeds": [
@@ -169,32 +185,48 @@ export default new Command(
                 });
             };
 
-            await Member?.timeout(0, `${interaction.user?.username} Timeout removed.`);
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": interaction.user?.username,
-                            "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+            if (Member instanceof GuildMember) {
+                await Member.timeout(0, `${interaction.user?.username} Timeout removed.`);
+
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": interaction.user?.username,
+                                "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+                            },
+                            "title": `${assets.icons.check} Timeout Removed`,
+                            "color": assets.colors.primary,
+                            "fields": [
+                                {
+                                    "name": "User",
+                                    "value": Member?.user?.username,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Moderator",
+                                    "value": `<@!${interaction.user?.id}>`,
+                                    "inline": true,
+                                },
+                            ],
                         },
-                        "title": `${assets.icons.check} Timeout Removed`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "User",
-                                "value": Member?.user?.username,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${interaction.user?.id}>`,
-                                "inline": true,
-                            },
-                        ],
-                    },
-                ],
-            });
+                    ],
+                });
+            } else {
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "description": `${assets.icons.xmark} Unable to remove timeout. Invalid member type.`,
+                            "color": assets.colors.primary,
+                        },
+                    ],
+                    "flags": [
+                        "Ephemeral",
+                    ],
+                });
+            };
 
             return;
         };

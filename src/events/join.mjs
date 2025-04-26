@@ -13,7 +13,7 @@ export default {
      * @returns {Promise<void>}
      */
     execute: async (bot, guild) => {
-        const isLogged = fetch.fetchGuild(guild.id);
+        const isLogged = await fetch.fetchGuild(guild.id, bot.db);
 
         if (isLogged) {
             console.log(`Incoming guild ${guild.id} registered in cache`);
@@ -47,7 +47,7 @@ export default {
                         ],
                         "footer": {
                             "text": guild.name,
-                            "icon_url": guild.iconURL({ "forceStatic": false, "size": 128 }),
+                            "icon_url": guild.iconURL({ "forceStatic": false, "size": 128 }) ?? '',
                         },
                     },
                 ],
