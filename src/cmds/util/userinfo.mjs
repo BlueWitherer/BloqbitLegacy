@@ -1,5 +1,5 @@
-import { Command } from '../../classes.mjs';
-import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
+import { Command } from '../../classes.js';
+import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField, Role } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default new Command(
@@ -16,15 +16,22 @@ export default new Command(
     async (interaction, assets, system, db) => {
         const Member = interaction.options?.getMember("user");
 
-        let MemberPermissions = interaction.member?.permissions?.toArray({ checkAdmin: true, checkOwner: true }).join('` | `');
+        let MemberPermissions = interaction.member?.permissions instanceof PermissionsBitField
+            ? interaction.member?.permissions.toArray().join('` | `')
+            : 'None';
 
         if (!MemberPermissions) MemberPermissions = 'None';
 
-        const joinedAt = Math.floor(Member.joinedTimestamp / 1000);
-        const createdAt = Math.floor(Member.user?.createdTimestamp / 1000);
-
         if (Member) {
-            if (Member.user?.bot) {
+            const joinedAt = Member instanceof GuildMember && Member.joinedTimestamp
+                ? Math.floor(Member.joinedTimestamp / 1000)
+                : null;
+
+            const createdAt = Member instanceof GuildMember && Member.user?.createdTimestamp
+                ? Math.floor(Member.user.createdTimestamp / 1000)
+                : null;
+
+            if (Member instanceof GuildMember && Member.user?.bot) {
                 let UserPermissions = Member.permissions?.toArray().join('` | `');
 
                 if (!UserPermissions) UserPermissions = 'None';
@@ -35,10 +42,10 @@ export default new Command(
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
                         },
-                        "title": `${assets.icons.info} ${Member.user?.username}`,
-                        "color": `${assets.colors.primary}`,
+                        "title": `${assets.icons.info} ${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
+                        "color": assets.colors.primary,
                         "thumbnail": {
-                            "url": `${Member.user?.displayAvatarURL({ forceStatic: false })}`,
+                            "url": `${Member instanceof GuildMember ? Member.user?.displayAvatarURL({ forceStatic: false }) : ''}`,
                         },
                         "fields": [
                             {
@@ -48,12 +55,12 @@ export default new Command(
                             },
                             {
                                 "name": "Username",
-                                "value": `${Member.user?.username}`,
+                                "value": `${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
                                 "inline": true,
                             },
                             {
                                 "name": "User ID",
-                                "value": `${Member.user?.id}`,
+                                "value": `${Member instanceof GuildMember ? Member.user?.id : 'Unknown ID'}`,
                                 "inline": true,
                             },
                             {
@@ -67,7 +74,7 @@ export default new Command(
                                 "inline": true,
                             },
                             {
-                                "name": `Roles [${Member.roles?.cache?.size}]`,
+                                "name": `Roles [${Array.isArray(Member.roles) ? Member.roles.length : Member.roles?.cache?.size}]`,
                                 "value": `${Member.roles?.cache?.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
                                 "inline": false,
                             },
@@ -83,7 +90,9 @@ export default new Command(
 
                 return;
             } else {
-                let UserPermissions = Member.permissions.toArray({ checkAdmin: true, checkOwner: true }).join('` | `');
+                let UserPermissions = Member.permissions instanceof PermissionsBitField
+                    ? Member.permissions.toArray().join('` | `')
+                    : 'None';
 
                 if (!UserPermissions) UserPermissions = 'None';
 
@@ -91,10 +100,10 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "title": `${assets.icons.info} ${Member.user?.username}`,
-                            "color": `${assets.colors.primary}`,
+                            "title": `${assets.icons.info} ${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
+                            "color": assets.colors.primary,
                             "thumbnail": {
-                                "url": `${Member.user?.displayAvatarURL({ forceStatic: false })}`,
+                                "url": `${Member instanceof GuildMember ? Member.user?.displayAvatarURL({ forceStatic: false }) : ''}`,
                             },
                             "author": {
                                 "name": `${interaction.user?.username}`,
@@ -108,12 +117,12 @@ export default new Command(
                                 },
                                 {
                                     "name": "Username",
-                                    "value": `${Member.user?.username}`,
+                                    "value": `${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
                                     "inline": true,
                                 },
                                 {
                                     "name": "User ID",
-                                    "value": `${Member.user?.id}`,
+                                    "value": `${Member instanceof GuildMember ? Member.user?.id : 'Unknown ID'}`,
                                     "inline": true,
                                 },
                                 {
@@ -127,8 +136,10 @@ export default new Command(
                                     "inline": true,
                                 },
                                 {
-                                    "name": `Roles [${Member.roles?.cache?.size}]`,
-                                    "value": `${Member.roles?.cache?.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                    "name": `Roles [${Array.isArray(Member.roles) ? Member.roles.length : Member.roles?.cache?.size}]`,
+                                    "value": `${Array.isArray(Member.roles)
+                                        ? Member.roles.join(' | ')
+                                        : Member.roles?.cache?.filter((/** @type {Role} */ r) => r.id !== interaction.guild?.id).map((/** @type {Role} */ r) => `${r}`).join(' | ')}`,
                                     "inline": false,
                                 },
                                 {
@@ -144,7 +155,9 @@ export default new Command(
                 return;
             };
         } else {
-            const joinedAtU = Math.floor(interaction.member?.joinedTimestamp / 1000);
+            const joinedAtU = interaction.member instanceof GuildMember && interaction.member.joinedTimestamp
+                ? Math.floor(interaction.member.joinedTimestamp / 1000)
+                : null;
             const createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
 
             await interaction.reply({
@@ -152,7 +165,7 @@ export default new Command(
                 "embeds": [
                     {
                         "title": `${assets.icons.info} ${interaction.user?.username}`,
-                        "color": `${assets.colors.primary}`,
+                        "color": assets.colors.primary,
                         "thumbnail": {
                             "url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
                         },
@@ -187,8 +200,11 @@ export default new Command(
                                 "inline": true,
                             },
                             {
-                                "name": `Roles [${interaction.member.roles?.cache?.size}]`,
-                                "value": `${interaction.member.roles?.cache?.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                "name": `Roles [${Array.isArray(interaction.member?.roles) ? interaction.member.roles.length : interaction.member?.roles?.cache?.size}]`,
+                                "value": `${Array.isArray(interaction.member?.roles)
+                                    ? interaction.member.roles.join(' | ')
+                                    : interaction.member?.roles?.cache?.filter((/** @type { Role } */ r) => r.id !== interaction.guild?.id).map((/** @type {Role} */ r) => `${r}`).join(' | ')
+                                    }`,
                                 "inline": false,
                             },
                             {

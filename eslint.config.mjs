@@ -1,30 +1,47 @@
 import globals from 'globals';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 
-/** @type {import('eslint').Linter.Config[]} */
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+/** @type {Array<object>} */
 export default [
   {
-    ignores: [
-      "reserves/**",
-      "node_modules/**",
-    ],
-    files: ['**/*.{js,mjs,ts}'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      sourceType: 'module',
-      ecmaVersion: 'latest',
-      globals: {
-        ...globals.browser,
-        ...globals.node,
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
+        tsconfigRootDir: __dirname,
+        extraFileExtensions: ['.mjs'],
       },
     },
-    rules: {
-      'no-undef': 'error',
-      'no-console': 'off',
-      'eqeqeq': 'error',
-      'prefer-const': 'error',
-      'arrow-body-style': ['error', 'as-needed'],
-      'no-var': 'error',
-      'semi': ['error', 'always'],
-      'no-eval': 'error',
+    plugins: {
+      '@typescript-eslint': tsPlugin,
     },
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+    },
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/lib/**",
+      "**/__tests__/**",
+      "**/__mocks__/**",
+      "**/__snapshots__/**",
+      "**/reserves/**",
+      "**/eslint.config.mjs",
+    ],
   },
 ];

@@ -1,6 +1,6 @@
 import { Events, Message, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, LogEvent } from "../../classes.mjs";
+import { BloqbitClient, LogEvent } from "../../classes.js";
 
 import fetch from "../../modules/fetch.mjs";
 export default new LogEvent(
@@ -8,16 +8,12 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>} msg 
+     * @param {unknown[]} args
      * 
      * @returns {Promise<void>}
      */
-    async (bot, msg) => {
-        if (msg.partial) try {
-            msg = await msg.fetch(true);
-        } catch (err) {
-            console.error(err);
-        };
+    async (bot, ...args) => {
+        const msg = /** @type {import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>} */ (args[0]);
 
         if (msg.guild) {
             console.debug(`Handling deleted message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);

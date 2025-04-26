@@ -1,4 +1,4 @@
-name: Bloqbit Stability Check
+name: Bloqbit Test Build
 
 on: [push, pull_request]
 
@@ -13,18 +13,24 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '23.1.0'
+          node-version: '23.7.0'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Check syntax
+      - name: Lint code
         run: npm run lint
 
-      - name: Validate Bloqbit login process
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
         env:
           TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
           TEST_GUILDED_TOKEN: ${{ secrets.TEST_GUILDED_TOKEN }}
           TEST_SECRET: ${{ secrets.TEST_SECRET }}
           TEST_LOG_WH: ${{ secrets.TEST_LOG_WH }}
         run: npm run test
+
+      - name: Clean up build artifacts
+        run: npm run clean

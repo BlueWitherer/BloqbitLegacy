@@ -1,6 +1,6 @@
 import { Events, Message, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, LogEvent } from "../../classes.mjs";
+import { BloqbitClient, LogEvent } from "../../classes.js";
 
 import fetch from "../../modules/fetch.mjs";
 
@@ -9,12 +9,14 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {import('discord.js').ReadonlyCollection<import('discord.js').Snowflake, import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>>} msgs
-     * @param {import('discord.js').GuildTextBasedChannel} channel
+     * @param {unknown[]} args
      * 
      * @returns {Promise<void>}
      */
-    async (bot, msgs, channel) => {
+    async (bot, ...args) => {
+        const msgs = /** @type {import('discord.js').ReadonlyCollection<import('discord.js').Snowflake, import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>>} */ (args[0]);
+        const channel = /** @type {import('discord.js').GuildTextBasedChannel} */ (args[1]);
+
         const msg = msgs.first();
 
         if (channel.guild && msg) {

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { ModeratorActionType, MessageFilterMode } from "../classes.mjs";
+import { ModeratorActionType, MessageFilterMode } from '../classes.js';
 
 export default {
     /**

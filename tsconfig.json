@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "allowJs": true,
+    "checkJs": true,
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+    "paths": {
+      "*": [
+        "*",
+      ],
+    },
+    "lib": [
+      "ESNext"
+    ],
+    "noEmit": true,
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+  },
+  "include": [
+    "src/**/*",
+    "*.ts",
+    "*.mjs",
+    "*.js",
+    "src/assets.json",
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "reserves",
+  ],
+}

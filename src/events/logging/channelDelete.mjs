@@ -1,6 +1,6 @@
 import { Events, DMChannel, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, LogEvent } from "../../classes.mjs";
+import { BloqbitClient, LogEvent } from "../../classes.js";
 
 import fetch from "../../modules/fetch.mjs";
 
@@ -9,11 +9,13 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {DMChannel | import("discord.js").NonThreadGuildBasedChannel} channel
+     * @param {unknown[]} args
      * 
      * @returns {Promise<void>}
      */
-    async (bot, channel) => {
+    async (bot, ...args) => {
+        const channel = /** @type {DMChannel | import("discord.js").NonThreadGuildBasedChannel} */ (args[0]);
+
         if (!(channel instanceof DMChannel) && channel.guild) {
             console.debug(`Handling deleted channel log event on guild of ID ${channel.guild?.id || channel.guildId}...`);
             const system = await fetch.fetchGuild(channel.guild?.id || channel.guildId, bot.db);

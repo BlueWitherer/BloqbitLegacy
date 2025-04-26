@@ -1,6 +1,6 @@
 import { Events, Message, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, LogEvent } from "../../classes.mjs";
+import { BloqbitClient, LogEvent } from "../../classes.js";
 
 import fetch from "../../modules/fetch.mjs";
 
@@ -9,12 +9,14 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>} oldMsg 
-     * @param {import('discord.js').OmitPartialGroupDMChannel<Message>} newMsg 
+     * @param {...any} args
      * 
      * @returns {Promise<void>}
      */
-    async (bot, oldMsg, newMsg) => {
+    async (bot, ...args) => {
+        const oldMsg = /** @type {import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>} */ (args[0]);
+        const newMsg = /** @type {import('discord.js').OmitPartialGroupDMChannel<Message>} */ (args[1]);
+
         if (oldMsg.guild && newMsg.guild) {
             console.debug(`Handling edited message log event on guild of ID ${(newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)}...`);
             const system = await fetch.fetchGuild(((newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)) ?? '', bot.db);

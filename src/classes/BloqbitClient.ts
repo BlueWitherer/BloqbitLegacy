@@ -1,13 +1,16 @@
-import SysAssets from '../assets.json' with { type: 'json' };
+import SaveDataClient from './SaveDataClient.js';
 
-import SaveDataClient from './SaveDataClient.mjs';
+import SysAssets from '../assets.json' with { type: 'json' };
 
 import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { REST } from '@discordjs/rest';
 
-import Guilded from 'guilded.js';
+import * as Guilded from 'guilded.js';
 
-import { Command } from '../classes.mjs';
+import { Command } from '../classes.js';
+import resolve from '../modules/resolve.mjs';
+
+const parsedSysAssets = resolve.parseJson(resolve.stringJson(SysAssets));
 
 /**
  * @class Bot model.
@@ -15,79 +18,67 @@ import { Command } from '../classes.mjs';
 export default class BloqbitClient {
     /**
      * Discord bot token
-     * @type {string}
      */
-    token;
+    public token: string;
 
     /**
      * Discord bot secret
-     * @type {string}
      */
-    secret;
+    private secret: string;
 
     /**
      * Developer log Discord webhook URL
-     * @type {string}
      */
-    dev_wh;
+    public dev_wh: string;
 
     /**
      * Database object
-     * @type {SaveDataClient}
      */
-    db;
+    public db: SaveDataClient;
 
     /**
      * Array of commands
-     * @type {Array<import('discord.js').SlashCommandOptionsOnlyBuilder>}
      */
-    commands;
+    public commands: Array<import('discord.js').SlashCommandOptionsOnlyBuilder>;
 
     /**
      * Object of emote and color assets
-     * @type {typeof SysAssets}
      */
-    assets;
+    public assets: typeof SysAssets;
 
     /**
      * REST client
-     * @type {REST}
      */
-    rest;
+    public rest: REST;
 
     /**
      * Commands collection
-     * @type {Collection<string, Command>}
      */
-    cmds;
+    public cmds: Collection<string, Command>;
 
     /**
      * Discord bot client
-     * @type {Client<boolean>}
      */
-    client;
+    public client: Client;
 
     /**
      * Guilded bot token
-     * @type {string}
      */
-    tokenGil;
+    public tokenGil: string;
 
     /**
      * Guilded bot client
-     * @type {Guilded.Client}
      */
-    clientGil;
+    public clientGil: Guilded.Client;
 
     /**
-     * 
-     * @param {string} token Discord bot token
-     * @param {string} secret Discord application secret
-     * @param {string} web Developer logging Discord webhook URL
-     * @param {string} data MongoDB database URI
-     * @param {string} gil Guilded bot token
+     * @param token Discord bot token
+     * @param secret Discord application secret
+     * @param web Developer logging Discord webhook URL
+     * @param data MongoDB database URI
+     * @param gil Guilded bot token
      */
-    constructor(token, secret, web, data, gil) {
+    constructor(token: string, secret: string, web: string, data: string, gil: string) {
         this.token = token;
         this.secret = secret;
 
@@ -97,7 +88,7 @@ export default class BloqbitClient {
 
         this.commands = [];
 
-        this.assets = SysAssets;
+        this.assets = parsedSysAssets;
 
         this.rest = new REST();
         this.cmds = new Collection();
@@ -153,8 +144,6 @@ export default class BloqbitClient {
             },
         });
 
-        this.rest.setToken(token);
-
-        return this;
+        this.rest.setToken(this.token);
     };
 };

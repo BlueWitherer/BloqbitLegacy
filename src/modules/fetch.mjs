@@ -1,9 +1,8 @@
 import cacheModule from '../cache.mjs';
 
-import { SaveDataClient, Config, BloqbitClient } from '../classes.mjs';
+import { SaveDataClient, Config, BloqbitClient } from '../classes.js';
 
-import Discord from 'discord.js';
-import { MongoClient } from 'mongodb';
+import { ChannelType, Client, GatewayIntentBits, Guild, InteractionType, Message, TextChannel, WebhookClient } from 'discord.js';
 
 import SysAssets from '../assets.json' with { type: 'json' };
 
@@ -11,7 +10,7 @@ export default {
     /**
      * Returns URL of the first image found in a message
      * 
-     * @param {Discord.Message} msg Discord.Message to search for image in
+     * @param {Message} msg Message to search for image in
      * 
      * @returns {string | void} Image URL
      */
@@ -27,7 +26,7 @@ export default {
     /**
      * Returns proxy URL of the first image found in a message
      * 
-     * @param {Discord.Message} msg Discord.Message to search for image in
+     * @param {Message} msg Message to search for image in
      * 
      * @returns {string | void} Proxy image URL
      */
@@ -44,7 +43,7 @@ export default {
      * Handles errors with interactions
      * 
      * @param {string} err Error message
-     * @param {Discord.Interaction} interaction Command interaction
+     * @param {import('discord.js').Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
      * @returns {Promise<void>} Error log
@@ -52,7 +51,7 @@ export default {
     interactionError: async (err, interaction, assets) => {
         if (err && interaction) {
             try {
-                if (interaction.type === Discord.InteractionType.ApplicationCommand) {
+                if (interaction.type === InteractionType.ApplicationCommand) {
                     await interaction.reply({
                         "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
                         "flags": [
@@ -97,7 +96,7 @@ export default {
     /**
      * Handles errors with interactions if the server isn't registered already
      * 
-     * @param {Discord.Interaction} interaction Command interaction
+     * @param {import('discord.js').Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
      * @returns {Promise<void>} SaveDataClient operation
@@ -136,7 +135,7 @@ export default {
     /**
      * Error if a server owner isn't a subscriber
      * 
-     * @param {Discord.Interaction} interaction Command interaction
+     * @param {import('discord.js').Interaction} interaction Command interaction
      * @param {typeof SysAssets} assets Assets object
      * 
      * @returns {Promise<void>} SaveDataClient operation
@@ -175,7 +174,7 @@ export default {
     /**
      * Generic command error response
      * 
-     * @param {Discord.Interaction} interaction Command interaction 
+     * @param {import('discord.js').Interaction} interaction Command interaction 
      * @param {typeof SysAssets} assets Assets object
      * 
      * @returns {Promise<void>} Command response
@@ -227,8 +226,8 @@ export default {
      * 
      * @param {BloqbitClient} bot 
      * @param {Config} system 
-     * @param {Discord.APIEmbed} emb 
-     * @param {Discord.Guild} guild 
+     * @param {import('discord.js').APIEmbed} emb 
+     * @param {Guild} guild 
      * 
      * @returns {Promise<void>}
      */
@@ -241,18 +240,18 @@ export default {
          * @param {BloqbitClient} bot
          * @param {Config} system 
          * @param {SaveDataClient} db 
-         * @param {Discord.TextChannel} chnl
+         * @param {TextChannel} chnl
          * 
-         * @returns {Promise<Discord.WebhookClient | void>}
+         * @returns {Promise<WebhookClient | void>}
          */
         const checkLogsWebhook = async (bot, system, db, chnl) => {
             /**
-            * @type {Discord.WebhookClient}
+            * @type {WebhookClient}
             */
             let webClient;
 
             if (system.logs.webhook) {
-                webClient = new Discord.WebhookClient({ "url": system.logs.webhook });
+                webClient = new WebhookClient({ "url": system.logs.webhook });
 
                 console.debug(`Found logs webhook for channel #${chnl.name} (${chnl.id})`);
             } else {
@@ -271,7 +270,7 @@ export default {
                 system.logs.webhook = newWeb.url;
                 await cacheModule.update(system, db);
 
-                webClient = new Discord.WebhookClient({ "url": system.logs.webhook });
+                webClient = new WebhookClient({ "url": system.logs.webhook });
 
                 console.debug(`Created logs webhook for channel #${chnl.name} (${chnl.id}) and updated save data`);
             };
@@ -280,7 +279,7 @@ export default {
         };
 
         if (chnl) {
-            if (chnl.type === Discord.ChannelType.GuildText) {
+            if (chnl.type === ChannelType.GuildText) {
                 if (system.logs.webhookEnabled) {
                     const webClient = await checkLogsWebhook(bot, system, bot.db, chnl);
 

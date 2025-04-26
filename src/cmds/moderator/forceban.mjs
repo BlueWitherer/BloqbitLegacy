@@ -1,7 +1,7 @@
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { Command } from '../../classes.mjs';
+import { Command } from '../../classes.js';
 
 export default new Command(
     new SlashCommandBuilder()

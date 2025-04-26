@@ -1,8 +1,7 @@
-import { GuildMember, Message } from 'discord.js';
-
 import resolve from './resolve.mjs';
 
-import { ModeratorActionType, Config } from '../classes.mjs';
+import { Config, ModeratorActionType } from '../classes.js';
+import { GuildMember, Message } from 'discord.js';
 
 /**
  * Per-user antispam - mutes user if threshold is met
@@ -117,7 +116,7 @@ export default {
      * @returns {void}
      */
     antiMessages: (msg) => {
-        console.warn("Anti-spam in W.I.P.");
+        console.warn("Anti-spam in W.I.P. " + msg.id);
         return;
     },
 

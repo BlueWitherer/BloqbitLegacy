@@ -12,7 +12,7 @@
     "@guildedjs/gil": "^0.6.5",
     "axios": "^1.9.0",
     "discord-api-types": "^0.38.1",
-    "discord.js": "^14.19.0",
+    "discord.js": "^14.19.1",
     "dotenv": "^16.5.0",
     "fs": "^0.0.1-security",
     "google-auth-library": "^9.15.1",
@@ -20,22 +20,57 @@
     "guilded.js": "^0.25.0",
     "mongodb": "^6.16.0",
     "path": "^0.12.7",
+    "tsconfig-paths": "^4.2.0",
     "url": "^0.11.4"
   },
-  "main": "main.js",
+  "main": "main.ts",
+  "engines": {
+    "node": ">=23.7.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@eslint/js",
+      "plugin:node/recommended"
+    ],
+    "env": {
+      "es2021": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ]
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
     "@types/mysql": "^2.15.27",
     "@types/node": "^22.15.2",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
     "eslint": "^9.25.1",
     "globals": "^16.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "start": "node main.js",
     "lint": "eslint .",
-    "test": "node validate.js"
+    "build": "tsc",
+    "prebuild": "npm run lint",
+    "test": "node --loader ts-node/esm validate.ts",
+    "pretest": "npm run build",
+    "start": "node --loader ts-node/esm main.ts",
+    "prestart": "npm run build",
+    "dev": "ts-node --esm main.ts",
+    "clean": "rimraf dist",
+    "prepare": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",

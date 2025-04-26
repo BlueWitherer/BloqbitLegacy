@@ -1,4 +1,4 @@
-import { Command } from '../../classes.mjs';
+import { Command } from '../../classes.js';
 import { ApplicationIntegrationType, GuildMember, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 

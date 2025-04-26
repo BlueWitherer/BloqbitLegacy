@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-import { SaveDataClient, Config } from './classes.mjs';
+import { SaveDataClient, Config } from './classes.js';
 
 // MongoDB client instance
 /**

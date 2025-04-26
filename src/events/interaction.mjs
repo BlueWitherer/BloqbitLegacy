@@ -1,4 +1,4 @@
-import BloqbitClient from '../classes/BloqbitClient.mjs';
+import { BloqbitClient } from '../classes.js';
 import { Events, WebhookClient } from 'discord.js';
 import fetch from '../modules/fetch.mjs';
 import cache from '../cache.mjs';

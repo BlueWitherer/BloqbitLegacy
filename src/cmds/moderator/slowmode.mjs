@@ -1,4 +1,4 @@
-import { Command } from '../../classes.mjs';
+import { Command } from '../../classes.js';
 import { ApplicationIntegrationType, InteractionContextType, ChannelType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';

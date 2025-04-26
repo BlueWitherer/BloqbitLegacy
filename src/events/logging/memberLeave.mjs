@@ -1,6 +1,6 @@
 import { Events, EmbedBuilder, GuildMember } from "discord.js";
 
-import { BloqbitClient, LogEvent } from "../../classes.mjs";
+import { BloqbitClient, LogEvent } from "../../classes.js";
 
 import fetch from "../../modules/fetch.mjs";
 
@@ -9,11 +9,13 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {GuildMember | import("discord.js").PartialGuildMember} member
+     * @param {unknown[]} args
      * 
      * @returns {Promise<void>}
      */
-    async (bot, member) => {
+    async (bot, ...args) => {
+        const member = /** @type {GuildMember | import("discord.js").PartialGuildMember} */ (args[0]);
+
         if (member.guild) {
             console.debug(`Handling member leave log event on guild of ID ${member.guild?.id}...`);
             const system = await fetch.fetchGuild(member.guild?.id, bot.db);

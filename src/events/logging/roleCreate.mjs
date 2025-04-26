@@ -1,6 +1,6 @@
 import { Events, EmbedBuilder, Role } from "discord.js";
 
-import { BloqbitClient, LogEvent } from "../../classes.mjs";
+import { BloqbitClient, LogEvent } from "../../classes.js";
 
 import fetch from "../../modules/fetch.mjs";
 
@@ -9,11 +9,13 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {Role} role
+     * @param {...any} args
      * 
      * @returns {Promise<void>}
      */
-    async (bot, role) => {
+    async (bot, ...args) => {
+        const role = /** @type {import('discord.js').Role} */ (args[0]);
+
         if (role.guild) {
             console.debug(`Handling created role log event on guild of ID ${role.guild?.id}...`);
             const system = await fetch.fetchGuild(role.guild?.id ?? '', bot.db);

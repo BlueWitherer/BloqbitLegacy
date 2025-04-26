@@ -1,6 +1,6 @@
 import { Events, EmbedBuilder, GuildBan } from "discord.js";
 
-import { BloqbitClient, LogEvent } from "../../classes.mjs";
+import { BloqbitClient, LogEvent } from "../../classes.js";
 
 import fetch from "../../modules/fetch.mjs";
 
@@ -9,11 +9,13 @@ export default new LogEvent(
     /**
      * 
      * @param {BloqbitClient} bot
-     * @param {GuildBan} ban
+     * @param {unknown[]} args
      * 
      * @returns {Promise<void>}
      */
-    async (bot, ban) => {
+    async (bot, ...args) => {
+        const ban = /** @type {GuildBan} */ (args[0]);
+
         if (ban.guild) {
             console.debug(`Handling unban log event on guild of ID ${ban.guild?.id}...`);
             const system = await fetch.fetchGuild(ban.guild?.id, bot.db);

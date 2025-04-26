@@ -1,4 +1,4 @@
-import BloqbitClient from '../classes/BloqbitClient.mjs';
+import { BloqbitClient } from '../classes.js';
 import { Events } from 'discord.js';
 
 export default {

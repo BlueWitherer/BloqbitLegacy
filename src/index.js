@@ -1,9 +1,8 @@
-import { BloqbitClient, Command, LogEvent, MessageHandler, ServerHandler, UserHandler } from './classes.mjs';
+import { BloqbitClient, Command, LogEvent, MessageHandler, ServerHandler, UserHandler } from './classes.js';
 
-import fs from 'node:fs';
-import path from 'path';
-import url from 'url';
-import fetch from './modules/fetch.mjs';
+import * as fs from 'node:fs';
+import * as path from 'path';
+import * as url from 'url';
 
 import { Events, ActivityType, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
@@ -48,7 +47,7 @@ export default class Bot {
 
                 for (const folder of commandFolders) {
                     const commandsPath = path.join(foldersPath, folder);
-                    const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.mjs'));
+                    const commandFiles = fs.readdirSync(commandsPath).filter((/** @type {string} */ file) => file.endsWith('.mjs'));
 
                     for (const file of commandFiles) {
                         try {
@@ -94,7 +93,7 @@ export default class Bot {
 
             try {
                 const logsPath = path.join(__dirname, 'events/logging');
-                const logEventFiles = fs.readdirSync(logsPath).filter(file => file.endsWith('.mjs'));
+                const logEventFiles = fs.readdirSync(logsPath).filter((/** @type {string} */ file) => file.endsWith('.mjs'));
 
                 for (const file of logEventFiles) {
                     try {
@@ -122,7 +121,7 @@ export default class Bot {
 
             try {
                 const eventsPath = path.join(__dirname, 'events');
-                const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith('.mjs'));
+                const eventFiles = fs.readdirSync(eventsPath).filter((/** @type {string} */ file) => file.endsWith('.mjs'));
 
                 for (const file of eventFiles) {
                     try {
@@ -251,6 +250,7 @@ export default class Bot {
                 process.exit(0);
             } else {
                 console.info("Bloqbit is ready!");
+                console.info("");
             };
         };
 
