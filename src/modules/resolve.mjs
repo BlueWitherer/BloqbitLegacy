@@ -281,7 +281,7 @@ export default {
                 console.debug(numString);
                 return numString;
             } else {
-                console.error(`${x} is not a number.`);
+                console.error(`${x} is not a number`);
                 return "0";
             };
         } catch (err) {

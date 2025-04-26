@@ -29,7 +29,7 @@ export default new LogEvent(
                             "icon_url": `${msg.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
                         },
                         "title": `${bot.assets.icons.xmark} Messages Bulk Deleted`,
-                        "description": `**${msgs.size}** messages deleted.`,
+                        "description": `**${msgs.size}** messages deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

@@ -65,7 +65,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} No messages to clear.`,
+                            "description": `${assets.icons.xmark} No messages to clear`,
                             "color": assets.colors.secondary,
                         },
                     ],
@@ -127,7 +127,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} No messages to clear.`,
+                            "description": `${assets.icons.xmark} No messages to clear`,
                             "color": assets.colors.secondary,
                         },
                     ],

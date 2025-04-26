@@ -13,18 +13,6 @@ export default {
      * @returns {Promise<void>}
      */
     execute: async (bot, guild) => {
-        const isLogged = await fetch.fetchGuild(guild.id, bot.db);
-
-        if (isLogged) {
-            console.log(`Outgoing guild ${guild.id} registered in cache`);
-        } else {
-            try {
-                await fetch.reviseGuild(bot.db, guild.id);
-            } catch (err) {
-                console.error(err);
-            };
-        };
-
         try {
             const devWH = new WebhookClient({ url: bot.dev_wh, });
             const date = Math.floor(Date.now() / 1000);
@@ -36,7 +24,7 @@ export default {
                         "author": {
                             "name": `Servers`,
                         },
-                        "description": `${bot.assets.default.icons.minus} **${bot.client?.user?.username}** was forced to leave the guild __${guild.name}__.`,
+                        "description": `${bot.assets.default.icons.minus} **${bot.client?.user?.username}** was forced to leave the guild __${guild.name}__`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

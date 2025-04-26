@@ -68,7 +68,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} Slowmode cannot be set to over 12 hours.`,
+                            "description": `${assets.icons.xmark} Slowmode cannot be set to over 12 hours`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -81,7 +81,7 @@ export default new Command(
             };
 
             if (interaction.channel?.isTextBased() && interaction.channel?.type === ChannelType.GuildText) {
-                await interaction.channel.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set.`);
+                await interaction.channel.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set`);
 
                 await interaction.reply({
                     "content": "",
@@ -113,7 +113,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} Slowmode cannot be set in this channel.`,
+                            "description": `${assets.icons.xmark} Slowmode cannot be set in this channel`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -126,7 +126,7 @@ export default new Command(
             return;
         } else if (interaction.options?.getSubcommand() === "remove") {
             if (interaction.channel?.isTextBased() && interaction.channel?.type === ChannelType.GuildText) {
-                await interaction.channel.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed.`);
+                await interaction.channel.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed`);
 
                 await interaction.reply({
                     "content": "",
@@ -153,7 +153,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} Slowmode cannot be removed in this channel.`,
+                            "description": `${assets.icons.xmark} Slowmode cannot be removed in this channel`,
                             "color": assets.colors.primary,
                         },
                     ],

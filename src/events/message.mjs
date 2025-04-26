@@ -19,7 +19,7 @@ export default {
             if (msg.channel?.type === ChannelType.DM || msg.channel?.type === ChannelType.GroupDM) {
     
                 if (msg.author?.bot) {
-                    console.warn(`Direct messenger ${msg.author?.username} (${msg.author?.id}) is a bot or invalid.`);
+                    console.error(`Direct message author ${msg.author?.username} (${msg.author?.id}) is a bot or invalid`);
                 } else if (devWH) {
                     await devWH.send({
                         "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
@@ -45,6 +45,8 @@ export default {
                             },
                         ],
                     });
+                } else {
+                    console.error(`Direct message author ${msg.author?.username} (${msg.author?.id}) is a bot or invalid`);
                 };
             } else {
                 const msgs = await msg.channel?.messages?.fetch({ "limit": 100 });

@@ -149,33 +149,10 @@ export default class Bot {
                             });
                         };
 
-                        console.debug(`Loaded event listener for ${event.name}.`);
+                        console.debug(`Loaded event listener for ${event.name}`);
                     } catch (err) {
                         console.error(err);
                         if (testMode) process.exit(1);
-                    };
-                };
-
-                if (testMode) {
-                    console.info("Skipping database step...");
-                } else {
-                    const clientGuilds = await botModel.client?.guilds?.fetch();
-
-                    for (const inGuild of clientGuilds) {
-                        try {
-                            const inCache = await fetch.fetchGuild(inGuild[1].id, botModel.db);
-
-                            if (inCache) {
-                                console.log(inCache.server);
-                            } else {
-                                const thisGuild = await fetch.reviseGuild(botModel.db, inGuild[1].id);
-
-                                // @ts-ignore
-                                console.log(thisGuild.server);
-                            };
-                        } catch (err) {
-                            console.error(err);
-                        };
                     };
                 };
 
@@ -215,7 +192,7 @@ export default class Bot {
                             "author": {
                                 "name": `Service Status`,
                             },
-                            "description": `${botModel.assets.default.icons.check} **${client.user?.displayName}** is now __online__.`,
+                            "description": `${botModel.assets.default.icons.check} **${client.user?.displayName}** is now __online__`,
                             "color": botModel.assets.colors.primary,
                             "footer": {
                                 "text": client.user?.username,
@@ -226,7 +203,7 @@ export default class Bot {
                 });
 
                 botModel.online = true;
-                console.log(`Bot user ${client.user?.username} is online.`);
+                console.log(`Bot user ${client.user?.username} is online`);
             } catch (err) {
                 console.error(err);
                 process.exit(1);

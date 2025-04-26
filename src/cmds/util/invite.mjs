@@ -59,7 +59,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to create invite code.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to create invite code`,
                         "color": assets.colors.primary,
                     },
                 ],

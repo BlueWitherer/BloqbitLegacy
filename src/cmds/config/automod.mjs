@@ -276,7 +276,7 @@ export default new Command(
                             "content": "",
                             "embeds": [
                                 {
-                                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ auto-moderator.`,
+                                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ auto-moderator`,
                                     "color": assets.colors.primary,
                                 },
                             ],
@@ -286,7 +286,7 @@ export default new Command(
                             "content": "",
                             "embeds": [
                                 {
-                                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ auto-moderator.`,
+                                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ auto-moderator`,
                                     "color": assets.colors.primary,
                                 },
                             ],
@@ -319,12 +319,12 @@ export default new Command(
                     system.automod.swearFilter.enabled = toggle;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the swear filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the swear filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the swear filter.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the swear filter`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -336,7 +336,7 @@ export default new Command(
                         system.automod.swearFilter.keywords.splice(0, system.automod.swearFilter.keywords.length);
 
                         allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the swear filter.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the swear filter`,
                             "color": assets.colors.primary,
                         });
                     } else {
@@ -345,13 +345,13 @@ export default new Command(
                         list.forEach((w) => system.automod.swearFilter.keywords.filter((kw) => !system.automod.swearFilter.keywords.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the swear filter.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the swear filter`,
                             "color": assets.colors.primary,
                         });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -363,7 +363,7 @@ export default new Command(
                         system.automod.swearFilter.keywordsSuper.splice(0, system.automod.swearFilter.keywordsSuper.length);
 
                         allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the severe swear filter.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the severe swear filter`,
                             "color": assets.colors.primary,
                         });
                     } else {
@@ -372,13 +372,13 @@ export default new Command(
                         list.forEach((w) => system.automod.swearFilter.keywordsSuper.filter((kw) => !system.automod.swearFilter.keywordsSuper.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the severe swear filter.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the severe swear filter`,
                             "color": assets.colors.primary,
                         });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the severe swear filter.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the severe swear filter`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -393,7 +393,7 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`#${channel.name}\`__ from the swear filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`#${channel.name}\`__ from the swear filter`,
                                 "color": assets.colors.primary,
                             });
                     } else {
@@ -401,13 +401,13 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`#${channel.name}\`__ to the swear filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`#${channel.name}\`__ to the swear filter`,
                                 "color": assets.colors.primary,
                             });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter channel permission.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter channel permission`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -422,7 +422,7 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`@${role.name}\`__ from the swear filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`@${role.name}\`__ from the swear filter`,
                                 "color": assets.colors.primary,
                             });
                     } else {
@@ -430,13 +430,13 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`@${role.name}\`__ to the swear filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`@${role.name}\`__ to the swear filter`,
                                 "color": assets.colors.primary,
                             });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter role permission.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter role permission`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -447,12 +447,12 @@ export default new Command(
                     system.automod.swearFilter.punishment === punishment;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set the punishment to \`${resolve.punishmentType(punishment)}\`__ for the swear filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set the punishment to \`${resolve.punishmentType(punishment)}\`__ for the swear filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter punishment.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter punishment`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -463,12 +463,12 @@ export default new Command(
                     system.automod.swearFilter.logs = logChannel.id;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the swear filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the swear filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter logging channel.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter logging channel`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -479,12 +479,12 @@ export default new Command(
                     system.automod.swearFilter.filterMode = filterMode;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(filterMode)}\`__ as the swear filter mode.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(filterMode)}\`__ as the swear filter mode`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter's filtering mode.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter's filtering mode`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -495,12 +495,12 @@ export default new Command(
                     system.automod.swearFilter.permFilterMode = permissionFilterMode;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(permissionFilterMode)}\`__ as the swear filter mode.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(permissionFilterMode)}\`__ as the swear filter mode`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter's role filtering mode.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter's role filtering mode`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -512,12 +512,12 @@ export default new Command(
                 if (update) {
                     if (interaction.replied) {
                         await interaction.followUp({
-                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}.`,
+                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}`,
                             "embeds": allEmbeds,
                         });
                     } else {
                         await interaction.reply({
-                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}.`,
+                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}`,
                             "embeds": allEmbeds,
                         });
                     };
@@ -551,12 +551,12 @@ export default new Command(
                     system.automod.inviteFilter.enabled = toggle;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the invite filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the invite filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the invite filter.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the invite filter`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -568,7 +568,7 @@ export default new Command(
                         system.automod.inviteFilter.keywords.splice(0, system.automod.inviteFilter.keywords.length);
 
                         allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the invite filter.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the invite filter`,
                             "color": assets.colors.primary,
                         });
                     } else {
@@ -577,13 +577,13 @@ export default new Command(
                         list.forEach((w) => system.automod.inviteFilter.keywords.filter((kw) => !system.automod.inviteFilter.keywords.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the invite filter.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the invite filter`,
                             "color": assets.colors.primary,
                         });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -598,7 +598,7 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`#${channel.name}\`__ from the invite filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`#${channel.name}\`__ from the invite filter`,
                                 "color": assets.colors.primary,
                             });
                     } else {
@@ -606,13 +606,13 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`#${channel.name}\`__ to the invite filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`#${channel.name}\`__ to the invite filter`,
                                 "color": assets.colors.primary,
                             });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter channel permission.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter channel permission`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -627,7 +627,7 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`@${role.name}\`__ from the invite filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`@${role.name}\`__ from the invite filter`,
                                 "color": assets.colors.primary,
                             });
                     } else {
@@ -635,13 +635,13 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`@${role.name}\`__ to the invite filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`@${role.name}\`__ to the invite filter`,
                                 "color": assets.colors.primary,
                             });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter role permission.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter role permission`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -652,12 +652,12 @@ export default new Command(
                     system.automod.inviteFilter.punishment === punishment;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set the punishment to \`${resolve.punishmentType(punishment)}\`__ for the invite filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set the punishment to \`${resolve.punishmentType(punishment)}\`__ for the invite filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter punishment.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter punishment`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -668,12 +668,12 @@ export default new Command(
                     system.automod.inviteFilter.logs = logChannel.id;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the invite filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the invite filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter logging channel.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter logging channel`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -684,12 +684,12 @@ export default new Command(
                     system.automod.inviteFilter.filterMode = filterMode;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(filterMode)}\`__ as the invite filter mode.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(filterMode)}\`__ as the invite filter mode`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter's filtering mode.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter's filtering mode`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -700,12 +700,12 @@ export default new Command(
                     system.automod.inviteFilter.permFilterMode = permissionFilterMode;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(permissionFilterMode)}\`__ as the invite filter mode.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(permissionFilterMode)}\`__ as the invite filter mode`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter's role filtering mode.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter's role filtering mode`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -717,12 +717,12 @@ export default new Command(
                 if (update) {
                     if (interaction.replied) {
                         await interaction.followUp({
-                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}.`,
+                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}`,
                             "embeds": allEmbeds,
                         });
                     } else {
                         await interaction.reply({
-                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}.`,
+                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}`,
                             "embeds": allEmbeds,
                         });
                     };
@@ -756,12 +756,12 @@ export default new Command(
                     system.automod.linkFilter.enabled = toggle;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the link filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the link filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the link filter.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the link filter`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -773,7 +773,7 @@ export default new Command(
                         system.automod.linkFilter.keywords.splice(0, system.automod.linkFilter.keywords.length);
 
                         allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the link filter.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the link filter`,
                             "color": assets.colors.primary,
                         });
                     } else {
@@ -782,13 +782,13 @@ export default new Command(
                         list.forEach((w) => system.automod.linkFilter.keywords.filter((kw) => !system.automod.linkFilter.keywords.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
 
                         allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the link filter.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the link filter`,
                             "color": assets.colors.primary,
                         });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -803,7 +803,7 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`#${channel.name}\`__ from the link filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`#${channel.name}\`__ from the link filter`,
                                 "color": assets.colors.primary,
                             });
                     } else {
@@ -811,13 +811,13 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`#${channel.name}\`__ to the link filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`#${channel.name}\`__ to the link filter`,
                                 "color": assets.colors.primary,
                             });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter channel permission.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter channel permission`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -832,7 +832,7 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`@${role.name}\`__ from the link filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __removed \`@${role.name}\`__ from the link filter`,
                                 "color": assets.colors.primary,
                             });
                     } else {
@@ -840,13 +840,13 @@ export default new Command(
 
                         allEmbeds.push(
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`@${role.name}\`__ to the link filter.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`@${role.name}\`__ to the link filter`,
                                 "color": assets.colors.primary,
                             });
                     };
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter role permission.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter role permission`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -857,12 +857,12 @@ export default new Command(
                     system.automod.linkFilter.punishment === punishment;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set the punishment to \`${resolve.punishmentType(punishment)}\`__ for the link filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set the punishment to \`${resolve.punishmentType(punishment)}\`__ for the link filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter punishment.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter punishment`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -873,12 +873,12 @@ export default new Command(
                     system.automod.linkFilter.logs = logChannel.id;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the link filter.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${logChannel.name}\`__ as the logging channel for the link filter`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter logging channel.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter logging channel`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -889,12 +889,12 @@ export default new Command(
                     system.automod.linkFilter.filterMode = filterMode;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(filterMode)}\`__ as the link filter mode.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(filterMode)}\`__ as the link filter mode`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter's filtering mode.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter's filtering mode`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -905,12 +905,12 @@ export default new Command(
                     system.automod.linkFilter.permFilterMode = permissionFilterMode;
 
                     allEmbeds.push({
-                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(permissionFilterMode)}\`__ as the link filter mode.`,
+                        "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`${resolve.filterMode(permissionFilterMode)}\`__ as the link filter mode`,
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
                     allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter's role filtering mode.`,
+                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter's role filtering mode`,
                         "color": assets.colors.secondary,
                     });
                 };
@@ -922,12 +922,12 @@ export default new Command(
                 if (update) {
                     if (interaction.replied) {
                         await interaction.followUp({
-                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}.`,
+                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}`,
                             "embeds": allEmbeds,
                         });
                     } else {
                         await interaction.reply({
-                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}.`,
+                            "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}`,
                             "embeds": allEmbeds,
                         });
                     };

@@ -29,7 +29,7 @@ export default {
                                     return;
                                 } else if (command.premium) {
                                     const system = await cache.fetch(interaction.guildId ?? '', bot.db);
-    
+
                                     if (system) {
                                         if (system.active) {
                                             await command.execute(interaction, bot.assets, interactionServer, bot.db);
@@ -44,14 +44,25 @@ export default {
                                 };
                             } catch (err) {
                                 console.error(err);
+
                                 if (interaction.replied || interaction.deferred) {
-                                    await interaction.followUp({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
+                                    await interaction.followUp({
+                                        "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
+                                        "flags": [
+                                            "Ephemeral",
+                                        ],
+                                    });
                                 } else {
-                                    await interaction.reply({ content: `${bot.assets.icons.xmark} There was an error while executing this command.`, ephemeral: true });
+                                    await interaction.reply({
+                                        "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
+                                        "flags": [
+                                            "Ephemeral",
+                                        ],
+                                    });
                                 };
                             } finally {
                                 const date = Math.floor(Date.now() / 1000);
-    
+
                                 await devWH.send({
                                     "avatarURL": interaction.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 128 }),
                                     "content": "",
@@ -77,29 +88,31 @@ export default {
                                     ],
                                 });
                             };
-    
+
                             return;
                         } else if (!command) {
+                            console.error(`Command ${interaction.commandName} not found`);
                             await fetch.commandErrorResponse(interaction, bot.assets);
                         } else if (!interactionServer) {
+                            console.error(`Interaction ${interaction.id} not found in database`);
                             await fetch.databaseErrorResponse(interaction, bot.assets);
                         } else {
                             if (interaction.replied || interaction.deferred) {
                                 await interaction.followUp({
-                                    "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
+                                    "content": `${bot.assets.icons.xmark} There was an error while executing this command`,
                                     "flags": [
                                         "Ephemeral",
                                     ],
                                 });
                             } else {
                                 await interaction.reply({
-                                    "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
+                                    "content": `${bot.assets.icons.xmark} There was an error while executing this command`,
                                     "flags": [
                                         "Ephemeral",
                                     ],
                                 });
                             };
-    
+
                             return;
                         };
                     };
@@ -113,6 +126,7 @@ export default {
                 return;
             };
         } else {
+            console.error(`Bot is offline`);
             return;
         };
     },

@@ -39,7 +39,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} Message sent.`,
+                        "description": `${assets.icons.check} Message sent`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -64,7 +64,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} Message sent in ${channel}.`,
+                        "description": `${assets.icons.check} Message sent in ${channel}`,
                         "color": assets.colors.primary,
                     },
                 ],

@@ -75,32 +75,32 @@ export default {
             switch (level) {
                 case ModeratorActionType.Warn:
                     //warn
-                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} warned.`);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} warned`);
                     break;
 
                 case ModeratorActionType.Mute:
                     //mute
-                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} muted.`);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} muted`);
                     break;
 
                 case ModeratorActionType.Timeout:
                     await timeout(message.member, reason);
-                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} timed out.`);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} timed out`);
                     break;
 
                 case ModeratorActionType.Blacklist:
                     //blacklist
-                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} blacklisted.`);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} blacklisted`);
                     break;
 
                 case ModeratorActionType.Softban:
                     await softban(message.member, reason);
-                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} soft-banned.`);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} soft-banned`);
                     break;
 
                 case ModeratorActionType.Ban:
                     await ban(message.member, reason);
-                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} banned.`);
+                    console.debug(`${message.guild?.name} • Priority II Auto-moderator Author ${message.author?.id} of message ${message.id} banned`);
                     break;
 
                 default:

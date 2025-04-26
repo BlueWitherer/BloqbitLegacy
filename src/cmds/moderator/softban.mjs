@@ -23,7 +23,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} You cannot softban another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot softban another moderator`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -40,7 +40,7 @@ export default new Command(
             await interaction.guild?.members?.unban(User?.id, `${interaction.user?.username} Softban - ${banreason}`);
         }).catch(async (err) => {
             await interaction.reply({
-                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
                 "flags": [
                     "Ephemeral",
                 ],
@@ -87,7 +87,7 @@ export default new Command(
                             "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.noentry} Soft-banned`,
-                        "description": `You were __soft-banned__ from **${interaction.guild?.name}**.`,
+                        "description": `You were __soft-banned__ from **${interaction.guild?.name}**`,
                         "color": assets.colors.primary,
                         "fields": [
                             {

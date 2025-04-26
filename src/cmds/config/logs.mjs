@@ -156,7 +156,7 @@ export default new Command(
                 system.logs.enabled = toggle;
 
                 allEmbeds.push({
-                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ logs.`,
+                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ logs`,
                     "color": assets.colors.primary,
                 });
             };
@@ -165,7 +165,7 @@ export default new Command(
                 system.logs.channel = channel.id;
 
                 allEmbeds.push({
-                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${channel.name}\`__ as the logging channel.`,
+                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${channel.name}\`__ as the logging channel`,
                     "color": assets.colors.primary,
                 });
             };
@@ -174,7 +174,7 @@ export default new Command(
                 system.logs.webhookEnabled = toggle;
 
                 allEmbeds.push({
-                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(webhook)}__ use of the webhook for logs.`,
+                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(webhook)}__ use of the webhook for logs`,
                     "color": assets.colors.primary,
                 });
             };
@@ -184,12 +184,12 @@ export default new Command(
             if (update) {
                 if (interaction.replied) {
                     await interaction.followUp({
-                        "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}.`,
+                        "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}`,
                         "embeds": allEmbeds,
                     });
                 } else {
                     await interaction.reply({
-                        "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}.`,
+                        "content": `> -# ${assets.icons.check} Configured **${allEmbeds.length}** ${resolve.isPlural(allEmbeds.length, "setting", "settings")}`,
                         "embeds": allEmbeds,
                     });
                 };
@@ -221,7 +221,7 @@ export default new Command(
                         "content": "",
                         "embeds": [
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ logs for action type \`${action}\`.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ logs for action type \`${action}\``,
                                 "color": assets.colors.primary,
                             },
                         ],
@@ -231,7 +231,7 @@ export default new Command(
                         "content": "",
                         "embeds": [
                             {
-                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ logs for action type \`${action}\`.`,
+                                "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ logs for action type \`${action}\``,
                                 "color": assets.colors.primary,
                             },
                         ],

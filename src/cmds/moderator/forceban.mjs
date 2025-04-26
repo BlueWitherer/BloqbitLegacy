@@ -29,7 +29,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} You cannot ban another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot ban another moderator`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -77,7 +77,7 @@ export default new Command(
             });
         } catch (err) {
             await interaction.reply({
-                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - Invalid ID.`,
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - Invalid ID`,
                 "flags": [
                     "Ephemeral",
                 ],

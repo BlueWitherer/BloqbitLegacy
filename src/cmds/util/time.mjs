@@ -48,7 +48,7 @@ export default new Command(
                             },
                         ],
                         "footer": {
-                            "text": `The unix timestamp will automatically show up as your timezone's.`,
+                            "text": `The unix timestamp will automatically show up as your timezone's`,
                         },
                     },
                 ],
@@ -84,7 +84,7 @@ export default new Command(
                             },
                         ],
                         "footer": {
-                            "text": `The unix timestamp will automatically show up as your timezone's.`,
+                            "text": `The unix timestamp will automatically show up as your timezone's`,
                         },
                     },
                 ],

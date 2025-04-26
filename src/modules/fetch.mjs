@@ -3,7 +3,7 @@ import cacheModule from '../cache.mjs';
 import { SaveDataClient, Config, BloqbitClient } from '../classes.mjs';
 
 import Discord from 'discord.js';
-import Mongo from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 import SysAssets from '../assets.json' with { type: 'json' };
 
@@ -54,7 +54,7 @@ export default {
             try {
                 if (interaction.type === Discord.InteractionType.ApplicationCommand) {
                     await interaction.reply({
-                        "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
+                        "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
                         "flags": [
                             "Ephemeral",
                         ],
@@ -111,7 +111,7 @@ export default {
                         "embeds": [
                             {
                                 "title": `${assets.icons.xmark} Server not registered`,
-                                "description": `Due to an internal error, this server has not yet been registered in our database. You can fix this by using \`/reload\`.`,
+                                "description": `Due to an internal error, this server has not yet been registered in our database. You can fix this by using \`/reload\``,
                                 "color": assets.colors.secondary,
                             },
                         ],
@@ -150,7 +150,7 @@ export default {
                         "embeds": [
                             {
                                 "title": `${assets.icons.xmark} Server not Sponsored`,
-                                "description": `This is a sponsors-only command, the server owner must be a sponsor of Bloqbit for anyone to use this.`,
+                                "description": `This is a sponsors-only command, the server owner must be a sponsor of Bloqbit for anyone to use this`,
                                 "color": assets.colors.secondary,
                             },
                         ],
@@ -190,7 +190,7 @@ export default {
                             "embeds": [
                                 {
                                     "title": `${assets.icons.xmark} Command Error`,
-                                    "description": `Due to an internal error, this command could not be fetched, or has not been properly executed. We apologize.`,
+                                    "description": `Due to an internal error, this command could not be fetched, or has not been properly executed. We apologize`,
                                     "color": assets.colors.secondary,
                                 },
                             ],
@@ -203,7 +203,7 @@ export default {
                             "embeds": [
                                 {
                                     "title": `${assets.icons.xmark} Command Error`,
-                                    "description": `Due to an internal error, this command could not be fetched, or has not been properly executed. We apologize.`,
+                                    "description": `Due to an internal error, this command could not be fetched, or has not been properly executed. We apologize`,
                                     "color": assets.colors.secondary,
                                 },
                             ],
@@ -219,100 +219,6 @@ export default {
             };
         } else {
             return;
-        };
-    },
-
-    /**
-     * Registers a server to the system's database and/or cache
-     * 
-     * @param {SaveDataClient} db Class of the bot's database
-     * @param {string} server ID of the server
-     * 
-     * @returns {Promise<Config | void>} SaveDataClient operation
-     */
-    reviseGuild: async (db, server) => {
-        if (server) {
-            try {
-                console.log(`Step 1 Initializing entry scan for ${server}`);
-
-                /**
-                 * 
-                 * @param {string} server 
-                 * @param {SaveDataClient} db
-                 * 
-                 * @returns {Promise<Config | null>}
-                 */
-                const check = async (server, db) => {
-                    let result = null;
-
-                    const guild = await cacheModule.fetch(server, db);
-
-                    if (guild) {
-                        result = guild;
-                    };
-
-                    return result;
-                };
-
-                let thisGuild = await check(server, db);
-
-                console.log(`Step 2 Check if server exists in cache.`);
-
-                if (thisGuild) {
-                    console.log(`Step 3 Server exists in cache, data object preserved.`);
-                    console.debug(`Server ${thisGuild.server} found!`);
-                } else {
-                    try {
-                        console.log(`Step 3 Server doesn't exist in cache, creating new save data object.`);
-                        console.debug(`Connecting to database...`);
-
-                        const dbClient = new Mongo.MongoClient(db.mongo_uri);
-
-                        const database = dbClient.db("Bloqbit");
-                        const collection = database.collection("servers");
-
-                        const foundServer = await collection.findOne({ server: server });
-
-                        console.debug(`Checking if save data for server ${server} exists...`);
-
-                        console.log(`Step 4 Check if server exists in database.`);
-                        if (foundServer) {
-                            console.log(`Step 5 Server exists in database, copying save data.`);
-                            console.debug(`Data for server ${server} exists, duplicating save...`);
-
-                            const { _id, ...conf } = foundServer;
-
-                            thisGuild = new Config(conf);
-
-                            console.debug(`Data successfully saved.`);
-                        } else {
-                            console.log(`Step 5 Server doesn't exist in database, creating new save.`);
-                            console.debug(`Data for server ${server} does not exist, assigning new default settings...`);
-
-                            const defaultSettings = new Config({});
-                            defaultSettings.server = server;
-
-                            thisGuild = defaultSettings;
-                            await collection.insertOne(thisGuild);
-
-                            console.debug(`Data successfully saved.`);
-                        };
-                    } catch (err) {
-                        console.error(err);
-                    };
-
-                    console.log(`Step 6 Updating cache.`);
-
-                    // @ts-ignore
-                    const final = await cacheModule.update(thisGuild, db);
-                    return final;
-                };
-            } catch (err) {
-                console.error(err);
-                return new Config();
-            };
-        } else {
-            return new Config();
         };
     },
 

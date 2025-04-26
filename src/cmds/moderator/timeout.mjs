@@ -51,7 +51,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} You cannot moderate another moderator.`,
+                            "description": `${assets.icons.xmark} You cannot moderate another moderator`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -101,7 +101,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} Timeout cannot be set to over 4 weeks.`,
+                            "description": `${assets.icons.xmark} Timeout cannot be set to over 4 weeks`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -156,7 +156,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} Unable to timeout the user. Invalid member type.`,
+                            "description": `${assets.icons.xmark} Unable to timeout the user. Invalid member type`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -175,7 +175,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} You cannot moderate another moderator.`,
+                            "description": `${assets.icons.xmark} You cannot moderate another moderator`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -186,7 +186,7 @@ export default new Command(
             };
 
             if (Member instanceof GuildMember) {
-                await Member.timeout(0, `${interaction.user?.username} Timeout removed.`);
+                await Member.timeout(0, `${interaction.user?.username} Timeout removed`);
 
                 await interaction.reply({
                     "content": "",
@@ -218,7 +218,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} Unable to remove timeout. Invalid member type.`,
+                            "description": `${assets.icons.xmark} Unable to remove timeout. Invalid member type`,
                             "color": assets.colors.primary,
                         },
                     ],

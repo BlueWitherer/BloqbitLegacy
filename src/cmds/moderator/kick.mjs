@@ -29,7 +29,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} You cannot kick another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot kick another moderator`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -41,7 +41,7 @@ export default new Command(
 
         if (User) await interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${kickreason}`).catch(async (err) => {
             await interaction.reply({
-                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred.`,
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
                 "flags": [
                     "Ephemeral",
                 ],
@@ -88,7 +88,7 @@ export default new Command(
                             "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.noentry} Kicked`,
-                        "description": `You were __kicked__ from **${interaction.guild?.name}**.`,
+                        "description": `You were __kicked__ from **${interaction.guild?.name}**`,
                         "color": assets.colors.primary,
                         "fields": [
                             {

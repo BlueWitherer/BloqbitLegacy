@@ -42,7 +42,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.xmark} You cannot moderate another moderator.`,
+                        "description": `${assets.icons.xmark} You cannot moderate another moderator`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -103,7 +103,7 @@ export default new Command(
                             "icon_url": `${user.displayAvatarURL({ "forceStatic": false, size: 64 })}`
                         },
                         "title": `${assets.icons.exclamation} Username Blocked`,
-                        "description": `Content in your nickname has been viewed by our moderators as rule-breaking and have blocked it. Please abide by our [rules](https://discord.com/channels/460081436637134859/460082070673424386/882029054033793025) to keep CS a safe and friendly environment for our users.`,
+                        "description": `Content in your nickname has been viewed by our moderators as rule-breaking and have blocked it. Please abide by our [rules](https://discord.com/channels/460081436637134859/460082070673424386/882029054033793025) to keep CS a safe and friendly environment for our users`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
@@ -221,7 +221,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} Set **${user?.username}**'s nickname.`,
+                        "description": `${assets.icons.check} Set **${user?.username}**'s nickname`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -242,7 +242,7 @@ export default new Command(
                 "content": "",
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} Reset **${user?.username}**'s nickname.`,
+                        "description": `${assets.icons.check} Reset **${user?.username}**'s nickname`,
                         "color": assets.colors.primary,
                     },
                 ],
