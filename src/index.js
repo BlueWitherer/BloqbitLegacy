@@ -29,13 +29,6 @@ export default class Bot {
 
         // @ts-ignore
         botModel.client?.on(Events.ClientReady, async (client) => {
-            if (botModel.online) {
-                console.warn(`Client ${client.user?.username} is already online, resetting boolean...`);
-                botModel.online = false;
-            } else {
-                console.info(`Client ${client.user?.username} is starting up...`);
-            };
-
             client.user?.setPresence({
                 "activities": [
                     {
@@ -238,13 +231,6 @@ export default class Bot {
         });
 
         botModel.clientGil?.on("ready", async () => {
-            if (botModel.online) {
-                console.warn(`Guilded client ${botModel.clientGil?.user?.name} is already online, resetting boolean...`);
-                botModel.online = false;
-            } else {
-                console.info(`Guilded client ${botModel.clientGil?.user?.name} is starting up...`);
-            };
-
             console.info(`Guilded client ${botModel.clientGil?.user?.name} now online`);
 
             if (testMode) botModel.clientGil?.disconnect();
@@ -264,7 +250,6 @@ export default class Bot {
 
                 process.exit(0);
             } else {
-                botModel.online = true;
                 console.info("Bloqbit is ready!");
             };
         };

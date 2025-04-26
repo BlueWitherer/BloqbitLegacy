@@ -14,12 +14,6 @@ import { Command } from '../classes.mjs';
  */
 export default class BloqbitClient {
     /**
-     * If the bot is done loading and is fully online
-     * @type {boolean}
-     */
-    online = false;
-
-    /**
      * Discord bot token
      * @type {string}
      */
@@ -94,8 +88,6 @@ export default class BloqbitClient {
      * @param {string} gil Guilded bot token
      */
     constructor(token, secret, web, data, gil) {
-        this.online = false;
-
         this.token = token;
         this.secret = secret;
 
