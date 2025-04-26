@@ -12,6 +12,14 @@ process.on('warning', (warning) => {
     console.warn('Warning detected:', warning.name, warning.message, warning.stack);
 });
 
+if (global.gc) {
+    global.gc();
+
+    console.debug('Garbage collection triggered manually');
+} else {
+    console.warn('Garbage collection is not exposed. Use --expose-gc to enable it.');
+};
+
 console.log('Starting up system...');
 
 import http from 'http';

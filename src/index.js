@@ -226,6 +226,7 @@ export default class Bot {
                 });
 
                 console.info(`Client ${client.user?.displayName} now online`);
+                console.info("");
             };
         });
 
@@ -250,7 +251,6 @@ export default class Bot {
                 process.exit(0);
             } else {
                 console.info("Bloqbit is ready!");
-                console.info("");
             };
         };
 
