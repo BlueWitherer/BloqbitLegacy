@@ -65,6 +65,7 @@ export default class Bot {
                             console.debug(`Loaded command /${command.data.name}`);
                         } catch (err) {
                             console.error(err);
+                            console.trace(err);
                             if (testMode) process.exit(1);
                         };
                     };
@@ -83,11 +84,13 @@ export default class Bot {
                         console.info(`Successfully reloaded ${data.length} application (/) commands`);
                     } catch (err) {
                         console.error(err);
+                        console.trace(err);
                         if (testMode) process.exit(1);
                     };
                 })();
             } catch (err) {
                 console.error(err);
+                console.trace(err);
                 process.exit(1);
             };
 
@@ -111,11 +114,13 @@ export default class Bot {
                         console.debug(`Log event loaded for ${logEvent.event.toString()}`);
                     } catch (err) {
                         console.error(err);
+                        console.trace(err);
                         if (testMode) process.exit(1);
                     };
                 };
             } catch (err) {
                 console.error(err);
+                console.trace(err);
                 process.exit(1);
             };
 
@@ -134,6 +139,7 @@ export default class Bot {
                                     return await event.execute(botModel, ...args);
                                 } catch (err) {
                                     console.error(err);
+                                    console.trace(err);
                                     if (testMode) process.exit(1);
                                 };
                             });
@@ -143,6 +149,7 @@ export default class Bot {
                                     return await event.execute(botModel, ...args);
                                 } catch (err) {
                                     console.error(err);
+                                    console.trace(err);
                                     if (testMode) process.exit(1);
                                 };
                             });
@@ -151,11 +158,13 @@ export default class Bot {
                         console.debug(`Loaded event listener for ${event.name}`);
                     } catch (err) {
                         console.error(err);
+                        console.trace(err);
                         if (testMode) process.exit(1);
                     };
                 };
             } catch (err) {
                 console.error(err);
+                console.trace(err);
                 process.exit(1);
             };
 
@@ -182,6 +191,7 @@ export default class Bot {
                 console.debug("Handlers successfully started");
             } catch (err) {
                 console.error(err);
+                console.trace(err);
                 if (testMode) process.exit(1);
             };
 
@@ -234,6 +244,7 @@ export default class Bot {
             await botModel.client?.login(botModel.token);
         } catch (err) {
             console.error(err);
+            console.trace(err);
             if (testMode) process.exit(1);
         };
 
