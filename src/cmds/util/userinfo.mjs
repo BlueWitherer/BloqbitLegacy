@@ -155,8 +155,8 @@ export default new Command(
                 return;
             };
         } else {
-            const joinedAtU = interaction.member instanceof GuildMember && interaction.member.joinedTimestamp
-                ? Math.floor(interaction.member.joinedTimestamp / 1000)
+            const joinedAtU = interaction.member instanceof GuildMember && interaction.member?.joinedTimestamp
+                ? Math.floor(interaction.member?.joinedTimestamp / 1000)
                 : null;
             const createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
 
@@ -200,9 +200,9 @@ export default new Command(
                                 "inline": true,
                             },
                             {
-                                "name": `Roles [${Array.isArray(interaction.member?.roles) ? interaction.member.roles.length : interaction.member?.roles?.cache?.size}]`,
+                                "name": `Roles [${Array.isArray(interaction.member?.roles) ? interaction.member?.roles.length : interaction.member?.roles?.cache?.size}]`,
                                 "value": `${Array.isArray(interaction.member?.roles)
-                                    ? interaction.member.roles.join(' | ')
+                                    ? interaction.member?.roles.join(' | ')
                                     : interaction.member?.roles?.cache?.filter((/** @type { Role } */ r) => r.id !== interaction.guild?.id).map((/** @type {Role} */ r) => `${r}`).join(' | ')
                                     }`,
                                 "inline": false,

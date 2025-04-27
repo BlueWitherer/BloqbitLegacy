@@ -107,6 +107,7 @@ export default class BloqbitClient {
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.MessageContent,
                 GatewayIntentBits.DirectMessages,
+                GatewayIntentBits.AutoModerationExecution,
             ],
             partials: [
                 Partials.Channel,
