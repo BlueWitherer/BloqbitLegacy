@@ -2,7 +2,7 @@ import { Events, Message, EmbedBuilder } from "discord.js";
 
 import { BloqbitClient, LogEvent } from "../../classes.js";
 
-import fetch from "../../modules/fetch.mjs";
+import fetch from "../../modules/fetch.js";
 
 export default new LogEvent(
     Events.MessageUpdate,
@@ -29,7 +29,7 @@ export default new LogEvent(
                             "iconURL": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.info} Message Edited`,
-                        "color": bot.assets.colors.terciary,
+                        "color": bot.assets.colors.tertiary,
                         "fields": [
                             {
                                 "name": "Before",

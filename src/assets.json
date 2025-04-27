@@ -24,11 +24,11 @@
     "colors": {
         "primary": 41983,
         "secondary": 16711680,
-        "terciary": 126,
+        "tertiary": 126,
         "strings": {
             "primary": "#00A3FF",
             "secondary": "#FAFAFA",
-            "terciary": "#00007E"
+            "tertiary": "#00007E"
         }
     },
     "social": {

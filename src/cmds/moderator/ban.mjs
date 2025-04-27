@@ -129,7 +129,7 @@ export default new Command(
                                     "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
                                 },
                                 "description": `**${interaction.user?.username}** has taken a moderation action on \`${User?.username}\``,
-                                "color": assets.colors.terciary,
+                                "color": assets.colors.tertiary,
                                 "fields": [
                                     {
                                         "name": "Type",

@@ -2,8 +2,8 @@ import { MessageFilterMode, ModeratorActionType, Command } from '../../classes.j
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
-import fetch from '../../modules/fetch.mjs';
-import resolve from '../../modules/resolve.mjs';
+import fetch from '../../modules/fetch.js';
+import resolve from '../../modules/resolve.js';
 import cache from '../../cache.mjs';
 
 export default new Command(

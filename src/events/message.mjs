@@ -29,7 +29,7 @@ export default {
                                 "author": {
                                     "name": "Direct Message",
                                 },
-                                "color": bot.assets.colors.terciary,
+                                "color": bot.assets.colors.tertiary,
                                 "description": msg.content,
                                 "fields": [
                                     {

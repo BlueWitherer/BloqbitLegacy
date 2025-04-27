@@ -1,7 +1,10 @@
 import { Message, Client, Events } from 'discord.js';
-import cache from '../../cache.mjs';
-import moderation from '../../modules/moderation.mjs';
+
 import { Config, SaveDataClient } from '../../classes.js';
+
+import cache from '../../cache.mjs';
+
+import moderation from '../../modules/moderation.js';
 
 class MessageHandler {
     /**

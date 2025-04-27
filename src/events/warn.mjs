@@ -1,4 +1,5 @@
 import { BloqbitClient } from '../classes.js';
+
 import { Events, WebhookClient } from 'discord.js';
 
 export default {
@@ -26,7 +27,7 @@ export default {
                             "name": `Warning`,
                         },
                         "description": `\`\`\`\n${message}\n\`\`\``,
-                        "color": bot.assets.colors.terciary,
+                        "color": bot.assets.colors.tertiary,
                         "fields": [
                             {
                                 "name": "Time of Warning",

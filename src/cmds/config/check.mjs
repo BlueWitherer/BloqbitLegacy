@@ -2,8 +2,8 @@ import { Command, MessageFilterClass } from '../../classes.js';
 import { ApplicationIntegrationType, EmbedBuilder, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import fetch from '../../modules/fetch.mjs';
-import resolve from '../../modules/resolve.mjs';
+import fetch from '../../modules/fetch.js';
+import resolve from '../../modules/resolve.js';
 
 export default new Command(
     new SlashCommandBuilder()
@@ -163,108 +163,28 @@ export default new Command(
                 .setColor(assets.colors.primary)
                 .setFields([
                     {
-                        "name": "Bloqbit Auto-moderator",
-                        "value": `**${resolve.abled(system.logs.actions.autoMod, true)}**`, // General
+                        "name": "General",
+                        "value": `**Bloqbit Auto-moderator** ${resolve.abled(system.logs.actions.autoMod, true)}\n**Moderator Actions** ${resolve.abled(system.logs.actions.moderator, true)}\n**Server Updated** ${resolve.abled(system.logs.actions.serverUpd, true)}\n**Server Invites** ${resolve.abled(system.logs.actions.invites, true)}`, // General
                         "inline": true,
                     },
                     {
-                        "name": "Moderator actions",
-                        "value": `**${resolve.abled(system.logs.actions.moderator, true)}**`,
+                        "name": "Members",
+                        "value": `**Member join** ${resolve.abled(system.logs.actions.join, true)}\n**Member left** ${resolve.abled(system.logs.actions.leave, true)}\n**Member timed out** ${resolve.abled(system.logs.actions.timeout, true)}\n**Member banned** ${resolve.abled(system.logs.actions.ban, true)}\n**Member nickname updated** ${resolve.abled(system.logs.actions.nickname, true)}\n`, // Members
                         "inline": true,
                     },
                     {
-                        "name": "Server invites",
-                        "value": `**${resolve.abled(system.logs.actions.invites, true)}**`,
+                        "name": "Messages",
+                        "value": `**Message deleted** ${resolve.abled(system.logs.actions.msgDel, true)}\n**Message edited** ${resolve.abled(system.logs.actions.msgUpd, true)}\n**Message pinned** ${resolve.abled(system.logs.actions.msgPin, true)}\n**Messages bulk deleted** ${resolve.abled(system.logs.actions.msgBulkDel, true)}\n**All reactions removed** ${resolve.abled(system.logs.actions.remAllReact, true)}`, // Messages
                         "inline": true,
                     },
                     {
-                        "name": "Member joins",
-                        "value": `**${resolve.abled(system.logs.actions.join, true)}**`, // Members
-                        "inline": true,
-                    },
-                    {
-                        "name": "Member leaves",
-                        "value": `**${resolve.abled(system.logs.actions.leave, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Member timed out",
-                        "value": `**${resolve.abled(system.logs.actions.timeout, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Member banned",
-                        "value": `**${resolve.abled(system.logs.actions.ban, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Member nickname updated",
-                        "value": `**${resolve.abled(system.logs.actions.nickname, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Message deleted",
-                        "value": `**${resolve.abled(system.logs.actions.msgDel, true)}**`, // Messages
-                        "inline": true,
-                    },
-                    {
-                        "name": "Message edited",
-                        "value": `**${resolve.abled(system.logs.actions.msgUpd, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Message pinned",
-                        "value": `**${resolve.abled(system.logs.actions.msgPin, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Messages bulk deleted",
-                        "value": `**${resolve.abled(system.logs.actions.msgBulkDel, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "All reactions removed from message",
-                        "value": `**${resolve.abled(system.logs.actions.remAllReact, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Role created",
-                        "value": `**${resolve.abled(system.logs.actions.rolesAdd, true)}**`, // Roles
-                        "inline": true,
-                    },
-                    {
-                        "name": "Role updated",
-                        "value": `**${resolve.abled(system.logs.actions.rolesUpd, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Role deleted",
-                        "value": `**${resolve.abled(system.logs.actions.rolesRem, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Role assigned",
-                        "value": `**${resolve.abled(system.logs.actions.rolesAssign, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Role taken",
-                        "value": `**${resolve.abled(system.logs.actions.rolesUnassign, true)}**`,
+                        "name": "Roles",
+                        "value": `**Role created** ${resolve.abled(system.logs.actions.rolesAdd, true)}\n**Role updated** ${resolve.abled(system.logs.actions.rolesUpd, true)}\n**Role deleted** ${resolve.abled(system.logs.actions.rolesRem, true)}\n**Role given** ${resolve.abled(system.logs.actions.rolesAssign, true)}\n**Role taken** ${resolve.abled(system.logs.actions.rolesUnassign, true)}`, // Roles
                         "inline": true,
                     },
                     {
                         "name": "Channel created",
-                        "value": `**${resolve.abled(system.logs.actions.channelAdd, true)}**`, // Channels
-                        "inline": true,
-                    },
-                    {
-                        "name": "Channel updated",
-                        "value": `**${resolve.abled(system.logs.actions.channelUpd, true)}**`,
-                        "inline": true,
-                    },
-                    {
-                        "name": "Channel deleted",
-                        "value": `**${resolve.abled(system.logs.actions.channelDel, true)}**`,
+                        "value": `**Channel created** ${resolve.abled(system.logs.actions.channelAdd, true)}\n**Channel updated** ${resolve.abled(system.logs.actions.channelUpd, true)}\n**Channel deleted** ${resolve.abled(system.logs.actions.channelDel, true)}`, // Channels
                         "inline": true,
                     },
                 ]).data;

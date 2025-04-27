@@ -2,7 +2,7 @@ import { Events, EmbedBuilder } from "discord.js";
 
 import { BloqbitClient, LogEvent } from "../../classes.js";
 
-import fetch from "../../modules/fetch.mjs";
+import fetch from "../../modules/fetch.js";
 
 export default new LogEvent(
     Events.ChannelCreate,

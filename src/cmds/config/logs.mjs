@@ -2,8 +2,8 @@ import { ServerLogEventType, Command } from '../../classes.js';
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import fetch from '../../modules/fetch.mjs';
-import resolve from '../../modules/resolve.mjs';
+import fetch from '../../modules/fetch.js';
+import resolve from '../../modules/resolve.js';
 import cache from '../../cache.mjs';
 
 export default new Command(
@@ -43,6 +43,10 @@ export default new Command(
                     {
                         name: "Moderator actions",
                         value: ServerLogEventType.Moderator,
+                    },
+                    {
+                        name: "Server updated",
+                        value: ServerLogEventType.ServerUpdate,
                     },
                     {
                         name: "Server invites",
@@ -212,6 +216,10 @@ export default new Command(
 
                 case ServerLogEventType.Moderator:
                     system.logs.actions.moderator = toggle;
+                    break;
+
+                case ServerLogEventType.ServerUpdate:
+                    system.logs.actions.serverUpd = toggle;
                     break;
 
                 case ServerLogEventType.ServerInvites:

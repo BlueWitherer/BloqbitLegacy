@@ -1,7 +1,10 @@
 import { BloqbitClient } from '../classes.js';
+
 import { Events, WebhookClient } from 'discord.js';
-import fetch from '../modules/fetch.mjs';
+
 import cache from '../cache.mjs';
+
+import fetch from '../modules/fetch.js';
 
 export default {
     name: Events.InteractionCreate,
@@ -69,7 +72,7 @@ export default {
                                     "author": {
                                         "name": "Interaction",
                                     },
-                                    "color": bot.assets.colors.terciary,
+                                    "color": bot.assets.colors.tertiary,
                                     "description": `Used **/${interaction.commandName}** in guild __${interaction.guild?.name}__`,
                                     "fields": [
                                         {

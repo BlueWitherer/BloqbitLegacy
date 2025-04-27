@@ -2,7 +2,7 @@ import { Events, EmbedBuilder, GuildMember, VoiceState } from "discord.js";
 
 import { BloqbitClient, LogEvent } from "../../classes.js";
 
-import fetch from "../../modules/fetch.mjs";
+import fetch from "../../modules/fetch.js";
 
 export default new LogEvent(
     Events.VoiceStateUpdate,
@@ -82,8 +82,8 @@ export default new LogEvent(
                             "name": `${newState.member?.user?.username}`,
                             "icon_url": `${newState.member?.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.plus} User Moved To Voice Channel`,
-                        "color": bot.assets.colors.primary,
+                        "title": `${bot.assets.icons.info} User Moved To Voice Channel`,
+                        "color": bot.assets.colors.tertiary,
                         "fields": [
                             {
                                 "name": "User",

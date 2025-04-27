@@ -4,6 +4,7 @@
 enum ServerLogEventType {
     AutoModerator = "autoMod",
     Moderator = "moderator",
+    ServerUpdate = "serverUpd",
     ServerInvites = "invites",
     MemberJoin = "join",
     MemberLeave = "leave",
