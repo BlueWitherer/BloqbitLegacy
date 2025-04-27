@@ -20,7 +20,7 @@ if (global.gc) {
     console.warn('Garbage collection is not exposed. Use --expose-gc to enable it.');
 };
 
-console.log('Starting up system...');
+console.log('Starting system...');
 
 import http from 'http';
 import dotenv from 'dotenv';
@@ -36,7 +36,7 @@ const start = async () => {
         process.env.MAIN_SECRET || (() => { throw new Error('MAIN_SECRET is not defined'); })(),
         process.env.MAIN_LOG_WH || (() => { throw new Error('MAIN_LOG_WH is not defined'); })(),
         process.env.MONGO_URI || (() => { throw new Error('MONGO_URI is not defined'); })(),
-        process.env.MAIN_GUILDED_TOKEN || (() => { throw new Error('MAIN_GUILDED_TOKEN is not defined'); })()
+        process.env.MAIN_GUILDED_TOKEN || "",
     );
 
     const PORT = parseInt(process.env.PORT || '3000');

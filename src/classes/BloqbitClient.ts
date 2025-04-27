@@ -8,9 +8,8 @@ import { REST } from '@discordjs/rest';
 import * as Guilded from 'guilded.js';
 
 import { Command } from '../classes.js';
-import resolve from '../modules/resolve.mjs';
 
-const parsedSysAssets = resolve.parseJson(resolve.stringJson(SysAssets));
+const parsedSysAssets = JSON.parse(JSON.stringify(SysAssets));
 
 /**
  * @class Bot model.
@@ -78,7 +77,7 @@ export default class BloqbitClient {
      * @param data MongoDB database URI
      * @param gil Guilded bot token
      */
-    constructor(token: string, secret: string, web: string, data: string, gil: string) {
+    constructor(token: string, secret: string, web: string, data: string, gil: string = "") {
         this.token = token;
         this.secret = secret;
 
@@ -122,27 +121,32 @@ export default class BloqbitClient {
 
         this.tokenGil = gil;
 
-        this.clientGil = new Guilded.Client({
-            token: gil,
-            cache: {
-                cacheCalendars: true,
-                cacheCalendarsRsvps: true,
-                cacheChannels: true,
-                cacheForumTopics: true,
-                cacheMemberBans: true,
-                cacheMessageReactions: true,
-                cacheMessages: true,
-                cacheServers: true,
-                cacheSocialLinks: true,
-                cacheWebhooks: true,
-                fetchMessageAuthorOnCreate: true,
-                removeCalendarRsvpOnDelete: true,
-                removeCalendarsOnDelete: true,
-                removeChannelOnDelete: true,
-                removeMemberBanOnUnban: true,
-                removeMemberOnLeave: true,
-            },
-        });
+        if (gil) {
+            this.clientGil = new Guilded.Client({
+                token: gil,
+                cache: {
+                    cacheCalendars: true,
+                    cacheCalendarsRsvps: true,
+                    cacheChannels: true,
+                    cacheForumTopics: true,
+                    cacheMemberBans: true,
+                    cacheMessageReactions: true,
+                    cacheMessages: true,
+                    cacheServers: true,
+                    cacheSocialLinks: true,
+                    cacheWebhooks: true,
+                    fetchMessageAuthorOnCreate: true,
+                    removeCalendarRsvpOnDelete: true,
+                    removeCalendarsOnDelete: true,
+                    removeChannelOnDelete: true,
+                    removeMemberBanOnUnban: true,
+                    removeMemberOnLeave: true,
+                },
+            });
+        } else {
+            console.warn('Guilded token not provided. Guilded client will not be initialized.');
+            this.clientGil = {} as Guilded.Client;
+        };
 
         this.rest.setToken(this.token);
     };

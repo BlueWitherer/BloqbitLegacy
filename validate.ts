@@ -12,11 +12,11 @@ const start = async () => {
     const Bot = (await import('./src/index.js')).default;
 
     const botModel = new BloqbitClient(
-        process.env.TEST_TOKEN ?? (() => { throw new Error('TEST_TOKEN is not defined'); })(),
-        process.env.TEST_SECRET ?? (() => { throw new Error('TEST_SECRET is not defined'); })(),
-        process.env.TEST_LOG_WH ?? (() => { throw new Error('TEST_LOG_WH is not defined'); })(),
-        process.env.MONGO_URI ?? (() => { throw new Error('MONGO_URI is not defined'); })(),
-        process.env.TEST_GUILDED_TOKEN ?? (() => { throw new Error('TEST_GUILDED_TOKEN is not defined'); })()
+        process.env.TEST_TOKEN ?? "",
+        process.env.TEST_SECRET ?? "",
+        process.env.TEST_LOG_WH ?? "",
+        process.env.MONGO_URI ?? "",
+        process.env.TEST_GUILDED_TOKEN ?? "",
     );
 
     const src = new Bot();

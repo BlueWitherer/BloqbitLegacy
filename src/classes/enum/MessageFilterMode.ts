@@ -1,22 +1,16 @@
 /**
  * Enum representing the type of filtering.
  */
-class MessageFilterMode {
-    /** Include filter mode */
-    public static INCLUDE: number = 1;
+enum MessageFilterMode {
+    INCLUDE = 1,
+    EXCLUDE = 0,
+};
 
-    /** Exclude filter mode */
-    public static EXCLUDE: number = 0;
-
-    /**
-     * Returns all values of the MessageFilterMode enum.
-     */
-    public static values(): number[] {
-        return [
-            this.INCLUDE,
-            this.EXCLUDE,
-        ];
-    }
-}
+/**
+ * Returns all values of the MessageFilterMode enum.
+ */
+export const MessageFilterModeValues = Object.values(MessageFilterMode).filter(
+    (value) => typeof value === "number"
+) as number[];
 
 export default MessageFilterMode;
