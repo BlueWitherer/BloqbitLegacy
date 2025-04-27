@@ -205,12 +205,102 @@ export default new Command(
             const action = interaction.options?.getString("action", true);
             const toggle = interaction.options?.getBoolean("enable", true);
 
-            if (system.logs.actions && action in system.logs.actions) {
-                // @ts-ignore
-                system.logs.actions[action] = toggle;
-            } else {
-                await fetch.commandErrorResponse(interaction, assets);
-                return;
+            switch (action) {
+                case ServerLogEventType.AutoModerator:
+                    system.logs.actions.autoMod = toggle;
+                    break;
+
+                case ServerLogEventType.Moderator:
+                    system.logs.actions.moderator = toggle;
+                    break;
+
+                case ServerLogEventType.ServerInvites:
+                    system.logs.actions.invites = toggle;
+                    break;
+
+                case ServerLogEventType.MemberJoin:
+                    system.logs.actions.join = toggle;
+                    break;
+
+                case ServerLogEventType.MemberLeave:
+                    system.logs.actions.leave = toggle;
+                    break;
+
+                case ServerLogEventType.MemberTimeout:
+                    system.logs.actions.timeout = toggle;
+                    break;
+
+                case ServerLogEventType.MemberBan:
+                    system.logs.actions.ban = toggle;
+                    break;
+
+                case ServerLogEventType.MemberKick:
+                    system.logs.actions.kick = toggle;
+                    break;
+
+                case ServerLogEventType.MemberNickname:
+                    system.logs.actions.nickname = toggle;
+                    break;
+
+                case ServerLogEventType.MessageDelete:
+                    system.logs.actions.msgDel = toggle;
+                    break;
+
+                case ServerLogEventType.MessageEdit:
+                    system.logs.actions.msgUpd = toggle;
+                    break;
+
+                case ServerLogEventType.MessagePin:
+                    system.logs.actions.msgPin = toggle;
+                    break;
+
+                case ServerLogEventType.MessageBulkDelete:
+                    system.logs.actions.msgBulkDel = toggle;
+                    break;
+
+                case ServerLogEventType.RoleCreate:
+                    system.logs.actions.rolesAdd = toggle;
+                    break;
+
+                case ServerLogEventType.RoleUpdate:
+                    system.logs.actions.rolesUpd = toggle;
+                    break;
+
+                case ServerLogEventType.RoleDelete:
+                    system.logs.actions.rolesRem = toggle;
+                    break;
+
+                case ServerLogEventType.RoleGive:
+                    system.logs.actions.rolesAssign = toggle;
+                    break;
+
+                case ServerLogEventType.RoleTake:
+                    system.logs.actions.rolesUnassign = toggle;
+                    break;
+
+                case ServerLogEventType.ChannelCreate:
+                    system.logs.actions.channelAdd = toggle;
+                    break;
+
+                case ServerLogEventType.ChannelUpdate:
+                    system.logs.actions.channelUpd = toggle;
+                    break;
+
+                case ServerLogEventType.ChannelDelete:
+                    system.logs.actions.channelDel = toggle;
+                    break;
+
+                case ServerLogEventType.VoiceJoin:
+                    system.logs.actions.vcJoin = toggle;
+                    break;
+
+                case ServerLogEventType.VoiceMove:
+                    system.logs.actions.vcMove = toggle;
+                    break;
+
+                case ServerLogEventType.VoiceLeave:
+                    system.logs.actions.vcLeave = toggle;
+                    break;
             };
 
             const update = await cache.update(system, db);
