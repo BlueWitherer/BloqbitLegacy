@@ -93,6 +93,10 @@ export default new Command(
                         value: ServerLogEventType.MessageBulkDelete,
                     },
                     {
+                        name: "Message reactions removed",
+                        value: ServerLogEventType.MessageRemoveReactions,
+                    },
+                    {
                         name: "Role created",
                         value: ServerLogEventType.RoleCreate,
                     },
@@ -266,6 +270,10 @@ export default new Command(
                     system.logs.actions.msgBulkDel = toggle;
                     break;
 
+                case ServerLogEventType.MessageRemoveReactions:
+                    system.logs.actions.remAllReact = toggle;
+                    break;
+
                 case ServerLogEventType.RoleCreate:
                     system.logs.actions.rolesAdd = toggle;
                     break;
@@ -308,6 +316,10 @@ export default new Command(
 
                 case ServerLogEventType.VoiceLeave:
                     system.logs.actions.vcLeave = toggle;
+                    break;
+
+                default:
+                    console.error(`Unknown log action type: '${action}'`);
                     break;
             };
 
