@@ -118,6 +118,8 @@ export default {
                 }
             } catch (err) {
                 console.error(err);
+                console.trace(err);
+
                 return resolve.warnObj(
                     ModeratorActionType.None,
                     resolve.msgWarning("Clear", "Programming error.")
@@ -164,6 +166,8 @@ export default {
                 }
             } catch (err) {
                 console.error(err);
+                console.trace(err);
+
                 return resolve.warnObj(
                     ModeratorActionType.None,
                     resolve.msgWarning("Clear", "Programming error.")
@@ -265,6 +269,8 @@ export default {
                 }
             } catch (err) {
                 console.error(err);
+                console.trace(err);
+
                 return resolve.warnObj(
                     ModeratorActionType.None,
                     resolve.msgWarning("Clear", "Programming error.")

@@ -121,6 +121,7 @@ export default {
             };
         } catch (err) {
             console.error(err);
+            console.trace(err);
 
             await fetch.commandErrorResponse(interaction, bot.assets);
             return;

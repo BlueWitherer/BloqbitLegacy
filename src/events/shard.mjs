@@ -3,16 +3,17 @@ import { BloqbitClient } from '../classes.js';
 import { Events, WebhookClient } from 'discord.js';
 
 export default {
-    name: Events.Error,
+    name: Events.ShardError,
     once: false,
     /**
      * 
      * @param {BloqbitClient} bot 
-     * @param {Error} error 
+     * @param {Error} error
+     * @param {number} shardId 
      * 
      * @returns {Promise<void>}
      */
-    execute: async (bot, error) => {
+    execute: async (bot, error, shardId) => {
         const date = Math.floor(Date.now() / 1000);
         const devWH = new WebhookClient({ url: bot.dev_wh });
 
@@ -24,7 +25,7 @@ export default {
                 "embeds": [
                     {
                         "author": {
-                            "name": `Error`,
+                            "name": `Shard Error`,
                         },
                         "description": error.message,
                         "color": bot.assets.colors.secondary,

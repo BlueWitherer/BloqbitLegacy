@@ -40,10 +40,11 @@ export default {
                     ephemeral: true,
                 });
                 console.error(err);
-            } catch (error) {
-                console.error(error);
-            }
-        }
+            } catch (err) {
+                console.error(err);
+                console.trace(err);
+            };
+        };
     },
 
     /**
@@ -76,8 +77,9 @@ export default {
                 });
             } catch (err) {
                 console.error(err);
-            }
-        }
+                console.trace(err);
+            };
+        };
     },
 
     /**
@@ -98,8 +100,9 @@ export default {
                 });
             } catch (err) {
                 console.error(err);
-            }
-        }
+                console.trace(err);
+            };
+        };
     },
 
     /**
@@ -121,8 +124,9 @@ export default {
                 }
             } catch (err) {
                 console.error(err);
-            }
-        }
+                console.trace(err);
+            };
+        };
     },
 
     /**
@@ -160,7 +164,7 @@ export default {
 
                 webhookClient = new WebhookClient({ url: system.logs.webhook });
                 console.debug(`Created logs webhook for channel #${channel.name} (${channel.id}) and updated save data`);
-            }
+            };
 
             return webhookClient;
         };
@@ -176,9 +180,9 @@ export default {
                 }
             } else {
                 await channel.send({ embeds: [emb] });
-            }
+            };
         } else {
             console.error(`Logs channel not found or incorrect type for guild ${guild.name} (${guild.id})`);
-        }
+        };
     },
 };

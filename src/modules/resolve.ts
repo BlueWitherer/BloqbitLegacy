@@ -24,7 +24,12 @@ export default {
             return { name, value: description };
         } catch (err) {
             console.error(err);
-            return { name: "Error", value: "An internal error occurred." };
+            console.trace(err);
+
+            return {
+                name: "Error",
+                value: "An internal error occurred."
+            };
         };
     },
 
@@ -43,9 +48,14 @@ export default {
             };
         } catch (err) {
             console.error(err);
+            console.trace(err);
+
             return {
                 punishment: 0,
-                warning: { name: "Error", value: "An internal error occurred." },
+                warning: {
+                    name: "Error",
+                    value: "An internal error occurred."
+                },
             };
         };
     },

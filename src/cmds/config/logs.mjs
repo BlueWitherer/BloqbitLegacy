@@ -45,10 +45,6 @@ export default new Command(
                         value: ServerLogEventType.Moderator,
                     },
                     {
-                        name: "Server updated",
-                        value: ServerLogEventType.ServerUpdate,
-                    },
-                    {
                         name: "Server invites",
                         value: ServerLogEventType.ServerInvites,
                     },
@@ -101,10 +97,6 @@ export default new Command(
                         value: ServerLogEventType.RoleCreate,
                     },
                     {
-                        name: "Role updated",
-                        value: ServerLogEventType.RoleUpdate,
-                    },
-                    {
                         name: "Role deleted",
                         value: ServerLogEventType.RoleDelete,
                     },
@@ -119,10 +111,6 @@ export default new Command(
                     {
                         name: "Channel created",
                         value: ServerLogEventType.ChannelCreate,
-                    },
-                    {
-                        name: "Channel updated",
-                        value: ServerLogEventType.ChannelUpdate,
                     },
                     {
                         name: "Channel deleted",

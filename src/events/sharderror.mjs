@@ -50,6 +50,7 @@ export default {
             });
         } catch (err) {
             console.error(err);
+            console.trace(err);
         };
 
         return;
