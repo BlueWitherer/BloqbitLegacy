@@ -164,27 +164,27 @@ export default new Command(
                 .setFields([
                     {
                         "name": "General",
-                        "value": `**Bloqbit Auto-moderator** ${resolve.abled(system.logs.actions.autoMod, true)}\n**Moderator Actions** ${resolve.abled(system.logs.actions.moderator, true)}\n**Server Updated** ${resolve.abled(system.logs.actions.serverUpd, true)}\n**Server Invites** ${resolve.abled(system.logs.actions.invites, true)}`, // General
+                        "value": `**Bloqbit Auto-moderator** ${resolve.abled(system.logs.actions.autoMod, true)}\n**Moderator Actions** ${resolve.abled(system.logs.actions.moderator, true)}\n**Server Invites** ${resolve.abled(system.logs.actions.invites, true)}`,
                         "inline": true,
                     },
                     {
                         "name": "Members",
-                        "value": `**Member join** ${resolve.abled(system.logs.actions.join, true)}\n**Member left** ${resolve.abled(system.logs.actions.leave, true)}\n**Member timed out** ${resolve.abled(system.logs.actions.timeout, true)}\n**Member banned** ${resolve.abled(system.logs.actions.ban, true)}\n**Member nickname updated** ${resolve.abled(system.logs.actions.nickname, true)}\n`, // Members
+                        "value": `**Member join** ${resolve.abled(system.logs.actions.join, true)}\n**Member left** ${resolve.abled(system.logs.actions.leave, true)}\n**Member timed out** ${resolve.abled(system.logs.actions.timeout, true)}\n**Member banned** ${resolve.abled(system.logs.actions.ban, true)}\n**Member nickname updated** ${resolve.abled(system.logs.actions.nickname, true)}\n`,
                         "inline": true,
                     },
                     {
                         "name": "Messages",
-                        "value": `**Message deleted** ${resolve.abled(system.logs.actions.msgDel, true)}\n**Message edited** ${resolve.abled(system.logs.actions.msgUpd, true)}\n**Message pinned** ${resolve.abled(system.logs.actions.msgPin, true)}\n**Messages bulk deleted** ${resolve.abled(system.logs.actions.msgBulkDel, true)}\n**All reactions removed** ${resolve.abled(system.logs.actions.remAllReact, true)}`, // Messages
+                        "value": `**Message deleted** ${resolve.abled(system.logs.actions.msgDel, true)}\n**Message edited** ${resolve.abled(system.logs.actions.msgUpd, true)}\n**Message pinned** ${resolve.abled(system.logs.actions.msgPin, true)}\n**Messages bulk deleted** ${resolve.abled(system.logs.actions.msgBulkDel, true)}\n**All reactions removed** ${resolve.abled(system.logs.actions.remAllReact, true)}`,
                         "inline": true,
                     },
                     {
                         "name": "Roles",
-                        "value": `**Role created** ${resolve.abled(system.logs.actions.rolesAdd, true)}\n**Role updated** ${resolve.abled(system.logs.actions.rolesUpd, true)}\n**Role deleted** ${resolve.abled(system.logs.actions.rolesRem, true)}\n**Role given** ${resolve.abled(system.logs.actions.rolesAssign, true)}\n**Role taken** ${resolve.abled(system.logs.actions.rolesUnassign, true)}`, // Roles
+                        "value": `**Role created** ${resolve.abled(system.logs.actions.rolesAdd, true)}\n**Role deleted** ${resolve.abled(system.logs.actions.rolesRem, true)}\n**Role given** ${resolve.abled(system.logs.actions.rolesAssign, true)}\n**Role taken** ${resolve.abled(system.logs.actions.rolesUnassign, true)}`,
                         "inline": true,
                     },
                     {
                         "name": "Channel created",
-                        "value": `**Channel created** ${resolve.abled(system.logs.actions.channelAdd, true)}\n**Channel updated** ${resolve.abled(system.logs.actions.channelUpd, true)}\n**Channel deleted** ${resolve.abled(system.logs.actions.channelDel, true)}`, // Channels
+                        "value": `**Channel created** ${resolve.abled(system.logs.actions.channelAdd, true)}\n**Channel deleted** ${resolve.abled(system.logs.actions.channelDel, true)}`,
                         "inline": true,
                     },
                 ]).data;

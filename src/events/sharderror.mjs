@@ -8,8 +8,8 @@ export default {
     /**
      * 
      * @param {BloqbitClient} bot 
-     * @param {string} error 
-     * @param {number} shardId
+     * @param {Error} error
+     * @param {number} shardId 
      * 
      * @returns {Promise<void>}
      */
@@ -27,12 +27,12 @@ export default {
                         "author": {
                             "name": `Shard Error`,
                         },
-                        "description": `\`\`\`\n${error}\n\`\`\``,
+                        "description": error.message,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
-                                "name": "Shard",
-                                "value": `${shardId}`,
+                                "name": "Shard ID",
+                                "value": `**\`${shardId}\`**`,
                                 "inline": false,
                             },
                             {
@@ -42,7 +42,7 @@ export default {
                             },
                         ],
                         "footer": {
-                            "text": bot.client?.user?.username ?? "Unknown User",
+                            "text": bot.client?.user?.username ?? '',
                             "icon_url": bot.client?.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
                         },
                     },

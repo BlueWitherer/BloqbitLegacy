@@ -210,10 +210,6 @@ export default new Command(
                     system.logs.actions.moderator = toggle;
                     break;
 
-                case ServerLogEventType.ServerUpdate:
-                    system.logs.actions.serverUpd = toggle;
-                    break;
-
                 case ServerLogEventType.ServerInvites:
                     system.logs.actions.invites = toggle;
                     break;
@@ -266,10 +262,6 @@ export default new Command(
                     system.logs.actions.rolesAdd = toggle;
                     break;
 
-                case ServerLogEventType.RoleUpdate:
-                    system.logs.actions.rolesUpd = toggle;
-                    break;
-
                 case ServerLogEventType.RoleDelete:
                     system.logs.actions.rolesRem = toggle;
                     break;
@@ -284,10 +276,6 @@ export default new Command(
 
                 case ServerLogEventType.ChannelCreate:
                     system.logs.actions.channelAdd = toggle;
-                    break;
-
-                case ServerLogEventType.ChannelUpdate:
-                    system.logs.actions.channelUpd = toggle;
                     break;
 
                 case ServerLogEventType.ChannelDelete:
