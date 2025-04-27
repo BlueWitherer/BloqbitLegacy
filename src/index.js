@@ -244,14 +244,6 @@ export default class Bot {
         } catch (err) {
             console.error(err);
             if (testMode) process.exit(1);
-        } finally {
-            if (testMode) {
-                console.info("All bot start-up operations successful. No fatal errors detected. Logging off...");
-
-                process.exit(0);
-            } else {
-                console.info("Bloqbit is ready!");
-            };
         };
 
         return botModel;
