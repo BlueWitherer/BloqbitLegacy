@@ -8,7 +8,7 @@ Bloqbit is open-source. You may take its source code directly and modify it to f
 
 | Variable              | Description                                                       | Required  |
 |:---------------------:|-------------------------------------------------------------------|:---------:|
-| **`MAIN_TOKEN`**      | Token for the bot of the application you will utilize.            | **`Yes`** |
+| **`MAIN_TOKEN`**      | Token for the bot of the Discord application you will utilize.    | **`Yes`** |
 | **`MAIN_SECRET`**     | The application's secret.                                         | **`Yes`** |
 | **`MAIN_LOG_WH`**     | URL for the webhook used to log important bot events.             | **`Yes`** |
 | `MAIN_GUILDED_TOKEN`  | Token for the [Guilded](https://www.guilded.gg/) client.          | `No`      |

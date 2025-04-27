@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db } from 'mongodb';
 import { SaveDataClient, Config } from './classes.js';
 
 // MongoDB client instance
@@ -10,7 +10,7 @@ let dbClient;
 /**
  * @param {string} mongoUri MongoDB URI
  * 
- * @returns {Promise<import('mongodb').Db | void>} MongoDB database instance
+ * @returns {Promise<Db | void>} MongoDB database instance
  */
 const getDatabaseClient = async (mongoUri) => {
     if (mongoUri) {

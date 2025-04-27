@@ -154,32 +154,57 @@ export default class Bot {
                         if (testMode) process.exit(1);
                     };
                 };
+            } catch (err) {
+                console.error(err);
+                process.exit(1);
+            };
+
+            client.user?.setPresence({
+                "activities": [
+                    {
+                        "name": `Finishing up...`,
+                        "state": `Active across ${client.guilds?.cache?.size} servers!`,
+                        "type": ActivityType.Streaming,
+                        "url": `https://www.youtube.com/@CubicCommunity/`,
+                    }
+                ],
+                "afk": false,
+                "status": PresenceUpdateStatus.Idle,
+            });
+
+            try {
+                console.debug("Starting handlers...");
+
+                new MessageHandler(client, botModel.db);
+                new ServerHandler(client, botModel.db);
+                new UserHandler(client, botModel.db);
+
+                console.debug("Handlers successfully started");
+            } catch (err) {
+                console.error(err);
+                if (testMode) process.exit(1);
+            };
+
+            if (testMode) {
+                console.info(`All start-up operations successful, shutting down...`);
+
+                await client.destroy();
+                process.exit(0);
+            } else {
+                const srvs = await client.guilds?.fetch();
 
                 client.user?.setPresence({
                     "activities": [
                         {
-                            "name": `Finishing up...`,
-                            "state": `Active across ${client.guilds?.cache?.size} servers!`,
+                            "name": `Alpha Testing!`,
+                            "state": `Active across ${srvs.size} servers!`,
                             "type": ActivityType.Streaming,
                             "url": `https://www.youtube.com/@CubicCommunity/`,
                         }
                     ],
                     "afk": false,
-                    "status": PresenceUpdateStatus.Idle,
+                    "status": PresenceUpdateStatus.Online,
                 });
-
-                try {
-                    console.debug("Starting handlers...");
-
-                    new MessageHandler(client, botModel.db);
-                    new ServerHandler(client, botModel.db);
-                    new UserHandler(client, botModel.db);
-
-                    console.debug("Handlers successfully started");
-                } catch (err) {
-                    console.error(err);
-                    if (testMode) process.exit(1);
-                };
 
                 const devWH = new WebhookClient({ "url": botModel.dev_wh, });
 
@@ -201,46 +226,12 @@ export default class Bot {
                     ],
                 });
 
-                console.log(`Bot user ${client.user?.username} is online`);
-            } catch (err) {
-                console.error(err);
-                process.exit(1);
+                console.log(`Bloqbit running as bot user @${client.user?.username} (${client.user?.id}) is online`);
             };
-
-            if (testMode) {
-                await client.destroy();
-            } else {
-                const srvs = await client.guilds?.fetch();
-
-                client.user?.setPresence({
-                    "activities": [
-                        {
-                            "name": `Alpha Testing!`,
-                            "state": `Active across ${srvs.size} servers!`,
-                            "type": ActivityType.Streaming,
-                            "url": `https://www.youtube.com/@CubicCommunity/`,
-                        }
-                    ],
-                    "afk": false,
-                    "status": PresenceUpdateStatus.Online,
-                });
-
-                console.info(`Client ${client.user?.displayName} now online`);
-                console.info("");
-            };
-        });
-
-        botModel.clientGil?.on("ready", async () => {
-            console.info(`Guilded client ${botModel.clientGil?.user?.name} now online`);
-
-            if (testMode) botModel.clientGil?.disconnect();
         });
 
         try {
             await botModel.client?.login(botModel.token);
-            botModel.clientGil?.login({
-                "fresh": true,
-            });
         } catch (err) {
             console.error(err);
             if (testMode) process.exit(1);

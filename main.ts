@@ -39,7 +39,7 @@ const start = async () => {
         process.env.MAIN_GUILDED_TOKEN || "",
     );
 
-    const PORT = parseInt(process.env.PORT || '3000');
+    const SERVER_PORT = parseInt(process.env.SERVER_PORT || '3000');
 
     const server = http.createServer((req, res) => {
         console.debug(`Request details:\nURL: ${req.url}\nMethod: ${req.method}\nHeaders:`, req.headers);
@@ -52,8 +52,8 @@ const start = async () => {
         const src = new Bot();
         const bot = await src.activate(botModel, false);
 
-        server.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
+        server.listen(SERVER_PORT, () => {
+            console.log(`Server is running on port ${SERVER_PORT}`);
         });
 
         process.on('SIGINT', async () => {
