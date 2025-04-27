@@ -57,19 +57,17 @@
     "@typescript-eslint/parser": "^8.31.0",
     "eslint": "^9.25.1",
     "globals": "^16.0.0",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "scripts": {
     "lint": "eslint .",
     "build": "tsc",
-    "prebuild": "npm run lint",
     "test": "node --loader ts-node/esm validate.ts",
-    "pretest": "npm run build",
     "start": "node --loader ts-node/esm --expose-gc main.ts",
-    "prestart": "npm run build",
     "dev": "ts-node --esm main.ts",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "prepare": "npm run clean && npm run build"
   },
   "repository": {
