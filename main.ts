@@ -6,6 +6,12 @@ process.on('uncaughtException', (err) => {
 
 process.on('unhandledRejection', (reason) => {
     console.error('Unhandled Rejection:', reason);
+
+    if (reason instanceof Error) {
+        console.trace('Stack Trace:', reason.stack || 'No stack trace available');
+    } else {
+        console.trace('Stack Trace: No stack trace available');
+    };
 });
 
 process.on('warning', (warning) => {
