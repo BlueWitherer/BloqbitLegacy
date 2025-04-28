@@ -1,16 +1,14 @@
 import "./console.mjs";
 
 process.on('uncaughtException', (err) => {
-    console.error('Unhandled Exception:', err.message, err.stack);
+    console.error('Unhandled Exception:', err.stack);
 });
 
 process.on('unhandledRejection', (reason) => {
-    console.error('Unhandled Rejection:', reason);
-
     if (reason instanceof Error) {
-        console.trace('Stack Trace:', reason.stack || 'No stack trace available');
+        console.trace('Unhandled Rejection:', reason.stack || 'No stack trace available');
     } else {
-        console.trace('Stack Trace: No stack trace available');
+        console.error('Unhandled Rejection:', reason);
     };
 });
 

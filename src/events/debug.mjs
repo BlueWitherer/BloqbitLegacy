@@ -16,7 +16,6 @@ export default {
         try {
             console.debug(message);
         } catch (err) {
-            console.error(err);
             console.trace(err);
         };
 

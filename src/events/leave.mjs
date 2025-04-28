@@ -55,7 +55,6 @@ export default {
                 "status": PresenceUpdateStatus.Online,
             });
         } catch (err) {
-            console.error(err);
             console.trace(err);
         };
 

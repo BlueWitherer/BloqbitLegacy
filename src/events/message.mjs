@@ -54,7 +54,6 @@ export default {
                 console.debug(`Fetched ${msgs?.size} messages from guild channel`);
             };
         } catch (err) {
-            console.error(err);
             console.trace(err);
         };
 

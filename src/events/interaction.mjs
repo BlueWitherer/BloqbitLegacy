@@ -120,7 +120,6 @@ export default {
                 console.error(`Interaction ${interaction.id} not a command`);
             };
         } catch (err) {
-            console.error(err);
             console.trace(err);
 
             await fetch.commandErrorResponse(interaction, bot.assets);
