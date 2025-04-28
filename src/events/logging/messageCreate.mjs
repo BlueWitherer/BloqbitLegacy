@@ -31,8 +31,8 @@ export default new LogEvent(
                             "iconURL": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${bot.assets.icons.exclamation} Server Invite Posted`,
-                        "description": `${matchInvite ? `**Invite:** ${matchInvite[0]}` : ""}`,
-                        "color": bot.assets.colors.secondary,
+                        "description": `${isInvite && matchInvite ? `${matchInvite[0]}` : ""}`,
+                        "color": bot.assets.colors.tertiary,
                         "fields": [
                             {
                                 "name": "Jump",
