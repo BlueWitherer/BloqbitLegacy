@@ -1,0 +1,185 @@
+import { Events, EmbedBuilder, GuildMember } from "discord.js";
+
+import { BloqbitClient, LogEvent } from "../../classes.js";
+
+import fetch from "../../modules/fetch.js";
+import resolve from "../../modules/resolve.js";
+
+export default new LogEvent(
+    Events.GuildMemberUpdate,
+    /**
+     * 
+     * @param {BloqbitClient} bot
+     * @param {unknown[]} args
+     * 
+     * @returns {Promise<void>}
+     */
+    async (bot, ...args) => {
+        const oldMember = /** @type {GuildMember | import("discord.js").PartialGuildMember} */ (args[0]);
+        const newMember = /** @type {GuildMember} */ (args[1]);
+
+        if (oldMember.guild && newMember.guild) {
+            console.debug(`Handling member update log event on guild of ID ${oldMember.guild?.id || newMember.guild?.id}...`);
+            const system = await fetch.fetchGuild(oldMember.guild?.id || newMember.guild?.id, bot.db);
+
+            const oldRoles = oldMember.roles?.cache;
+            const newRoles = newMember.roles?.cache;
+
+            const addedRoles = newRoles.filter((r) => !oldRoles.has(r.id));
+            const removedRoles = oldRoles.filter((r) => !newRoles.has(r.id));
+
+            if (system) {
+                // nickname change
+                if (system.logs.enabled && (system.logs.actions.nickname)) {
+                    const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${newMember.user?.username}`,
+                            "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                        },
+                        "title": `${bot.assets.icons.info} User Nickname Updated`,
+                        "color": bot.assets.colors.tertiary,
+                        "fields": [
+                            {
+                                "name": "User",
+                                "value": `<@!${newMember.user?.id}>`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Old Nickname",
+                                "value": `${oldMember.nickname || oldMember.user?.username}`,
+                                "inline": true,
+                            },
+                            {
+                                "name": "New Nickname",
+                                "value": `${newMember.nickname || newMember.user?.username}`,
+                                "inline": true,
+                            },
+                        ],
+                    }).data;
+
+                    if (oldMember.nickname !== newMember.nickname) await fetch.sendLog(bot, system, emb, newMember.guild);
+                } else {
+                    console.warn(`Logs for member nickname update not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                };
+
+                // timeout begin
+                if (system.logs.enabled && (system.logs.actions.timeout)) {
+                    const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${newMember.user?.username}`,
+                            "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                        },
+                        "title": `${bot.assets.icons.info} User Timed Out`,
+                        "color": bot.assets.colors.tertiary,
+                        "fields": [
+                            {
+                                "name": "User",
+                                "value": `<@!${newMember.user?.id}>`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Until",
+                                "value": `${newMember.communicationDisabledUntilTimestamp ? `<t:${Math.floor(newMember.communicationDisabledUntilTimestamp / 1000)}:R>` : "None"}`,
+                                "inline": true,
+                            },
+                        ],
+                    }).data;
+
+                    if (!oldMember.isCommunicationDisabled().valueOf() && newMember.isCommunicationDisabled().valueOf()) await fetch.sendLog(bot, system, emb, newMember.guild);
+                } else {
+                    console.warn(`Logs for member timed out not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                };
+
+                // timeout end
+                if (system.logs.enabled && (system.logs.actions.timeout)) {
+                    const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${newMember.user?.username}`,
+                            "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                        },
+                        "title": `${bot.assets.icons.info} User Timeout Expired`,
+                        "color": bot.assets.colors.tertiary,
+                        "fields": [
+                            {
+                                "name": "User",
+                                "value": `<@!${newMember.user?.id}>`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Since",
+                                "value": `${oldMember.communicationDisabledUntilTimestamp ? `<t:${Math.floor(oldMember.communicationDisabledUntilTimestamp / 1000)}:R>` : "None"}`,
+                                "inline": true,
+                            },
+                        ],
+                    }).data;
+
+                    if (oldMember.isCommunicationDisabled().valueOf() && !newMember.isCommunicationDisabled().valueOf()) await fetch.sendLog(bot, system, emb, newMember.guild);
+                } else {
+                    console.warn(`Logs for member timeout expiring not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                };
+
+                // roles given
+                if (system.logs.enabled && (system.logs.actions.rolesAssign)) {
+                    const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${newMember.user?.username}`,
+                            "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                        },
+                        "title": `${bot.assets.icons.plus} User Roles Given`,
+                        "color": bot.assets.colors.primary,
+                        "fields": [
+                            {
+                                "name": "User",
+                                "value": `<@!${newMember.user?.id}>`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Roles",
+                                "value": `**[${resolve.numberWithCommas(addedRoles.size)}]** ${addedRoles.map((r) => `<@&${r.id}>`).join(", ")}`,
+                                "inline": false,
+                            },
+                        ],
+                    }).data;
+
+                    if (addedRoles.size > 0) await fetch.sendLog(bot, system, emb, newMember.guild);
+                } else {
+                    console.warn(`Logs for member roles given not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                };
+
+                // roles taken
+                if (system.logs.enabled && (system.logs.actions.rolesUnassign)) {
+                    const emb = new EmbedBuilder({
+                        "author": {
+                            "name": `${newMember.user?.username}`,
+                            "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                        },
+                        "title": `${bot.assets.icons.plus} User Roles Taken`,
+                        "color": bot.assets.colors.primary,
+                        "fields": [
+                            {
+                                "name": "User",
+                                "value": `<@!${newMember.user?.id}>`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Roles",
+                                "value": `**[${resolve.numberWithCommas(removedRoles.size)}]** ${removedRoles.map((r) => `<@&${r.id}>`).join(", ")}`,
+                                "inline": false,
+                            },
+                        ],
+                    }).data;
+
+                    if (removedRoles.size > 0) await fetch.sendLog(bot, system, emb, newMember.guild);
+                } else {
+                    console.warn(`Logs for member roles taken not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                };
+            } else {
+                console.error(`Server '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id}) not registered in database`);
+            };
+
+            return;
+        } else {
+            console.error(`Member of ID ${newMember.id} not in a guild`);
+            return;
+        };
+    });

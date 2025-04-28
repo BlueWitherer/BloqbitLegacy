@@ -113,7 +113,7 @@ export default new LogEvent(
 
             return;
         } else {
-            console.error(`Channel of ID ${newState.member?.id} not in a guild`);
+            console.error(`Voice channel of ID ${newState.member?.id} not in a guild`);
             return;
         };
     });

@@ -33,11 +33,21 @@ export default new LogEvent(
                             {
                                 "name": "Channel",
                                 "value": `<#${channel.id}>`,
-                                "inline": true,
+                                "inline": false,
                             },
                             {
                                 "name": "Channel ID",
                                 "value": `\`${channel.id}\``,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Channel Type",
+                                "value": `\`${channel.type}\``,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Category",
+                                "value": `${channel.parent ? `<#${channel.parent.id}>` : 'None'}`,
                                 "inline": true,
                             },
                         ],

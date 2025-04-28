@@ -1,11 +1,13 @@
 import resolve, { WarnObject } from './resolve.js';
 
 import { Config, ModeratorActionType } from '../classes.js';
+
 import { GuildMember, Message } from 'discord.js';
 
 export default {
     /**
      * Punishes a user based on the severity level.
+     * 
      * @param level - Severity of punishment.
      * @param message - Discord message triggering the punishment.
      * @param reason - Reason for the punishment.
@@ -67,12 +69,13 @@ export default {
                 default:
                     console.error(`${message.guild?.name} • Invalid punishment level`);
                     break;
-            }
-        }
+            };
+        };
     },
 
     /**
      * Adds a message to the antispam list.
+     * 
      * @param msg - Discord message to add to spam lists.
      */
     antiMessages: (msg: Message): void => {
@@ -81,8 +84,10 @@ export default {
 
     /**
      * Filters messages for blacklisted words.
+     * 
      * @param system - Server settings object.
      * @param msg - Discord message to inspect.
+     * 
      * @returns A warning object.
      */
     blFilter: (system: Config, msg: Message): WarnObject => {
@@ -135,8 +140,10 @@ export default {
 
     /**
      * Filters messages for external links.
+     * 
      * @param system - Server settings object.
      * @param msg - Discord message to inspect.
+     * 
      * @returns A warning object.
      */
     elFilter: (system: Config, msg: Message): WarnObject => {
@@ -183,8 +190,10 @@ export default {
 
     /**
      * Filters messages for server invites.
+     * 
      * @param system - Server settings object.
      * @param msg - Discord message to inspect.
+     * 
      * @returns A warning object.
      */
     inFilter: (system: Config, msg: Message): WarnObject => {
@@ -205,7 +214,7 @@ export default {
                             ModeratorActionType.None,
                             resolve.msgWarning("Clear", "Message doesn't violate rule.")
                         );
-                    }
+                    };
                 } else {
                     return resolve.warnObj(
                         ModeratorActionType.None,
@@ -218,19 +227,21 @@ export default {
                     ModeratorActionType.None,
                     resolve.msgWarning("Clear", "Programming error.")
                 );
-            }
+            };
         } else {
             return resolve.warnObj(
                 ModeratorActionType.None,
                 resolve.msgWarning("Clear", "Programming error.")
             );
-        }
+        };
     },
 
     /**
      * Filters messages for duplicate text.
+     * 
      * @param system - Server settings object.
      * @param msg - Discord message to inspect.
+     * 
      * @returns A warning object.
      */
     dtFilter: (system: Config, msg: Message): WarnObject => {
@@ -246,7 +257,7 @@ export default {
                     while ((match = wordRegex.exec(msg.content)) !== null) {
                         const word = match[1].toLowerCase();
                         wordCounts[word] = (wordCounts[word] || 0) + 1;
-                    }
+                    };
 
                     const duplicates = Object.keys(wordCounts).filter(word => wordCounts[word] > 1);
 
@@ -260,13 +271,13 @@ export default {
                             ModeratorActionType.None,
                             resolve.msgWarning("Clear", "Message doesn't violate rule.")
                         );
-                    }
+                    };
                 } else {
                     return resolve.warnObj(
                         ModeratorActionType.None,
                         resolve.msgWarning("Clear", "Filter disabled.")
                     );
-                }
+                };
             } catch (err) {
                 console.error(err);
                 console.trace(err);
@@ -275,12 +286,12 @@ export default {
                     ModeratorActionType.None,
                     resolve.msgWarning("Clear", "Programming error.")
                 );
-            }
+            };
         } else {
             return resolve.warnObj(
                 ModeratorActionType.None,
                 resolve.msgWarning("Clear", "Programming error.")
             );
-        }
+        };
     },
 };

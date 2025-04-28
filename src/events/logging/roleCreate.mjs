@@ -33,12 +33,27 @@ export default new LogEvent(
                             {
                                 "name": "Role",
                                 "value": `<@&${role.id}>`,
-                                "inline": true,
+                                "inline": false,
                             },
                             {
                                 "name": "Role ID",
                                 "value": `\`${role.id}\``,
                                 "inline": true,
+                            },
+                            {
+                                "name": "Role Color",
+                                "value": `\`${role.hexColor}\``,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Role Position",
+                                "value": `\`${role.position}\``,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Role Permissions",
+                                "value": `\`${role.permissions.toArray().join('\` | \`')}\``,
+                                "inline": false,
                             },
                         ],
                     }).data;

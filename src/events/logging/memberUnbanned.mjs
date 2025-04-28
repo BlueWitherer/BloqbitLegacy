@@ -33,12 +33,17 @@ export default new LogEvent(
                             {
                                 "name": "User",
                                 "value": `**@${ban.user?.username}**`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "User ID",
+                                "value": `\`${ban.user?.id}\``,
                                 "inline": true,
                             },
                             {
                                 "name": "Original Reason",
                                 "value": `${ban.reason}`,
-                                "inline": true
+                                "inline": false,
                             },
                         ],
                     }).data;
@@ -53,7 +58,7 @@ export default new LogEvent(
 
             return;
         } else {
-            console.error(`Member of ID ${ban.user?.id} not in a guild`);
+            console.error(`Unbanned user of ID ${ban.user?.id} not from a guild`);
             return;
         };
     });

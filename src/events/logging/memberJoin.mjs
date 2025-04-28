@@ -53,7 +53,7 @@ export default new LogEvent(
 
             return;
         } else {
-            console.error(`Channel of ID ${member.id} not in a guild`);
+            console.error(`Member of ID ${member.id} not in a guild`);
             return;
         };
     });

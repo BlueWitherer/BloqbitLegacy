@@ -27,12 +27,27 @@ export default new LogEvent(
                             "name": `${channel.guild?.name}`,
                             "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
                         },
-                        "title": `${bot.assets.icons.minus}Channel Deleted`,
+                        "title": `${bot.assets.icons.minus} Channel Deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
                                 "name": "Channel",
                                 "value": `**#${channel.name}**`,
+                                "inline": false,
+                            },
+                            {
+                                "name": "Channel ID",
+                                "value": `\`${channel.id}\``,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Channel Type",
+                                "value": `\`${channel.type}\``,
+                                "inline": true,
+                            },
+                            {
+                                "name": "Category",
+                                "value": `${channel.parent ? `<#${channel.parent.id}>` : 'None'}`,
                                 "inline": true,
                             },
                         ],

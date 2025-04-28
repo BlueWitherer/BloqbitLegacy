@@ -18,10 +18,11 @@ export default new LogEvent(
         const newMsg = /** @type {import('discord.js').OmitPartialGroupDMChannel<Message>} */ (args[1]);
 
         if (oldMsg.guild && newMsg.guild) {
-            console.debug(`Handling edited message log event on guild of ID ${(newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)}...`);
+            console.debug(`Handling message update log event on guild of ID ${(newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)}...`);
             const system = await fetch.fetchGuild(((newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)) ?? '', bot.db);
 
             if (system) {
+                // message edit
                 if (system.logs.enabled && (system.logs.actions.msgUpd)) {
                     const emb = new EmbedBuilder({
                         "author": {
@@ -78,6 +79,7 @@ export default new LogEvent(
                     console.warn(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };
 
+                // message pin
                 if (system.logs.enabled && (system.logs.actions.msgPin)) {
                     const emb = new EmbedBuilder({
                         "author": {

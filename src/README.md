@@ -1,6 +1,8 @@
 # <img src="../icon.ico" width="25" alt="Logo" /> Bloqbit
 Need it? Got it.
 
+---
+
 ### Development
 ###### Work with the bot directly.
 
@@ -24,5 +26,11 @@ Bloqbit is open-source. You may take its source code directly and modify it to f
 > | `TEST_SECRET`           | `MAIN_SECRET`         |
 > | `TEST_LOG_WH`           | `MAIN_LOG_WH`         |
 > | *`TEST_GUILDED_TOKEN`*  | *`MAIN_GUILDED_TOKEN`*|
+
+---
+
+### Deployment
+###### Set up your own instance of Bloqbit!
+**[🔌 Get the server eggs](https://github.com/CubicCommunity/bloqbit-eggs)**
 
 *More coming soon...*
