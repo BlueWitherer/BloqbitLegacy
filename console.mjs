@@ -53,34 +53,39 @@ const recolorMultilineLog = (text, color) => {
 console.debug = (...args) => {
     const timestamp = getTimestamp();
     const message = args.join(' ');
+    const recolored = recolorMultilineLog(message, colors.gray);
 
-    if (message) originalConsoleMethods.debug(`${timestamp}${colors.gray} | ${colors.bold}DEBUG${colors.reset}${colors.gray} | ${message}${colors.reset}`);
+    if (message) originalConsoleMethods.debug(`${timestamp}${colors.gray} | ${colors.bold}DEBUG${colors.reset}${colors.gray} | ${recolored}${colors.reset}`);
 };
 
 console.log = (...args) => {
     const timestamp = getTimestamp();
     const message = args.join(' ');
+    const recolored = recolorMultilineLog(message, colors.white);
 
-    if (message) originalConsoleMethods.log(`${timestamp}${colors.white} | ${colors.bold}LOG  ${colors.reset}${colors.white} | ${message}${colors.reset}`);
+    if (message) originalConsoleMethods.log(`${timestamp}${colors.white} | ${colors.bold}LOG  ${colors.reset}${colors.white} | ${recolored}${colors.reset}`);
 };
 
 console.info = (...args) => {
     const timestamp = getTimestamp();
     const message = args.join(' ');
+    const recolored = recolorMultilineLog(message, colors.cyan);
 
-    if (message) originalConsoleMethods.info(`${timestamp}${colors.cyan} | ${colors.bold}INFO ${colors.reset}${colors.cyan} | ${message}${colors.reset}`);
+    if (message) originalConsoleMethods.info(`${timestamp}${colors.cyan} | ${colors.bold}INFO ${colors.reset}${colors.cyan} | ${recolored}${colors.reset}`);
 };
 
 console.warn = (...args) => {
     const timestamp = getTimestamp();
     const message = args.join(' ');
+    const recolored = recolorMultilineLog(message, colors.yellow);
 
-    if (message) originalConsoleMethods.warn(`${timestamp}${colors.yellow} | ${colors.bold}WARN ${colors.reset}${colors.yellow} | ${message}${colors.reset}`);
+    if (message) originalConsoleMethods.warn(`${timestamp}${colors.yellow} | ${colors.bold}WARN ${colors.reset}${colors.yellow} | ${recolored}${colors.reset}`);
 };
 
 console.error = (...args) => {
     const timestamp = getTimestamp();
     const message = args.join(' ');
+    const recolored = recolorMultilineLog(message, colors.red);
 
-    if (message) originalConsoleMethods.error(`${timestamp}${colors.red} | ${colors.bold}ERROR${colors.reset}${colors.red} | ${message}${colors.reset}`);
+    if (message) originalConsoleMethods.error(`${timestamp}${colors.red} | ${colors.bold}ERROR${colors.reset}${colors.red} | ${recolored}${colors.reset}`);
 };
