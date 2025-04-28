@@ -69,8 +69,8 @@ export default new LogEvent(
                             "name": `${newMember.user?.username}`,
                             "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.info} User Timed Out`,
-                        "color": bot.assets.colors.tertiary,
+                        "title": `${bot.assets.icons.xmark} User Timed Out`,
+                        "color": bot.assets.colors.secondary,
                         "fields": [
                             {
                                 "name": "User",
@@ -97,8 +97,8 @@ export default new LogEvent(
                             "name": `${newMember.user?.username}`,
                             "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.info} User Timeout Expired`,
-                        "color": bot.assets.colors.tertiary,
+                        "title": `${bot.assets.icons.check} User Timeout Expired`,
+                        "color": bot.assets.colors.primary,
                         "fields": [
                             {
                                 "name": "User",
@@ -153,8 +153,8 @@ export default new LogEvent(
                             "name": `${newMember.user?.username}`,
                             "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.plus} User Roles Taken`,
-                        "color": bot.assets.colors.primary,
+                        "title": `${bot.assets.icons.minus} User Roles Taken`,
+                        "color": bot.assets.colors.secondary,
                         "fields": [
                             {
                                 "name": "User",
