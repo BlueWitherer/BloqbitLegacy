@@ -2,7 +2,7 @@ import { ApplicationIntegrationType, Collection, InteractionContextType, TextCha
 import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { Command } from '../../classes.js';
-import fetch from 'modules/fetch.js';
+import fetch from '../../modules/fetch.js';
 
 export default new Command(
     new SlashCommandBuilder()

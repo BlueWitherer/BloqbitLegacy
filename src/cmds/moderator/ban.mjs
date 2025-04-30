@@ -2,8 +2,7 @@ import { Command } from '../../classes.js';
 import { ApplicationIntegrationType, GuildMember, InteractionContextType } from 'discord.js';
 import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { type } from 'node:os';
-import fetch from 'modules/fetch.js';
+import fetch from '../../modules/fetch.js';
 
 export default new Command(
     new SlashCommandBuilder()

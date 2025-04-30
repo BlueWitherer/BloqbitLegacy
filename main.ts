@@ -43,7 +43,7 @@ const start = async () => {
         process.env.MAIN_GUILDED_TOKEN || "",
     );
 
-    const SERVER_IP = (process.env.SERVER_IP || process.env.APP_HOST) || "0.0.0.0";
+    const SERVER_IP = (process.env.APP_HOST || process.env.IP || process.env.SERVER_IP) || "0.0.0.0";
     const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
 
     const server = http.createServer((req, res) => {
