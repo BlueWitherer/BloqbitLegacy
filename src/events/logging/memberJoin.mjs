@@ -43,7 +43,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    await fetch.sendLog(bot, system, emb, member.guild);
+                    await fetch.sendLog(bot.client, system, bot.db, emb, member.guild);
                 } else {
                     console.warn(`Logs for member joins not enabled in guild '${member.guild?.name}' (${member.guild?.id})`);
                 };

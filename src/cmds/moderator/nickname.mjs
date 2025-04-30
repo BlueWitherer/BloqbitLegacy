@@ -1,7 +1,8 @@
 import { Command } from '../../classes.js';
 import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
+import fetch from 'modules/fetch.js';
 
 export default new Command(
     new SlashCommandBuilder()
@@ -14,27 +15,49 @@ export default new Command(
         .addSubcommand((c) => c
             .setName("set")
             .setDescription("Change someone's nickname.")
-            .addUserOption((u) => u.setName("user").setDescription("The user whose nicname to change.").setRequired(true))
-            .addStringOption((s) => s.setName("name").setDescription("The nickname to change to.").setRequired(true)))
+            .addUserOption((u) => u
+                .setName("user")
+                .setDescription("The user whose nickname to change.")
+                .setRequired(true))
+            .addStringOption((s) => s
+                .setName("name")
+                .setDescription("The nickname to change to.")
+                .setRequired(true)))
         .addSubcommand((c) => c
             .setName("block")
             .setDescription("Block a user from having their name displayed publicly.")
-            .addUserOption((u) => u.setName("user").setDescription("The user whose nickname to block.").setRequired(true))
-            .addStringOption((s) => s.setName("reason").setDescription("The reason to block this name.").setRequired(true)))
+            .addUserOption((u) => u
+                .setName("user")
+                .setDescription("The user whose nickname to block.")
+                .setRequired(true))
+            .addStringOption((s) => s
+                .setName("reason")
+                .setDescription("The reason to block this name.")
+                .setRequired(true)))
         .addSubcommand((c) => c
             .setName("unblock")
             .setDescription("Unblock a user's name.")
-            .addUserOption((u) => u.setName("user").setDescription("The user whose name to unblock.").setRequired(true)))
+            .addUserOption((u) => u
+                .setName("user")
+                .setDescription("The user whose name to unblock.")
+                .setRequired(true)))
         .addSubcommand((c) => c
             .setName("view")
             .setDescription("View a user's blocked name.")
-            .addUserOption((u) => u.setName("user").setDescription("The user whose blocked name to view.").setRequired(true)))
+            .addUserOption((u) => u
+                .setName("user")
+                .setDescription("The user whose blocked name to view.")
+                .setRequired(true)))
         .addSubcommand((c) => c
             .setName("reset")
             .setDescription("Reset a user's nickname.")
-            .addUserOption((u) => u.setName("user").setDescription("The user whose nickname to reset.").setRequired(true))),
+            .addUserOption((u) => u
+                .setName("user")
+                .setDescription("The user whose nickname to reset.")
+                .setRequired(true))),
     async (interaction, assets, system, db) => {
         const date = Math.floor(Date.now() / 1000);
+        const User = interaction.options?.getUser("user", true);
         const Member = interaction.options?.getMember("user");
 
         if (Member?.permissions instanceof PermissionsBitField && Member.permissions.has([PermissionFlagsBits.ManageNicknames])) {
@@ -43,213 +66,322 @@ export default new Command(
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} You cannot moderate another moderator`,
-                        "color": assets.colors.primary,
+                        "color": assets.colors.secondary,
                     },
                 ],
                 "flags": [
                     "Ephemeral",
                 ],
             });
+            return;
+        }
+
+        try {
+            const subcommand = interaction.options?.getSubcommand();
+
+            if (subcommand === "block") {
+                const User = interaction.options?.getUser("user", true);
+                const Member = interaction.options?.getMember("user");
+                const Reason = interaction.options?.getString("reason", true);
+
+                if (Member instanceof GuildMember) {
+                    await Member.setNickname("||Blocked Name||", `${interaction.user?.username} Blocked Name - ${Reason}`);
+
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "author": {
+                                    "name": `${interaction.user?.username}`,
+                                    "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                                },
+                                "title": `${assets.icons.check} Username Blocked`,
+                                "color": assets.colors.primary,
+                                "fields": [
+                                    {
+                                        "name": "User",
+                                        "value": User.username,
+                                        "inline": false,
+                                    },
+                                    {
+                                        "name": "reason",
+                                        "value": Reason,
+                                        "inline": true,
+                                    },
+                                    {
+                                        "name": "Moderator",
+                                        "value": `<@!${interaction.user?.id}>`,
+                                        "inline": false,
+                                    },
+                                ],
+                            },
+                        ],
+                    });
+
+                    try {
+                        await User.send({
+                            "content": "",
+                            "embeds": [
+                                {
+                                    "author": {
+                                        "name": `${User.username}`,
+                                        "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                                    },
+                                    "title": `${assets.icons.exclamation} Username Blocked`,
+                                    "description": `Content in your nickname has been viewed by our moderators as rule-breaking and has been blocked. Please abide by our [rules](https://discord.com/channels/460081436637134859/460082070673424386/882029054033793025) to keep the server a safe and friendly environment.`,
+                                    "color": assets.colors.primary,
+                                    "fields": [
+                                        {
+                                            "name": "reason",
+                                            "value": Reason,
+                                            "inline": true,
+                                        },
+                                        {
+                                            "name": "Reviewed",
+                                            "value": `<t:${date}:F> • <t:${date}:R>`,
+                                            "inline": false,
+                                        },
+                                    ],
+                                },
+                            ],
+                        });
+                    } catch (err) {
+                        console.warn(`Failed to send nickname DM to user ${User.username} (${User.id}): ${err}`);
+                    };
+                } else {
+                    console.error(`Invalid user: ${User.username}`);
+
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.xmark} **${interaction.user?.username}** - This user is not a member of this server`,
+                                "color": assets.colors.secondary,
+                            },
+                        ],
+                        "flags": [
+                            "Ephemeral",
+                        ],
+                    });
+
+                    return;
+                };
+            } else if (subcommand === "view") {
+                const User = interaction.options?.getUser("user", true);
+
+                const blocked = false;
+
+                // TODO: Fetch all info from database
+                const mod = "ModeratorID"; // Replace with actual data
+                const displayed = "BlockedName"; // Replace with actual data
+                const Reason = "reason"; // Replace with actual data
+
+                if (blocked) {
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "author": {
+                                    "name": `${interaction.user?.username}`,
+                                    "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                                },
+                                "title": `${assets.icons.info} ${User.username}'s Blocked Username`,
+                                "color": assets.colors.primary,
+                                "fields": [
+                                    {
+                                        "name": "reason",
+                                        "value": `${Reason}`,
+                                        "inline": false,
+                                    },
+                                    {
+                                        "name": "Previously Displayed As",
+                                        "value": `||${displayed}||`,
+                                        "inline": false,
+                                    },
+                                    {
+                                        "name": "Moderator",
+                                        "value": `<@!${mod}>`,
+                                        "inline": false,
+                                    },
+                                ],
+                            },
+                        ],
+                    });
+                } else {
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.xmark} **${interaction.user?.username}** - This user has no blocked names`,
+                                "color": assets.colors.secondary,
+                            },
+                        ],
+                    });
+                };
+            } else if (subcommand === "unblock") {
+                const User = interaction.options?.getUser("user", true);
+
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": `${interaction.user?.username}`,
+                                "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false, size: 64 })}`,
+                            },
+                            "fields": [
+                                {
+                                    "name": "User",
+                                    "value": `${User.username}`,
+                                    "inline": false,
+                                },
+                                {
+                                    "name": "Moderator",
+                                    "value": `<@!${interaction.user?.id}>`,
+                                    "inline": false,
+                                },
+                            ],
+                        },
+                    ],
+                });
+
+                try {
+                    await User.send({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.info} Your name has been unblocked. Have fun!`,
+                                "color": assets.colors.primary,
+                            },
+                        ],
+                    });
+                } catch (err) {
+                    console.warn(`Failed to send nickname DM to user ${User.username} (${User.id}): ${err}`);
+                };
+            } else if (subcommand === "set") {
+                const User = interaction.options?.getUser("user", true);
+                const Member = interaction.options?.getMember("user");
+                const name = interaction.options?.getString("name");
+
+                if (Member instanceof GuildMember) {
+                    await Member.setNickname(name);
+
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.check} Set **${User.username}**'s nickname`,
+                                "color": assets.colors.primary,
+                            },
+                        ],
+                    });
+                } else {
+                    console.error(`Invalid user: ${User.username}`);
+
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.xmark} **${interaction.user?.username}** - This user is not a member of this server`,
+                                "color": assets.colors.secondary,
+                            },
+                        ],
+                        "flags": [
+                            "Ephemeral",
+                        ],
+                    });
+
+                    return;
+                };
+            } else if (subcommand === "reset") {
+                const User = interaction.options?.getUser("user", true);
+                const Member = interaction.options?.getMember("user");
+
+                if (Member instanceof GuildMember) {
+                    await Member.setNickname(null, `${interaction.user?.username} - Reset Nickname`);
+
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.check} Reset **${User.username}**'s nickname`,
+                                "color": assets.colors.primary,
+                            },
+                        ],
+                    });
+                } else {
+                    console.error(`Invalid user: ${User.username}`);
+
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.xmark} **${interaction.user?.username}** - This user is not a member of this server`,
+                                "color": assets.colors.secondary,
+                            },
+                        ],
+                        "flags": [
+                            "Ephemeral",
+                        ],
+                    });
+
+                    return;
+                };
+            } else {
+                console.error(`Invalid subcommand: ${subcommand}`);
+
+                await interaction.reply({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "description": `${assets.icons.xmark} **${interaction.user?.username}** - Invalid subcommand`,
+                            "color": assets.colors.secondary,
+                        },
+                    ],
+                    "flags": [
+                        "Ephemeral",
+                    ],
+                });
+            };
+        } catch (err) {
+            console.trace(err);
+
+            await interaction.reply({
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred while processing the command.`,
+                "flags": [
+                    "Ephemeral",
+                ],
+            });
+        } finally {
+            if (system.logs.enabled && system.logs.actions.moderator) {
+                const date = Math.floor(Date.now() / 1000);
+
+                const emb = new EmbedBuilder({
+                    "author": {
+                        "name": interaction.user?.username,
+                        "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 128 }),
+                    },
+                    "title": `${assets.icons.exclamation} Moderator`,
+                    "description": `**${interaction.user?.username}** has taken a moderation action on \`${User.username}\``,
+                    "color": assets.colors.tertiary,
+                    "fields": [
+                        {
+                            "name": "Type",
+                            "value": `Change nickname`,
+                            "inline": true,
+                        },
+                        {
+                            "name": "Time",
+                            "value": `<t:${date}:F> • <t:${date}:R>`,
+                            "inline": false,
+                        },
+                    ],
+                }).data;
+
+                if (interaction.guild) await fetch.sendLog(interaction.client, system, db, emb, interaction.guild);
+            } else {
+                console.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}`);
+            };
         };
-
-        if (interaction.options?.getSubcommand() === "block") {
-            const user = interaction.options?.getUser("user", true);
-            const Member = interaction.options?.getMember("user");
-            const reason = interaction.options?.getString("reason", true);
-
-            if (Member instanceof GuildMember) {
-                await Member.setNickname("||Blocked Name||", `${interaction.user?.username} Blocked Name - ${reason}`);
-            } else {
-                console.error("Member is not a GuildMember.");
-            };
-
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
-                        },
-                        "title": `${assets.icons.check} Username Blocked`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "User",
-                                "value": user.username,
-                                "inline": false,
-                            },
-                            {
-                                "name": "Reason",
-                                "value": reason,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${interaction.user?.id}>`,
-                                "inline": false,
-                            },
-                        ],
-                    },
-                ],
-            });
-
-            await user.send({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${user.username}`,
-                            "icon_url": `${user.displayAvatarURL({ "forceStatic": false, size: 64 })}`
-                        },
-                        "title": `${assets.icons.exclamation} Username Blocked`,
-                        "description": `Content in your nickname has been viewed by our moderators as rule-breaking and have blocked it. Please abide by our [rules](https://discord.com/channels/460081436637134859/460082070673424386/882029054033793025) to keep CS a safe and friendly environment for our users`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "Reason",
-                                "value": reason,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Reviewed",
-                                "value": `<t:${date}:F> • <t:${date}:R>`,
-                                "inline": false,
-                            },
-                        ],
-                    },
-                ],
-            }).catch((err) => {
-                console.error(err);
-
-                return;
-            });
-
-            return;
-        } else if (interaction.options?.getSubcommand() === "view") {
-            const user = interaction.options?.getUser("user");
-
-            // TODO: Fetch all info from database
-
-            let mod;
-            let displayed;
-            let reason;
-
-            if (mod && displayed && reason) await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
-                        },
-                        "title": `${assets.icons.info} ${user?.username}'s Blocked Username`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": "Reason",
-                                "value": `${reason}`,
-                                "inline": false,
-                            },
-                            {
-                                "name": "Previously Displayed As",
-                                "value": `||${displayed}||`,
-                                "inline": false,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${mod}>`,
-                                "inline": false,
-                            },
-                        ],
-                    },
-                ],
-            });
-
-            return;
-        } else if (interaction.options?.getSubcommand() === "unblock") {
-            const user = interaction.options?.getUser("user");
-            const Member = interaction.options?.getMember("user");
-
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false, size: 64 })}`,
-                        },
-                        "fields": [
-                            {
-                                "name": "User",
-                                "value": `${user?.username}`,
-                                "inline": false,
-                            },
-                            {
-                                "name": "Moderator",
-                                "value": `<@!${interaction.user?.id}>`,
-                                "inline": false,
-                            },
-                        ],
-                    },
-                ],
-            });
-
-            await user?.send({
-                "content": "",
-                "embeds": [
-                    {
-                        "description": `${assets.icons.info} Your name has been unblocked. Have fun!`,
-                        "color": assets.colors.primary,
-                    },
-                ],
-            });
-
-            return;
-        } else if (interaction.options?.getSubcommand() === "set") {
-            const user = interaction.options?.getUser("user");
-            const Member = interaction.options?.getMember("user");
-            const name = interaction.options?.getString("name");
-
-            if (Member instanceof GuildMember) {
-                await Member.setNickname(name);
-            } else {
-                console.error("Member is not a GuildMember.");
-            };
-
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "description": `${assets.icons.check} Set **${user?.username}**'s nickname`,
-                        "color": assets.colors.primary,
-                    },
-                ],
-            });
-
-            return;
-        } else if (interaction.options?.getSubcommand() === "reset") {
-            const user = interaction.options?.getUser("user");
-            const Member = interaction.options?.getMember("user");
-
-            if (Member instanceof GuildMember) {
-                await Member.setNickname(null, `${interaction.user?.username} - Reset Nickname`);
-            } else {
-                console.error("Member is not a GuildMember.");
-            };
-
-            await interaction.reply({
-                "content": "",
-                "embeds": [
-                    {
-                        "description": `${assets.icons.check} Reset **${user?.username}**'s nickname`,
-                        "color": assets.colors.primary,
-                    },
-                ],
-            });
-
-            return;
-        };
-
-        return;
-    });
+    },
+);

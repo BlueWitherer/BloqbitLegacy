@@ -1,4 +1,4 @@
-import { SaveDataClient, Config, BloqbitClient } from '../classes.js';
+import { SaveDataClient, Config } from '../classes.js';
 
 import cacheModule from '../cache.mjs';
 
@@ -10,6 +10,7 @@ import {
     TextChannel,
     WebhookClient,
     APIEmbed,
+    Client,
 } from 'discord.js';
 
 import SysAssets from '../assets.json' with { type: 'json' };
@@ -132,11 +133,11 @@ export default {
     /**
      * Sends a log to the server's configured logs channel.
      */
-    sendLog: async (bot: BloqbitClient, system: Config, emb: APIEmbed, guild: Guild): Promise<void> => {
+    sendLog: async (client: Client, system: Config, db: SaveDataClient, emb: APIEmbed, guild: Guild): Promise<void> => {
         const channel = await guild.channels?.fetch(system.logs.channel);
 
         const checkLogsWebhook = async (
-            bot: BloqbitClient,
+            client: Client,
             system: Config,
             db: SaveDataClient,
             channel: TextChannel
@@ -151,7 +152,7 @@ export default {
 
                 const newWebhook = await channel.createWebhook({
                     name: "Bloqbit",
-                    avatar: bot.client?.user?.displayAvatarURL({
+                    avatar: client.user?.displayAvatarURL({
                         size: 1024,
                         extension: "jpg",
                         forceStatic: true,
@@ -171,7 +172,7 @@ export default {
 
         if (channel?.type === ChannelType.GuildText) {
             if (system.logs.webhookEnabled) {
-                const webhookClient = await checkLogsWebhook(bot, system, bot.db, channel as TextChannel);
+                const webhookClient = await checkLogsWebhook(client, system, db, channel as TextChannel);
 
                 if (webhookClient) {
                     await webhookClient.send({ embeds: [emb] });

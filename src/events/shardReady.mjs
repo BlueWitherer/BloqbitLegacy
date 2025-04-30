@@ -30,11 +30,6 @@ export default {
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {
-                                "name": "Shard ID",
-                                "value": `**\`${shardId}\`**`,
-                                "inline": false,
-                            },
-                            {
                                 "name": "Unavailable Guilds",
                                 "value": unavailableGuilds.size > 0
                                     ? `**\`${unavailableGuilds.size}\`** guild(s) unavailable.`

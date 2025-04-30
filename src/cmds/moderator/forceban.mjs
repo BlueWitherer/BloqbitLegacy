@@ -1,7 +1,8 @@
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { Command } from '../../classes.js';
+import fetch from 'modules/fetch.js';
 
 export default new Command(
     new SlashCommandBuilder()
@@ -20,9 +21,9 @@ export default new Command(
             .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     async (interaction, assets, system, db) => {
-        const banreason = interaction.options?.getString("reason") ?? '';
-        const User = interaction.options?.getString("user") ?? '';
+        const User = interaction.options?.getString("user", true);
         const Member = interaction.guild?.members?.cache?.get(User);
+        const Reason = interaction.options?.getString("reason", false) ?? 'Unspecified';
 
         if (Member?.permissions.has([PermissionFlagsBits.BanMembers])) {
             await interaction.reply({
@@ -30,7 +31,7 @@ export default new Command(
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} You cannot ban another moderator`,
-                        "color": assets.colors.primary,
+                        "color": assets.colors.secondary,
                     },
                 ],
                 "flags": [
@@ -42,7 +43,7 @@ export default new Command(
         try {
             const bannedUser = await interaction.guild?.members?.ban(User, {
                 deleteMessageSeconds: 7 * 86400,
-                reason: `${interaction.user?.username} Ban - ${banreason}`
+                reason: `${interaction.user?.username} Ban - ${Reason}`
             });
 
             await interaction.reply({
@@ -67,8 +68,8 @@ export default new Command(
                                 "inline": true,
                             },
                             {
-                                "name": "Reason",
-                                "value": `${banreason}`,
+                                "name": "reason",
+                                "value": `${Reason}`,
                                 "inline": false,
                             },
                         ],
@@ -76,6 +77,8 @@ export default new Command(
                 ],
             });
         } catch (err) {
+            console.trace(err);
+
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - Invalid ID`,
                 "flags": [
@@ -83,8 +86,41 @@ export default new Command(
                 ],
             });
 
-            console.error(err);
-
             return;
+        } finally {
+            if (system.logs.enabled && system.logs.actions.moderator) {
+                const date = Math.floor(Date.now() / 1000);
+
+                const emb = new EmbedBuilder({
+                    "author": {
+                        "name": interaction.user?.username,
+                        "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
+                    },
+                    "title": `${assets.icons.exclamation} Moderator`,
+                    "description": `**${interaction.user?.username}** has taken a moderation action on \`${User}\``,
+                    "color": assets.colors.tertiary,
+                    "fields": [
+                        {
+                            "name": "Type",
+                            "value": `Force-ban`,
+                            "inline": true,
+                        },
+                        {
+                            "name": "Reason",
+                            "value": `${Reason}`,
+                            "inline": true,
+                        },
+                        {
+                            "name": "Time",
+                            "value": `<t:${date}:F> • <t:${date}:R>`,
+                            "inline": false,
+                        },
+                    ],
+                }).data;
+
+                if (interaction.guild) await fetch.sendLog(interaction.client, system, db, emb, interaction.guild);
+            } else {
+                console.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}.`);
+            };
         };
     });

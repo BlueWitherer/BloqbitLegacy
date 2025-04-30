@@ -1,7 +1,8 @@
 import { Command } from '../../classes.js';
 import { ApplicationIntegrationType, InteractionContextType, ChannelType } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
+import fetch from 'modules/fetch.js';
 
 export default new Command(
     new SlashCommandBuilder()
@@ -14,157 +15,207 @@ export default new Command(
         .addSubcommand((c) => c
             .setName("set")
             .setDescription("Set the slowmode in this channel.")
-            .addNumberOption((n) => n.setName("cooldown").setDescription("Amount of time for the slowmode interval.").setMinValue(1).setMaxValue(59).setRequired(true))
-            .addNumberOption((n) => n.setName("time").setDescription("In what time to set the slowmode to.").addChoices(
-                {
-                    name: "seconds",
-                    value: 1,
-                },
-                {
-                    name: "minutes",
-                    value: 60,
-                },
-                {
-                    name: "hours",
-                    value: 3600,
-                }
-            ).setRequired(true)))
+            .addNumberOption((n) => n
+                .setName("cooldown")
+                .setDescription("Amount of time for the slowmode interval.")
+                .setMinValue(1)
+                .setMaxValue(59)
+                .setRequired(true))
+            .addNumberOption((n) => n
+                .setName("time")
+                .setDescription("In what time to set the slowmode to.")
+                .addChoices(
+                    {
+                        name: "seconds",
+                        value: 1
+                    },
+                    {
+                        name: "minutes",
+                        value: 60
+                    },
+                    {
+                        name: "hours",
+                        value: 3600
+                    },
+                ).setRequired(true)))
         .addSubcommand((c) => c
             .setName("remove")
             .setDescription("Remove the slowmode in this channel.")),
     async (interaction, assets, system, db) => {
-        if (interaction.options?.getSubcommand() === "set") {
-            const cooldown = interaction.options?.getNumber("cooldown") || 1;
-            const time = interaction.options?.getNumber("time") || 1;
+        const subcommand = interaction.options?.getSubcommand(true);
 
-            const duration = Math.floor(cooldown * time);
+        try {
+            if (subcommand === "set") {
+                const cooldown = interaction.options?.getNumber("cooldown", true) || 1;
+                const time = interaction.options?.getNumber("time", true) || 1;
+                const duration = Math.floor(cooldown * time);
 
-            let type = "seconds";
+                let type = "seconds";
 
-            switch (interaction.options?.getNumber("time")) {
-                case (1):
-                    type = "seconds";
-                    break;
+                switch (time) {
+                    case 1: type = "seconds"; break;
+                    case 60: type = "minutes"; break;
+                    case 3600: type = "hours"; break;
+                    default: type = "seconds"; break;
+                };
 
-                case (60):
-                    type = "minutes";
-                    break;
+                if (cooldown === 1) type = type.slice(0, -1);
 
-                case (3600):
-                    type = "hours";
-                    break;
-
-                default:
-                    type = "seconds";
-                    break;
-            };
-
-            if (cooldown === 1) {
-                type = type.slice(0, -1);
-            };
-
-            if (time === 3600 && cooldown > 12) {
-                await interaction.reply({
-                    "content": "",
-                    "embeds": [
-                        {
-                            "description": `${assets.icons.xmark} Slowmode cannot be set to over 12 hours`,
-                            "color": assets.colors.primary,
-                        },
-                    ],
-                    "flags": [
-                        "Ephemeral",
-                    ],
-                });
-
-                return;
-            };
-
-            if (interaction.channel?.isTextBased() && interaction.channel?.type === ChannelType.GuildText) {
-                await interaction.channel.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set`);
-
-                await interaction.reply({
-                    "content": "",
-                    "embeds": [
-                        {
-                            "author": {
-                                "name": interaction.user?.username,
-                                "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+                if (time === 3600 && cooldown > 12) {
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.xmark} Slowmode cannot be set to over 12 hours`,
+                                "color": assets.colors.secondary,
                             },
-                            "title": `${assets.icons.check} Slowmode Set`,
-                            "color": assets.colors.primary,
-                            "fields": [
+                        ],
+                        "flags": ["Ephemeral"],
+                    });
+
+                    return;
+                } else {
+                    if (interaction.channel?.isTextBased() && interaction.channel?.type === ChannelType.GuildText) {
+                        await interaction.channel.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set`);
+
+                        await interaction.reply({
+                            "content": "",
+                            "embeds": [
                                 {
-                                    "name": "Duration",
-                                    "value": `${cooldown} ${type}`,
-                                    "inline": true,
-                                },
-                                {
-                                    "name": "Moderator",
-                                    "value": `<@!${interaction.user?.id}>`,
-                                    "inline": true,
+                                    "author": {
+                                        "name": interaction.user?.username,
+                                        "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+                                    },
+                                    "title": `${assets.icons.check} Slowmode Set`,
+                                    "color": assets.colors.primary,
+                                    "fields": [
+                                        {
+                                            "name": "Duration",
+                                            "value": `${cooldown} ${type}`,
+                                            "inline": true,
+                                        },
+                                        {
+                                            "name": "Moderator",
+                                            "value": `<@!${interaction.user?.id}>`,
+                                            "inline": true,
+                                        },
+                                    ],
                                 },
                             ],
-                        },
-                    ],
-                });
-            } else {
-                await interaction.reply({
-                    "content": "",
-                    "embeds": [
-                        {
-                            "description": `${assets.icons.xmark} Slowmode cannot be set in this channel`,
-                            "color": assets.colors.primary,
-                        },
-                    ],
-                    "flags": [
-                        "Ephemeral",
-                    ],
-                });
-            };
-
-            return;
-        } else if (interaction.options?.getSubcommand() === "remove") {
-            if (interaction.channel?.isTextBased() && interaction.channel?.type === ChannelType.GuildText) {
-                await interaction.channel.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed`);
-
-                await interaction.reply({
-                    "content": "",
-                    "embeds": [
-                        {
-                            "author": {
-                                "name": interaction.user?.username,
-                                "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
-                            },
-                            "title": `${assets.icons.check} Slowmode Removed`,
-                            "color": assets.colors.primary,
-                            "fields": [
+                        });
+                    } else {
+                        await interaction.reply({
+                            "content": "",
+                            "embeds": [
                                 {
-                                    "name": "Moderator",
-                                    "value": `<@!${interaction.user?.id}>`,
-                                    "inline": true,
+                                    "description": `${assets.icons.xmark} Slowmode cannot be set in this channel`,
+                                    "color": assets.colors.secondary,
                                 },
                             ],
-                        },
-                    ],
-                });
+                            "flags": [
+                                "Ephemeral"
+                            ],
+                        });
+                    };
+                };
+            } else if (subcommand === "remove") {
+                if (interaction.channel?.isTextBased() && interaction.channel?.type === ChannelType.GuildText) {
+                    await interaction.channel.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed`);
+
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "author": {
+                                    "name": interaction.user?.username,
+                                    "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false }),
+                                },
+                                "title": `${assets.icons.check} Slowmode Removed`,
+                                "color": assets.colors.primary,
+                                "fields": [
+                                    {
+                                        "name": "Moderator",
+                                        "value": `<@!${interaction.user?.id}>`,
+                                        "inline": true,
+                                    },
+                                ],
+                            },
+                        ],
+                    });
+                } else {
+                    await interaction.reply({
+                        "content": "",
+                        "embeds": [
+                            {
+                                "description": `${assets.icons.xmark} Slowmode cannot be removed in this channel`,
+                                "color": assets.colors.secondary,
+                            },
+                        ],
+                        "flags": [
+                            "Ephemeral"
+                        ],
+                    });
+                };
             } else {
+                console.error(`Invalid subcommand: ${subcommand}`);
+
                 await interaction.reply({
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} Slowmode cannot be removed in this channel`,
-                            "color": assets.colors.primary,
+                            "description": `${assets.icons.xmark} Invalid subcommand`,
+                            "color": assets.colors.secondary,
                         },
                     ],
                     "flags": [
-                        "Ephemeral",
+                        "Ephemeral"
                     ],
                 });
             };
+        } catch (err) {
+            console.trace(err);
 
-            return;
+            await interaction.reply({
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred while processing the command.`,
+                "flags": [
+                    "Ephemeral"
+                ],
+            });
+        } finally {
+            if (system.logs.enabled && system.logs.actions.moderator) {
+                const date = Math.floor(Date.now() / 1000);
+
+                const emb = new EmbedBuilder({
+                    "author": {
+                        "name": interaction.user?.username,
+                        "icon_url": interaction.user?.displayAvatarURL({ forceStatic: false, size: 128 }),
+                    },
+                    "title": `${assets.icons.exclamation} Moderator`,
+                    "description": `**${interaction.user?.username}** has modified the slowmode in <#${interaction.channel?.id}>`,
+                    "color": assets.colors.tertiary,
+                    "fields": [
+                        {
+                            "name": "Action",
+                            "value": subcommand === "set" ? "Set Slowmode" : "Removed Slowmode",
+                            "inline": true,
+                        },
+                        {
+                            "name": "Channel",
+                            "value": `<#${interaction.channel?.id}>`,
+                            "inline": true,
+                        },
+                        {
+                            "name": "Time",
+                            "value": `<t:${date}:F> • <t:${date}:R>`,
+                            "inline": false,
+                        },
+                    ],
+                }).data;
+
+                if (interaction.guild) await fetch.sendLog(interaction.client, system, db, emb, interaction.guild);
+            } else {
+                console.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}`);
+            };
         };
-
-        return;
-    });
+    },
+);

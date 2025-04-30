@@ -27,13 +27,6 @@ export default {
                         },
                         "description": `${bot.assets.default.icons.update} Shard \`${shardId}\` is attempting to reconnect.`,
                         "color": bot.assets.colors.tertiary,
-                        "fields": [
-                            {
-                                "name": "Shard ID",
-                                "value": `**\`${shardId}\`**`,
-                                "inline": false,
-                            },
-                        ],
                         "footer": {
                             "text": bot.client?.user?.username ?? '',
                             "icon_url": bot.client?.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),

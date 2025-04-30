@@ -30,11 +30,6 @@ export default {
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
-                                "name": "Shard ID",
-                                "value": `**\`${shardId}\`**`,
-                                "inline": false,
-                            },
-                            {
                                 "name": "Close Code",
                                 "value": `**\`${closeEvent.code}\`**`,
                                 "inline": true,

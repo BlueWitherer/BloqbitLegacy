@@ -57,7 +57,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    if (oldMember.nickname !== newMember.nickname) await fetch.sendLog(bot, system, emb, newMember.guild);
+                    if (oldMember.nickname !== newMember.nickname) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
                     console.warn(`Logs for member nickname update not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
@@ -85,7 +85,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    if (!oldMember.isCommunicationDisabled().valueOf() && newMember.isCommunicationDisabled().valueOf()) await fetch.sendLog(bot, system, emb, newMember.guild);
+                    if (!oldMember.isCommunicationDisabled().valueOf() && newMember.isCommunicationDisabled().valueOf()) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
                     console.warn(`Logs for member timed out not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
@@ -113,7 +113,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    if (oldMember.isCommunicationDisabled().valueOf() && !newMember.isCommunicationDisabled().valueOf()) await fetch.sendLog(bot, system, emb, newMember.guild);
+                    if (oldMember.isCommunicationDisabled().valueOf() && !newMember.isCommunicationDisabled().valueOf()) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
                     console.warn(`Logs for member timeout expiring not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
@@ -141,7 +141,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    if (addedRoles.size > 0) await fetch.sendLog(bot, system, emb, newMember.guild);
+                    if (addedRoles.size > 0) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
                     console.warn(`Logs for member roles given not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
@@ -169,7 +169,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    if (removedRoles.size > 0) await fetch.sendLog(bot, system, emb, newMember.guild);
+                    if (removedRoles.size > 0) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
                     console.warn(`Logs for member roles taken not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };

@@ -43,7 +43,7 @@ export default new LogEvent(
                     }).data;
 
                     if (msg.guild) {
-                        await fetch.sendLog(bot, system, emb, msg.guild);
+                        await fetch.sendLog(bot.client, system, bot.db, emb, msg.guild);
                     } else {
                         console.error(`Guild is null for message ID ${msg.id}`);
                     };

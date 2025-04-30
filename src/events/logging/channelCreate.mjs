@@ -53,7 +53,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    await fetch.sendLog(bot, system, emb, channel.guild);
+                    await fetch.sendLog(bot.client, system, bot.db, emb, channel.guild);
                 } else {
                     console.warn(`Logs for created channels not enabled in guild '${channel.guild?.name}' (${channel.guild?.id})`);
                 };

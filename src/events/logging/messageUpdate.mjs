@@ -74,7 +74,7 @@ export default new LogEvent(
                         },
                     }).data;
 
-                    if (!newMsg.author?.bot && !(oldMsg.content === newMsg.content)) await fetch.sendLog(bot, system, emb, newMsg.guild);
+                    if (!newMsg.author?.bot && !(oldMsg.content === newMsg.content)) await fetch.sendLog(bot.client, system, bot.db, emb, newMsg.guild);
                 } else {
                     console.warn(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };
@@ -122,7 +122,7 @@ export default new LogEvent(
                         },
                     }).data;
 
-                    if (newMsg.pinned && !oldMsg.pinned) await fetch.sendLog(bot, system, emb, newMsg.guild);
+                    if (newMsg.pinned && !oldMsg.pinned) await fetch.sendLog(bot.client, system, bot.db, emb, newMsg.guild);
                 } else {
                     console.warn(`Logs for pinned messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };

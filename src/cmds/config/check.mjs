@@ -179,7 +179,7 @@ export default new Command(
                     },
                     {
                         "name": "Voice",
-                        "value": `**User joins voice channel** ${resolve.abled(system.logs.actions.vcJoin, true)}\n**User moves through voice channels** ${resolve.abled(system.logs.actions.vcMove, true)}\n**User leaves voice channel** ${resolve.abled(system.logs.actions.vcLeave, true)}`,
+                        "value": `**Join voice channel** ${resolve.abled(system.logs.actions.vcJoin, true)}\n**More through voice channels** ${resolve.abled(system.logs.actions.vcMove, true)}\n**Leave voice channel** ${resolve.abled(system.logs.actions.vcLeave, true)}`,
                         "inline": true,
                     },
                     {

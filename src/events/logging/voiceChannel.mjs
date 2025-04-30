@@ -44,7 +44,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    if (!oldState.channel && newState.channel) await fetch.sendLog(bot, system, emb, newState.guild);
+                    if (!oldState.channel && newState.channel) await fetch.sendLog(bot.client, system, bot.db, emb, newState.guild);
                 } else {
                     console.warn(`Logs for member voice chat joins not enabled in guild '${newState.member?.guild?.name}' (${oldState.guild?.id || newState.guild?.id})`);
                 };
@@ -71,7 +71,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    if (oldState.channel && !newState.channel) await fetch.sendLog(bot, system, emb, newState.guild);
+                    if (oldState.channel && !newState.channel) await fetch.sendLog(bot.client, system, bot.db, emb, newState.guild);
                 } else {
                     console.warn(`Logs for member voice chat leaves not enabled in guild '${newState.member?.guild?.name}' (${oldState.guild?.id || newState.guild?.id})`);
                 };
@@ -103,7 +103,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    if ((oldState.channel && newState.channel) && (oldState.channel?.id !== newState.channel?.id)) await fetch.sendLog(bot, system, emb, newState.guild);
+                    if ((oldState.channel && newState.channel) && (oldState.channel?.id !== newState.channel?.id)) await fetch.sendLog(bot.client, system, bot.db, emb, newState.guild);
                 } else {
                     console.warn(`Logs for member voice chat moves not enabled in guild '${newState.member?.guild?.name}' (${oldState.guild?.id || newState.guild?.id})`);
                 };

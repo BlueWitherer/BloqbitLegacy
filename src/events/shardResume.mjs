@@ -30,11 +30,6 @@ export default {
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {
-                                "name": "Shard ID",
-                                "value": `**\`${shardId}\`**`,
-                                "inline": true,
-                            },
-                            {
                                 "name": "Replayed Events",
                                 "value": `**\`${replayedEvents}\`**`,
                                 "inline": true,
@@ -48,7 +43,9 @@ export default {
                 ],
             });
         } catch (err) {
-            console.error(err);
+            console.trace(err);
         };
+
+        return;
     },
 };

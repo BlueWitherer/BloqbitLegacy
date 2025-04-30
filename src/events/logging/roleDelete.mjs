@@ -58,7 +58,7 @@ export default new LogEvent(
                         ],
                     }).data;
 
-                    await fetch.sendLog(bot, system, emb, role.guild);
+                    await fetch.sendLog(bot.client, system, bot.db, emb, role.guild);
                 } else {
                     console.warn(`Logs for deleted roles not enabled in guild '${role.guild?.name}' (${role.guild?.id})`);
                 };

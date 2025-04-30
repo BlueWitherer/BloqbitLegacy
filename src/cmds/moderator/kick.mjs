@@ -1,7 +1,8 @@
-import { ApplicationIntegrationType, InteractionContextType, PermissionsBitField } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { Command } from '../../classes.js';
+import fetch from 'modules/fetch.js';
 
 export default new Command(
     new SlashCommandBuilder()
@@ -20,48 +21,46 @@ export default new Command(
             .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
     async (interaction, assets, system, db) => {
-        const kickreason = interaction.options?.getString("reason");
-        const User = interaction.options?.getUser("user");
+        const User = interaction.options?.getUser("user", true);
         const Member = interaction.options?.getMember("user");
+        const Reason = interaction.options?.getString("reason", false) ?? 'Unspecified';
 
+        // Check if the target user is a moderator
         if (Member && Member.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.KickMembers)) {
             await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} You cannot kick another moderator`,
-                        "color": assets.colors.primary,
+                        "color": assets.colors.secondary,
                     },
                 ],
                 "flags": [
                     "Ephemeral",
                 ],
             });
-        };
+            return;
+        }
 
-        if (User) await interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${kickreason}`).catch(async (err) => {
+        try {
+            // Kick the user
+            const kickResult = await interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${Reason}`);
+
+            // Notify the moderator
             await interaction.reply({
-                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
-                "flags": [
-                    "Ephemeral",
-                ],
-            });
-            console.error(err);
-        }).then(async () => {
-            if (User) await interaction.reply({
                 "content": "",
                 "embeds": [
                     {
                         "author": {
                             "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
+                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
                         "title": `${assets.icons.noentry} User Kicked`,
                         "color": assets.colors.primary,
                         "fields": [
                             {
                                 "name": "User",
-                                "value": `**${User.username}**`,
+                                "value": `**${kickResult instanceof GuildMember ? kickResult.user?.username : User.username}**`,
                                 "inline": true,
                             },
                             {
@@ -70,44 +69,92 @@ export default new Command(
                                 "inline": true,
                             },
                             {
-                                "name": "Reason",
-                                "value": `${kickreason}`,
+                                "name": "reason",
+                                "value": `${Reason}`,
                                 "inline": false,
                             },
                         ],
                     },
                 ],
             });
-        }).then(async () => {
-            if (User) await User.send({
-                "content": "",
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${User.username}`,
-                            "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 64 })}`
+
+            try {
+                await User.send({
+                    "content": "",
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": `${User.username}`,
+                                "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
+                            },
+                            "title": `${assets.icons.noentry} Kicked`,
+                            "description": `You were __kicked__ from **${interaction.guild?.name}**`,
+                            "color": assets.colors.primary,
+                            "fields": [
+                                {
+                                    "name": `Reason`,
+                                    "value": `${Reason}`,
+                                    "inline": false,
+                                },
+                                {
+                                    "name": `Reviewed`,
+                                    "value": `<t:${Math.floor(Date.now() / 1000)}:F>`,
+                                    "inline": false,
+                                },
+                            ],
                         },
-                        "title": `${assets.icons.noentry} Kicked`,
-                        "description": `You were __kicked__ from **${interaction.guild?.name}**`,
-                        "color": assets.colors.primary,
-                        "fields": [
-                            {
-                                "name": `Reason`,
-                                "value": `${kickreason}`,
-                                "inline": false,
-                            },
-                            {
-                                "name": `Reviewed`,
-                                "value": `<t:${new Date().getDate() / 1000}:F>`,
-                                "inline": false,
-                            },
-                        ],
-                    },
+                    ],
+                });
+            } catch (err) {
+                console.warn(`Failed to send kick DM to user ${User.username} (${User.id}): ${err}`);
+            };
+        } catch (err) {
+            console.error(err);
+
+            // Notify the moderator of an error
+            await interaction.reply({
+                "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
+                "flags": [
+                    "Ephemeral",
                 ],
-            }).catch((err) => {
-                console.error(err);
-                return;
             });
-        });
+
+            return;
+        } finally {
+            if (system.logs.enabled && system.logs.actions.moderator) {
+                const date = Math.floor(Date.now() / 1000);
+
+                const emb = new EmbedBuilder({
+                    "author": {
+                        "name": interaction.user?.username,
+                        "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
+                    },
+                    "title": `${assets.icons.exclamation} Moderator`,
+                    "description": `**${interaction.user?.username}** has taken a moderation action on \`${User.username}\``,
+                    "color": assets.colors.tertiary,
+                    "fields": [
+                        {
+                            "name": "Type",
+                            "value": `Kick`,
+                            "inline": true,
+                        },
+                        {
+                            "name": "Reason",
+                            "value": `${Reason}`,
+                            "inline": true,
+                        },
+                        {
+                            "name": "Time",
+                            "value": `<t:${date}:F> • <t:${date}:R>`,
+                            "inline": false,
+                        },
+                    ],
+                }).data;
+
+                if (interaction.guild) await fetch.sendLog(interaction.client, system, db, emb, interaction.guild);
+            } else {
+                console.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}.`);
+            };
+        };
     },
 );
