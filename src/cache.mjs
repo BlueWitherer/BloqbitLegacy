@@ -62,7 +62,6 @@ export default {
                     return;
                 };
             } catch (err) {
-                console.error(err);
                 console.trace(err);
                 return;
             };
@@ -107,7 +106,6 @@ export default {
                     return;
                 };
             } catch (err) {
-                console.error(err);
                 console.trace(err);
                 return;
             };

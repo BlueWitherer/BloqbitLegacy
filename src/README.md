@@ -30,7 +30,7 @@ Bloqbit is open-source. You may take its source code directly and modify it to f
 ---
 
 ### Deployment
-###### Set up your own instance of Bloqbit!
-**[🔌 Get the server eggs](https://github.com/CubicCommunity/bloqbit-eggs)**
+###### Set up your own server instance of Bloqbit!
+**[🔌 Get the eggs](https://github.com/CubicCommunity/bloqbit-eggs)**
 
 *More coming soon...*

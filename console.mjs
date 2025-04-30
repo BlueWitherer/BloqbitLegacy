@@ -44,7 +44,7 @@ const timeStamp = () => {
  * 
  * @returns {string}
  */
-const recolorMultilineLog = (text, color) => {
+const fullRecolor = (text, color) => {
     const lines = text.split('\n');
     return lines.map(line => `${color}${line}${col.reset}`).join('\n');
 };
@@ -53,7 +53,7 @@ const recolorMultilineLog = (text, color) => {
 console.debug = (...args) => {
     const time = timeStamp();
     const text = args.join(' ');
-    const msg = recolorMultilineLog(text, col.gray);
+    const msg = fullRecolor(text, col.gray);
 
     cons.debug(`${time}${col.gray} | ${col.bold}DEBUG${col.reset}${col.gray} | ${msg}${col.reset}`);
 };
@@ -61,7 +61,7 @@ console.debug = (...args) => {
 console.log = (...args) => {
     const time = timeStamp();
     const text = args.join(' ');
-    const msg = recolorMultilineLog(text, col.white);
+    const msg = fullRecolor(text, col.white);
 
     cons.log(`${time}${col.white} | ${col.bold}LOG  ${col.reset}${col.white} | ${msg}${col.reset}`);
 };
@@ -69,7 +69,7 @@ console.log = (...args) => {
 console.info = (...args) => {
     const time = timeStamp();
     const text = args.join(' ');
-    const msg = recolorMultilineLog(text, col.cyan);
+    const msg = fullRecolor(text, col.cyan);
 
     cons.info(`${time}${col.cyan} | ${col.bold}INFO ${col.reset}${col.cyan} | ${msg}${col.reset}`);
 };
@@ -77,7 +77,7 @@ console.info = (...args) => {
 console.warn = (...args) => {
     const time = timeStamp();
     const text = args.join(' ');
-    const msg = recolorMultilineLog(text, col.yellow);
+    const msg = fullRecolor(text, col.yellow);
 
     cons.warn(`${time}${col.yellow} | ${col.bold}WARN ${col.reset}${col.yellow} | ${msg}${col.reset}`);
 };
@@ -85,7 +85,7 @@ console.warn = (...args) => {
 console.error = (...args) => {
     const time = timeStamp();
     const text = args.join(' ');
-    const msg = recolorMultilineLog(text, col.red);
+    const msg = fullRecolor(text, col.red);
 
     cons.error(`${time}${col.red} | ${col.bold}ERROR${col.reset}${col.red} | ${msg}${col.reset}`);
 };

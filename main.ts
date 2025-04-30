@@ -83,7 +83,7 @@ const start = async () => {
             });
         });
     } catch (err) {
-        console.error(`Failed to start the server: ${err}`);
+        console.trace(`Failed to start the server: ${err}`);
         process.exit(1);
     };
 };

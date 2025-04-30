@@ -109,7 +109,7 @@ export default new Command(
                 console.warn(`Failed to send kick DM to user ${User.username} (${User.id}): ${err}`);
             };
         } catch (err) {
-            console.error(err);
+            console.trace(err);
 
             // Notify the moderator of an error
             await interaction.reply({
