@@ -1,3 +1,4 @@
+import fetch from '../modules/fetch.js';
 import { BloqbitClient } from '../classes.js';
 import { Events, Guild, WebhookClient, ActivityType, PresenceUpdateStatus } from 'discord.js';
 
@@ -43,19 +44,7 @@ export default {
             });
 
             const srvs = await bot.client?.guilds?.fetch();
-
-            bot.client?.user?.setPresence({
-                "activities": [
-                    {
-                        "name": `Alpha Testing!`,
-                        "state": `Active across ${srvs.size} servers!`,
-                        "type": ActivityType.Streaming,
-                        "url": `https://www.youtube.com/@CubicCommunity/`,
-                    }
-                ],
-                "afk": false,
-                "status": PresenceUpdateStatus.Online,
-            });
+            fetch.setPresence(bot.client, `Alpha Testing!`, `Active across ${srvs.size} servers!`, PresenceUpdateStatus.Online);
         } catch (err) {
             console.trace(err);
         };

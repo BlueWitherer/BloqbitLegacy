@@ -11,6 +11,9 @@ import {
     WebhookClient,
     APIEmbed,
     Client,
+    ActivityType,
+    PresenceStatusData,
+    ClientPresence,
 } from 'discord.js';
 
 import SysAssets from '../assets.json' with { type: 'json' };
@@ -128,6 +131,29 @@ export default {
         };
 
         return;
+    },
+
+    /**
+     * Sets the bot's presence status.
+     */
+    setPresence: (client: Client, name: string, state: string, status: PresenceStatusData): ClientPresence | void => {
+        try {
+            return client.user?.setPresence({
+                "activities": [
+                    {
+                        "name": name,
+                        "state": state,
+                        "type": ActivityType.Streaming,
+                        "url": `https://www.youtube.com/@CubicCommunity/`,
+                    }
+                ],
+                "afk": false,
+                "status": status,
+            });
+        } catch (err) {
+            console.trace(err);
+            return;
+        };
     },
 
     /**

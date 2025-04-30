@@ -7,12 +7,12 @@ import fetch from '../../modules/fetch.js';
 export default new Command(
     new SlashCommandBuilder()
         .setName("clear")
-        .setDescription("Clear Amount of messages in channel.")
+        .setDescription("Clear messages in channel.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .addNumberOption((n) => n
-            .setName("Amount")
+            .setName("amount")
             .setDescription("Number of messages to clear.")
             .setMinValue(2)
             .setMaxValue(100)
