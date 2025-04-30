@@ -23,7 +23,6 @@ export default {
         try {
             return { name, value: description };
         } catch (err) {
-            console.error(err);
             console.trace(err);
 
             return {
@@ -47,7 +46,6 @@ export default {
                 warning: { name: object.name, value: object.value },
             };
         } catch (err) {
-            console.error(err);
             console.trace(err);
 
             return {
@@ -159,7 +157,7 @@ export default {
                 return "0";
             };
         } catch (err) {
-            console.error(err);
+            console.trace(err);
             return "0";
         };
     },

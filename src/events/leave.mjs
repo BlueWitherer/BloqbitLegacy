@@ -16,6 +16,8 @@ export default {
             const devWH = new WebhookClient({ url: bot.dev_wh, });
             const date = Math.floor(Date.now() / 1000);
 
+            console.debug(`Forced to leave guild ${guild.name} (${guild.id})`);
+
             await devWH.send({
                 "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
                 "embeds": [

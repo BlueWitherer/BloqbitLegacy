@@ -52,7 +52,7 @@ export default new LogEvent(
                             },
                             {
                                 "name": "Role Permissions",
-                                "value": `\`${role.permissions.toArray().join('\` | \`')}\``,
+                                "value": `\`${role.permissions?.toArray().join('\` | \`') || 'NONE'}\``,
                                 "inline": false,
                             },
                         ],

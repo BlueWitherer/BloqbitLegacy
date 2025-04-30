@@ -1,44 +1,43 @@
 import { BloqbitClient } from '../classes.js';
-
 import { Events, WebhookClient } from 'discord.js';
 
 export default {
-    name: Events.ShardError,
+    name: Events.ShardResume,
     once: false,
     /**
-     * 
-     * @param {BloqbitClient} bot 
-     * @param {Error} error
-     * @param {number} shardId 
-     * 
+     * Handles the ShardResume event.
+     *
+     * @param {BloqbitClient} bot
+     * @param {number} shardId
+     * @param {number} replayedEvents
+     *
      * @returns {Promise<void>}
      */
-    execute: async (bot, error, shardId) => {
-        const date = Math.floor(Date.now() / 1000);
+    execute: async (bot, shardId, replayedEvents) => {
         const devWH = new WebhookClient({ url: bot.dev_wh });
 
         try {
-            console.error(shardId, error, error.stack);
+            console.info(`Shard ${shardId} has resumed. Replayed events: ${replayedEvents}`);
 
             await devWH.send({
-                "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
+                "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),
                 "embeds": [
                     {
                         "author": {
-                            "name": `Shard Error`,
+                            "name": `Shard Resumed`,
                         },
-                        "description": `\`\`\`${error.message}\`\`\``,
-                        "color": bot.assets.colors.secondary,
+                        "description": `${bot.assets.default.icons.play} Shard \`${shardId}\` has resumed operation.`,
+                        "color": bot.assets.colors.primary,
                         "fields": [
                             {
                                 "name": "Shard ID",
                                 "value": `**\`${shardId}\`**`,
-                                "inline": false,
+                                "inline": true,
                             },
                             {
-                                "name": "Time of Error",
-                                "value": `<t:${date}:F> • <t:${date}:R>`,
-                                "inline": false,
+                                "name": "Replayed Events",
+                                "value": `**\`${replayedEvents}\`**`,
+                                "inline": true,
                             },
                         ],
                         "footer": {
@@ -49,9 +48,7 @@ export default {
                 ],
             });
         } catch (err) {
-            console.trace(err);
+            console.error(err);
         };
-
-        return;
     },
 };

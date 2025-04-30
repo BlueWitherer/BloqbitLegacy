@@ -44,25 +44,31 @@ export default {
                             await command.execute(interaction, bot.assets, interactionServer, bot.db);
                         };
                     } catch (err) {
-                        console.error(err);
+                        console.trace(err);
 
-                        if (interaction.replied || interaction.deferred) {
-                            await interaction.followUp({
-                                "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
-                                "flags": [
-                                    "Ephemeral",
-                                ],
-                            });
-                        } else {
-                            await interaction.reply({
-                                "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
-                                "flags": [
-                                    "Ephemeral",
-                                ],
-                            });
+                        try {
+                            if (interaction.replied || interaction.deferred) {
+                                await interaction.followUp({
+                                    "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
+                                    "flags": [
+                                        "Ephemeral",
+                                    ],
+                                });
+                            } else {
+                                await interaction.reply({
+                                    "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
+                                    "flags": [
+                                        "Ephemeral",
+                                    ],
+                                });
+                            };
+                        } catch (err) {
+                            console.trace(err);
                         };
                     } finally {
                         const date = Math.floor(Date.now() / 1000);
+
+                        console.debug(`Interaction /${interaction.commandName} (${interaction.id}) executed by ${interaction.user?.username} (${interaction.user?.id})`);
 
                         await devWH.send({
                             "avatarURL": interaction.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 128 }),

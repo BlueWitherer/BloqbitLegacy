@@ -42,7 +42,7 @@ export default new LogEvent(
                             },
                             {
                                 "name": "Channel Type",
-                                "value": `\`${channel.type}\``,
+                                "value": `\`${channel.type?.toString()}\``,
                                 "inline": true,
                             },
                             {

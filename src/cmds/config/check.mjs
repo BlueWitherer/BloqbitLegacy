@@ -174,7 +174,12 @@ export default new Command(
                     },
                     {
                         "name": "Messages",
-                        "value": `**Message deleted** ${resolve.abled(system.logs.actions.msgDel, true)}\n**Message edited** ${resolve.abled(system.logs.actions.msgUpd, true)}\n**Message pinned** ${resolve.abled(system.logs.actions.msgPin, true)}\n**Messages bulk deleted** ${resolve.abled(system.logs.actions.msgBulkDel, true)}\n**All reactions removed** ${resolve.abled(system.logs.actions.remAllReact, true)}`,
+                        "value": `**Message deleted** ${resolve.abled(system.logs.actions.msgDel, true)}\n**Message edited** ${resolve.abled(system.logs.actions.msgUpd, true)}\n**Message pinned** ${resolve.abled(system.logs.actions.msgPin, true)}\n**Messages bulk deleted** ${resolve.abled(system.logs.actions.msgBulkDel, true)}\n**Message reactions removed** ${resolve.abled(system.logs.actions.remAllReact, true)}`,
+                        "inline": true,
+                    },
+                    {
+                        "name": "Voice",
+                        "value": `**User joins voice channel** ${resolve.abled(system.logs.actions.vcJoin, true)}\n**User moves through voice channels** ${resolve.abled(system.logs.actions.vcMove, true)}\n**User leaves voice channel** ${resolve.abled(system.logs.actions.vcLeave, true)}`,
                         "inline": true,
                     },
                     {
@@ -183,7 +188,7 @@ export default new Command(
                         "inline": true,
                     },
                     {
-                        "name": "Channel created",
+                        "name": "Channels",
                         "value": `**Channel created** ${resolve.abled(system.logs.actions.channelAdd, true)}\n**Channel deleted** ${resolve.abled(system.logs.actions.channelDel, true)}`,
                         "inline": true,
                     },

@@ -40,7 +40,7 @@ export default new LogEvent(
                             },
                             {
                                 "name": "Reactions",
-                                "value": `**[${resolve.numberWithCommas(reactions.size)}]** ${reactions.map((reaction) => `<${reaction.emoji?.animated ? "a" : ""}:e:${reaction.emoji?.id}> ${reaction.countDetails?.normal}`).join(", ")}`,
+                                "value": `**[${resolve.numberWithCommas(reactions.size)}]** | ${reactions.map((reaction) => `<${reaction.emoji?.animated ? "a" : ""}:e:${reaction.emoji?.id}> ${reaction.countDetails?.normal}`).join(", ")}`,
                                 "inline": false,
                             },
                             {

@@ -3,35 +3,34 @@ import { BloqbitClient } from '../classes.js';
 import { Events, WebhookClient } from 'discord.js';
 
 export default {
-    name: Events.Error,
+    name: Events.ShardReconnecting,
     once: false,
     /**
-     * 
-     * @param {BloqbitClient} bot 
-     * @param {Error} error 
-     * 
+     *
+     * @param {BloqbitClient} bot
+     * @param {number} shardId
+     *
      * @returns {Promise<void>}
      */
-    execute: async (bot, error) => {
-        const date = Math.floor(Date.now() / 1000);
+    execute: async (bot, shardId) => {
         const devWH = new WebhookClient({ url: bot.dev_wh });
 
         try {
-            console.error(error, error.stack);
+            console.info(`Shard ${shardId} is reconnecting...`);
 
             await devWH.send({
-                "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
+                "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),
                 "embeds": [
                     {
                         "author": {
-                            "name": `Error`,
+                            "name": `Shard Reconnecting`,
                         },
-                        "description": error.message,
-                        "color": bot.assets.colors.secondary,
+                        "description": `${bot.assets.default.icons.update} Shard \`${shardId}\` is attempting to reconnect.`,
+                        "color": bot.assets.colors.tertiary,
                         "fields": [
                             {
-                                "name": "Time of Error",
-                                "value": `<t:${date}:F> • <t:${date}:R>`,
+                                "name": "Shard ID",
+                                "value": `**\`${shardId}\`**`,
                                 "inline": false,
                             },
                         ],

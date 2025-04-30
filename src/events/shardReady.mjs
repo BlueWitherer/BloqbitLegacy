@@ -3,32 +3,31 @@ import { BloqbitClient } from '../classes.js';
 import { Events, WebhookClient } from 'discord.js';
 
 export default {
-    name: Events.ShardError,
+    name: Events.ShardReady,
     once: false,
     /**
      * 
-     * @param {BloqbitClient} bot 
-     * @param {Error} error
-     * @param {number} shardId 
-     * 
+     * @param {BloqbitClient} bot
+     * @param {number} shardId
+     * @param {Set<import('discord.js').Snowflake>} unavailableGuilds
+     *
      * @returns {Promise<void>}
      */
-    execute: async (bot, error, shardId) => {
-        const date = Math.floor(Date.now() / 1000);
+    execute: async (bot, shardId, unavailableGuilds) => {
         const devWH = new WebhookClient({ url: bot.dev_wh });
 
         try {
-            console.error(shardId, error, error.stack);
+            console.info(`Shard ${shardId} is ready. Unavailable guilds: ${unavailableGuilds.size}`);
 
             await devWH.send({
-                "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
+                "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),
                 "embeds": [
                     {
                         "author": {
-                            "name": `Shard Error`,
+                            "name": `Shard Ready`,
                         },
-                        "description": `\`\`\`${error.message}\`\`\``,
-                        "color": bot.assets.colors.secondary,
+                        "description": `${bot.assets.default.icons.record} Shard \`${shardId}\` is now ready.`,
+                        "color": bot.assets.colors.primary,
                         "fields": [
                             {
                                 "name": "Shard ID",
@@ -36,9 +35,11 @@ export default {
                                 "inline": false,
                             },
                             {
-                                "name": "Time of Error",
-                                "value": `<t:${date}:F> • <t:${date}:R>`,
-                                "inline": false,
+                                "name": "Unavailable Guilds",
+                                "value": unavailableGuilds.size > 0
+                                    ? `**\`${unavailableGuilds.size}\`** guild(s) unavailable.`
+                                    : "No unavailable guilds.",
+                                "inline": true,
                             },
                         ],
                         "footer": {

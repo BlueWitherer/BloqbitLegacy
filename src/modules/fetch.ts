@@ -6,7 +6,6 @@ import {
     ChannelType,
     Guild,
     Interaction,
-    InteractionType,
     Message,
     TextChannel,
     WebhookClient,
@@ -33,31 +32,18 @@ export default {
     },
 
     /**
-     * Handles errors with interactions.
-     */
-    interactionError: async (err: string, interaction: Interaction, assets: typeof SysAssets): Promise<void> => {
-        if (interaction.type === InteractionType.ApplicationCommand) {
-            try {
-                await interaction.reply({
-                    content: `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
-                    ephemeral: true,
-                });
-                console.error(err);
-            } catch (err) {
-                console.error(err);
-                console.trace(err);
-            };
-        };
-    },
-
-    /**
      * Fetches the configuration object of the server.
      */
     fetchGuild: async (server: string, db: SaveDataClient): Promise<Config | void> => {
-        try {
-            return await cacheModule.fetch(server, db);
-        } catch (err) {
-            console.error(err);
+        if (server && db) {
+            try {
+                return await cacheModule.fetch(server, db);
+            } catch (err) {
+                console.trace(err);
+                return;
+            };
+        } else {
+            console.error(`Server or database not found`);
             return;
         };
     },
@@ -79,10 +65,15 @@ export default {
                     ephemeral: true,
                 });
             } catch (err) {
-                console.error(err);
                 console.trace(err);
             };
+
+            return;
+        } else {
+            console.error(`Command error response not sent, interaction type is not a command`);
         };
+
+        return;
     },
 
     /**
@@ -102,10 +93,13 @@ export default {
                     ephemeral: true,
                 });
             } catch (err) {
-                console.error(err);
                 console.trace(err);
             };
+        } else {
+            console.error(`Command error response not sent, interaction type is not a command`);
         };
+
+        return;
     },
 
     /**
@@ -124,12 +118,15 @@ export default {
                     await interaction.followUp({ embeds: [embed] });
                 } else {
                     await interaction.reply({ embeds: [embed] });
-                }
+                };
             } catch (err) {
-                console.error(err);
                 console.trace(err);
             };
+        } else {
+            console.error(`Command error response not sent, interaction type is not a command`);
         };
+
+        return;
     },
 
     /**
@@ -187,5 +184,7 @@ export default {
         } else {
             console.error(`Logs channel not found or incorrect type for guild ${guild.name} (${guild.id})`);
         };
+
+        return;
     },
 };

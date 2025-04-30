@@ -43,10 +43,11 @@ const start = async () => {
         process.env.MAIN_GUILDED_TOKEN || "",
     );
 
-    const SERVER_PORT = parseInt(process.env.SERVER_PORT || '3000');
+    const SERVER_IP = (process.env.SERVER_IP || process.env.APP_HOST) || "0.0.0.0";
+    const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
 
     const server = http.createServer((req, res) => {
-        console.debug(`Request details:\nURL: ${req.url}\nMethod: ${req.method}\nHeaders:`, req.headers);
+        console.debug(`Request details:\nURL: ${req.url}\nMethod: ${req.method}\nHeaders:`, req.rawHeaders);
 
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('Server is running\n');
@@ -57,16 +58,16 @@ const start = async () => {
         const bot = await src.activate(botModel, false);
 
         server.listen(SERVER_PORT, () => {
-            console.log(`Server running on port ${SERVER_PORT}`);
+            console.log(`Server running on IP address ${SERVER_IP} with port ${SERVER_PORT}`);
         });
 
         process.on('SIGINT', async () => {
             console.warn('Received SIGINT. Shutting down gracefully...');
 
             server.close(async () => {
-                console.log('Server has been stopped');
-
                 await bot.client?.destroy();
+
+                console.log('Server has been stopped');
                 process.exit(0);
             });
         });
@@ -75,9 +76,9 @@ const start = async () => {
             console.warn('Received SIGTERM. Shutting down gracefully...');
 
             server.close(async () => {
-                console.log('Server has been stopped');
-
                 await bot.client?.destroy();
+
+                console.log('Server has been stopped');
                 process.exit(0);
             });
         });

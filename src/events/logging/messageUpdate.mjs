@@ -88,7 +88,7 @@ export default new LogEvent(
                         },
                         "title": `${bot.assets.icons.info} Message Pinned`,
                         "description": `${newMsg.cleanContent}`,
-                        "color": bot.assets.colors.primary,
+                        "color": bot.assets.colors.tertiary,
                         "fields": [
                             {
                                 "name": "Jump",

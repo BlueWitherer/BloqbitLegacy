@@ -79,7 +79,7 @@ export default new LogEvent(
                             },
                             {
                                 "name": "Until",
-                                "value": `${newMember.communicationDisabledUntilTimestamp ? `<t:${Math.floor(newMember.communicationDisabledUntilTimestamp / 1000)}:R>` : "None"}`,
+                                "value": `${newMember.communicationDisabledUntilTimestamp ? `<t:${Math.floor(newMember.communicationDisabledUntilTimestamp / 1000)}:R>` : "Unknown"}`,
                                 "inline": true,
                             },
                         ],
@@ -107,7 +107,7 @@ export default new LogEvent(
                             },
                             {
                                 "name": "Since",
-                                "value": `${oldMember.communicationDisabledUntilTimestamp ? `<t:${Math.floor(oldMember.communicationDisabledUntilTimestamp / 1000)}:R>` : "None"}`,
+                                "value": `${oldMember.isCommunicationDisabled().valueOf() ? `<t:${Math.floor(Date.now() / 1000)}:R>` : "Unknown"}`,
                                 "inline": true,
                             },
                         ],
