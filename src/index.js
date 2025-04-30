@@ -72,12 +72,8 @@ export default class Bot {
                     const commandsPath = path.join(foldersPath, folder);
 
                     await loadFiles(commandsPath, async (/** @type {Command} */ command) => {
-                        if (command.data instanceof SlashCommandBuilder) {
-                            botModel.commands.push(command.data);
-                        } else {
-                            console.warn(`Command ${command.data?.name} is not of type SlashCommandOptionsOnlyBuilder and was skipped.`);
-                        };
-
+                        // @ts-ignore
+                        botModel.commands.push(command.data?.toJSON());
                         botModel.cmds.set(command.data?.name, command);
 
                         console.debug(`Loaded command /${command.data.name}`);
