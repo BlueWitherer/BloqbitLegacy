@@ -6,7 +6,8 @@ import * as url from 'url';
 
 import { Events, PresenceUpdateStatus, WebhookClient, SlashCommandBuilder } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
-import fetch from 'modules/fetch.js';
+
+import fetch from './modules/fetch.js';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

@@ -1,8 +1,8 @@
 import { MongoClient, Db } from 'mongodb';
 import { SaveDataClient, Config } from './classes.js';
 
-// MongoDB client instance
 /**
+ * MongoDB client instance
  * @type {MongoClient}
  */
 let dbClient;
