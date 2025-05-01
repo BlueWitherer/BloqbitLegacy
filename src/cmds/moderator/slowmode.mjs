@@ -15,13 +15,13 @@ export default new Command(
         .addSubcommand((c) => c
             .setName("set")
             .setDescription("Set the slowmode in this channel.")
-            .addNumberOption((n) => n
+            .addNumberOption((o) => o
                 .setName("cooldown")
                 .setDescription("Amount of time for the slowmode interval.")
                 .setMinValue(1)
                 .setMaxValue(59)
                 .setRequired(true))
-            .addNumberOption((n) => n
+            .addNumberOption((o) => o
                 .setName("time")
                 .setDescription("In what time to set the slowmode to.")
                 .addChoices(

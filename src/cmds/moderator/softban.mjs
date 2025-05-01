@@ -11,8 +11,14 @@ export default new Command(
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
-        .addUserOption(option => option.setName("user").setDescription("User to softban.").setRequired(true))
-        .addStringOption(option => option.setName("reason").setDescription("Reason for softban.").setRequired(true))
+        .addUserOption((o) => o.
+            setName("user")
+            .setDescription("User to softban.")
+            .setRequired(true))
+        .addStringOption((o) => o
+            .setName("reason")
+            .setDescription("Reason for softban.")
+            .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     async (interaction, assets, system, db) => {
         const Reason = interaction.options?.getString("reason", false) ?? 'Unspecified';
@@ -107,7 +113,7 @@ export default new Command(
                     ],
                 });
             } catch (err) {
-                console.warn(`Failed to send softban DM to user ${User.username} (${User.id}): ${err}`);
+                console.warn(`Failed to send soft-ban DM to user ${User.username} (${User.id}):`, err);
             };
         } catch (err) {
             console.trace(err);

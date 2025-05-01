@@ -9,7 +9,7 @@ export default new Command(
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
-        .addUserOption((u) => u
+        .addUserOption((o) => o
             .setName("user")
             .setDescription("The user whose profile picture to view.")
             .setRequired(false)),

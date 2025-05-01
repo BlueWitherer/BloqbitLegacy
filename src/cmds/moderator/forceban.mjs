@@ -38,6 +38,8 @@ export default new Command(
                     "Ephemeral",
                 ],
             });
+
+            return;
         };
 
         try {

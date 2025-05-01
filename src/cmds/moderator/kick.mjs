@@ -25,7 +25,6 @@ export default new Command(
         const Member = interaction.options?.getMember("user");
         const Reason = interaction.options?.getString("reason", false) ?? 'Unspecified';
 
-        // Check if the target user is a moderator
         if (Member && Member.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.KickMembers)) {
             await interaction.reply({
                 "content": "",
@@ -43,10 +42,8 @@ export default new Command(
         }
 
         try {
-            // Kick the user
             const kickResult = await interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${Reason}`);
 
-            // Notify the moderator
             await interaction.reply({
                 "content": "",
                 "embeds": [
@@ -111,7 +108,6 @@ export default new Command(
         } catch (err) {
             console.trace(err);
 
-            // Notify the moderator of an error
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
                 "flags": [

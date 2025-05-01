@@ -15,7 +15,7 @@ export default new Command(
         .addSubcommand((c) => c
             .setName("set")
             .setDescription("Change someone's nickname.")
-            .addUserOption((u) => u
+            .addUserOption((o) => o
                 .setName("user")
                 .setDescription("The user whose nickname to change.")
                 .setRequired(true))
@@ -26,7 +26,7 @@ export default new Command(
         .addSubcommand((c) => c
             .setName("block")
             .setDescription("Block a user from having their name displayed publicly.")
-            .addUserOption((u) => u
+            .addUserOption((o) => o
                 .setName("user")
                 .setDescription("The user whose nickname to block.")
                 .setRequired(true))
@@ -37,21 +37,21 @@ export default new Command(
         .addSubcommand((c) => c
             .setName("unblock")
             .setDescription("Unblock a user's name.")
-            .addUserOption((u) => u
+            .addUserOption((o) => o
                 .setName("user")
                 .setDescription("The user whose name to unblock.")
                 .setRequired(true)))
         .addSubcommand((c) => c
             .setName("view")
             .setDescription("View a user's blocked name.")
-            .addUserOption((u) => u
+            .addUserOption((o) => o
                 .setName("user")
                 .setDescription("The user whose blocked name to view.")
                 .setRequired(true)))
         .addSubcommand((c) => c
             .setName("reset")
             .setDescription("Reset a user's nickname.")
-            .addUserOption((u) => u
+            .addUserOption((o) => o
                 .setName("user")
                 .setDescription("The user whose nickname to reset.")
                 .setRequired(true))),
@@ -85,7 +85,7 @@ export default new Command(
                 const Reason = interaction.options?.getString("reason", true);
 
                 if (Member instanceof GuildMember) {
-                    await Member.setNickname("||Blocked Name||", `${interaction.user?.username} Blocked Name - ${Reason}`);
+                    await Member.setNickname("[Username Blocked]", `${interaction.user?.username} Blocked Name - ${Reason}`);
 
                     await interaction.reply({
                         "content": "",
@@ -104,7 +104,7 @@ export default new Command(
                                         "inline": false,
                                     },
                                     {
-                                        "name": "reason",
+                                        "name": "Reason",
                                         "value": Reason,
                                         "inline": true,
                                     },
@@ -128,7 +128,7 @@ export default new Command(
                                         "icon_url": `${User.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                                     },
                                     "title": `${assets.icons.exclamation} Username Blocked`,
-                                    "description": `Content in your nickname has been viewed by our moderators as rule-breaking and has been blocked. Please abide by our [rules](https://discord.com/channels/460081436637134859/460082070673424386/882029054033793025) to keep the server a safe and friendly environment.`,
+                                    "description": `Your display name in the server ${interaction.guild?.name} has been blocked.`,
                                     "color": assets.colors.primary,
                                     "fields": [
                                         {
@@ -146,7 +146,7 @@ export default new Command(
                             ],
                         });
                     } catch (err) {
-                        console.warn(`Failed to send nickname DM to user ${User.username} (${User.id}): ${err}`);
+                        console.warn(`Failed to send nickname block DM to user ${User.username} (${User.id}): ${err}`);
                     };
                 } else {
                     console.error(`Invalid user: ${User.username}`);
@@ -256,7 +256,7 @@ export default new Command(
                         ],
                     });
                 } catch (err) {
-                    console.warn(`Failed to send nickname DM to user ${User.username} (${User.id}): ${err}`);
+                    console.warn(`Failed to send nickname unblock DM to user ${User.username} (${User.id}): ${err}`);
                 };
             } else if (subcommand === "set") {
                 const User = interaction.options?.getUser("user", true);

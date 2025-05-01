@@ -9,7 +9,7 @@ export default new Command(
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
-        .addNumberOption((n) => n
+        .addNumberOption((o) => o
             .setName("time")
             .setDescription("The unix timestamp to view.")
             .setRequired(false)),

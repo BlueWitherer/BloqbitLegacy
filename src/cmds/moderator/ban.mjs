@@ -107,7 +107,7 @@ export default new Command(
                     ],
                 });
             } catch (err) {
-                console.warn(`Failed to send ban DM to user ${User.username} (${User.id})`);
+                console.warn(`Failed to send ban DM to user ${User.username} (${User.id}):`, err);
             };
         } catch (err) {
             console.trace(err);

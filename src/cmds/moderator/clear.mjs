@@ -11,13 +11,13 @@ export default new Command(
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
-        .addNumberOption((n) => n
+        .addNumberOption((o) => o
             .setName("amount")
             .setDescription("Number of messages to clear.")
             .setMinValue(2)
             .setMaxValue(100)
             .setRequired(true))
-        .addUserOption((u) => u
+        .addUserOption((o) => o
             .setName("user")
             .setDescription("User whose messages to clear.")
             .setRequired(false))
