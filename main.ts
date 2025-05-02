@@ -43,8 +43,8 @@ const start = async () => {
         process.env.MAIN_GUILDED_TOKEN || undefined,
     );
 
-    const SERVER_IP = (process.env.APP_HOST || process.env.IP || process.env.SERVER_IP) || "0.0.0.0";
-    const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
+    const SERVER_IP = (process.env.APP_HOST || process.env.REDIS_HOST || process.env.IP || process.env.SERVER_IP) || "0.0.0.0";
+    const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.REDIS_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
 
     const server = http.createServer(async (req, res) => {
         console.debug(`Request details:\nURL: ${req.url}\nMethod: ${req.method}\nHeaders:`, req.rawHeaders.join(',\n'));
@@ -65,7 +65,7 @@ const start = async () => {
 
         setInterval(async () => {
             try {
-                await cacheModule.flushDirtyCacheToDatabase(botModel.db);
+                await cacheModule.flushToDb(botModel.db);
             } catch (err) {
                 console.trace(err);
             } finally {
@@ -79,7 +79,7 @@ const start = async () => {
             try {
                 server.close(async () => {
                     try {
-                        await cacheModule.flushDirtyCacheToDatabase(botModel.db);
+                        await cacheModule.flushToDb(botModel.db);
                         await bot.client?.destroy();
                     } catch (err) {
                         console.trace(err);
@@ -100,7 +100,7 @@ const start = async () => {
             try {
                 server.close(async () => {
                     try {
-                        await cacheModule.flushDirtyCacheToDatabase(botModel.db);
+                        await cacheModule.flushToDb(botModel.db);
                         await bot.client?.destroy();
                     } catch (err) {
                         console.trace(err);

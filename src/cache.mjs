@@ -1,6 +1,6 @@
 import { SaveDataClient, Config } from './classes.js';
 
-import Redis from 'ioredis';
+import NodeCache from 'node-cache';
 import { MongoClient, Db } from 'mongodb';
 
 /**
@@ -10,10 +10,10 @@ import { MongoClient, Db } from 'mongodb';
 let dbClient;
 
 /**
- * Redis client instance
- * @type {Redis}
+ * Local memory cache
+ * @type {NodeCache}
  */
-const redisClient = new Redis();
+const cache = new NodeCache({ stdTTL: 3600, checkperiod: 600 });
 
 /**
  * Get MongoDB client instance
@@ -22,7 +22,7 @@ const redisClient = new Redis();
  * 
  * @returns {Promise<Db | void>} MongoDB client instance
  */
-const getDatabaseClient = async (mongoUri) => {
+const getDbClient = async (mongoUri) => {
     if (mongoUri) {
         if (!dbClient) {
             dbClient = new MongoClient(mongoUri);
@@ -43,30 +43,30 @@ const getDatabaseClient = async (mongoUri) => {
  * 
  * @returns {Promise<void>}
  */
-const flushDirtyCacheToDatabase = async (db) => {
+const flushToDb = async (db) => {
     try {
-        const dirtyKeys = await redisClient.keys('server:*:dirty');
+        const dirtyKeys = cache.keys().filter(key => key.endsWith(":dirty"));
 
-        for (const dirtyKey of dirtyKeys) {
-            const serverKey = dirtyKey.replace(':dirty', '');
-            const cachedData = await redisClient.get(serverKey);
+        for (const dKey of dirtyKeys) {
+            const serverKey = dKey.replace(":dirty", "");
+            const cachedData = cache.get(serverKey);
 
             if (cachedData) {
-                const system = JSON.parse(cachedData);
-                const database = await getDatabaseClient(db.mongo_uri);
+                const system = cachedData;
+                const database = await getDbClient(db.mongo_uri);
 
                 if (database) {
                     const collection = database.collection("servers");
 
-                    console.debug(`[I] Flushing dirty cache for server of ID ${system.server} to database...`);
+                    console.debug(`[I] Flushing dirty cache for server ID ${system.server} to database...`);
                     await collection.updateOne(
                         { server: system.server },
                         { $set: system },
                         { upsert: true },
                     );
 
-                    await redisClient.del(dirtyKey);
-                    console.info(`[O] Dirty cache for server of ID ${system.server} flushed to database`);
+                    cache.del(dKey);
+                    console.info(`[O] Dirty cache for server ID ${system.server} flushed to database`);
                 } else {
                     console.error(`[X] Database connection failed`);
                 };
@@ -91,26 +91,25 @@ export default {
     fetch: async (server, db) => {
         if (server && db) {
             try {
-                const cachedData = await redisClient.get(`server:${server}`);
+                const cachedData = cache.get(`server:${server}`);
 
                 if (cachedData) {
                     console.debug(`[I] Cache hit for server ID ${server}`);
-                    return new Config(JSON.parse(cachedData));
+                    return new Config(cachedData);
                 } else {
-                    const database = await getDatabaseClient(db.mongo_uri);
+                    const database = await getDbClient(db.mongo_uri);
 
                     if (database) {
                         const collection = database.collection("servers");
 
                         console.debug(`[I] Querying database for server ID ${server}...`);
-                        const found = await collection.findOne({ server: server });
+                        const found = await collection.findOne({ server });
 
                         if (found) {
                             const { _id, ...conf } = found;
                             const res = new Config(conf);
 
-                            await redisClient.set(`server:${server}`, JSON.stringify(conf), 'EX', 3600);
-
+                            cache.set(`server:${server}`, conf);
                             console.info(`[O] Settings for server ${server} found and cached`);
                             return res;
                         } else {
@@ -143,7 +142,7 @@ export default {
     update: async (system, db) => {
         if (system && db) {
             try {
-                const database = await getDatabaseClient(db.mongo_uri);
+                const database = await getDbClient(db.mongo_uri);
                 if (database) {
                     const collection = database.collection("servers");
 
@@ -160,8 +159,8 @@ export default {
                         console.info(`[O] Settings for server ${system.server} updated`);
                     };
 
-                    await redisClient.set(`server:${system.server}`, JSON.stringify(system), 'EX', 3600);
-                    await redisClient.set(`server:${system.server}:dirty`, 'true', 'EX', 3600);
+                    cache.set(`server:${system.server}`, system);
+                    cache.set(`server:${system.server}:dirty`, true);
                     console.debug(`[II] Cache updated and marked as dirty for server ID ${system.server}`);
 
                     return system;
@@ -179,6 +178,6 @@ export default {
         };
     },
 
-    getDatabaseClient,
-    flushDirtyCacheToDatabase,
+    getDbClient,
+    flushToDb,
 };
