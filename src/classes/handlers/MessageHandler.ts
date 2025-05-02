@@ -1,10 +1,11 @@
-import { Message, Client, Events } from 'discord.js';
-
-import { Config, SaveDataClient } from '../../classes.js';
+import Config from '../Configuration.js';
+import SaveDataClient from '../SaveDataClient.js';
 
 import cache from '../../cache.mjs';
 
 import moderation from '../../modules/moderation.js';
+
+import { Message, Client, Events } from 'discord.js';
 
 class MessageHandler {
     /**
@@ -46,8 +47,10 @@ class MessageHandler {
                 if (liF.punishment >= 1) return await moderation.punish(liF.punishment, message, liF.warning.value);
                 if (blF.punishment >= 1) return await moderation.punish(blF.punishment, message, blF.warning.value);
                 if (dtF.punishment >= 1) return await moderation.punish(dtF.punishment, message, dtF.warning.value);
-            }
-        }
+            };
+        } else {
+            console.warn("Message for handler not in a server, ignoring...");
+        };
     };
 }
 

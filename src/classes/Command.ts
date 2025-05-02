@@ -1,6 +1,9 @@
-import { SaveDataClient, Config } from '../classes.js';
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, SlashCommandOptionsOnlyBuilder } from 'discord.js';
+import Config from './Configuration.js';
+import SaveDataClient from './SaveDataClient.js';
+
 import SysAssets from '../assets.json' with { type: 'json' };
+
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, SlashCommandOptionsOnlyBuilder } from 'discord.js';
 
 /**
  * Type definition for the execute function of a command.

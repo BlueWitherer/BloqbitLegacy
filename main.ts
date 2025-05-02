@@ -40,14 +40,14 @@ const start = async () => {
         process.env.MAIN_SECRET || (() => { throw new Error('MAIN_SECRET is not defined'); })(),
         process.env.MAIN_LOG_WH || (() => { throw new Error('MAIN_LOG_WH is not defined'); })(),
         process.env.MONGO_URI || (() => { throw new Error('MONGO_URI is not defined'); })(),
-        process.env.MAIN_GUILDED_TOKEN || "",
+        process.env.MAIN_GUILDED_TOKEN || undefined,
     );
 
     const SERVER_IP = (process.env.APP_HOST || process.env.IP || process.env.SERVER_IP) || "0.0.0.0";
     const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
 
-    const server = http.createServer((req, res) => {
-        console.debug(`Request details:\nURL: ${req.url}\nMethod: ${req.method}\nHeaders:`, req.rawHeaders);
+    const server = http.createServer(async (req, res) => {
+        console.debug(`Request details:\nURL: ${req.url}\nMethod: ${req.method}\nHeaders:`, req.rawHeaders.join(',\n'));
 
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('Server is running\n');

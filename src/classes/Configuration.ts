@@ -11,16 +11,20 @@ export class Roles {
         this.blacklist = blacklist;
         this.mute = mute;
         this.member = member;
-    }
-}
+
+        return this;
+    };
+};
 
 export class WelcomeMessage {
     content: string;
 
     constructor({ content = "" }: Partial<WelcomeMessage>) {
         this.content = content;
-    }
-}
+
+        return this;
+    };
+};
 
 export class Welcome {
     enabled: boolean;
@@ -35,8 +39,10 @@ export class Welcome {
         this.channel = channel;
         this.webhook = webhook;
         this.message = message;
-    }
-}
+
+        return this;
+    };
+};
 
 export class Filter {
     enabled: boolean;
@@ -59,8 +65,10 @@ export class Filter {
         this.keywords = keywords;
         this.keywordsSuper = keywordsSuper;
         this.logs = logs;
-    }
-}
+
+        return this;
+    };
+};
 
 export class Verification {
     enabled: boolean;
@@ -71,8 +79,10 @@ export class Verification {
         this.enabled = enabled;
         this.channel = channel;
         this.logs = logs;
-    }
-}
+
+        return this;
+    };
+};
 
 export class AntiRaid {
     text: Filter;
@@ -83,8 +93,10 @@ export class AntiRaid {
         this.text = text;
         this.alts = alts;
         this.logs = logs;
-    }
-}
+
+        return this;
+    };
+};
 
 export class AutoMod {
     enabled: boolean;
@@ -129,8 +141,10 @@ export class AutoMod {
         this.antialt = antialt;
         this.antichain = antichain;
         this.antiping = antiping;
-    }
-}
+
+        return this;
+    };
+};
 
 export class LogsActions {
     autoMod: boolean;
@@ -214,8 +228,10 @@ export class LogsActions {
         this.vcMove = vcMove;
         this.vcLeave = vcLeave;
         this.rolesUpd = rolesUpd;
-    }
-}
+
+        return this;
+    };
+};
 
 export class Logs {
     enabled: boolean;
@@ -232,8 +248,10 @@ export class Logs {
         this.webhook = webhook;
         this.inbox = inbox;
         this.actions = actions;
-    }
-}
+
+        return this;
+    };
+};
 
 export class Leveling {
     enabled: boolean;
@@ -246,8 +264,10 @@ export class Leveling {
         this.chat = chat;
         this.levelMax = levelMax;
         this.levelRewarding = levelRewarding;
-    }
-}
+
+        return this;
+    };
+};
 
 export class Economy {
     enabled: boolean;
@@ -260,8 +280,10 @@ export class Economy {
         this.currency = currency;
         this.gambling = gambling;
         this.drops = drops;
-    }
-}
+
+        return this;
+    };
+};
 
 export class Cleverbot {
     enabled: boolean;
@@ -278,8 +300,10 @@ export class Cleverbot {
         this.roles = roles;
         this.filterMode = filterMode;
         this.permFilterMode = permFilterMode;
-    }
-}
+
+        return this;
+    };
+};
 
 export default class Config {
     version: number;
@@ -327,5 +351,7 @@ export default class Config {
         this.leveling = leveling;
         this.economy = economy;
         this.cleverbot = cleverbot;
-    }
-}
+
+        return this;
+    };
+};

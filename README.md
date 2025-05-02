@@ -32,8 +32,6 @@ Need it? Got it.
 ###### What's new?!
 **[📜 View the latest updates and patches](changelog.md)**
 
----
-
 ### Issues
 ###### What's wrong?!
 **[⚠️ Report a problem with the bot](../../issues/)**

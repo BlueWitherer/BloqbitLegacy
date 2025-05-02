@@ -1,3 +1,4 @@
+import Command from './Command.js';
 import SaveDataClient from './SaveDataClient.js';
 
 import SysAssets from '../assets.json' with { type: 'json' };
@@ -6,8 +7,6 @@ import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { REST } from '@discordjs/rest';
 
 import * as Guilded from 'guilded.js';
-
-import { Command } from '../classes.js';
 
 const parsedSysAssets = JSON.parse(JSON.stringify(SysAssets));
 

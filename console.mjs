@@ -1,4 +1,4 @@
-// Save original console methods
+// save og console methods
 const cons = {
     debug: console.debug,
     log: console.log,
@@ -7,19 +7,18 @@ const cons = {
     error: console.error,
 };
 
-// ANSI escape codes for coloring
 const col = {
-    gray: '\x1b[90m',     // Gray for debug
-    white: '\x1b[37m',    // White for log
-    cyan: '\x1b[36m',     // Cyan for info
-    yellow: '\x1b[93m',   // Yellow for warn
-    red: '\x1b[91m',      // Red for error
-    bold: '\x1b[1m',      // Bold text
-    reset: '\x1b[0m',     // Reset to default
+    gray: '\x1b[90m',     // debug
+    white: '\x1b[37m',    // log
+    cyan: '\x1b[36m',     // info
+    yellow: '\x1b[93m',   // warn
+    red: '\x1b[91m',      // error
+    bold: '\x1b[1m',      // tag
+    reset: '\x1b[0m',     // default
 };
 
 /**
- * Function to format time
+ * Format time
  * 
  * @returns {string}
  */
@@ -37,16 +36,16 @@ const timeStamp = () => {
 };
 
 /**
- * Helper to recolor multi-line logs
+ * Recolor multi-line logs
  * 
- * @param {string} text 
- * @param {string} color 
+ * @param {string} t Text to recolor
+ * @param {string} c Color code to apply
  * 
  * @returns {string}
  */
-const fullRecolor = (text, color) => {
-    const lines = text.split('\n');
-    return lines.map(line => `${color}${line}${col.reset}`).join('\n');
+const fullRecolor = (t, c) => {
+    const lines = t.split('\n');
+    return lines.map((ln) => `${c}${ln}${col.reset}`).join('\n');
 };
 
 // Override console methods to add tags, timestamps, and recoloring
