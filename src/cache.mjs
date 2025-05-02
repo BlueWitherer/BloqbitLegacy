@@ -1,5 +1,7 @@
-import { MongoClient, Db } from 'mongodb';
 import { SaveDataClient, Config } from './classes.js';
+
+import Redis from 'ioredis';
+import { MongoClient, Db } from 'mongodb';
 
 /**
  * MongoDB client instance
@@ -8,9 +10,17 @@ import { SaveDataClient, Config } from './classes.js';
 let dbClient;
 
 /**
+ * Redis client instance
+ * @type {Redis}
+ */
+const redisClient = new Redis();
+
+/**
+ * Get MongoDB client instance
+ * 
  * @param {string} mongoUri MongoDB URI
  * 
- * @returns {Promise<Db | void>} MongoDB database instance
+ * @returns {Promise<Db | void>} MongoDB client instance
  */
 const getDatabaseClient = async (mongoUri) => {
     if (mongoUri) {
@@ -26,9 +36,52 @@ const getDatabaseClient = async (mongoUri) => {
     };
 };
 
+/**
+ * Flush dirty cache data to the database.
+ * 
+ * @param {SaveDataClient} db Bot database model
+ * 
+ * @returns {Promise<void>}
+ */
+const flushDirtyCacheToDatabase = async (db) => {
+    try {
+        const dirtyKeys = await redisClient.keys('server:*:dirty');
+
+        for (const dirtyKey of dirtyKeys) {
+            const serverKey = dirtyKey.replace(':dirty', '');
+            const cachedData = await redisClient.get(serverKey);
+
+            if (cachedData) {
+                const system = JSON.parse(cachedData);
+                const database = await getDatabaseClient(db.mongo_uri);
+
+                if (database) {
+                    const collection = database.collection("servers");
+
+                    console.debug(`[I] Flushing dirty cache for server of ID ${system.server} to database...`);
+                    await collection.updateOne(
+                        { server: system.server },
+                        { $set: system },
+                        { upsert: true },
+                    );
+
+                    await redisClient.del(dirtyKey);
+                    console.info(`[O] Dirty cache for server of ID ${system.server} flushed to database`);
+                } else {
+                    console.error(`[X] Database connection failed`);
+                };
+            } else {
+                console.error(`[X] No cached data found for ${serverKey}`);
+            };
+        };
+    } catch (err) {
+        console.trace(err);
+    };
+};
+
 export default {
     /**
-     * Fetch settings for a server from database.
+     * Fetch settings for a server from cache or database.
      * 
      * @param {string} server Server ID for query
      * @param {SaveDataClient} db Bot database model
@@ -38,28 +91,36 @@ export default {
     fetch: async (server, db) => {
         if (server && db) {
             try {
-                const database = await getDatabaseClient(db.mongo_uri);
+                const cachedData = await redisClient.get(`server:${server}`);
 
-                if (database) {
-                    const collection = database.collection("servers");
-
-                    console.debug(`[I] Querying database for server ID ${server}...`);
-                    const found = await collection.findOne({ server: server });
-
-                    if (found) {
-                        const { _id, ...conf } = found;
-
-                        const res = new Config(conf);
-
-                        console.info(`[O] Settings for server ${server} found`);
-                        return res;
-                    } else {
-                        console.error(`[X] Settings for server ${server} not found`);
-                        return new Config({});
-                    };
+                if (cachedData) {
+                    console.debug(`[I] Cache hit for server ID ${server}`);
+                    return new Config(JSON.parse(cachedData));
                 } else {
-                    console.error(`[X] Database connection failed`);
-                    return;
+                    const database = await getDatabaseClient(db.mongo_uri);
+
+                    if (database) {
+                        const collection = database.collection("servers");
+
+                        console.debug(`[I] Querying database for server ID ${server}...`);
+                        const found = await collection.findOne({ server: server });
+
+                        if (found) {
+                            const { _id, ...conf } = found;
+                            const res = new Config(conf);
+
+                            await redisClient.set(`server:${server}`, JSON.stringify(conf), 'EX', 3600);
+
+                            console.info(`[O] Settings for server ${server} found and cached`);
+                            return res;
+                        } else {
+                            console.error(`[X] Settings for server ${server} not found`);
+                            return new Config({});
+                        };
+                    } else {
+                        console.error(`[X] Database connection failed`);
+                        return;
+                    };
                 };
             } catch (err) {
                 console.trace(err);
@@ -72,7 +133,7 @@ export default {
     },
 
     /**
-     * Update settings for a server.
+     * Update settings for a server and invalidate cache.
      * 
      * @param {Config} system Object for query
      * @param {SaveDataClient} db Bot database model
@@ -83,7 +144,6 @@ export default {
         if (system && db) {
             try {
                 const database = await getDatabaseClient(db.mongo_uri);
-
                 if (database) {
                     const collection = database.collection("servers");
 
@@ -100,6 +160,10 @@ export default {
                         console.info(`[O] Settings for server ${system.server} updated`);
                     };
 
+                    await redisClient.set(`server:${system.server}`, JSON.stringify(system), 'EX', 3600);
+                    await redisClient.set(`server:${system.server}:dirty`, 'true', 'EX', 3600);
+                    console.debug(`[II] Cache updated and marked as dirty for server ID ${system.server}`);
+
                     return system;
                 } else {
                     console.error(`[X] Database connection failed`);
@@ -114,4 +178,7 @@ export default {
             return;
         };
     },
+
+    getDatabaseClient,
+    flushDirtyCacheToDatabase,
 };

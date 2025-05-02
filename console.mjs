@@ -62,7 +62,7 @@ console.log = (...args) => {
     const text = args.join(' ');
     const msg = fullRecolor(text, col.white);
 
-    cons.log(`${time}${col.white} | ${col.bold}LOG  ${col.reset}${col.white} | ${msg}${col.reset}`);
+    cons.log(`${time}${col.white} | ${col.bold} LOG ${col.reset}${col.white} | ${msg}${col.reset}`);
 };
 
 console.info = (...args) => {
@@ -70,7 +70,7 @@ console.info = (...args) => {
     const text = args.join(' ');
     const msg = fullRecolor(text, col.cyan);
 
-    cons.info(`${time}${col.cyan} | ${col.bold}INFO ${col.reset}${col.cyan} | ${msg}${col.reset}`);
+    cons.info(`${time}${col.cyan} | ${col.bold} INFO${col.reset}${col.cyan} | ${msg}${col.reset}`);
 };
 
 console.warn = (...args) => {
@@ -78,7 +78,7 @@ console.warn = (...args) => {
     const text = args.join(' ');
     const msg = fullRecolor(text, col.yellow);
 
-    cons.warn(`${time}${col.yellow} | ${col.bold}WARN ${col.reset}${col.yellow} | ${msg}${col.reset}`);
+    cons.warn(`${time}${col.yellow} | ${col.bold} WARN${col.reset}${col.yellow} | ${msg}${col.reset}`);
 };
 
 console.error = (...args) => {

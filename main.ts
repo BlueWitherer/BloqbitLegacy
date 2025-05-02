@@ -54,6 +54,8 @@ const start = async () => {
     });
 
     try {
+        const cacheModule = (await import('./src/cache.mjs')).default;
+
         const src = new Bot();
         const bot = await src.activate(botModel, false);
 
@@ -61,29 +63,59 @@ const start = async () => {
             console.log(`Server running on IP address ${SERVER_IP} with port ${SERVER_PORT}`);
         });
 
+        setInterval(async () => {
+            try {
+                await cacheModule.flushDirtyCacheToDatabase(botModel.db);
+            } catch (err) {
+                console.trace(err);
+            } finally {
+                console.debug('Cache flushed to database');
+            };
+        }, 300000); // 5 min
+
         process.on('SIGINT', async () => {
             console.warn('Received SIGINT. Shutting down gracefully...');
 
-            server.close(async () => {
-                await bot.client?.destroy();
-
-                console.log('Server has been stopped');
-                process.exit(0);
-            });
+            try {
+                server.close(async () => {
+                    try {
+                        await cacheModule.flushDirtyCacheToDatabase(botModel.db);
+                        await bot.client?.destroy();
+                    } catch (err) {
+                        console.trace(err);
+                    } finally {
+                        console.log('Server has been stopped');
+                        process.exit(0);
+                    };
+                });
+            } catch (err) {
+                console.trace(err);
+                process.exit(1);
+            };
         });
 
         process.on('SIGTERM', async () => {
             console.warn('Received SIGTERM. Shutting down gracefully...');
 
-            server.close(async () => {
-                await bot.client?.destroy();
-
-                console.log('Server has been stopped');
-                process.exit(0);
-            });
+            try {
+                server.close(async () => {
+                    try {
+                        await cacheModule.flushDirtyCacheToDatabase(botModel.db);
+                        await bot.client?.destroy();
+                    } catch (err) {
+                        console.trace(err);
+                    } finally {
+                        console.log('Server has been stopped');
+                        process.exit(0);
+                    };
+                });
+            } catch (err) {
+                console.trace(err);
+                process.exit(1);
+            };
         });
     } catch (err) {
-        console.trace(`Failed to start the server: ${err}`);
+        console.trace(err);
         process.exit(1);
     };
 };
