@@ -31,6 +31,10 @@ Further development of manual operations will be prioritized before automated op
 
 ---
 
+### Deployment
+###### Set up your own server instance of Bloqbit!
+**[🔌 Get the eggs](https://www.github.com/CubicCommunity/bloqbit-eggs/)**
+
 ### Changelog
 ###### What's new?!
 **[📜 View the latest updates and patches](changelog.md)**

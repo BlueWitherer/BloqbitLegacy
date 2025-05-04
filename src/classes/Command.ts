@@ -1,4 +1,4 @@
-import Config from './Configuration.js';
+import Config from './Config.js';
 import SaveDataClient from './SaveDataClient.js';
 
 import SysAssets from '../assets.json' with { type: 'json' };

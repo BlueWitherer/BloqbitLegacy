@@ -1,6 +1,6 @@
 import BloqbitClient from './classes/BloqbitClient.ts';
 import Command from './classes/Command.ts';
-import Config from './classes/Configuration.ts';
+import Config from './classes/Config.ts';
 import LogEvent from './classes/LogEvent.ts';
 import SaveDataClient from './classes/SaveDataClient.ts';
 
