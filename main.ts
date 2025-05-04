@@ -47,8 +47,8 @@ const start = async () => {
     const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.REDIS_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
 
     const server = http.createServer(async (req, res) => {
-        console.debug(`Request details:\n     URL: ${req.url}\n     Method: ${req.method}\n     Headers:`, req.rawHeaders.map((h, i) => {
-            return i % 2 === 0 ? `\n          ${h}: ${req.rawHeaders[i + 1]}` : null;
+        console.debug(`Request details:\n      URL: ${req.url}\n      Method: ${req.method}\n      Headers:`, req.rawHeaders.map((h, i) => {
+            return i % 2 === 0 ? `\n            ${h}: ${req.rawHeaders[i + 1]}` : null;
         }).filter((h) => h !== null));
 
         res.writeHead(200, { 'Content-Type': 'text/plain' });

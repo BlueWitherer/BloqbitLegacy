@@ -28,7 +28,6 @@ export default class Bot {
     activate = async (botModel, testMode) => {
         if (testMode) console.log("Test mode active.");
 
-        // @ts-ignore
         botModel.client?.on(Events.ClientReady, async (client) => {
             fetch.setPresence(client, `Starting...`, `Bot is starting up, please wait...`, PresenceUpdateStatus.DoNotDisturb);
 
@@ -56,12 +55,12 @@ export default class Bot {
                         } catch (err) {
                             console.error(`Failed to load file ${file}:`, err);
                             if (testMode) process.exit(1);
-                        }
-                    }
+                        };
+                    };
                 } catch (err) {
                     console.error(`Error loading files from ${directory}:`, err);
                     process.exit(1);
-                }
+                };
             };
 
             try {
@@ -189,7 +188,7 @@ export default class Bot {
                     ],
                 });
 
-                console.log(`Bloqbit running as bot user @${client.user?.username} (${client.user?.id}) is online`);
+                console.log(`Bloqbit is online - running as bot user @${client.user?.username} (${client.user?.id})`);
             };
         });
 

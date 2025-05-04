@@ -19,7 +19,7 @@ export class Roles {
 export class WelcomeMessage {
     content: string;
 
-    constructor({ content = "" }: Partial<WelcomeMessage>) {
+    constructor({ content = "Welcome, %user%!" }: Partial<WelcomeMessage>) {
         this.content = content;
 
         return this;
@@ -38,7 +38,7 @@ export class Welcome {
         this.webhookEnabled = webhookEnabled;
         this.channel = channel;
         this.webhook = webhook;
-        this.message = message;
+        this.message = new WelcomeMessage(message);
 
         return this;
     };
@@ -90,7 +90,7 @@ export class AntiRaid {
     logs: string;
 
     constructor({ text = new Filter({}), alts = { enabled: false, punishment: 0, untilPunish: 0, timeThreshold: 0 }, logs = "" }: Partial<AntiRaid>) {
-        this.text = text;
+        this.text = new Filter(text);
         this.alts = alts;
         this.logs = logs;
 
@@ -126,23 +126,21 @@ export class AutoMod {
         antiraid = new AntiRaid({}),
         antialt = new Filter({}),
         antichain = new Filter({}),
-        antiping = new Filter({})
+        antiping = new Filter({}),
     }: Partial<AutoMod>) {
         this.enabled = enabled;
-        this.verification = verification;
-        this.swearFilter = swearFilter;
-        this.linkFilter = linkFilter;
-        this.inviteFilter = inviteFilter;
-        this.dupetextFilter = dupetextFilter;
-        this.massmentionFilter = massmentionFilter;
-        this.nicknameFilter = nicknameFilter;
-        this.antispam = antispam;
-        this.antiraid = antiraid;
-        this.antialt = antialt;
-        this.antichain = antichain;
-        this.antiping = antiping;
-
-        return this;
+        this.verification = new Verification(verification);
+        this.swearFilter = new Filter(swearFilter);
+        this.linkFilter = new Filter(linkFilter);
+        this.inviteFilter = new Filter(inviteFilter);
+        this.dupetextFilter = new Filter(dupetextFilter);
+        this.massmentionFilter = new Filter(massmentionFilter);
+        this.nicknameFilter = new Filter(nicknameFilter);
+        this.antispam = new Filter(antispam);
+        this.antiraid = new AntiRaid(antiraid);
+        this.antialt = new Filter(antialt);
+        this.antichain = new Filter(antichain);
+        this.antiping = new Filter(antiping);
     };
 };
 
@@ -151,7 +149,6 @@ export class LogsActions {
     moderator: boolean;
     invites: boolean;
     ban: boolean;
-    kick: boolean;
     join: boolean;
     leave: boolean;
     nickname: boolean;
@@ -165,21 +162,17 @@ export class LogsActions {
     rolesRem: boolean;
     rolesAssign: boolean;
     rolesUnassign: boolean;
-    serverUpd: boolean;
     channelDel: boolean;
-    channelUpd: boolean;
     channelAdd: boolean;
     vcJoin: boolean;
     vcMove: boolean;
     vcLeave: boolean;
-    rolesUpd: boolean;
 
     constructor({
         autoMod = true,
         moderator = true,
         invites = false,
         ban = false,
-        kick = false,
         join = false,
         leave = false,
         nickname = false,
@@ -193,20 +186,16 @@ export class LogsActions {
         rolesRem = false,
         rolesAssign = false,
         rolesUnassign = false,
-        serverUpd = false,
         channelDel = false,
-        channelUpd = false,
         channelAdd = false,
         vcJoin = false,
         vcMove = false,
         vcLeave = false,
-        rolesUpd = false
     }: Partial<LogsActions>) {
         this.autoMod = autoMod;
         this.moderator = moderator;
         this.invites = invites;
         this.ban = ban;
-        this.kick = kick;
         this.join = join;
         this.leave = leave;
         this.nickname = nickname;
@@ -220,14 +209,11 @@ export class LogsActions {
         this.rolesRem = rolesRem;
         this.rolesAssign = rolesAssign;
         this.rolesUnassign = rolesUnassign;
-        this.serverUpd = serverUpd;
         this.channelDel = channelDel;
-        this.channelUpd = channelUpd;
         this.channelAdd = channelAdd;
         this.vcJoin = vcJoin;
         this.vcMove = vcMove;
         this.vcLeave = vcLeave;
-        this.rolesUpd = rolesUpd;
 
         return this;
     };
@@ -247,21 +233,29 @@ export class Logs {
         this.channel = channel;
         this.webhook = webhook;
         this.inbox = inbox;
-        this.actions = actions;
+        this.actions = new LogsActions(actions);
 
         return this;
     };
 };
 
+export interface XP {
+    min: number,
+    max: number,
+    roles: string[],
+    channels: string[],
+    filterMode: number,
+};
+
 export class Leveling {
     enabled: boolean;
-    chat: { min: number; max: number; roles: string[]; channels: string[]; filterMode: number };
+    xp: XP;
     levelMax: number;
     levelRewarding: boolean;
 
-    constructor({ enabled = true, chat = { min: 1, max: 25, roles: [], channels: [], filterMode: 0 }, levelMax = 100, levelRewarding = true }: Partial<Leveling>) {
+    constructor({ enabled = true, xp = { min: 1, max: 25, roles: [], channels: [], filterMode: 0 }, levelMax = 100, levelRewarding = true }: Partial<Leveling>) {
         this.enabled = enabled;
-        this.chat = chat;
+        this.xp = xp;
         this.levelMax = levelMax;
         this.levelRewarding = levelRewarding;
 
@@ -269,11 +263,30 @@ export class Leveling {
     };
 };
 
+export interface Cash {
+    name: string,
+    namePlural: string,
+    symbol: string,
+    image: string,
+};
+
+export interface Gambling {
+    enabled: boolean,
+    min: 5,
+    max: 100,
+};
+
+export interface Drops {
+    enabled: boolean,
+    channels: string[],
+    filterMode: number,
+};
+
 export class Economy {
     enabled: boolean;
-    currency: { name: string; namePlural: string; symbol: string; image: string };
-    gambling: { enabled: boolean; min: number; max: number };
-    drops: { enabled: boolean; channels: string[]; filterMode: number };
+    currency: Cash;
+    gambling: Gambling;
+    drops: Drops;
 
     constructor({ enabled = false, currency = { name: "Cash", namePlural: "Cash", symbol: "$", image: "" }, gambling = { enabled: false, min: 5, max: 100 }, drops = { enabled: true, channels: [], filterMode: 1 } }: Partial<Economy>) {
         this.enabled = enabled;
@@ -344,13 +357,13 @@ export default class Config {
         this.activeExpiry = activeExpiry;
         this.customActive = customActive;
         this.customBotToken = customBotToken;
-        this.roles = roles;
-        this.welcome = welcome;
-        this.automod = automod;
-        this.logs = logs;
-        this.leveling = leveling;
-        this.economy = economy;
-        this.cleverbot = cleverbot;
+        this.roles = new Roles(roles);
+        this.welcome = new Welcome(welcome);
+        this.automod = new AutoMod(automod);
+        this.logs = new Logs(logs);
+        this.leveling = new Leveling(leveling);
+        this.economy = new Economy(economy);
+        this.cleverbot = new Cleverbot(cleverbot);
 
         return this;
     };

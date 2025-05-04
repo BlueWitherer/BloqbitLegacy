@@ -57,7 +57,7 @@ export default {
      * 
      * @returns Punishment name.
      */
-    punishmentType: (punish: number): string => {
+    punishmentType: (punish: ModeratorActionType): string => {
         switch (punish) {
             case ModeratorActionType.Ban:
                 return "ban";

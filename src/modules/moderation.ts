@@ -48,38 +48,48 @@ export default {
         };
 
         if (message.member) {
-            switch (level) {
-                case ModeratorActionType.Warn:
-                    console.debug(`${message.guild?.name} • User ${message.author?.id} warned for message ${message.id}`);
-                    break;
+            try {
+                switch (level) {
+                    case ModeratorActionType.Warn:
+                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} warned for message ${message.id}`);
+                        break;
 
-                case ModeratorActionType.Mute:
-                    console.debug(`${message.guild?.name} • User ${message.author?.id} muted for message ${message.id}`);
-                    break;
+                    case ModeratorActionType.Mute:
+                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} muted for message ${message.id}`);
+                        break;
 
-                case ModeratorActionType.Timeout:
-                    await timeout(message.member, reason);
-                    console.debug(`${message.guild?.name} • User ${message.author?.id} timed out for message ${message.id}`);
-                    break;
+                    case ModeratorActionType.Timeout:
+                        await timeout(message.member, reason);
+                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} timed out for message ${message.id}`);
+                        break;
 
-                case ModeratorActionType.Blacklist:
-                    console.debug(`${message.guild?.name} • User ${message.author?.id} blacklisted for message ${message.id}`);
-                    break;
+                    case ModeratorActionType.Blacklist:
+                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} blacklisted for message ${message.id}`);
+                        break;
 
-                case ModeratorActionType.Softban:
-                    await softban(message.member, reason);
-                    console.debug(`${message.guild?.name} • User ${message.author?.id} soft-banned for message ${message.id}`);
-                    break;
+                    case ModeratorActionType.Softban:
+                        await softban(message.member, reason);
+                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} soft-banned for message ${message.id}`);
+                        break;
 
-                case ModeratorActionType.Ban:
-                    await ban(message.member, reason);
-                    console.debug(`${message.guild?.name} • User ${message.author?.id} banned for message ${message.id}`);
-                    break;
+                    case ModeratorActionType.Ban:
+                        await ban(message.member, reason);
+                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} banned for message ${message.id}`);
+                        break;
 
-                default:
-                    console.error(`${message.guild?.name} • Invalid punishment level`);
-                    break;
+                    case ModeratorActionType.None:
+                        console.debug(`[MOD] ${message.guild?.name} - User ${message.author?.id} not affected for message ${message.id}`);
+                        break;
+
+                    default:
+                        console.error(`[MOD] ${message.guild?.name} - Invalid punishment level`);
+                        break;
+                };
+            } catch (err) {
+                console.trace(err);
             };
+        } else {
+            console.error(`[MOD] ${message.guild?.name} - Invalid member`);
         };
     },
 
@@ -124,13 +134,13 @@ export default {
                             ModeratorActionType.None,
                             resolve.msgWarning("Clear", "Message doesn't violate rule.")
                         );
-                    }
+                    };
                 } else {
                     return resolve.warnObj(
                         ModeratorActionType.None,
                         resolve.msgWarning("Clear", "Filter disabled.")
                     );
-                }
+                };
             } catch (err) {
                 console.trace(err);
 
@@ -138,13 +148,13 @@ export default {
                     ModeratorActionType.None,
                     resolve.msgWarning("Clear", "Programming error.")
                 );
-            }
+            };
         } else {
             return resolve.warnObj(
                 ModeratorActionType.None,
                 resolve.msgWarning("Clear", "Programming error.")
             );
-        }
+        };
     },
 
     /**
@@ -173,13 +183,13 @@ export default {
                             ModeratorActionType.None,
                             resolve.msgWarning("Clear", "Message doesn't violate rule.")
                         );
-                    }
+                    };
                 } else {
                     return resolve.warnObj(
                         ModeratorActionType.None,
                         resolve.msgWarning("Clear", "Filter disabled.")
                     );
-                }
+                };
             } catch (err) {
                 console.trace(err);
 
@@ -187,13 +197,13 @@ export default {
                     ModeratorActionType.None,
                     resolve.msgWarning("Clear", "Programming error.")
                 );
-            }
+            };
         } else {
             return resolve.warnObj(
                 ModeratorActionType.None,
                 resolve.msgWarning("Clear", "Programming error.")
             );
-        }
+        };
     },
 
     /**
@@ -228,7 +238,7 @@ export default {
                         ModeratorActionType.None,
                         resolve.msgWarning("Clear", "Filter disabled.")
                     );
-                }
+                };
             } catch (err) {
                 console.trace(err);
 
