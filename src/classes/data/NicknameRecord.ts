@@ -1,17 +1,17 @@
 export default class NicknameRecord {
-    public userId: string;
-    public serverId: string;
+    public server: string;
+    public user: string;
     public nickname: string;
     public reason: string;
-    public modId: string;
+    public mod: string;
     public unix: number;
 
-    constructor({ userId = "", serverId = "", nickname = "", reason = "", modId = "", unix = 0 }: Partial<NicknameRecord>) {
-        this.userId = userId;
-        this.serverId = serverId;
+    constructor({ server = "", user = "", nickname = "", reason = "", mod = "", unix = 0 }: Partial<NicknameRecord>) {
+        this.server = server;
+        this.user = user;
         this.nickname = nickname;
         this.reason = reason;
-        this.modId = modId;
+        this.mod = mod;
         this.unix = unix;
 
         return this;

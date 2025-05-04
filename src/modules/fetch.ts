@@ -22,7 +22,7 @@ export default {
     /**
      * Returns the URL of the first image found in a message.
      */
-    ifImage: (msg: Message): string | undefined => {
+    ifImage: (msg: Message): string | void => {
         const attachment = msg.attachments?.first();
         return attachment?.url;
     },
@@ -30,7 +30,7 @@ export default {
     /**
      * Returns the proxy URL of the first image found in a message.
      */
-    ifProxyImage: (msg: Message): string | undefined => {
+    ifProxyImage: (msg: Message): string | void => {
         const attachment = msg.attachments?.first();
         return attachment?.proxyURL;
     },
@@ -167,7 +167,7 @@ export default {
             system: Config,
             db: SaveDataClient,
             channel: TextChannel
-        ): Promise<WebhookClient | undefined> => {
+        ): Promise<WebhookClient | void> => {
             let webhookClient: WebhookClient;
 
             if (system.logs.webhook) {

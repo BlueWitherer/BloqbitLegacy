@@ -9,11 +9,14 @@ Need it? Got it.
 ---
 
 ### Progression
+Further development of manual operations will be prioritized before automated operations of each feature.
+
 | Feature         | Status                | Progress  |
 |:---------------:|-----------------------|:---------:|
 | Database        | ✅ Complete           | `100%`    |
-| *Moderation*    | 🔄️ Under Development  | **`45%`** |
-| Leveling        | ⛔ Not Developed      | `--%`     |
+| Logs            | ✅ Complete           | `100%`    |
+| Moderation      | ⏸️ Halted             | `45%`     |
+| *Leveling*      | 🔄️ Under Development  | **`0%`**  |
 | Economy         | ⛔ Not Developed      | `--%`     |
 | Games           | ⛔ Not Developed      | `--%`     |
 | Welcomer        | ⛔ Not Developed      | `--%`     |

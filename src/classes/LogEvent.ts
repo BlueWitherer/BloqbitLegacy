@@ -5,7 +5,7 @@ import { Events } from 'discord.js';
 /**
  * Represents a log event in the system.
  */
-class LogEvent {
+export default class LogEvent {
     /**
      * Enum of the event type.
      */
@@ -24,7 +24,5 @@ class LogEvent {
     constructor(event: Events, exec: (bot: BloqbitClient, ...args: unknown[]) => Promise<void>) {
         this.event = event;
         this.execute = exec;
-    }
-}
-
-export default LogEvent;
+    };
+};

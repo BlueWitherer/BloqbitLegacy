@@ -1,11 +1,11 @@
 export default class RolesRecord {
-    public userId: string;
-    public serverId: string;
+    public server: string;
+    public user: string;
     public roles: Array<string>;
 
-    constructor({ userId = "", serverId = "", roles = [""] }: Partial<RolesRecord>) {
-        this.userId = userId;
-        this.serverId = serverId;
+    constructor({ server = "", user = "", roles = [""] }: Partial<RolesRecord>) {
+        this.server = server;
+        this.user = user;
         this.roles = roles;
 
         return this;

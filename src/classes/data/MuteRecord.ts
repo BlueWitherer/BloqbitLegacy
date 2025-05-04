@@ -1,17 +1,17 @@
 export default class MuteRecord {
-    public userId: string;
-    public serverId: string;
+    public server: string;
+    public user: string;
     public unix: number;
     public reason: string;
-    public modId: string;
+    public mod: string;
     public until: number;
 
-    constructor({ userId = "", serverId = "", unix = 0, reason = "", modId = "", until = 0 }: Partial<MuteRecord>) {
-        this.userId = userId;
-        this.serverId = serverId;
+    constructor({ server = "", user = "", unix = 0, reason = "", mod = "", until = 0 }: Partial<MuteRecord>) {
+        this.server = server;
+        this.user = user;
         this.unix = unix;
         this.reason = reason;
-        this.modId = modId;
+        this.mod = mod;
         this.until = until;
 
         return this;

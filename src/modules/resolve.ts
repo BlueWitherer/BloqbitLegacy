@@ -1,14 +1,6 @@
 import { ModeratorActionType, MessageFilterMode } from '../classes.js';
 
-export interface Warning {
-    name: string;
-    value: string;
-};
-
-export interface WarnObject {
-    punishment: number;
-    warning: Warning;
-};
+import { Warning, WarnObject } from './moderation.js';
 
 export default {
     /**

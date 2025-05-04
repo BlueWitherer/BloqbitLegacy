@@ -5,6 +5,7 @@ import LogEvent from './classes/LogEvent.ts';
 import SaveDataClient from './classes/SaveDataClient.ts';
 
 import InfractionRecord from './classes/data/InfractionRecord.ts';
+import LevelRecord from './classes/data/LevelRecord.ts';
 import MuteRecord from './classes/data/MuteRecord.ts';
 import NicknameRecord from './classes/data/NicknameRecord.ts';
 import RolesRecord from './classes/data/RolesRecord.ts';
@@ -27,6 +28,7 @@ export {
     SaveDataClient,
 
     InfractionRecord,
+    LevelRecord,
     MuteRecord,
     NicknameRecord,
     RolesRecord,

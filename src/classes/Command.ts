@@ -56,5 +56,5 @@ export default class Command {
         this.execute = execute;
         this.premium = premium;
         this.dev = dev;
-    }
-}
+    };
+};

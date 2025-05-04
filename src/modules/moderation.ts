@@ -1,4 +1,14 @@
-import resolve, { WarnObject } from './resolve.js';
+import resolve from './resolve.js';
+
+export interface Warning {
+    name: string;
+    value: string;
+};
+
+export interface WarnObject {
+    punishment: number;
+    warning: Warning;
+};
 
 import { Config, ModeratorActionType } from '../classes.js';
 
