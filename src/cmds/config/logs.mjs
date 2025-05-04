@@ -65,10 +65,6 @@ export default new Command(
                         value: ServerLogEventType.MemberBan,
                     },
                     {
-                        name: "Member kicked",
-                        value: ServerLogEventType.MemberKick,
-                    },
-                    {
                         name: "Member nickname updated",
                         value: ServerLogEventType.MemberNickname,
                     },
@@ -228,10 +224,6 @@ export default new Command(
 
                 case ServerLogEventType.MemberBan:
                     system.logs.actions.ban = toggle;
-                    break;
-
-                case ServerLogEventType.MemberKick:
-                    system.logs.actions.kick = toggle;
                     break;
 
                 case ServerLogEventType.MemberNickname:
