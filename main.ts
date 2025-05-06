@@ -37,10 +37,9 @@ const start = async () => {
 
     const botModel = new BloqbitClient(
         process.env.MAIN_TOKEN || (() => { throw new Error('MAIN_TOKEN is not defined'); })(),
-        process.env.MAIN_SECRET || (() => { throw new Error('MAIN_SECRET is not defined'); })(),
         process.env.MAIN_LOG_WH || (() => { throw new Error('MAIN_LOG_WH is not defined'); })(),
         process.env.MONGO_URI || (() => { throw new Error('MONGO_URI is not defined'); })(),
-        process.env.MAIN_GUILDED_TOKEN || undefined,
+        process.env.MAIN_SECRET || undefined,
     );
 
     const SERVER_IP = (process.env.APP_HOST || process.env.REDIS_HOST || process.env.IP || process.env.SERVER_IP) || "0.0.0.0";

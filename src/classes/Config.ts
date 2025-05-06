@@ -1,13 +1,39 @@
+export class Filter {
+    enabled: boolean;
+    roles: string[];
+    channels: string[];
+    filterMode: number;
+    permFilterMode: number;
+    punishment: number;
+    keywords: string[];
+    keywordsSuper: string[];
+    logs: string;
+
+    constructor({ enabled = false, roles = [], channels = [], filterMode = 0, permFilterMode = 0, punishment = 0, keywords = [], keywordsSuper = [], logs = "" }: Partial<Filter>) {
+        this.enabled = enabled;
+        this.roles = roles;
+        this.channels = channels;
+        this.filterMode = filterMode;
+        this.permFilterMode = permFilterMode;
+        this.punishment = punishment;
+        this.keywords = keywords;
+        this.keywordsSuper = keywordsSuper;
+        this.logs = logs;
+
+        return this;
+    };
+};
+
 export class Roles {
     immune: string[];
-    pingFree: string[];
+    noPing: string[];
     blacklist: string;
     mute: string;
     member: string;
 
-    constructor({ immune = [], pingFree = [], blacklist = "", mute = "", member = "" }: Partial<Roles>) {
+    constructor({ immune = [], noPing = [], blacklist = "", mute = "", member = "" }: Partial<Roles>) {
         this.immune = immune;
-        this.pingFree = pingFree;
+        this.noPing = noPing;
         this.blacklist = blacklist;
         this.mute = mute;
         this.member = member;
@@ -44,29 +70,17 @@ export class Welcome {
     };
 };
 
-export class Filter {
+export class AutoPublish {
     enabled: boolean;
-    roles: string[];
     channels: string[];
-    filterMode: number;
-    permFilterMode: number;
-    punishment: number;
-    keywords: string[];
-    keywordsSuper: string[];
-    logs: string;
+    bots: boolean;
 
-    constructor({ enabled = false, roles = [], channels = [], filterMode = 0, permFilterMode = 0, punishment = 0, keywords = [], keywordsSuper = [], logs = "" }: Partial<Filter>) {
+    constructor({ enabled = false, channels = [], bots = false }: Partial<AutoPublish>) {
         this.enabled = enabled;
-        this.roles = roles;
         this.channels = channels;
-        this.filterMode = filterMode;
-        this.permFilterMode = permFilterMode;
-        this.punishment = punishment;
-        this.keywords = keywords;
-        this.keywordsSuper = keywordsSuper;
-        this.logs = logs;
+        this.bots = bots;
 
-        return this;
+        return;
     };
 };
 
@@ -84,15 +98,20 @@ export class Verification {
     };
 };
 
+export interface Alts {
+    enabled: boolean,
+    punishment: number,
+    untilPunish: number,
+    timeThreshold: number,
+};
+
 export class AntiRaid {
     text: Filter;
-    alts: { enabled: boolean; punishment: number; untilPunish: number; timeThreshold: number };
-    logs: string;
+    alts: Alts;
 
-    constructor({ text = new Filter({}), alts = { enabled: false, punishment: 0, untilPunish: 0, timeThreshold: 0 }, logs = "" }: Partial<AntiRaid>) {
+    constructor({ text = new Filter({}), alts = { enabled: false, punishment: 0, untilPunish: 0, timeThreshold: 0 } }: Partial<AntiRaid>) {
         this.text = new Filter(text);
         this.alts = alts;
-        this.logs = logs;
 
         return this;
     };
@@ -319,48 +338,30 @@ export class Cleverbot {
 };
 
 export default class Config {
-    version: number;
     server: string;
-    active: boolean;
-    activeCode: string;
-    activeExpiry: number;
-    customActive: boolean;
-    customBotToken: string;
-    roles: Roles;
-    welcome: Welcome;
     automod: AutoMod;
     logs: Logs;
+    roles: Roles;
+    welcome: Welcome;
     leveling: Leveling;
     economy: Economy;
     cleverbot: Cleverbot;
 
     constructor({
-        version = 1,
         server = "",
-        active = false,
-        activeCode = "",
-        activeExpiry = 1,
-        customActive = false,
-        customBotToken = "",
-        roles = new Roles({}),
-        welcome = new Welcome({}),
         automod = new AutoMod({}),
         logs = new Logs({}),
+        roles = new Roles({}),
+        welcome = new Welcome({}),
         leveling = new Leveling({}),
         economy = new Economy({}),
         cleverbot = new Cleverbot({})
     }: Partial<Config>) {
-        this.version = version;
         this.server = server;
-        this.active = active;
-        this.activeCode = activeCode;
-        this.activeExpiry = activeExpiry;
-        this.customActive = customActive;
-        this.customBotToken = customBotToken;
-        this.roles = new Roles(roles);
-        this.welcome = new Welcome(welcome);
         this.automod = new AutoMod(automod);
         this.logs = new Logs(logs);
+        this.roles = new Roles(roles);
+        this.welcome = new Welcome(welcome);
         this.leveling = new Leveling(leveling);
         this.economy = new Economy(economy);
         this.cleverbot = new Cleverbot(cleverbot);

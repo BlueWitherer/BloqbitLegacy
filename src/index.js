@@ -4,7 +4,7 @@ import * as fs from 'node:fs';
 import * as path from 'path';
 import * as url from 'url';
 
-import { Events, PresenceUpdateStatus, WebhookClient, SlashCommandBuilder } from 'discord.js';
+import { Events, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
 
 import fetch from './modules/fetch.js';
@@ -58,7 +58,7 @@ export default class Bot {
                         };
                     };
                 } catch (err) {
-                    console.error(`Error loading files from ${directory}:`, err);
+                    console.trace(err);
                     process.exit(1);
                 };
             };
@@ -94,7 +94,7 @@ export default class Bot {
                     if (testMode) process.exit(1);
                 };
             } catch (err) {
-                console.error("Error loading commands:", err);
+                console.trace(err);
                 process.exit(1);
             };
 
@@ -109,7 +109,7 @@ export default class Bot {
                     console.debug(`Loaded guild log event for ${logEvent.event.toString()}`);
                 });
             } catch (err) {
-                console.error("Error loading log events:", err);
+                console.trace(err);
                 process.exit(1);
             };
 
@@ -140,7 +140,7 @@ export default class Bot {
                     console.debug(`Loaded event listener for ${event.name}`);
                 });
             } catch (err) {
-                console.error("Error loading events:", err);
+                console.trace(err);
                 process.exit(1);
             };
 

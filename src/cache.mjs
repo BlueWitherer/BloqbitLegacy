@@ -45,7 +45,7 @@ const getDbClient = async (mongoUri) => {
  */
 const flushToDb = async (db) => {
     try {
-        const dirtyKeys = cache.keys().filter(key => key.endsWith(":dirty"));
+        const dirtyKeys = cache.keys().filter((k) => k.endsWith(":dirty"));
 
         for (const dKey of dirtyKeys) {
             const key = dKey.replace(":dirty", "");

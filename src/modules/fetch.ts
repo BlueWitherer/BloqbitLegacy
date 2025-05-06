@@ -81,32 +81,6 @@ export default {
     },
 
     /**
-     * Sends a response when a server owner isn't a subscriber.
-     */
-    noPremiumResponse: async (interaction: Interaction, assets: typeof SysAssets): Promise<void> => {
-        if (interaction.isChatInputCommand()) {
-            try {
-                await interaction.reply({
-                    embeds: [
-                        {
-                            title: `${assets.icons.xmark} Server not Sponsored`,
-                            description: `This is a sponsors-only command. The server owner must be a sponsor of Bloqbit for anyone to use this.`,
-                            color: assets.colors.secondary,
-                        },
-                    ],
-                    ephemeral: true,
-                });
-            } catch (err) {
-                console.trace(err);
-            };
-        } else {
-            console.error(`Command error response not sent, interaction type is not a command`);
-        };
-
-        return;
-    },
-
-    /**
      * Sends a generic command error response.
      */
     commandErrorResponse: async (interaction: Interaction, assets: typeof SysAssets): Promise<void> => {

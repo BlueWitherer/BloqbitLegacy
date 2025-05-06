@@ -32,11 +32,7 @@ export default {
                             const system = await cache.fetch(interaction.guildId ?? '', bot.db);
 
                             if (system) {
-                                if (system.active) {
-                                    await command.execute(interaction, bot.assets, interactionServer, bot.db);
-                                } else {
-                                    await fetch.noPremiumResponse(interaction, bot.assets);
-                                };
+                                await command.execute(interaction, bot.assets, interactionServer, bot.db);
                             } else {
                                 await fetch.databaseErrorResponse(interaction, bot.assets);
                             };

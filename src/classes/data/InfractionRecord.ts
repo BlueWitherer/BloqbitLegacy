@@ -1,8 +1,6 @@
 export interface WarningData {
-    server: string;
-    user: string;
-    unix: number;
     reason: string;
+    unix: number;
     mod: string;
 };
 
