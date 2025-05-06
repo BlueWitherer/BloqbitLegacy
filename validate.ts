@@ -13,10 +13,9 @@ const start = async () => {
 
     const botModel = new BloqbitClient(
         process.env.TEST_TOKEN ?? "",
-        process.env.TEST_SECRET ?? "",
         process.env.TEST_LOG_WH ?? "",
         process.env.MONGO_URI ?? "",
-        process.env.TEST_GUILDED_TOKEN ?? "",
+        process.env.TEST_SECRET ?? "",
     );
 
     const src = new Bot();
