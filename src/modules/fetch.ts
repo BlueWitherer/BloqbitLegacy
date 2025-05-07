@@ -175,10 +175,10 @@ export default {
                 const webhookClient = await checkLogsWebhook(client, system, db, channel as TextChannel);
 
                 if (webhookClient) {
-                    await webhookClient.send({ embeds: [emb] });
+                    await webhookClient.send({ embeds: [emb], avatarURL: client.user?.displayAvatarURL({ size: 1024, extension: "jpg", forceStatic: true }), username: client.user?.displayName });
                 } else {
                     console.error(`Failed to create logs webhook for guild '${guild.name}' (${guild.id})`);
-                }
+                };
             } else {
                 await channel.send({ embeds: [emb] });
             };

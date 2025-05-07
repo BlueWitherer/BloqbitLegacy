@@ -34,12 +34,12 @@ export default new LogEvent(
                         "fields": [
                             {
                                 "name": "Before",
-                                "value": `${oldMsg.cleanContent}`,
+                                "value": `${oldMsg.cleanContent || `-# *Empty*`}`,
                                 "inline": false,
                             },
                             {
                                 "name": "After",
-                                "value": newMsg.cleanContent,
+                                "value": `${newMsg.cleanContent || `-# *Empty*`}`,
                                 "inline": false,
                             },
                             {
