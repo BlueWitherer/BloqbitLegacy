@@ -29,7 +29,7 @@ console.log('Starting system...');
 import http from 'http';
 import dotenv from 'dotenv';
 
-import { ShardingManager } from 'discord.js';
+// import { ShardingManager } from 'discord.js';
 
 dotenv.config();
 
@@ -61,16 +61,16 @@ const start = async () => {
     try {
         const cacheModule = (await import('./src/cache.mjs')).default;
 
-        const manager = new ShardingManager("./src/index.js", {
-            token: process.env.MAIN_TOKEN || noEnv('MAIN_TOKEN'),
-            totalShards: "auto",
-        });
+        // const manager = new ShardingManager("./src/index.js", {
+        //     token: process.env.MAIN_TOKEN || noEnv('MAIN_TOKEN'),
+        //     totalShards: "auto",
+        // });
 
-        await manager.spawn();
+        // await manager.spawn();
 
-        manager.on("shardCreate", async (shard) => {
-            console.log(`Shard ${shard.id} launched`);
-        });
+        // manager.on("shardCreate", async (shard) => {
+        //     console.log(`Shard ${shard.id} launched`);
+        // });
 
         const src = new Bot();
         const bot = await src.activate(botModel, false);
