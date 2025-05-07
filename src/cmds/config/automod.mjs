@@ -357,33 +357,6 @@ export default new Command(
                 };
             };
 
-            if (superFilter !== null) {
-                try {
-                    if (superFilter === "<RESET>") {
-                        system.automod.swearFilter.keywordsSuper.splice(0, system.automod.swearFilter.keywordsSuper.length);
-
-                        allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __cleared__ the severe swear filter`,
-                            "color": assets.colors.primary,
-                        });
-                    } else {
-                        const list = superFilter.split(",");
-
-                        list.forEach((w) => system.automod.swearFilter.keywordsSuper.filter((kw) => !system.automod.swearFilter.keywordsSuper.includes(kw)).concat(w.replace(/\s+/g, ' ').trim()));
-
-                        allEmbeds.push({
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __added \`${list.length}\` words__ to the severe swear filter`,
-                            "color": assets.colors.primary,
-                        });
-                    };
-                } catch (err) {
-                    allEmbeds.push({
-                        "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the severe swear filter`,
-                        "color": assets.colors.secondary,
-                    });
-                };
-            };
-
             if (channel !== null) {
                 try {
                     const foundChannel = system.automod.swearFilter.channels.findIndex((c) => c === channel.id);

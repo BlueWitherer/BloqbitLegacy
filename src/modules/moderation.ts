@@ -117,17 +117,11 @@ export default {
 
                 if (auto.enabled && auto.swearFilter.enabled) {
                     const blWords = auto.swearFilter.keywords;
-                    const blWordsExtra = auto.swearFilter.keywordsSuper;
 
                     if (blWords.some((v) => msg.content.includes(v))) {
                         return resolve.warnObj(
                             auto.swearFilter.punishment,
                             resolve.msgWarning("Blacklisted Words", "Used words included in the keyword blacklist.")
-                        );
-                    } else if (blWordsExtra.some((v) => msg.content.includes(v))) {
-                        return resolve.warnObj(
-                            auto.swearFilter.punishment + 1,
-                            resolve.msgWarning("Severe Blacklisted Words", "Used words included in the severe keyword blacklist.")
                         );
                     } else {
                         return resolve.warnObj(

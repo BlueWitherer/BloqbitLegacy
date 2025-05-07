@@ -76,14 +76,6 @@ export default new Command(
                     },);
                 };
 
-                if (thisFilter.keywordsSuper?.length) {
-                    fields.push({
-                        "name": "Stronger Keyword List",
-                        "value": `||\`${thisFilter.keywordsSuper.join("`||,||`")}\`||`,
-                        "inline": false,
-                    },);
-                };
-
                 if (thisFilter.channels?.length) {
                     fields.push({
                         "name": "Channels",
