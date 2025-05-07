@@ -6,14 +6,14 @@ Need it? Got it.
 ### Development
 ###### Work with the bot directly.
 
-Bloqbit is open-source. You may take its source code directly and modify it to fit your own needs. First, let's start by defining our environment variables. These are used to store sensitive data such as tokens.
+Bloqbit is open-source. You may take its source code directly and modify it to fit your own needs. First, let's start by defining our environment variables. These are used to store sensitive data such as tokens. You can do this using a `.env` file.
 
 | Variable              | Description                                                       | Required  |
 |:---------------------:|-------------------------------------------------------------------|:---------:|
 | **`MAIN_TOKEN`**      | Token for the bot of the Discord application you will utilize.    | **`Yes`** |
-| **`MAIN_SECRET`**     | The application's secret.                                         | `No`      |
 | **`MAIN_LOG_WH`**     | URL for the webhook used to log important bot events.             | **`Yes`** |
 | **`MONGO_URI`**       | URI to access your [MongoDB](https://www.mongodb.com/) database.  | **`Yes`** |
+| `MAIN_SECRET`         | The application's secret.                                         | `No`      |
 | `AI_TOKEN`            | [Groqcloud](https://www.groq.com/groqcloud/) API token.           | `No`      |
 
 > [!NOTE]
@@ -22,8 +22,8 @@ Bloqbit is open-source. You may take its source code directly and modify it to f
 > | Variable                | Tests For             |
 > |:-----------------------:|:---------------------:|
 > | `TEST_TOKEN`            | `MAIN_TOKEN`          |
-> | `TEST_SECRET`           | `MAIN_SECRET`         |
 > | `TEST_LOG_WH`           | `MAIN_LOG_WH`         |
+> | *`TEST_SECRET`*         | *`MAIN_SECRET`*       |
 
 ---
 

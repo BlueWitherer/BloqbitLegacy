@@ -35,10 +35,12 @@ const start = async () => {
     const { BloqbitClient } = await import('./src/classes.js');
     const Bot = (await import('./src/index.js')).default;
 
+    const noEnv = (env: string): string => { throw new Error(`Environment variable ${env} is not defined`); }
+
     const botModel = new BloqbitClient(
-        process.env.MAIN_TOKEN || (() => { throw new Error('MAIN_TOKEN is not defined'); })(),
-        process.env.MAIN_LOG_WH || (() => { throw new Error('MAIN_LOG_WH is not defined'); })(),
-        process.env.MONGO_URI || (() => { throw new Error('MONGO_URI is not defined'); })(),
+        process.env.MAIN_TOKEN || noEnv('MAIN_TOKEN'),
+        process.env.MAIN_LOG_WH || noEnv('MAIN_LOG_WH'),
+        process.env.MONGO_URI || noEnv('MONGO_URI'),
         process.env.MAIN_SECRET || undefined,
     );
 
