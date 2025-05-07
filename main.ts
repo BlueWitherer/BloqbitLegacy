@@ -29,13 +29,15 @@ console.log('Starting system...');
 import http from 'http';
 import dotenv from 'dotenv';
 
+import { ShardingManager } from 'discord.js';
+
 dotenv.config();
 
 const start = async () => {
     const { BloqbitClient } = await import('./src/classes.js');
     const Bot = (await import('./src/index.js')).default;
 
-    const noEnv = (env: string): string => { throw new Error(`Environment variable ${env} is not defined`); }
+    const noEnv = (env: string): string => { throw new Error(`Environment variable '${env}' is not defined!`); }
 
     const botModel = new BloqbitClient(
         process.env.MAIN_TOKEN || noEnv('MAIN_TOKEN'),
@@ -58,6 +60,17 @@ const start = async () => {
 
     try {
         const cacheModule = (await import('./src/cache.mjs')).default;
+
+        const manager = new ShardingManager("./src/index.ts", {
+            token: process.env.MAIN_TOKEN || noEnv('MAIN_TOKEN'),
+            totalShards: "auto",
+        });
+        
+        manager.spawn();
+        
+        manager.on("shardCreate", async (shard) => {
+            console.log(`Shard ${shard.id} launched`);
+        });
 
         const src = new Bot();
         const bot = await src.activate(botModel, false);
