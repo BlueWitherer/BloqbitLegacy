@@ -61,13 +61,13 @@ const start = async () => {
     try {
         const cacheModule = (await import('./src/cache.mjs')).default;
 
-        const manager = new ShardingManager("./src/index.ts", {
+        const manager = new ShardingManager("./src/index.js", {
             token: process.env.MAIN_TOKEN || noEnv('MAIN_TOKEN'),
             totalShards: "auto",
         });
-        
-        manager.spawn();
-        
+
+        await manager.spawn();
+
         manager.on("shardCreate", async (shard) => {
             console.log(`Shard ${shard.id} launched`);
         });
