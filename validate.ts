@@ -18,8 +18,8 @@ const start = async () => {
         process.env.TEST_SECRET ?? "",
     );
 
-    const src = new Bot();
-    return await src.activate(botModel, true);
+    const src = new Bot({ botModel: botModel });
+    return await src.activate(true);
 };
 
 (async () => {

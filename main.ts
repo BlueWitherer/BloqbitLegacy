@@ -29,8 +29,6 @@ console.log('Starting system...');
 import http from 'http';
 import dotenv from 'dotenv';
 
-// import { ShardingManager } from 'discord.js';
-
 dotenv.config();
 
 const start = async () => {
@@ -49,7 +47,7 @@ const start = async () => {
     const SERVER_IP = (process.env.APP_HOST || process.env.REDIS_HOST || process.env.IP || process.env.SERVER_IP) || "0.0.0.0";
     const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.REDIS_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
 
-    const server = http.createServer(async (req, res) => {
+    const server = http.createServer((req, res) => {
         console.debug(`Request details:\n      URL: ${req.url}\n      Method: ${req.method}\n      Headers:`, req.rawHeaders.map((h, i) => {
             return i % 2 === 0 ? `\n            ${h}: ${req.rawHeaders[i + 1]}` : null;
         }).filter((h) => h !== null));
@@ -61,19 +59,8 @@ const start = async () => {
     try {
         const cacheModule = (await import('./src/cache.mjs')).default;
 
-        // const manager = new ShardingManager("./src/index.js", {
-        //     token: process.env.MAIN_TOKEN || noEnv('MAIN_TOKEN'),
-        //     totalShards: "auto",
-        // });
-
-        // await manager.spawn();
-
-        // manager.on("shardCreate", async (shard) => {
-        //     console.log(`Shard ${shard.id} launched`);
-        // });
-
-        const src = new Bot();
-        const bot = await src.activate(botModel, false);
+        const src = new Bot({ botModel: botModel });
+        const bot = await src.activate(false);
 
         server.listen(SERVER_PORT, () => {
             console.log(`Server running on IP address ${SERVER_IP} with port ${SERVER_PORT}`);

@@ -13,33 +13,24 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default class Bot {
-    constructor() {
+    public botModel: BloqbitClient;
+
+    constructor({ botModel = new BloqbitClient("", "", "", "") }: Partial<Bot>) {
+        this.botModel = botModel;
+
         return this;
     };
 
-    /**
-     * Starts up Bloqbit
-     * 
-     * @param {BloqbitClient} botModel Bot data model.
-     * @param {boolean} testMode If the login is only being tested.
-     * 
-     * @returns {Promise<BloqbitClient>}
-     */
-    activate = async (botModel, testMode) => {
+    activate = async (testMode: boolean): Promise<BloqbitClient> => {
         if (testMode) console.log("Test mode active.");
 
-        botModel.client?.on(Events.ClientReady, async (client) => {
+        const bot = this.botModel;
+
+        bot.client?.on(Events.ClientReady, async (client) => {
             fetch.setPresence(client, `Starting...`, `Bot is starting up, please wait...`, PresenceUpdateStatus.DoNotDisturb);
 
-            /**
-             * Loads files from a directory and applies a callback to each module.
-             * 
-             * @param {string} directory The directory to load files from.
-             * @param {(module: any) => Promise<void>} callback The callback to execute for each loaded module.
-             * 
-             * @returns {Promise<void>}
-             */
-            const loadFiles = async (directory, callback) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const loadFiles = async (directory: string, callback: (module: any) => Promise<void>) => {
                 try {
                     const files = fs.readdirSync(directory).filter((file) => file.endsWith('.mjs'));
 
@@ -47,13 +38,11 @@ export default class Bot {
                         const filePath = path.join(directory, file);
 
                         try {
-                            /**
-                             * @type {any}
-                             */
-                            const module = (await import(url.pathToFileURL(filePath).href)).default;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            const module: any = (await import(url.pathToFileURL(filePath).href)).default;
                             await callback(module);
                         } catch (err) {
-                            console.error(`Failed to load file ${file}:`, err);
+                            console.trace(err);
                             if (testMode) process.exit(1);
                         };
                     };
@@ -70,27 +59,29 @@ export default class Bot {
                 for (const folder of commandFolders) {
                     const commandsPath = path.join(foldersPath, folder);
 
-                    await loadFiles(commandsPath, async (/** @type {Command} */ command) => {
+                    await loadFiles(commandsPath, async (command: Command) => {
                         // @ts-ignore
-                        botModel.commands.push(command.data?.toJSON());
-                        botModel.cmds.set(command.data?.name, command);
+                        bot.commands.push(command.data?.toJSON());
+                        bot.cmds.set(command.data?.name, command);
 
                         console.debug(`Loaded command /${command.data.name}`);
                     });
                 };
 
-                console.log(`Refreshing ${botModel.commands.length} application (/) commands...`);
+                console.log(`Refreshing ${bot.commands.length} application (/) commands...`);
 
                 try {
-                    const data = await botModel.rest.put(
+                    console.log(`Refreshing ${bot.commands.length} application (/) commands...`);
+
+                    const data = await bot.rest.put(
                         Routes.applicationCommands(client?.user?.id),
-                        { body: botModel.commands }
+                        { body: bot.commands }
                     );
 
                     // @ts-ignore
                     console.info(`Successfully reloaded ${data.length} application (/) commands`);
                 } catch (err) {
-                    console.error("Failed to refresh application commands:", err);
+                    console.trace(err);
                     if (testMode) process.exit(1);
                 };
             } catch (err) {
@@ -101,9 +92,15 @@ export default class Bot {
             try {
                 const logsPath = path.join(__dirname, 'events/logging');
 
-                await loadFiles(logsPath, async (/** @type {LogEvent} */ logEvent) => {
+                await loadFiles(logsPath, async (logEvent: LogEvent) => {
                     client.on(logEvent.event.toString(), async (...args) => {
-                        await logEvent.execute(botModel, ...args);
+                        try {
+                            await logEvent.execute(bot, ...args);
+                        } catch (err) {
+                            console.trace(err);
+                        } finally {
+                            console.debug(`Handled log event ${logEvent.event.toString()}`);
+                        };
                     });
 
                     console.debug(`Loaded guild log event for ${logEvent.event.toString()}`);
@@ -116,23 +113,26 @@ export default class Bot {
             try {
                 const eventsPath = path.join(__dirname, 'events');
 
-                await loadFiles(eventsPath, async (event) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                await loadFiles(eventsPath, async (event: { name: Events, once: boolean, execute: (bot: BloqbitClient, ...args: any[]) => Promise<void> }) => {
                     if (event.once) {
-                        client.once(event.name, async (...args) => {
+                        client.once(event.name.toString(), async (...args) => {
                             try {
-                                await event.execute(botModel, ...args);
+                                await event.execute(bot, ...args);
                             } catch (err) {
-                                console.error(`Error executing event ${event.name}:`, err);
-                                if (testMode) process.exit(1);
+                                console.trace(err);
+                            } finally {
+                                console.debug(`Handled log event ${event.name.toString()}`);
                             };
                         });
                     } else {
-                        client.on(event.name, async (...args) => {
+                        client.on(event.name.toString(), async (...args) => {
                             try {
-                                await event.execute(botModel, ...args);
+                                await event.execute(bot, ...args);
                             } catch (err) {
-                                console.error(`Error executing event ${event.name}:`, err);
-                                if (testMode) process.exit(1);
+                                console.trace(err);
+                            } finally {
+                                console.debug(`Handled log event ${event.name.toString()}`);
                             };
                         });
                     };
@@ -149,14 +149,14 @@ export default class Bot {
             try {
                 console.debug("Starting handlers...");
 
-                new MessageHandler(client, botModel.db);
-                new ServerHandler(client, botModel.db);
-                new UserHandler(client, botModel.db);
+                new MessageHandler(client, bot.db);
+                new ServerHandler(client, bot.db);
+                new UserHandler(client, bot.db);
 
                 console.debug("Handlers successfully started");
             } catch (err) {
                 console.trace(err);
-                if (testMode) process.exit(1);
+                process.exit(1);
             };
 
             if (testMode) {
@@ -168,7 +168,7 @@ export default class Bot {
                 const srvs = await client.guilds?.fetch();
                 fetch.setPresence(client, `Alpha Testing!`, `Active across ${srvs.size} servers!`, PresenceUpdateStatus.Online);
 
-                const devWH = new WebhookClient({ "url": botModel.dev_wh, });
+                const devWH = new WebhookClient({ "url": bot.dev_wh, });
 
                 await devWH.send({
                     "avatarURL": client.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),
@@ -178,8 +178,8 @@ export default class Bot {
                             "author": {
                                 "name": `Service Status`,
                             },
-                            "description": `${botModel.assets.default.icons.check} **${client.user?.displayName}** is now __online__`,
-                            "color": botModel.assets.colors.primary,
+                            "description": `${bot.assets.default.icons.check} **${client.user?.displayName}** is now __online__`,
+                            "color": bot.assets.colors.primary,
                             "footer": {
                                 "text": client.user?.username,
                                 "icon_url": client.user?.displayAvatarURL({ "forceStatic": false, "size": 512 }),
@@ -193,12 +193,12 @@ export default class Bot {
         });
 
         try {
-            await botModel.client?.login(botModel.token);
+            await bot.client?.login(bot.token);
         } catch (err) {
             console.trace(err);
             if (testMode) process.exit(1);
         };
 
-        return botModel;
+        return bot;
     };
 };
