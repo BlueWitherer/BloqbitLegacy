@@ -44,6 +44,9 @@ export default new Command(
         .addSubcommand((c) => c
             .setName("logs")
             .setDescription("Configuration for server logging."))
+        .addSubcommand((c) => c
+            .setName("autopublish")
+            .setDescription("Check the server's auto-publisher settings."))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     async (interaction, assets, system, db) => {
         const cmd = interaction.options?.getSubcommand(true);
@@ -199,6 +202,41 @@ export default new Command(
             return;
         };
 
+        const autopublishCmd = async () => {
+            const returnEmbed = new EmbedBuilder()
+                .setTitle(`${assets.icons.info} Auto-publisher Settings`)
+                .setDescription(`${system.autopublish.channels.length ? `<#${system.autopublish.channels.join(">,<#")}>` : `-# *No channels*`}`)
+                .setColor(assets.colors.primary)
+                .setFields(
+                    {
+                        "name": "Status",
+                        "value": `**${resolve.abled(system.autopublish.enabled, true)}**`,
+                        "inline": false,
+                    },
+                    {
+                        "name": "Bots Allowed",
+                        "value": `**${resolve.abled(system.autopublish.bots, true)}**`,
+                        "inline": true,
+                    },
+                )
+                .setFooter({
+                    "text": `${interaction.user?.username}`,
+                    "iconURL": `${interaction.user?.displayAvatarURL({ "forceStatic": false })}`
+                });
+
+            await interaction.reply({
+                "content": "",
+                "embeds": [
+                    returnEmbed,
+                ],
+                "flags": [
+                    "Ephemeral",
+                ],
+            });
+
+            return;
+        };
+
         switch (cmd) {
             case "filters":
                 await filtersCmd();
@@ -206,6 +244,10 @@ export default new Command(
 
             case "logs":
                 await logsCmd();
+                break;
+
+            case "autopublish":
+                await autopublishCmd();
                 break;
 
             default:

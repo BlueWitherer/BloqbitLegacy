@@ -20,7 +20,11 @@ export default new Command(
             .addBooleanOption((o) => o
                 .setName("enable")
                 .setDescription("Toggle the auto-publisher for the server.")
-                .setRequired(true)))
+                .setRequired(true))
+            .addBooleanOption((o) => o
+                .setName("bots")
+                .setDescription("Allow bot messages to be published.")
+                .setRequired(false)))
         .addSubcommand((c) => c
             .setName("channel")
             .setDescription("Add a channel to the auto-publish list.")
@@ -38,8 +42,10 @@ export default new Command(
 
         const configCmd = async () => {
             const toggle = interaction.options?.getBoolean("enable", true);
+            const bots = interaction.options?.getBoolean("bots", false);
 
             system.autopublish.enabled = toggle;
+            if (bots !== null) system.autopublish.bots = bots;
 
             const update = await cache.update(system, db);
 
@@ -48,7 +54,7 @@ export default new Command(
                     "content": "",
                     "embeds": [
                         {
-                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the auto-publisher.`,
+                            "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the auto-publisher${bots ? ` including bot messages` : ``}.`,
                             "color": assets.colors.primary,
                         },
                     ],
