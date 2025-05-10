@@ -100,8 +100,6 @@ export default class Bot {
                                 await event.execute(bot, ...args);
                             } catch (err) {
                                 console.trace(err);
-                            } finally {
-                                console.debug(`Handled log event ${event.name.toString()}`);
                             };
                         });
                     } else {
@@ -110,8 +108,6 @@ export default class Bot {
                                 await event.execute(bot, ...args);
                             } catch (err) {
                                 console.trace(err);
-                            } finally {
-                                console.debug(`Handled log event ${event.name.toString()}`);
                             };
                         });
                     };
@@ -130,8 +126,6 @@ export default class Bot {
                             await botEvent.execute(bot, ...args);
                         } catch (err) {
                             console.trace(err);
-                        } finally {
-                            console.debug(`Handled ${folder} event ${botEvent.event.toString()}`);
                         };
                     });
 

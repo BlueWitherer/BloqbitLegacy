@@ -26,7 +26,11 @@ export default new BotEvent(
                 if (system.autopublish.enabled) {
                     try {
                         if (system.autopublish.channels.includes(msg.channel?.id)) {
-                            if (msg.channel?.type === ChannelType.GuildAnnouncement) await msg.crosspost();
+                            if (msg.channel?.type === ChannelType.GuildAnnouncement) {
+                                if (msg.author?.bot && system.autopublish.bots) msg.crosspostable ? await msg.crosspost() : console.error(`Message of ID ${msg.id} from announcement channel could not be published`);
+                            } else {
+                                console.warn(`Channel of ID ${msg.channel?.id} is not an announcement channel`);
+                            };
                         } else {
                             console.warn(`Channel of ID ${msg.channel?.id} not included in auto-publisher`);
                         };
