@@ -17,7 +17,7 @@ Bloqbit is open-source. You may take its source code directly and modify it to f
 | `AI_TOKEN`            | [Groqcloud](https://www.groq.com/groqcloud/) API token.                   | `No`      |
 
 > [!NOTE]
-> Some variables have a testing counterpart, where they access a dummy model just for testing.
+> Some variables have a testing counterpart, where they attempt to access a dummy model just for testing.
 >
 > | Variable                | Tests For             |
 > |:-----------------------:|:---------------------:|

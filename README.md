@@ -19,9 +19,9 @@ Further development of manual operations will be prioritized before automated op
 | Moderation      | ⏸️ Halted             | `45%`     |
 | *Leveling*      | 🔄️ Under Development  | **`0%`**  |
 | Economy         | ⛔ Not Developed      | `--%`     |
-| Games           | ⛔ Not Developed      | `--%`     |
 | Welcomer        | ⛔ Not Developed      | `--%`     |
 | Birthdays       | ⛔ Not Developed      | `--%`     |
+| Games           | ⛔ Not Developed      | `--%`     |
 | Cleverbot       | ⛔ Not Developed      | `--%`     |
 
 ---
