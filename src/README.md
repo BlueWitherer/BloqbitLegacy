@@ -31,4 +31,8 @@ Bloqbit is open-source. You may take its source code directly and modify it to f
 ###### Set up your own server instance of Bloqbit!
 **[🔌 Get the eggs](https://www.github.com/CubicCommunity/bloqbit-eggs/)**
 
+### Users
+###### Regular users of this bot.
+**[📱 Learn about this bot](../)**
+
 *More coming soon...*

@@ -1,6 +1,6 @@
 import fetch from '../modules/fetch.js';
 import { BloqbitClient } from '../classes.js';
-import { Events, Guild, WebhookClient, ActivityType, PresenceUpdateStatus } from 'discord.js';
+import { Events, Guild, WebhookClient, PresenceUpdateStatus } from 'discord.js';
 
 export default {
     name: Events.GuildCreate,

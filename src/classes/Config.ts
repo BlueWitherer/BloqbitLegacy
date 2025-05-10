@@ -23,18 +23,16 @@ export class Filter {
 };
 
 /**
- * Immune, anti-ping, blacklist, and mute roles configuration
+ * Immune, anti-ping, and mute roles configuration
  */
 export class Roles {
     immune: string[];
     noPing: string[];
-    blacklist: string;
     mute: string;
 
-    constructor({ immune = [], noPing = [], blacklist = "", mute = "" }: Partial<Roles>) {
+    constructor({ immune = [], noPing = [], mute = "" }: Partial<Roles>) {
         this.immune = immune;
         this.noPing = noPing;
-        this.blacklist = blacklist;
         this.mute = mute;
 
         return this;
@@ -430,6 +428,7 @@ export class Cleverbot {
 export default class Config {
     server: string;
     automod: AutoMod;
+    autopublish: AutoPublish;
     logs: Logs;
     roles: Roles;
     welcome: Welcome;
@@ -440,6 +439,7 @@ export default class Config {
     constructor({
         server = "",
         automod = new AutoMod({}),
+        autopublish = new AutoPublish({}),
         logs = new Logs({}),
         roles = new Roles({}),
         welcome = new Welcome({}),
@@ -449,6 +449,7 @@ export default class Config {
     }: Partial<Config>) {
         this.server = server;
         this.automod = new AutoMod(automod);
+        this.autopublish = new AutoPublish(autopublish);
         this.logs = new Logs(logs);
         this.roles = new Roles(roles);
         this.welcome = new Welcome(welcome);

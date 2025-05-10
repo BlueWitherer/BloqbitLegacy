@@ -30,16 +30,6 @@ export default class Command {
     public execute: ExecuteCommand;
 
     /**
-     * Whether this command is reserved for supporters.
-     */
-    public premium: boolean;
-
-    /**
-     * Whether this command is reserved for developers.
-     */
-    public dev: boolean;
-
-    /**
      * Constructor for the Command class.
      * @param data Data of the command.
      * @param execute Function to execute for this command.
@@ -49,12 +39,8 @@ export default class Command {
     constructor(
         data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandOptionsOnlyBuilder,
         execute: ExecuteCommand,
-        premium: boolean = false,
-        dev: boolean = false
     ) {
         this.data = data;
         this.execute = execute;
-        this.premium = premium;
-        this.dev = dev;
     };
 };

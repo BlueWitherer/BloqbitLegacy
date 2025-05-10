@@ -5,19 +5,20 @@ import { Events } from 'discord.js';
 /**
  * Represents a log event in the system.
  */
-export default class LogEvent {
+export default class BotEvent {
     /**
-     * Enum of the event type.
+     * Enum of the event type
      */
     event: Events;
 
     /**
-     * Function to execute for this log event type.
+     * Function to execute for this log event type
      */
     execute: (bot: BloqbitClient, ...args: unknown[]) => Promise<void>;
 
     /**
-     * Creates a new LogEvent instance.
+     * Creates a new instance
+     * 
      * @param event - Enum of the event type.
      * @param exec - Function to execute for this event type.
      */

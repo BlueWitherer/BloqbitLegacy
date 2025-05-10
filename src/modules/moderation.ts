@@ -63,10 +63,6 @@ export default {
                         console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} timed out for message ${message.id}`);
                         break;
 
-                    case ModeratorActionType.Blacklist:
-                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} blacklisted for message ${message.id}`);
-                        break;
-
                     case ModeratorActionType.Softban:
                         await softban(message.member, reason);
                         console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} soft-banned for message ${message.id}`);

@@ -15,6 +15,7 @@ Further development of manual operations will be prioritized before automated op
 |:---------------:|-----------------------|:---------:|
 | Database        | ✅ Complete           | `100%`    |
 | Logs            | ✅ Complete           | `100%`    |
+| Auto-publish    | ✅ Complete           | `100%`    |
 | Moderation      | ⏸️ Halted             | `45%`     |
 | *Leveling*      | 🔄️ Under Development  | **`0%`**  |
 | Economy         | ⛔ Not Developed      | `--%`     |

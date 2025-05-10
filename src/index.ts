@@ -1,4 +1,4 @@
-import { BloqbitClient, Command, LogEvent, MessageHandler, ServerHandler, UserHandler } from './classes.js';
+import { BloqbitClient, Command, BotEvent } from './classes.js';
 
 import * as fs from 'node:fs';
 import * as path from 'path';
@@ -90,27 +90,6 @@ export default class Bot {
             };
 
             try {
-                const logsPath = path.join(__dirname, 'events/logging');
-
-                await loadFiles(logsPath, async (logEvent: LogEvent) => {
-                    client.on(logEvent.event.toString(), async (...args) => {
-                        try {
-                            await logEvent.execute(bot, ...args);
-                        } catch (err) {
-                            console.trace(err);
-                        } finally {
-                            console.debug(`Handled log event ${logEvent.event.toString()}`);
-                        };
-                    });
-
-                    console.debug(`Loaded guild log event for ${logEvent.event.toString()}`);
-                });
-            } catch (err) {
-                console.trace(err);
-                process.exit(1);
-            };
-
-            try {
                 const eventsPath = path.join(__dirname, 'events');
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -144,51 +123,73 @@ export default class Bot {
                 process.exit(1);
             };
 
-            fetch.setPresence(client, `Finishing up...`, `Bot is starting up, please wait...`, PresenceUpdateStatus.Idle);
-
             try {
-                console.debug("Starting handlers...");
+                const loadSubEvents = async (botEvent: BotEvent, folder: string) => {
+                    client.on(botEvent.event.toString(), async (...args) => {
+                        try {
+                            await botEvent.execute(bot, ...args);
+                        } catch (err) {
+                            console.trace(err);
+                        } finally {
+                            console.debug(`Handled ${folder} event ${botEvent.event.toString()}`);
+                        };
+                    });
 
-                new MessageHandler(client, bot.db);
-                new ServerHandler(client, bot.db);
-                new UserHandler(client, bot.db);
+                    console.debug(`Loaded guild ${folder} event for ${botEvent.event.toString()}`);
+                };
 
-                console.debug("Handlers successfully started");
+                const loadSubFolder = async (sub: string) => {
+                    const folder = path.join(__dirname, `events/${sub}`);
+
+                    await loadFiles(folder, async (e: BotEvent) => {
+                        await loadSubEvents(e, sub);
+                    });
+                };
+
+                await loadSubFolder('logging');
+                await loadSubFolder('moderation');
             } catch (err) {
                 console.trace(err);
                 process.exit(1);
             };
 
-            if (testMode) {
-                console.info(`All start-up operations successful, shutting down...`);
+            fetch.setPresence(client, `Finishing up...`, `Bot is starting up, please wait...`, PresenceUpdateStatus.Idle);
 
-                await client.destroy();
-                process.exit(0);
-            } else {
-                const srvs = await client.guilds?.fetch();
-                fetch.setPresence(client, `Alpha Testing!`, `Active across ${srvs.size} servers!`, PresenceUpdateStatus.Online);
+            try {
+                if (testMode) {
+                    console.info(`All start-up operations successful, shutting down...`);
 
-                const devWH = new WebhookClient({ "url": bot.dev_wh, });
+                    await client.destroy();
+                    process.exit(0);
+                } else {
+                    const srvs = await client.guilds?.fetch();
+                    fetch.setPresence(client, `Alpha Testing!`, `Active across ${srvs.size} servers!`, PresenceUpdateStatus.Online);
 
-                await devWH.send({
-                    "avatarURL": client.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),
-                    "content": "",
-                    "embeds": [
-                        {
-                            "author": {
-                                "name": `Service Status`,
+                    const devWH = new WebhookClient({ "url": bot.dev_wh, });
+
+                    await devWH.send({
+                        "avatarURL": client.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),
+                        "content": "",
+                        "embeds": [
+                            {
+                                "author": {
+                                    "name": `Service Status`,
+                                },
+                                "description": `${bot.assets.default.icons.check} **${client.user?.displayName}** is now __online__`,
+                                "color": bot.assets.colors.primary,
+                                "footer": {
+                                    "text": client.user?.username,
+                                    "icon_url": client.user?.displayAvatarURL({ "forceStatic": false, "size": 512 }),
+                                },
                             },
-                            "description": `${bot.assets.default.icons.check} **${client.user?.displayName}** is now __online__`,
-                            "color": bot.assets.colors.primary,
-                            "footer": {
-                                "text": client.user?.username,
-                                "icon_url": client.user?.displayAvatarURL({ "forceStatic": false, "size": 512 }),
-                            },
-                        },
-                    ],
-                });
+                        ],
+                    });
 
-                console.log(`Bloqbit is online - running as bot user @${client.user?.username} (${client.user?.id})`);
+                    console.log(`Bloqbit is online - running as bot user @${client.user?.username} (${client.user?.id})`);
+                };
+            } catch (err) {
+                console.trace(err);
+                process.exit(1);
             };
         });
 

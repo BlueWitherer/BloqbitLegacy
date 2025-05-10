@@ -1,7 +1,7 @@
 import BloqbitClient from './classes/BloqbitClient.ts';
 import Command from './classes/Command.ts';
 import Config from './classes/Config.ts';
-import LogEvent from './classes/LogEvent.ts';
+import BotEvent from './classes/BotEvent.ts';
 import SaveDataClient from './classes/SaveDataClient.ts';
 
 import InfractionRecord from './classes/data/InfractionRecord.ts';
@@ -16,15 +16,11 @@ import ServerLogEventType from './classes/enum/ServerLogEventType.ts';
 import MessageFilterClass from './classes/enum/MessageFilterClass.ts';
 import MessageFilterMode from './classes/enum/MessageFilterMode.ts';
 
-import MessageHandler from './classes/handlers/MessageHandler.ts';
-import UserHandler from './classes/handlers/UserHandler.ts';
-import ServerHandler from './classes/handlers/ServerHandler.ts';
-
 export {
     BloqbitClient,
     Command,
     Config,
-    LogEvent,
+    BotEvent,
     SaveDataClient,
 
     InfractionRecord,
@@ -38,8 +34,4 @@ export {
     ServerLogEventType,
     MessageFilterClass,
     MessageFilterMode,
-
-    MessageHandler,
-    UserHandler,
-    ServerHandler,
 };

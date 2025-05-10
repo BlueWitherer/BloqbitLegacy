@@ -26,19 +26,7 @@ export default {
 
                 if (command && interactionServer) {
                     try {
-                        if (command.dev) {
-                            return;
-                        } else if (command.premium) {
-                            const system = await cache.fetch(interaction.guildId ?? '', bot.db);
-
-                            if (system) {
-                                await command.execute(interaction, bot.assets, interactionServer, bot.db);
-                            } else {
-                                await fetch.databaseErrorResponse(interaction, bot.assets);
-                            };
-                        } else {
-                            await command.execute(interaction, bot.assets, interactionServer, bot.db);
-                        };
+                        await command.execute(interaction, bot.assets, interactionServer, bot.db);
                     } catch (err) {
                         console.trace(err);
 

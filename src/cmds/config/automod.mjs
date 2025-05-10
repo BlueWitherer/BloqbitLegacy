@@ -66,10 +66,6 @@ export default new Command(
                         value: ModeratorActionType.Timeout,
                     },
                     {
-                        name: "blacklist",
-                        value: ModeratorActionType.Blacklist,
-                    },
-                    {
                         name: "kick",
                         value: ModeratorActionType.Kick,
                     },
@@ -152,10 +148,6 @@ export default new Command(
                         value: ModeratorActionType.Timeout,
                     },
                     {
-                        name: "blacklist",
-                        value: ModeratorActionType.Blacklist,
-                    },
-                    {
                         name: "kick",
                         value: ModeratorActionType.Kick,
                     },
@@ -223,10 +215,6 @@ export default new Command(
                     {
                         name: "timeout",
                         value: ModeratorActionType.Timeout,
-                    },
-                    {
-                        name: "blacklist",
-                        value: ModeratorActionType.Blacklist,
                     },
                     {
                         name: "kick",
@@ -304,7 +292,6 @@ export default new Command(
             const toggle = interaction.options?.getBoolean("enable", true);
 
             const filter = interaction.options?.getString("filter");
-            const superFilter = interaction.options?.getString("super_filter");
             const channel = interaction.options?.getChannel("toggle_channel");
             const role = interaction.options?.getRole("toggle_role");
             const punishment = interaction.options?.getNumber("punishment");

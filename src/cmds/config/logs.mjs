@@ -1,7 +1,7 @@
 import { ServerLogEventType, Command } from '../../classes.js';
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from '../../modules/fetch.js';
 import resolve from '../../modules/resolve.js';
 import cache from '../../cache.mjs';
@@ -24,6 +24,7 @@ export default new Command(
             .addChannelOption((o) => o
                 .setName("channel")
                 .setDescription("Set the channel in which server-wide actions will be logged.")
+                .addChannelTypes([ChannelType.GuildText])
                 .setRequired(false))
             .addBooleanOption((o) => o
                 .setName("webhook")
@@ -139,7 +140,7 @@ export default new Command(
          */
         const configCmd = async () => {
             const toggle = interaction.options?.getBoolean("enable", true);
-            const channel = interaction.options?.getChannel("channel", false);
+            const channel = interaction.options?.getChannel("channel", false, [ChannelType.GuildText]);
             const webhook = interaction.options?.getBoolean("webhook", false);
 
             const allEmbeds = [];
@@ -333,4 +334,6 @@ export default new Command(
                 await fetch.commandErrorResponse(interaction, assets);
                 break;
         };
+
+        return;
     });

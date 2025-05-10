@@ -1,9 +1,9 @@
 import { Events, Message, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, LogEvent } from "../../classes.js";
+import { BloqbitClient, BotEvent } from "../../classes.js";
 
 import fetch from "../../modules/fetch.js";
-export default new LogEvent(
+export default new BotEvent(
     Events.MessageCreate,
     /**
      * 

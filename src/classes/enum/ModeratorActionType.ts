@@ -6,10 +6,9 @@ enum ModeratorActionType {
     Warn = 1,
     Mute = 2,
     Timeout = 3,
-    Blacklist = 4,
-    Kick = 5,
-    Softban = 6,
-    Ban = 7,
+    Kick = 4,
+    Softban = 5,
+    Ban = 6,
 };
 
 /**

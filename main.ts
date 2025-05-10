@@ -1,5 +1,17 @@
 import "./console.mjs";
 
+process.on("SIGUSR1", () => {
+    console.log("Received SIGUSR1 - Debugger may be activated.");
+});
+
+process.on("SIGUSR2", () => {
+    console.log("Received SIGUSR2 - Debugger may be activated.");
+});
+
+process.on("SIGABRT", () => {
+    console.error("Process aborted unexpectedly!");
+});
+
 process.on('uncaughtException', (err) => {
     console.error('Unhandled Exception:', err.stack);
 });
@@ -10,10 +22,6 @@ process.on('unhandledRejection', (reason) => {
     } else {
         console.error('Unhandled Rejection:', reason);
     };
-});
-
-process.on('warning', (warning) => {
-    console.warn('Warning detected:', warning.name, warning.message, warning.stack);
 });
 
 if (global.gc) {
@@ -34,6 +42,22 @@ dotenv.config();
 const start = async () => {
     const { BloqbitClient } = await import('./src/classes.js');
     const Bot = (await import('./src/index.js')).default;
+
+    process.on("debug", (debugInfo) => {
+        console.log("Debug Info:", debugInfo);
+    });
+
+    process.on('warning', (warning) => {
+        console.warn('Node Warning:', warning.name, warning.message, warning.stack);
+    });
+
+    process.on("beforeExit", () => {
+        console.log("Process is about to exit...");
+    });
+
+    process.on("exit", (code) => {
+        console.log(`Process exiting with code ${code}`);
+    });
 
     const noEnv = (env: string): string => { throw new Error(`Environment variable '${env}' is not defined!`); }
 
@@ -76,9 +100,7 @@ const start = async () => {
             };
         }, 3600000); // 60 min
 
-        process.on('SIGINT', async () => {
-            console.warn('Received SIGINT. Shutting down gracefully...');
-
+        const shutDown = async () => {
             try {
                 server.close(async () => {
                     try {
@@ -86,6 +108,7 @@ const start = async () => {
                         await bot.client?.destroy();
                     } catch (err) {
                         console.trace(err);
+                        process.exit(1);
                     } finally {
                         console.log('Server has been stopped');
                         process.exit(0);
@@ -95,27 +118,16 @@ const start = async () => {
                 console.trace(err);
                 process.exit(1);
             };
+        };
+
+        process.on('SIGINT', async () => {
+            console.warn('Received SIGINT. Shutting down gracefully...');
+            return await shutDown();
         });
 
         process.on('SIGTERM', async () => {
             console.warn('Received SIGTERM. Shutting down gracefully...');
-
-            try {
-                server.close(async () => {
-                    try {
-                        await cacheModule.flushToDb(botModel.db);
-                        await bot.client?.destroy();
-                    } catch (err) {
-                        console.trace(err);
-                    } finally {
-                        console.log('Server has been stopped');
-                        process.exit(0);
-                    };
-                });
-            } catch (err) {
-                console.trace(err);
-                process.exit(1);
-            };
+            return await shutDown();
         });
     } catch (err) {
         console.trace(err);

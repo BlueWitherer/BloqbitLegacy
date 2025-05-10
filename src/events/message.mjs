@@ -17,7 +17,6 @@ export default {
 
         try {
             if (msg.channel?.type === ChannelType.DM || msg.channel?.type === ChannelType.GroupDM) {
-    
                 if (msg.author?.bot) {
                     console.error(`Direct message author ${msg.author?.username} (${msg.author?.id}) is a bot or invalid`);
                 } else if (devWH) {
@@ -51,7 +50,7 @@ export default {
             } else {
                 const msgs = await msg.channel?.messages?.fetch({ "limit": 100 });
 
-                console.debug(`Fetched ${msgs?.size} messages from guild channel`);
+                console.debug(`Cached ${msgs?.size}/${msg.channel?.messages?.cache?.size} messages from guild channel`);
             };
         } catch (err) {
             console.trace(err);

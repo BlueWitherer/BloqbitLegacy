@@ -61,20 +61,25 @@ export default {
         switch (punish) {
             case ModeratorActionType.Ban:
                 return "ban";
+
             case ModeratorActionType.Softban:
                 return "softban";
+
             case ModeratorActionType.Kick:
                 return "kick";
-            case ModeratorActionType.Blacklist:
-                return "blacklist";
+
             case ModeratorActionType.Timeout:
                 return "timeout";
+
             case ModeratorActionType.Mute:
                 return "mute";
+
             case ModeratorActionType.Warn:
                 return "warn";
+
             case ModeratorActionType.None:
                 return "none";
+
             default:
                 return "none";
         };
