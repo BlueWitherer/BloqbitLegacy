@@ -194,7 +194,7 @@ export default {
                             const { _id, ...conf } = found;
                             const res = new Config(conf);
 
-                            cache.set(`server:${server}`, conf);
+                            cache.set(`server:${server}`, res);
                             console.info(`[O] Settings for server ${server} found and cached`);
                             return res;
                         } else {
@@ -237,6 +237,8 @@ export default {
                         { $set: system },
                         { upsert: true },
                     );
+
+                    if (cache.get(`server:${system.server}`)) cache.set(`server:${system.server}`, system);
 
                     if (result.upsertedCount >= 1) {
                         console.info(`[O] New settings for server ${system.server} inserted into database`);

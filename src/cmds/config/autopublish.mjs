@@ -65,9 +65,9 @@ export default new Command(
             const foundChannel = system.autopublish.channels.findIndex((c) => c === channel.id);
 
             if (foundChannel >= 0) {
-                system.autopublish.channels.splice(foundChannel, 1);
+                if (!toggle) system.autopublish.channels.splice(foundChannel, 1);
             } else {
-                system.autopublish.channels.push(channel.id);
+                if (toggle) system.autopublish.channels.push(channel.id);
             };
 
             const update = await cache.update(system, db);
