@@ -27,7 +27,7 @@ export default new BotEvent(
                     try {
                         if (system.autopublish.channels.includes(msg.channel?.id)) {
                             if (msg.channel?.type === ChannelType.GuildAnnouncement) {
-                                if (msg.author?.bot && system.autopublish.bots) msg.crosspostable ? await msg.crosspost() : console.error(`Message of ID ${msg.id} from announcement channel could not be published`);
+                                if (msg.author?.bot && (msg.author?.bot && system.autopublish.bots)) msg.crosspostable ? await msg.crosspost() : console.error(`Message of ID ${msg.id} from announcement channel could not be published`);
                             } else {
                                 console.warn(`Channel of ID ${msg.channel?.id} is not an announcement channel`);
                             };
@@ -47,8 +47,6 @@ export default new BotEvent(
                         if (msg.author?.bot) {
                             console.warn(`Message author of ID ${msg.author?.id} is a bot`);
                         } else {
-                            moderation.antiMessages(msg);
-
                             await (async () => {
                                 const inF = moderation.inFilter(system, msg);
                                 const liF = moderation.elFilter(system, msg);

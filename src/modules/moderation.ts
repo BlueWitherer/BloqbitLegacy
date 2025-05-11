@@ -6,7 +6,7 @@ export interface Warning {
 };
 
 export interface WarnObject {
-    punishment: number;
+    punishment: ModeratorActionType;
     warning: Warning;
 };
 
@@ -22,7 +22,7 @@ export default {
      * @param message - Discord message triggering the punishment.
      * @param reason - Reason for the punishment.
      */
-    punish: async (level: number, message: Message, reason: string): Promise<void> => {
+    punish: async (level: ModeratorActionType, message: Message, reason: string): Promise<void> => {
         if (level > ModeratorActionType.Ban) level = ModeratorActionType.Ban;
 
         const ban = async (member: GuildMember, reason: string): Promise<void> => {
@@ -90,15 +90,6 @@ export default {
     },
 
     /**
-     * Adds a message to the antispam list.
-     * 
-     * @param msg - Discord message to add to spam lists.
-     */
-    antiMessages: (msg: Message): void => {
-        console.warn(`Anti-spam W.I.P. for message ${msg.id}`);
-    },
-
-    /**
      * Filters messages for blacklisted words.
      * 
      * @param system - Server settings object.
@@ -117,18 +108,18 @@ export default {
                     if (blWords.some((v) => msg.content.includes(v))) {
                         return resolve.warnObj(
                             auto.swearFilter.punishment,
-                            resolve.msgWarning("Blacklisted Words", "Used words included in the keyword blacklist.")
+                            resolve.msgWarning("Blacklisted Words", "Used words included in the keyword blacklist."),
                         );
                     } else {
                         return resolve.warnObj(
                             ModeratorActionType.None,
-                            resolve.msgWarning("Clear", "Message doesn't violate rule.")
+                            resolve.msgWarning("Clear", "Message doesn't violate rule."),
                         );
                     };
                 } else {
                     return resolve.warnObj(
                         ModeratorActionType.None,
-                        resolve.msgWarning("Clear", "Filter disabled.")
+                        resolve.msgWarning("Clear", "Filter disabled."),
                     );
                 };
             } catch (err) {
@@ -136,13 +127,13 @@ export default {
 
                 return resolve.warnObj(
                     ModeratorActionType.None,
-                    resolve.msgWarning("Clear", "Programming error.")
+                    resolve.msgWarning("Clear", "Programming error."),
                 );
             };
         } else {
             return resolve.warnObj(
                 ModeratorActionType.None,
-                resolve.msgWarning("Clear", "Programming error.")
+                resolve.msgWarning("Clear", "Programming error."),
             );
         };
     },

@@ -19,7 +19,7 @@ export default {
 
             return {
                 name: "Error",
-                value: "An internal error occurred."
+                value: "An internal error occurred.",
             };
         };
     },
@@ -31,7 +31,7 @@ export default {
      * 
      * @returns A warn object.
      */
-    warnObj: (value: number, object: Warning): WarnObject => {
+    warnObj: (value: ModeratorActionType, object: Warning): WarnObject => {
         try {
             return {
                 punishment: Number(value),
@@ -44,7 +44,7 @@ export default {
                 punishment: 0,
                 warning: {
                     name: "Error",
-                    value: "An internal error occurred."
+                    value: "An internal error occurred.",
                 },
             };
         };
@@ -104,7 +104,7 @@ export default {
     },
 
     /**
-     * Returns "enabled" or "disabled" with or without an emote.
+     * Returns a toggle string.
      * 
      * @param bool If-enabled boolean.
      * @param emote Include emote.
@@ -115,9 +115,9 @@ export default {
         const addEmote = (e: boolean, b: boolean): string => {
             if (e) {
                 return b ? "✅ " : "❌ ";
+            } else {
+                return "";
             };
-
-            return "";
         };
 
         return addEmote(emote, bool) + (bool ? "enabled" : "disabled");
@@ -137,11 +137,11 @@ export default {
     },
 
     /**
-     * Formats a number with thousand-digit commas.
+     * Formats a number with commas on thousands.
      * 
      * @param x - Number.
      * 
-     * @returns String of number with thousand-digit commas.
+     * @returns String of number with commans on thousandth digits.
      */
     numberWithCommas: (x: number): string => {
         try {

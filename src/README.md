@@ -34,5 +34,3 @@ Bloqbit is open-source. You may take its source code directly and modify it to f
 ### Users
 ###### Regular users of this bot.
 **[📱 Learn about this bot](../)**
-
-*More coming soon...*

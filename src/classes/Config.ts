@@ -77,6 +77,45 @@ export class Welcome {
 };
 
 /**
+ * @memberof GhostPing
+ */
+export class DeletedPingSettings {
+    users: boolean;
+    bots: boolean;
+    roles: boolean;
+    everyone: boolean;
+
+    constructor({ users = true, bots = false, roles = false, everyone = true }: Partial<DeletedPingSettings>) {
+        this.users = users;
+        this.bots = bots;
+        this.roles = roles;
+        this.everyone = everyone;
+
+        return this;
+    };
+};
+
+/**
+ * Anti ghost ping configuration
+ * 
+ * Uses:
+ * - {@link DeletedPingSettings}
+ */
+export class GhostPing {
+    enabled: boolean;
+    settings: DeletedPingSettings;
+    noMods: boolean;
+
+    constructor({ enabled = false, settings = new DeletedPingSettings({}), noMods = false }: Partial<GhostPing>) {
+        this.enabled = enabled;
+        this.settings = new DeletedPingSettings(settings);
+        this.noMods = noMods;
+
+        return this;
+    };
+};
+
+/**
  * Announcement auto-publisher configuration
  */
 export class AutoPublish {
@@ -428,6 +467,7 @@ export class Cleverbot {
 export default class Config {
     server: string;
     automod: AutoMod;
+    ghostping: GhostPing;
     autopublish: AutoPublish;
     logs: Logs;
     roles: Roles;
@@ -439,6 +479,7 @@ export default class Config {
     constructor({
         server = "",
         automod = new AutoMod({}),
+        ghostping = new GhostPing({}),
         autopublish = new AutoPublish({}),
         logs = new Logs({}),
         roles = new Roles({}),
@@ -449,6 +490,7 @@ export default class Config {
     }: Partial<Config>) {
         this.server = server;
         this.automod = new AutoMod(automod);
+        this.ghostping = new GhostPing(ghostping);
         this.autopublish = new AutoPublish(autopublish);
         this.logs = new Logs(logs);
         this.roles = new Roles(roles);
