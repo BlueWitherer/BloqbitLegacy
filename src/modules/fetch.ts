@@ -28,7 +28,7 @@ export default {
     },
 
     /**
-     * Returns the proxy URL of the first image found in a message.
+     * Returns the proxy URL of the first image found in a message
      */
     ifProxyImage: (msg: Message): string | void => {
         const attachment = msg.attachments?.first();
@@ -36,7 +36,7 @@ export default {
     },
 
     /**
-     * Fetches the configuration object of the server.
+     * Fetches the configuration object of the server
      */
     fetchGuild: async (server: string, db: SaveDataClient): Promise<Config | void> => {
         if (server && db) {
@@ -53,7 +53,7 @@ export default {
     },
 
     /**
-     * Handles errors when the server isn't registered in the database.
+     * Handles errors when the server isn't registered in the database
      */
     databaseErrorResponse: async (interaction: Interaction, assets: typeof SysAssets): Promise<void> => {
         if (interaction.isChatInputCommand()) {
@@ -81,7 +81,7 @@ export default {
     },
 
     /**
-     * Sends a generic command error response.
+     * Sends a generic command error response
      */
     commandErrorResponse: async (interaction: Interaction, assets: typeof SysAssets): Promise<void> => {
         if (interaction.isChatInputCommand()) {
@@ -108,7 +108,7 @@ export default {
     },
 
     /**
-     * Sets the bot's presence status.
+     * Sets the bot's presence status
      */
     setPresence: (client: Client, name: string, state: string, status: PresenceStatusData): ClientPresence | void => {
         try {
@@ -131,7 +131,7 @@ export default {
     },
 
     /**
-     * Sends a log to the server's configured logs channel.
+     * Sends a log to the server's configured logs channel
      */
     sendLog: async (client: Client, system: Config, db: SaveDataClient, emb: APIEmbed, guild: Guild): Promise<void> => {
         const channel = await guild.channels?.fetch(system.logs.channel);
@@ -187,5 +187,53 @@ export default {
         };
 
         return;
+    },
+
+    /**
+     * Removes deleted channels from array
+     */
+    scanChannels: (server: Guild | null, channels: string[]): string[] => {
+        if (server) {
+            try {
+                for (let i = 0; i < channels.length; i++) {
+                    if (server.channels?.cache?.get(channels[i])) {
+                        console.debug(`Channel of ID ${channels[i]} exists`);
+                    } else {
+                        console.warn(`Channel of ID ${channels[i]} does not exist, removing from list...`);
+                        channels.splice(i, 1);
+                    };
+                };
+            } catch (err) {
+                console.trace(err);
+            };
+        } else {
+            console.error(`Server not provided, skipping channel scans...`);
+        };
+
+        return channels;
+    },
+
+    /**
+     * Removes deleted roles from array
+     */
+    scanRoles: (server: Guild | null, roles: string[]): string[] => {
+        if (server) {
+            try {
+                for (let i = 0; i < roles.length; i++) {
+                    if (server.roles?.cache?.get(roles[i])) {
+                        console.debug(`Role of ID ${roles[i]} exists`);
+                    } else {
+                        console.warn(`Role of ID ${roles[i]} does not exist, removing from list...`);
+                        roles.splice(i, 1);
+                    };
+                };
+            } catch (err) {
+                console.trace(err);
+            };
+        } else {
+            console.error(`Server not provided, skipping role scans...`);
+        };
+
+        return roles;
     },
 };

@@ -346,10 +346,11 @@ export default new Command(
 
             if (channel !== null) {
                 try {
-                    const foundChannel = system.automod.swearFilter.channels.findIndex((c) => c === channel.id);
+                    const chnls = fetch.scanChannels(interaction.guild, system.automod.swearFilter.channels);
+                    const foundChannel = chnls.findIndex((c) => c === channel.id);
 
                     if (foundChannel >= 0) {
-                        system.automod.swearFilter.channels.splice(foundChannel, 1);
+                        chnls.splice(foundChannel, 1);
 
                         allEmbeds.push(
                             {
@@ -357,7 +358,7 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     } else {
-                        system.automod.swearFilter.channels.push(channel.id);
+                        chnls.push(channel.id);
 
                         allEmbeds.push(
                             {
@@ -365,6 +366,8 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     };
+
+                    system.automod.swearFilter.channels = chnls;
                 } catch (err) {
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter channel permission`,
@@ -375,10 +378,11 @@ export default new Command(
 
             if (role !== null) {
                 try {
-                    const foundRole = system.automod.swearFilter.roles.findIndex((r) => r === role.id);
+                    const roles = fetch.scanChannels(interaction.guild, system.automod.swearFilter.roles);
+                    const foundRole = roles.findIndex((r) => r === role.id);
 
                     if (foundRole >= 0) {
-                        system.automod.swearFilter.roles.splice(foundRole, 1);
+                        roles.splice(foundRole, 1);
 
                         allEmbeds.push(
                             {
@@ -386,7 +390,7 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     } else {
-                        system.automod.swearFilter.roles.push(role.id);
+                        roles.push(role.id);
 
                         allEmbeds.push(
                             {
@@ -394,6 +398,8 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     };
+
+                    system.automod.swearFilter.roles = roles;
                 } catch (err) {
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter role permission`,
@@ -551,10 +557,11 @@ export default new Command(
 
             if (channel !== null) {
                 try {
-                    const foundChannel = system.automod.inviteFilter.channels.findIndex((c) => c === channel.id);
+                    const chnls = fetch.scanChannels(interaction.guild, system.automod.inviteFilter.channels);
+                    const foundChannel = chnls.findIndex((c) => c === channel.id);
 
                     if (foundChannel >= 0) {
-                        system.automod.inviteFilter.channels.splice(foundChannel, 1);
+                        chnls.splice(foundChannel, 1);
 
                         allEmbeds.push(
                             {
@@ -562,7 +569,7 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     } else {
-                        system.automod.inviteFilter.channels.push(channel.id);
+                        chnls.push(channel.id);
 
                         allEmbeds.push(
                             {
@@ -570,6 +577,8 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     };
+
+                    system.automod.inviteFilter.channels = chnls;
                 } catch (err) {
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter channel permission`,
@@ -580,10 +589,11 @@ export default new Command(
 
             if (role !== null) {
                 try {
-                    const foundRole = system.automod.inviteFilter.roles.findIndex((r) => r === role.id);
+                    const roles = fetch.scanChannels(interaction.guild, system.automod.inviteFilter.roles);
+                    const foundRole = roles.findIndex((r) => r === role.id);
 
                     if (foundRole >= 0) {
-                        system.automod.inviteFilter.roles.splice(foundRole, 1);
+                        roles.splice(foundRole, 1);
 
                         allEmbeds.push(
                             {
@@ -591,7 +601,7 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     } else {
-                        system.automod.inviteFilter.roles.push(role.id);
+                        roles.push(role.id);
 
                         allEmbeds.push(
                             {
@@ -599,6 +609,8 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     };
+
+                    system.automod.inviteFilter.roles = roles;
                 } catch (err) {
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter role permission`,
@@ -756,10 +768,11 @@ export default new Command(
 
             if (channel !== null) {
                 try {
-                    const foundChannel = system.automod.linkFilter.channels.findIndex((c) => c === channel.id);
+                    const chnls = fetch.scanChannels(interaction.guild, system.automod.linkFilter.channels);
+                    const foundChannel = chnls.findIndex((c) => c === channel.id);
 
                     if (foundChannel >= 0) {
-                        system.automod.linkFilter.channels.splice(foundChannel, 1);
+                        chnls.splice(foundChannel, 1);
 
                         allEmbeds.push(
                             {
@@ -767,7 +780,7 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     } else {
-                        system.automod.linkFilter.channels.push(channel.id);
+                        chnls.push(channel.id);
 
                         allEmbeds.push(
                             {
@@ -775,6 +788,8 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     };
+
+                    system.automod.linkFilter.channels = chnls;
                 } catch (err) {
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter channel permission`,
@@ -785,10 +800,11 @@ export default new Command(
 
             if (role !== null) {
                 try {
+                    const roles = fetch.scanChannels(interaction.guild, system.automod.linkFilter.roles);
                     const foundRole = system.automod.linkFilter.roles.findIndex((r) => r === role.id);
 
                     if (foundRole >= 0) {
-                        system.automod.linkFilter.roles.splice(foundRole, 1);
+                        roles.splice(foundRole, 1);
 
                         allEmbeds.push(
                             {
@@ -796,7 +812,7 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     } else {
-                        system.automod.linkFilter.roles.push(role.id);
+                        roles.push(role.id);
 
                         allEmbeds.push(
                             {
@@ -804,6 +820,8 @@ export default new Command(
                                 "color": assets.colors.primary,
                             });
                     };
+
+                    system.automod.linkFilter.roles = roles;
                 } catch (err) {
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter role permission`,

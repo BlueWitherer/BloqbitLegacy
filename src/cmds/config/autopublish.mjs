@@ -68,14 +68,17 @@ export default new Command(
             const channel = interaction.options?.getChannel("channel", true, [ChannelType.GuildAnnouncement]);
             const toggle = interaction.options?.getBoolean("enable", true);
 
-            const foundChannel = system.autopublish.channels.findIndex((c) => c === channel.id);
+            const chnls = fetch.scanChannels(interaction.guild, system.autopublish.channels);
+
+            const foundChannel = chnls.findIndex((c) => c === channel.id);
 
             if (foundChannel >= 0) {
-                if (!toggle) system.autopublish.channels.splice(foundChannel, 1);
+                if (!toggle) chnls.splice(foundChannel, 1);
             } else {
-                if (toggle) system.autopublish.channels.push(channel.id);
+                if (toggle) chnls.push(channel.id);
             };
 
+            system.autopublish.channels = chnls;
             const update = await cache.update(system, db);
 
             if (update) {

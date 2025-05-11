@@ -148,43 +148,45 @@ export default new Command(
         };
 
         const logsCmd = async () => {
+            const lg = system.logs;
+
             const loggingIn = () => {
-                if (system.logs.enabled && system.logs.channel) return ` and are currently being sent in <#${system.logs.channel}>`;
+                if (lg.enabled && lg.channel) return ` and are currently being sent in <#${lg.channel}>`;
             };
 
             const returnEmbed = new EmbedBuilder()
                 .setTitle(`${assets.icons.info} Set of active logs for ${interaction.guild?.name}`)
-                .setDescription(`Logs are currently **${resolve.abled(system.logs.enabled)}**${loggingIn()}!`)
+                .setDescription(`Logs are currently **${resolve.abled(lg.enabled)}**${loggingIn()}!`)
                 .setColor(assets.colors.primary)
                 .setFields([
                     {
                         "name": "General",
-                        "value": `**Bloqbit Auto-moderator** ${resolve.abled(system.logs.actions.autoMod, true)}\n**Moderator Actions** ${resolve.abled(system.logs.actions.moderator, true)}\n**Server Invites** ${resolve.abled(system.logs.actions.invites, true)}`,
+                        "value": `**Bloqbit Auto-moderator** ${resolve.abled(lg.actions.autoMod, true)}\n**Moderator Actions** ${resolve.abled(lg.actions.moderator, true)}\n**Server Invites** ${resolve.abled(lg.actions.invites, true)}`,
                         "inline": true,
                     },
                     {
                         "name": "Members",
-                        "value": `**Member join** ${resolve.abled(system.logs.actions.join, true)}\n**Member left** ${resolve.abled(system.logs.actions.leave, true)}\n**Member timed out** ${resolve.abled(system.logs.actions.timeout, true)}\n**Member banned** ${resolve.abled(system.logs.actions.ban, true)}\n**Member nickname updated** ${resolve.abled(system.logs.actions.nickname, true)}\n`,
+                        "value": `**Member join** ${resolve.abled(lg.actions.join, true)}\n**Member left** ${resolve.abled(lg.actions.leave, true)}\n**Member timed out** ${resolve.abled(lg.actions.timeout, true)}\n**Member banned** ${resolve.abled(lg.actions.ban, true)}\n**Member nickname updated** ${resolve.abled(lg.actions.nickname, true)}\n`,
                         "inline": true,
                     },
                     {
                         "name": "Messages",
-                        "value": `**Message deleted** ${resolve.abled(system.logs.actions.msgDel, true)}\n**Message edited** ${resolve.abled(system.logs.actions.msgUpd, true)}\n**Message pinned** ${resolve.abled(system.logs.actions.msgPin, true)}\n**Messages bulk deleted** ${resolve.abled(system.logs.actions.msgBulkDel, true)}\n**Message reactions removed** ${resolve.abled(system.logs.actions.remAllReact, true)}`,
+                        "value": `**Message deleted** ${resolve.abled(lg.actions.msgDel, true)}\n**Message edited** ${resolve.abled(lg.actions.msgUpd, true)}\n**Message pinned** ${resolve.abled(lg.actions.msgPin, true)}\n**Messages bulk deleted** ${resolve.abled(lg.actions.msgBulkDel, true)}\n**Message reactions removed** ${resolve.abled(lg.actions.remAllReact, true)}`,
                         "inline": true,
                     },
                     {
                         "name": "Voice",
-                        "value": `**Join voice channel** ${resolve.abled(system.logs.actions.vcJoin, true)}\n**More through voice channels** ${resolve.abled(system.logs.actions.vcMove, true)}\n**Leave voice channel** ${resolve.abled(system.logs.actions.vcLeave, true)}`,
+                        "value": `**Join voice channel** ${resolve.abled(lg.actions.vcJoin, true)}\n**More through voice channels** ${resolve.abled(lg.actions.vcMove, true)}\n**Leave voice channel** ${resolve.abled(lg.actions.vcLeave, true)}`,
                         "inline": true,
                     },
                     {
                         "name": "Roles",
-                        "value": `**Role created** ${resolve.abled(system.logs.actions.rolesAdd, true)}\n**Role deleted** ${resolve.abled(system.logs.actions.rolesRem, true)}\n**Role given** ${resolve.abled(system.logs.actions.rolesAssign, true)}\n**Role taken** ${resolve.abled(system.logs.actions.rolesUnassign, true)}`,
+                        "value": `**Role created** ${resolve.abled(lg.actions.rolesAdd, true)}\n**Role deleted** ${resolve.abled(lg.actions.rolesRem, true)}\n**Role given** ${resolve.abled(lg.actions.rolesAssign, true)}\n**Role taken** ${resolve.abled(lg.actions.rolesUnassign, true)}`,
                         "inline": true,
                     },
                     {
                         "name": "Channels",
-                        "value": `**Channel created** ${resolve.abled(system.logs.actions.channelAdd, true)}\n**Channel deleted** ${resolve.abled(system.logs.actions.channelDel, true)}`,
+                        "value": `**Channel created** ${resolve.abled(lg.actions.channelAdd, true)}\n**Channel deleted** ${resolve.abled(lg.actions.channelDel, true)}`,
                         "inline": true,
                     },
                 ]).data;
@@ -203,19 +205,22 @@ export default new Command(
         };
 
         const autopublishCmd = async () => {
+            const ap = system.autopublish;
+            const chnls = fetch.scanChannels(interaction.guild, ap.channels);
+
             const returnEmbed = new EmbedBuilder()
                 .setTitle(`${assets.icons.info} Auto-publisher Settings`)
-                .setDescription(`${system.autopublish.channels.length ? `<#${system.autopublish.channels.join(">,<#")}>` : `-# *No channels*`}`)
+                .setDescription(`${chnls.length ? `<#${chnls.join(">,<#")}>` : `-# *No channels*`}`)
                 .setColor(assets.colors.primary)
                 .setFields(
                     {
                         "name": "Status",
-                        "value": `**${resolve.abled(system.autopublish.enabled, true)}**`,
+                        "value": `**${resolve.abled(ap.enabled, true)}**`,
                         "inline": false,
                     },
                     {
                         "name": "Bots Allowed",
-                        "value": `**${resolve.abled(system.autopublish.bots, true)}**`,
+                        "value": `**${resolve.abled(ap.bots, true)}**`,
                         "inline": true,
                     },
                 )

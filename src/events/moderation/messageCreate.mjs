@@ -22,25 +22,6 @@ export default new BotEvent(
             const system = await fetch.fetchGuild((msg.guild?.id || msg.guildId) ?? '', bot.db);
 
             if (system) {
-                // autopublish
-                if (system.autopublish.enabled) {
-                    try {
-                        if (system.autopublish.channels.includes(msg.channel?.id)) {
-                            if (msg.channel?.type === ChannelType.GuildAnnouncement) {
-                                if (msg.author?.bot && (msg.author?.bot && system.autopublish.bots)) msg.crosspostable ? await msg.crosspost() : console.error(`Message of ID ${msg.id} from announcement channel could not be published`);
-                            } else {
-                                console.warn(`Channel of ID ${msg.channel?.id} is not an announcement channel`);
-                            };
-                        } else {
-                            console.warn(`Channel of ID ${msg.channel?.id} not included in auto-publisher`);
-                        };
-                    } catch (err) {
-                        console.trace(err);
-                    };
-                } else {
-                    console.warn(`Auto-publish not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
-                };
-
                 // automod
                 if (system.automod.enabled) {
                     try {
@@ -64,6 +45,35 @@ export default new BotEvent(
                     } catch (err) {
                         console.trace(err);
                     };
+                } else {
+                    console.warn(`Auto-moderator not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                };
+
+                // autopublish
+                if (system.autopublish.enabled) {
+                    try {
+                        if (system.autopublish.channels.includes(msg.channel?.id)) {
+                            if (msg.channel?.type === ChannelType.GuildAnnouncement) {
+                                if (!msg.author?.bot || (msg.author?.bot && system.autopublish.bots)) {
+                                    if (msg.crosspostable) {
+                                        await msg.crosspost();
+                                    } else {
+                                        console.error(`Message of ID ${msg.id} could not be published`);
+                                    };
+                                } else {
+                                    console.error(`Message author of ID ${msg.author?.id} is invalid`);
+                                };
+                            } else {
+                                console.error(`Channel of ID ${msg.channel?.id} is not an announcement channel`);
+                            };
+                        } else {
+                            console.warn(`Channel of ID ${msg.channel?.id} not included in auto-publisher`);
+                        };
+                    } catch (err) {
+                        console.trace(err);
+                    };
+                } else {
+                    console.warn(`Auto-publisher not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
                 };
             } else {
                 console.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
