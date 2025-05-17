@@ -17,7 +17,7 @@ export default {
         const devWH = new WebhookClient({ url: bot.dev_wh });
 
         try {
-            console.error(error, error.stack);
+            console.error(error.stack);
 
             await devWH.send({
                 "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
@@ -26,7 +26,7 @@ export default {
                         "author": {
                             "name": `Error`,
                         },
-                        "description": error.message,
+                        "description": `\`\`\`${error.message}\`\`\``,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

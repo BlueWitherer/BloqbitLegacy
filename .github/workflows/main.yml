@@ -8,12 +8,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '23.1.0'
+          check-latest: true
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm install
@@ -25,11 +34,7 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        env:
-          TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
-          TEST_SECRET: ${{ secrets.TEST_SECRET }}
-          TEST_LOG_WH: ${{ secrets.TEST_LOG_WH }}
-        run: npm run test
+        run: npm test
 
       - name: Clean up build artifacts
         run: npm run clean

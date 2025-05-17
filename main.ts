@@ -16,11 +16,11 @@ process.on('uncaughtException', (err) => {
     console.error('Unhandled Exception:', err.stack);
 });
 
-process.on('unhandledRejection', (reason) => {
+process.on('unhandledRejection', (reason, promise) => {
     if (reason instanceof Error) {
-        console.trace('Unhandled Rejection:', reason.stack || 'No stack trace available');
+        console.trace('Unhandled Rejection:', reason.stack || 'No stack trace available', "\n", promise);
     } else {
-        console.error('Unhandled Rejection:', reason);
+        console.error('Unhandled Rejection:', reason, "\n", promise);
     };
 });
 
@@ -34,14 +34,16 @@ if (global.gc) {
 
 console.log('Starting system...');
 
+import path from 'path';
 import http from 'http';
 import dotenv from 'dotenv';
+
+import { ShardingManager, User } from 'discord.js';
 
 dotenv.config();
 
 const start = async () => {
-    const { BloqbitClient } = await import('./src/classes.js');
-    const Bot = (await import('./src/index.js')).default;
+    let allShards: number = 0;
 
     process.on("debug", (debugInfo) => {
         console.log("Debug Info:", debugInfo);
@@ -51,22 +53,13 @@ const start = async () => {
         console.warn('Node Warning:', warning.name, warning.message, warning.stack);
     });
 
-    process.on("beforeExit", () => {
-        console.log("Process is about to exit...");
+    process.on("beforeExit", (code) => {
+        console.log(`Process is exiting with code ${code}...`);
     });
 
     process.on("exit", (code) => {
-        console.log(`Process exiting with code ${code}`);
+        console.log(`Process exited with code ${code}`);
     });
-
-    const noEnv = (env: string): string => { throw new Error(`Environment variable '${env}' is not defined!`); }
-
-    const botModel = new BloqbitClient(
-        process.env.MAIN_TOKEN || noEnv('MAIN_TOKEN'),
-        process.env.MAIN_LOG_WH || noEnv('MAIN_LOG_WH'),
-        process.env.MONGO_URI || noEnv('MONGO_URI'),
-        process.env.MAIN_SECRET || undefined,
-    );
 
     const SERVER_IP = (process.env.APP_HOST || process.env.REDIS_HOST || process.env.IP || process.env.SERVER_IP) || "0.0.0.0";
     const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.REDIS_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
@@ -81,53 +74,111 @@ const start = async () => {
     });
 
     try {
-        const cacheModule = (await import('./src/cache.mjs')).default;
-
-        const src = new Bot({ botModel: botModel });
-        const bot = await src.activate(false);
-
-        server.listen(SERVER_PORT, () => {
-            console.log(`Server running on IP address ${SERVER_IP} with port ${SERVER_PORT}`);
+        const manager = new ShardingManager(path.resolve("./src/index.ts"), {
+            "execArgv": ["--loader", "ts-node/esm"],
+            "token": process.env.MAIN_TOKEN,
+            "totalShards": "auto",
+            "respawn": false,
+            "shardArgs": [
+                JSON.stringify({
+                    MAIN_TOKEN: process.env.MAIN_TOKEN,
+                    MAIN_LOG_WH: process.env.MAIN_LOG_WH,
+                    MONGO_URI: process.env.MONGO_URI,
+                    MAIN_SECRET: process.env.MAIN_SECRET,
+                }),
+            ],
         });
+
+        manager.on("shardCreate", async (shard) => {
+            shard.once("ready", async () => {
+                allShards++;
+                console.info(`Bot client of shard ${allShards}/${manager.shardList?.length} starting...`);
+
+                if (allShards === manager.shardList?.length) {
+                    console.log(`All bot client shards started`);
+
+                    shard.process?.once("message", async (msg: { type: string, user: User, shard: number }) => {
+                        if (typeof msg === "object") if (msg.type === "shard") {
+                            if (allShards === manager.shardList?.length) console.log(`Bloqbit is online - system is running on ${allShards} shard${allShards > 1 ? 's' : ''}, operating on client @${msg.user?.username} (${msg.user?.id})`);
+                        } else {
+                            console.error(`Entrypoint event listener received invalid event type`);
+                        };
+                    });
+                } else {
+                    console.debug(`Shards have yet to start...`);
+                };
+            });
+        });
+
+        await manager.spawn({
+            "amount": "auto",
+            "delay": 5000,
+            "timeout": 30000,
+        });
+
+        let shuttingDown: boolean = false;
+
+        const shutDown = async (): Promise<void> => {
+            console.log("Initiating shutdown process...");
+
+            await manager.broadcast(() => {
+                if (process.send) process.send('flushDb');
+            });
+
+            let shutdownsReceived = 0;
+            manager.shards.forEach(shard => {
+                shard.on('message', (message) => {
+                    if (message === 'shutdownComplete') {
+                        shutdownsReceived++;
+
+                        if (shutdownsReceived === manager.totalShards) {
+                            server.close(() => {
+                                console.log("Server has been stopped");
+                                process.exit(0);
+                            });
+                        } else {
+                            console.log(`Shard ${shard.id} has completed shutdown. Total: ${shutdownsReceived}/${manager.totalShards}`);
+                        };
+                    } else if (message === 'shutdownError') {
+                        console.error('A shard reported an error during shutdown.');
+                    } else {
+                        console.warn(`Received unknown message from shard ${shard.id}:`, message);
+                    };
+                });
+            });
+
+            setTimeout(() => {
+                console.warn('Shutdown timeout reached, forcing exit.');
+                process.exit(1);
+            }, 30000); // 30 seconds
+        };
 
         setInterval(async () => {
             try {
-                await cacheModule.flushToDb(botModel.db);
+                if (process.send) process.send('flushDb');
             } catch (err) {
                 console.trace(err);
             } finally {
-                console.debug('Cache flushed to database');
+                console.debug('Sent event to flush data to database');
             };
         }, 3600000); // 60 min
 
-        const shutDown = async () => {
-            try {
-                server.close(async () => {
-                    try {
-                        await cacheModule.flushToDb(botModel.db);
-                        await bot.client?.destroy();
-                    } catch (err) {
-                        console.trace(err);
-                        process.exit(1);
-                    } finally {
-                        console.log('Server has been stopped');
-                        process.exit(0);
-                    };
-                });
-            } catch (err) {
-                console.trace(err);
-                process.exit(1);
-            };
-        };
-
         process.on('SIGINT', async () => {
-            console.warn('Received SIGINT. Shutting down gracefully...');
-            return await shutDown();
+            shuttingDown = true;
+
+            shuttingDown ? null : console.warn('Received SIGINT. Shutting down gracefully...');
+            return shuttingDown ? null : await shutDown();
         });
 
         process.on('SIGTERM', async () => {
-            console.warn('Received SIGTERM. Shutting down gracefully...');
-            return await shutDown();
+            shuttingDown = true;
+
+            shuttingDown ? null : console.warn('Received SIGTERM. Shutting down gracefully...');
+            return shuttingDown ? null : await shutDown();
+        });
+
+        server.listen(SERVER_PORT, () => {
+            console.log(`Server running on IP address ${SERVER_IP} with port ${SERVER_PORT}`);
         });
     } catch (err) {
         console.trace(err);

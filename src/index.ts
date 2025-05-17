@@ -1,3 +1,5 @@
+import '../console.mjs';
+
 import { BloqbitClient, Command, BotEvent } from './classes.js';
 
 import * as fs from 'node:fs';
@@ -7,6 +9,7 @@ import * as url from 'url';
 import { Events, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { Routes } from 'discord-api-types/v9';
 
+import cache from './cache.mjs';
 import fetch from './modules/fetch.js';
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -14,19 +17,32 @@ const __dirname = path.dirname(__filename);
 
 export default class Bot {
     public botModel: BloqbitClient;
+    private testMode: boolean;
 
-    constructor({ botModel = new BloqbitClient("", "", "", "") }: Partial<Bot>) {
+    constructor({ botModel = new BloqbitClient("", "", "", "") }: Partial<Bot>, testMode: boolean = false) {
         this.botModel = botModel;
+        this.testMode = testMode;
 
+        this.init();
         return this;
     };
 
-    activate = async (testMode: boolean): Promise<BloqbitClient> => {
+    public init = async (): Promise<BloqbitClient | void> => {
+        try {
+            return await this.activate(this.testMode);
+        } catch (err) {
+            console.trace(err);
+            return;
+        };
+    };
+
+    private activate = async (testMode: boolean = false): Promise<BloqbitClient> => {
         if (testMode) console.log("Test mode active.");
 
         const bot = this.botModel;
 
-        bot.client?.on(Events.ClientReady, async (client) => {
+        bot.client?.once(Events.ClientReady, async (client) => {
+            const clientShard = client.shard?.ids[0] || 0;
             fetch.setPresence(client, `Starting...`, `Bot is starting up, please wait...`, PresenceUpdateStatus.DoNotDisturb);
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -157,7 +173,7 @@ export default class Bot {
                     process.exit(0);
                 } else {
                     const srvs = await client.guilds?.fetch();
-                    fetch.setPresence(client, `Alpha Testing!`, `Active across ${srvs.size} servers!`, PresenceUpdateStatus.Online);
+                    fetch.setPresence(client, `Alpha Testing!`, `Active across ${srvs.size} servers on shard ${clientShard}!`, PresenceUpdateStatus.Online);
 
                     const devWH = new WebhookClient({ "url": bot.dev_wh, });
 
@@ -169,7 +185,7 @@ export default class Bot {
                                 "author": {
                                     "name": `Service Status`,
                                 },
-                                "description": `${bot.assets.default.icons.check} **${client.user?.displayName}** is now __online__`,
+                                "description": `${bot.assets.default.icons.check} **${client.user?.displayName}** is now __online__ on shard ${clientShard}`,
                                 "color": bot.assets.colors.primary,
                                 "footer": {
                                     "text": client.user?.username,
@@ -179,7 +195,12 @@ export default class Bot {
                         ],
                     });
 
-                    console.log(`Bloqbit is online - running as bot user @${client.user?.username} (${client.user?.id})`);
+                    if (process.send) {
+                        const event = process.send({ type: "shard", user: client.user, shard: clientShard });
+                        if (event) console.info(`Bot client instance on shard of ID ${clientShard} started`);
+                    } else {
+                        console.error(`Unable to communicate ready state with entrypoint`);
+                    };
                 };
             } catch (err) {
                 console.trace(err);
@@ -197,3 +218,27 @@ export default class Bot {
         return bot;
     };
 };
+
+const dat = JSON.parse(process.argv[2]);
+const bloqbit = new BloqbitClient(
+    dat.MAIN_TOKEN || "",
+    dat.MAIN_LOG_WH || "",
+    dat.MONGO_URI || "",
+    dat.MAIN_SECRET || undefined,
+);
+
+const bb = new Bot({ botModel: bloqbit });
+
+process.on("message", async (msg: string) => {
+    if (typeof msg === "string") if (msg === "flushDb") {
+        try {
+            await cache.flushToDb(bb.botModel.db);
+        } catch (err) {
+            console.trace(err);
+        } finally {
+            console.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
+        };
+    } else {
+        console.error(`Index of shard of ID ${bb.botModel.client?.shard?.ids[0]} received invalid event type`);
+    };
+});

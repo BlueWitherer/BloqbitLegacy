@@ -14,6 +14,7 @@ export default {
      */
     execute: async (bot, guild) => {
         try {
+            const clientShard = bot.client?.shard?.ids[0] || 0;
             const devWH = new WebhookClient({ url: bot.dev_wh, });
             const date = Math.floor(Date.now() / 1000);
 
@@ -44,7 +45,7 @@ export default {
             });
 
             const srvs = await bot.client?.guilds?.fetch();
-            fetch.setPresence(bot.client, `Alpha Testing!`, `Active across ${srvs.size} servers!`, PresenceUpdateStatus.Online);
+            fetch.setPresence(bot.client, `Alpha Testing!`, `Active across ${srvs.size} servers on shard ${clientShard}!`, PresenceUpdateStatus.Online);
         } catch (err) {
             console.trace(err);
         };

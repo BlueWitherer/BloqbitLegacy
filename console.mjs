@@ -1,4 +1,3 @@
-// save og console methods
 const cons = {
     debug: console.debug,
     log: console.log,
@@ -8,13 +7,13 @@ const cons = {
 };
 
 const col = {
-    gray: '\x1b[90m',     // debug
-    white: '\x1b[37m',    // log
-    cyan: '\x1b[36m',     // info
-    yellow: '\x1b[93m',   // warn
-    red: '\x1b[91m',      // error
-    bold: '\x1b[1m',      // tag
-    reset: '\x1b[0m',     // default
+    gray: '\x1b[90m', // debug
+    white: '\x1b[37m', // log
+    cyan: '\x1b[36m', // info
+    yellow: '\x1b[93m', // warn
+    red: '\x1b[91m', // error
+    bold: '\x1b[1m', // tag
+    reset: '\x1b[0m', // default
 };
 
 /**
@@ -36,55 +35,57 @@ const timeStamp = () => {
 };
 
 /**
- * Recolor multi-line logs
+ * Format multi-line logs
  * 
- * @param {string} t Text to recolor
- * @param {string} c Color code to apply
+ * @param {string} t Text
+ * @param {string} c Color code
  * 
  * @returns {string}
  */
-const fullRecolor = (t, c) => {
+const formatLog = (t, c) => {
     const lines = t.split('\n');
     return lines.map((ln) => `${c}${ln}${col.reset}`).join('\n');
 };
 
-// Override console methods to add tags, timestamps, and recoloring
+/**
+ * Get fully formatted log message
+ * 
+ * @param {string} time Timestamp
+ * @param {string} color Color code
+ * @param {string} tag Log level
+ * @param {[message?: any, ...optionalParams: any[]]} args All arguments
+ * 
+ * @returns {string}
+ */
+const logMsg = (time, color, tag, ...args) => {
+    const txt = args.join(' ');
+    const msg = formatLog(txt, color);
+
+    return `${time}${color} | ${col.bold}${tag}${col.reset}${color} | ${msg}${col.reset}`;
+};
+
+// Override OG console methods to add formatting
 console.debug = (...args) => {
     const time = timeStamp();
-    const text = args.join(' ');
-    const msg = fullRecolor(text, col.gray);
-
-    cons.debug(`${time}${col.gray} | ${col.bold}DEBUG${col.reset}${col.gray} | ${msg}${col.reset}`);
+    cons.debug(logMsg(time, col.gray, 'DEBUG', ...args));
 };
 
 console.log = (...args) => {
     const time = timeStamp();
-    const text = args.join(' ');
-    const msg = fullRecolor(text, col.white);
-
-    cons.log(`${time}${col.white} | ${col.bold} LOG ${col.reset}${col.white} | ${msg}${col.reset}`);
+    cons.log(logMsg(time, col.white, ' LOG ', ...args));
 };
 
 console.info = (...args) => {
     const time = timeStamp();
-    const text = args.join(' ');
-    const msg = fullRecolor(text, col.cyan);
-
-    cons.info(`${time}${col.cyan} | ${col.bold} INFO${col.reset}${col.cyan} | ${msg}${col.reset}`);
+    cons.info(logMsg(time, col.cyan, ' INFO', ...args));
 };
 
 console.warn = (...args) => {
     const time = timeStamp();
-    const text = args.join(' ');
-    const msg = fullRecolor(text, col.yellow);
-
-    cons.warn(`${time}${col.yellow} | ${col.bold} WARN${col.reset}${col.yellow} | ${msg}${col.reset}`);
+    cons.warn(logMsg(time, col.yellow, ' WARN', ...args));
 };
 
 console.error = (...args) => {
     const time = timeStamp();
-    const text = args.join(' ');
-    const msg = fullRecolor(text, col.red);
-
-    cons.error(`${time}${col.red} | ${col.bold}ERROR${col.reset}${col.red} | ${msg}${col.reset}`);
+    cons.error(logMsg(time, col.red, 'ERROR', ...args));
 };
