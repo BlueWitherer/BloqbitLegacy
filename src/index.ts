@@ -84,8 +84,6 @@ export default class Bot {
                     });
                 };
 
-                console.log(`Refreshing ${bot.commands.length} application (/) commands...`);
-
                 try {
                     console.log(`Refreshing ${bot.commands.length} application (/) commands...`);
 
@@ -230,23 +228,27 @@ const bloqbit = new BloqbitClient(
 const bb = new Bot({ botModel: bloqbit });
 
 process.on("message", async (msg: string) => {
-    if (typeof msg === "string") if (msg === "flushDb") {
-        try {
-            await cache.flushToDb(bb.botModel.db);
-        } catch (err) {
-            console.trace(err);
-        } finally {
-            console.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
-        };
-    } else if (msg === 'flushClose') {
-        try {
-            if (typeof cache?.flushToDb === 'function') await cache.flushToDb(bb.botModel.db);
-            if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
+    if (typeof msg === "string") {
+        if (msg === "flushDb") {
+            try {
+                await cache.flushToDb(bb.botModel.db);
+            } catch (err) {
+                console.trace(err);
+            } finally {
+                console.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
+            };
+        } else if (msg === 'flushClose') {
+            try {
+                if (typeof cache?.flushToDb === 'function') await cache.flushToDb(bb.botModel.db);
+                if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
 
-            if (process.send) process.send('shutdownComplete');
-        } catch (err) {
-            console.error('Error during shard shutdown:', err);
-            if (process.send) process.send('shutdownError');
+                if (process.send) process.send('shutdownComplete');
+            } catch (err) {
+                console.error('Error during shard shutdown:', err);
+                if (process.send) process.send('shutdownError');
+            };
+        } else {
+            console.error(`Index of shard of ID ${bb.botModel.client?.shard?.ids[0]} received invalid message`);
         };
     } else {
         console.error(`Index of shard of ID ${bb.botModel.client?.shard?.ids[0]} received invalid event type`);

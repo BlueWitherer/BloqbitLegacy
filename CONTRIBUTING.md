@@ -28,7 +28,7 @@ If you find a bug, please open an issue. Before you create a new issue, please c
 
 - **Use a clear and descriptive title** for the issue to identify the problem.
 - **Describe the exact steps which reproduce the problem**.
-- **Explain which behavior you expected to see instead and why.**
+- **Explain which behavior you expected to see instead and why**.
 - **Include screenshots and animated GIFs** which show the problem.
 
 ### Suggesting Enhancements
