@@ -42,7 +42,7 @@ export default new Command(
         }
 
         try {
-            const kickResult = await interaction.guild?.members?.kick(User.id, `${interaction.user?.username} Kick - ${Reason}`);
+            const kickResult = await interaction.guild?.members?.kick(User.id, `${interaction.user?.username} | Kick - ${Reason}`);
 
             await interaction.reply({
                 "content": "",

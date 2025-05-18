@@ -45,7 +45,7 @@ export default new Command(
         try {
             const bannedUser = await interaction.guild?.members?.ban(User, {
                 deleteMessageSeconds: 7 * 86400,
-                reason: `${interaction.user?.username} Ban - ${Reason}`
+                reason: `${interaction.user?.username} | Ban - ${Reason}`
             });
 
             await interaction.reply({

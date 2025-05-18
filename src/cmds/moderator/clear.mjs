@@ -35,7 +35,7 @@ export default new Command(
                 });
 
                 if (msgs) {
-                    if (interaction.channel instanceof TextChannel) await interaction.channel.bulkDelete(msgs);
+                    if (interaction.channel instanceof TextChannel) await interaction.channel.bulkDelete(msgs, true);
 
                     await interaction.reply({
                         "content": "",
@@ -84,7 +84,7 @@ export default new Command(
                     const filteredMsgs = msgs.filter((m) => m.author?.id === User.id);
                     const memberMsgs = new Collection([...filteredMsgs.entries()].slice(0, Amount));
 
-                    if (interaction.channel instanceof TextChannel) await interaction.channel?.bulkDelete(memberMsgs);
+                    if (interaction.channel instanceof TextChannel) await interaction.channel?.bulkDelete(memberMsgs, true);
 
                     await interaction.reply({
                         "content": "",

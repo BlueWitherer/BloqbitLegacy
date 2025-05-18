@@ -7,13 +7,13 @@ import {
     Guild,
     Interaction,
     Message,
-    TextChannel,
     WebhookClient,
     APIEmbed,
     Client,
     ActivityType,
     PresenceStatusData,
     ClientPresence,
+    GuildBasedChannel,
 } from 'discord.js';
 
 import SysAssets from '../assets.json' with { type: 'json' };
@@ -133,57 +133,66 @@ export default {
     /**
      * Sends a log to the server's configured logs channel
      */
-    sendLog: async (client: Client, system: Config, db: SaveDataClient, emb: APIEmbed, guild: Guild): Promise<void> => {
-        const channel = await guild.channels?.fetch(system.logs.channel);
+    sendLog: async (client: Client, system: Config, db: SaveDataClient, emb: APIEmbed, guild: Guild, channelId: string | null = null): Promise<void> => {
+        const channel = await guild.channels?.fetch(channelId || system.logs.channel) || await guild.channels?.fetch(system.logs.channel);
 
         const checkLogsWebhook = async (
             client: Client,
             system: Config,
             db: SaveDataClient,
-            channel: TextChannel
+            channel: GuildBasedChannel
         ): Promise<WebhookClient | void> => {
             let webhookClient: WebhookClient;
 
-            if (system.logs.webhook) {
-                webhookClient = new WebhookClient({ url: system.logs.webhook });
-                console.debug(`Found logs webhook for channel #${channel.name} (${channel.id})`);
+            if (channel.type === ChannelType.GuildText) {
+                if (system.logs.webhook) {
+                    webhookClient = new WebhookClient({ url: system.logs.webhook });
+                    console.debug(`Found logs webhook for channel #${channel.name} (${channel.id})`);
+                } else {
+                    console.debug(`Logs webhook for channel #${channel.name} (${channel.id}) not found, creating...`);
+
+                    const newWebhook = await channel.createWebhook({
+                        name: "Bloqbit",
+                        avatar: client.user?.displayAvatarURL({
+                            size: 1024,
+                            extension: "jpg",
+                            forceStatic: true,
+                        }),
+                        reason: `Logs webhook not found, creating...`,
+                    });
+
+                    system.logs.webhook = newWebhook.url;
+                    await cacheModule.update(system, db);
+
+                    webhookClient = new WebhookClient({ url: system.logs.webhook });
+                    console.debug(`Created logs webhook for channel #${channel.name} (${channel.id}) and updated save data`);
+                };
+
+                return webhookClient;
             } else {
-                console.debug(`Logs webhook for channel #${channel.name} (${channel.id}) not found, creating...`);
-
-                const newWebhook = await channel.createWebhook({
-                    name: "Bloqbit",
-                    avatar: client.user?.displayAvatarURL({
-                        size: 1024,
-                        extension: "jpg",
-                        forceStatic: true,
-                    }),
-                    reason: `Webhooks enabled for logs, webhook not found. Creating...`,
-                });
-
-                system.logs.webhook = newWebhook.url;
-                await cacheModule.update(system, db);
-
-                webhookClient = new WebhookClient({ url: system.logs.webhook });
-                console.debug(`Created logs webhook for channel #${channel.name} (${channel.id}) and updated save data`);
+                console.error(`Logs channel of ID ${channelId || system.logs.channel} is not a text channel, cannot create webhook`);
+                return;
             };
-
-            return webhookClient;
         };
 
-        if (channel?.type === ChannelType.GuildText) {
-            if (system.logs.webhookEnabled) {
-                const webhookClient = await checkLogsWebhook(client, system, db, channel as TextChannel);
+        if (channel) {
+            if (channel.type === ChannelType.GuildText) {
+                if (system.logs.webhookEnabled) {
+                    const webhookClient = await checkLogsWebhook(client, system, db, channel);
 
-                if (webhookClient) {
-                    await webhookClient.send({ embeds: [emb], avatarURL: client.user?.displayAvatarURL({ size: 1024, extension: "jpg", forceStatic: true }), username: client.user?.displayName });
+                    if (webhookClient) {
+                        await webhookClient.send({ embeds: [emb], avatarURL: client.user?.displayAvatarURL({ size: 1024, extension: "jpg", forceStatic: true }), username: client.user?.displayName });
+                    } else {
+                        console.error(`Failed to create logs webhook for channel of ID ${channelId || system.logs.channel} in guild '${guild.name}' (${guild.id})`);
+                    };
                 } else {
-                    console.error(`Failed to create logs webhook for guild '${guild.name}' (${guild.id})`);
+                    await channel.send({ embeds: [emb] });
                 };
             } else {
-                await channel.send({ embeds: [emb] });
+                console.error(`Logs channel of ID ${channelId || system.logs.channel} not found or incorrect type for guild ${guild.name} (${guild.id})`);
             };
         } else {
-            console.error(`Logs channel not found or incorrect type for guild ${guild.name} (${guild.id})`);
+            console.error(`Logs channel of ID ${channelId || system.logs.channel} not found for guild ${guild.name} (${guild.id})`);
         };
 
         return;

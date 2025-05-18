@@ -33,7 +33,7 @@ export default new Command(
             .addStringOption((s) => s
                 .setName("reason")
                 .setDescription("The reason to block this name.")
-                .setRequired(true)))
+                .setRequired(false)))
         .addSubcommand((c) => c
             .setName("unblock")
             .setDescription("Unblock a user's name.")
@@ -82,10 +82,10 @@ export default new Command(
             if (subcommand === "block") {
                 const User = interaction.options?.getUser("user", true);
                 const Member = interaction.options?.getMember("user");
-                const Reason = interaction.options?.getString("reason", true);
+                const Reason = interaction.options?.getString("reason", false) ?? "Unspecified";
 
                 if (Member instanceof GuildMember) {
-                    await Member.setNickname("[Username Blocked]", `${interaction.user?.username} Blocked Name - ${Reason}`);
+                    await Member.setNickname("[Username Blocked]", `${interaction.user?.username} | Block Display Name - ${Reason}`);
 
                     await interaction.reply({
                         "content": "",

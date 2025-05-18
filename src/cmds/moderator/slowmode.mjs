@@ -46,22 +46,23 @@ export default new Command(
 
         try {
             if (subcommand === "set") {
-                const cooldown = interaction.options?.getNumber("cooldown", true) || 1;
-                const time = interaction.options?.getNumber("time", true) || 1;
-                const duration = Math.floor(cooldown * time);
+                const Cooldown = interaction.options?.getNumber("Cooldown", true) ?? 1;
+                const Time = interaction.options?.getNumber("Time", true) ?? 1;
+                const duration = Math.floor(Cooldown * Time);
 
                 let type = "seconds";
 
-                switch (time) {
+                switch (Time) {
                     case 1: type = "seconds"; break;
                     case 60: type = "minutes"; break;
                     case 3600: type = "hours"; break;
+
                     default: type = "seconds"; break;
                 };
 
-                if (cooldown === 1) type = type.slice(0, -1);
+                if (Cooldown === 1) type = type.slice(0, -1);
 
-                if (time === 3600 && cooldown > 12) {
+                if (Time === 3600 && Cooldown > 12) {
                     await interaction.reply({
                         "content": "",
                         "embeds": [
@@ -91,7 +92,7 @@ export default new Command(
                                     "fields": [
                                         {
                                             "name": "Duration",
-                                            "value": `${cooldown} ${type}`,
+                                            "value": `${Cooldown} ${type}`,
                                             "inline": true,
                                         },
                                         {

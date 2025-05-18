@@ -49,7 +49,7 @@ export default new Command(
             .addStringOption((o) => o
                 .setName("reason")
                 .setDescription("Reason for timeout.")
-                .setRequired(true)))
+                .setRequired(false)))
         .addSubcommand((o) => o
             .setName("remove")
             .setDescription("Remove the timeout for a user.")
@@ -65,12 +65,12 @@ export default new Command(
         try {
             if (subcommand === "set") {
                 const Member = interaction.options?.getMember("user");
-                const reason = interaction.options?.getString("reason") ?? 'Unspecified';
-                const cooldown = interaction.options?.getNumber("span") || 1;
-                const time = interaction.options?.getNumber("time") || 1;
+                const Reason = interaction.options?.getString("reason", false) ?? 'Unspecified';
+                const Cooldown = interaction.options?.getNumber("span", true) ?? 1;
+                const Time = interaction.options?.getNumber("time", true) ?? 1;
 
                 const date = Date.now();
-                const duration = Math.floor(cooldown * time);
+                const duration = Math.floor(Cooldown * Time);
 
                 const until = Math.floor((date / 1000) + (duration / 1000));
 
@@ -108,7 +108,7 @@ export default new Command(
                     return;
                 } else {
                     if (Member instanceof GuildMember) {
-                        await Member.timeout(duration, `${interaction.user?.username} Timeout - ${reason}`);
+                        await Member.timeout(duration, `${interaction.user?.username} | Timeout - ${Reason}`);
 
                         await interaction.reply({
                             "content": "",
@@ -133,7 +133,7 @@ export default new Command(
                                         },
                                         {
                                             "name": "Reason",
-                                            "value": `${reason}`,
+                                            "value": `${Reason}`,
                                             "inline": false
                                         },
                                         {

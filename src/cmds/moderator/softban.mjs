@@ -44,10 +44,10 @@ export default new Command(
         try {
             const banned = await interaction.guild?.members?.ban(User.id, {
                 deleteMessageSeconds: 7 * 86400,
-                reason: `${interaction.user?.username} Softban - ${Reason}`,
+                reason: `${interaction.user?.username} | Softban - ${Reason}`,
             });
 
-            if (banned) await interaction.guild?.members?.unban(User.id, `${interaction.user?.username} Softban - ${Reason}`);
+            if (banned) await interaction.guild?.members?.unban(User.id, `${interaction.user?.username} | Soft-ban - ${Reason}`);
 
             await interaction.reply({
                 "content": "",
@@ -57,7 +57,7 @@ export default new Command(
                             "name": `${interaction.user?.username}`,
                             "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${assets.icons.noentry} User Softbanned`,
+                        "title": `${assets.icons.noentry} User Soft-banned`,
                         "color": assets.colors.primary,
                         "fields": [
                             {

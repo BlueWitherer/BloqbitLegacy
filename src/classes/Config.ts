@@ -79,13 +79,13 @@ export class Welcome {
 /**
  * @memberof GhostPing
  */
-export class DeletedPingSettings {
+export class DeletedPings {
     users: boolean;
     bots: boolean;
     roles: boolean;
     everyone: boolean;
 
-    constructor({ users = true, bots = false, roles = false, everyone = true }: Partial<DeletedPingSettings>) {
+    constructor({ users = true, bots = false, roles = true, everyone = true }: Partial<DeletedPings>) {
         this.users = users;
         this.bots = bots;
         this.roles = roles;
@@ -99,16 +99,16 @@ export class DeletedPingSettings {
  * Anti ghost ping configuration
  * 
  * Uses:
- * - {@link DeletedPingSettings}
+ * - {@link DeletedPings}
  */
 export class GhostPing {
     enabled: boolean;
-    settings: DeletedPingSettings;
+    settings: DeletedPings;
     noMods: boolean;
 
-    constructor({ enabled = false, settings = new DeletedPingSettings({}), noMods = false }: Partial<GhostPing>) {
+    constructor({ enabled = false, settings = new DeletedPings({}), noMods = false }: Partial<GhostPing>) {
         this.enabled = enabled;
-        this.settings = new DeletedPingSettings(settings);
+        this.settings = new DeletedPings(settings);
         this.noMods = noMods;
 
         return this;

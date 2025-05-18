@@ -24,6 +24,8 @@ process.on('unhandledRejection', (reason, promise) => {
     };
 });
 
+console.log('Starting system...');
+
 if (global.gc) {
     global.gc();
 
@@ -31,8 +33,6 @@ if (global.gc) {
 } else {
     console.warn('Garbage collection is not exposed. Use --expose-gc to enable it.');
 };
-
-console.log('Starting system...');
 
 import path from 'path';
 import http from 'http';
@@ -119,38 +119,47 @@ const start = async () => {
         let shuttingDown: boolean = false;
 
         const shutDown = async (): Promise<void> => {
+            shuttingDown = true;
             console.log("Initiating shutdown process...");
 
-            await manager.broadcast(() => {
-                if (process.send) process.send('flushDb');
-            });
+            try {
+                let shutdownsReceived: number = 0;
+                manager.shards?.forEach((sh) => {
+                    sh.on('message', (msg) => {
+                        if (msg === 'shutdownComplete') {
+                            shutdownsReceived++;
 
-            let shutdownsReceived = 0;
-            manager.shards.forEach(shard => {
-                shard.on('message', (message) => {
-                    if (message === 'shutdownComplete') {
-                        shutdownsReceived++;
+                            if (shutdownsReceived === manager.totalShards) {
+                                console.log(`All shards have completed shutdown. Total: ${shutdownsReceived}/${manager.totalShards}`);
 
-                        if (shutdownsReceived === manager.totalShards) {
-                            server.close(() => {
-                                console.log("Server has been stopped");
-                                process.exit(0);
-                            });
+                                server.close(() => {
+                                    console.log("Server has been stopped");
+                                    process.exit(0);
+                                });
+                            } else {
+                                console.log(`Shard ${sh.id} has completed shutdown. Total: ${shutdownsReceived}/${manager.totalShards}`);
+                            };
+                        } else if (msg === 'shutdownError') {
+                            console.error('A shard reported an error during shutdown');
                         } else {
-                            console.log(`Shard ${shard.id} has completed shutdown. Total: ${shutdownsReceived}/${manager.totalShards}`);
+                            console.warn(`Received unknown message from shard ${sh.id}:`, msg);
                         };
-                    } else if (message === 'shutdownError') {
-                        console.error('A shard reported an error during shutdown.');
-                    } else {
-                        console.warn(`Received unknown message from shard ${shard.id}:`, message);
-                    };
+                    });
                 });
-            });
+
+                await manager.broadcastEval(async (client) => {
+                    console.log(`Flushing data cached on shard of ID ${client.shard?.ids[0]} to database...`);
+                    if (process.send) process.send('flushClose');
+                });
+            } catch (err) {
+                console.trace(err);
+                process.exit(1);
+            };
 
             setTimeout(() => {
-                console.warn('Shutdown timeout reached, forcing exit.');
+                console.warn('Shutdown timeout reached, forcing exit...');
                 process.exit(1);
-            }, 30000); // 30 seconds
+            }, 60000); // 60 sec
         };
 
         setInterval(async () => {
@@ -164,15 +173,11 @@ const start = async () => {
         }, 3600000); // 60 min
 
         process.on('SIGINT', async () => {
-            shuttingDown = true;
-
             shuttingDown ? null : console.warn('Received SIGINT. Shutting down gracefully...');
             return shuttingDown ? null : await shutDown();
         });
 
         process.on('SIGTERM', async () => {
-            shuttingDown = true;
-
             shuttingDown ? null : console.warn('Received SIGTERM. Shutting down gracefully...');
             return shuttingDown ? null : await shutDown();
         });

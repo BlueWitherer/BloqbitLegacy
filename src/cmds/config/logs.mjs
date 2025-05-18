@@ -26,6 +26,11 @@ export default new Command(
                 .setDescription("Set the channel in which server-wide actions will be logged.")
                 .addChannelTypes([ChannelType.GuildText])
                 .setRequired(false))
+            .addChannelOption((o) => o
+                .setName("inbox")
+                .setDescription("Set the channel in which additional logs will be sent. Defaults to logs channel if empty or invalid.")
+                .addChannelTypes([ChannelType.GuildText])
+                .setRequired(false))
             .addBooleanOption((o) => o
                 .setName("webhook")
                 .setDescription("Use a webhook.")
@@ -141,6 +146,7 @@ export default new Command(
         const configCmd = async () => {
             const toggle = interaction.options?.getBoolean("enable", true);
             const channel = interaction.options?.getChannel("channel", false, [ChannelType.GuildText]);
+            const inbox = interaction.options?.getChannel("inbox", false, [ChannelType.GuildText]);
             const webhook = interaction.options?.getBoolean("webhook", false);
 
             const allEmbeds = [];
@@ -159,6 +165,15 @@ export default new Command(
 
                 allEmbeds.push({
                     "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${channel.name}\`__ as the logging channel`,
+                    "color": assets.colors.primary,
+                });
+            };
+
+            if (inbox !== null) {
+                system.logs.inbox = inbox.id;
+
+                allEmbeds.push({
+                    "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __set \`#${inbox.name}\`__ as the inbox channel`,
                     "color": assets.colors.primary,
                 });
             };

@@ -238,6 +238,16 @@ process.on("message", async (msg: string) => {
         } finally {
             console.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
         };
+    } else if (msg === 'flushClose') {
+        try {
+            if (typeof cache?.flushToDb === 'function') await cache.flushToDb(bb.botModel.db);
+            if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
+
+            if (process.send) process.send('shutdownComplete');
+        } catch (err) {
+            console.error('Error during shard shutdown:', err);
+            if (process.send) process.send('shutdownError');
+        };
     } else {
         console.error(`Index of shard of ID ${bb.botModel.client?.shard?.ids[0]} received invalid event type`);
     };
