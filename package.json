@@ -65,7 +65,8 @@
     "start": "node --loader ts-node/esm --expose-gc main.ts",
     "dev": "ts-node --esm main.ts",
     "clean": "rimraf dist",
-    "prepare": "npm run clean && npm run build"
+    "build:prepare": "npm run clean && npm run build",
+    "prestart": "npm run build:prepare"
   },
   "repository": {
     "type": "git",
