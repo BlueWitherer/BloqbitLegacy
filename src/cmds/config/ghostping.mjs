@@ -65,6 +65,7 @@ export default new Command(
                     ],
                 });
             } else {
+                console.error(`Failed to update ghost ping logger configuration in guild '${interaction.guild?.name}' (${interaction.guild?.id})`);
                 await fetch.commandErrorResponse(interaction, assets);
             };
         };
@@ -138,6 +139,7 @@ export default new Command(
                     });
                 };
             } else {
+                console.error(`Failed to update ghost ping logger configuration in guild '${interaction.guild?.name}' (${interaction.guild?.id})`);
                 await fetch.commandErrorResponse(interaction, assets);
             };
         };
@@ -147,7 +149,7 @@ export default new Command(
                 await configCmd();
                 break;
 
-            case "channel":
+            case "pings":
                 await pingCmd();
                 break;
 

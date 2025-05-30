@@ -228,6 +228,7 @@ export default {
         if (system && db) {
             try {
                 const database = await getDbClient(db.mongo_uri);
+
                 if (database) {
                     const collection = database.collection("servers");
 

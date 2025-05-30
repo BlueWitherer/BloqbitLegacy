@@ -23,16 +23,42 @@ export class Filter {
 };
 
 /**
- * Immune, anti-ping, and mute roles configuration
+ * @memberof Roles
  */
-export class Roles {
-    immune: string[];
-    noPing: string[];
-    mute: string;
+export class RolesToggles {
+    immune: boolean;
+    noPing: boolean;
+    streaming: boolean;
+    mute: boolean;
 
-    constructor({ immune = [], noPing = [], mute = "" }: Partial<Roles>) {
+    constructor({ immune = false, noPing = false, streaming = false, mute = false }: Partial<RolesToggles>) {
         this.immune = immune;
         this.noPing = noPing;
+        this.streaming = streaming;
+        this.mute = mute;
+
+        return this;
+    };
+};
+
+/**
+ * Immune, anti-ping, and mute roles configuration
+ *
+ * **Uses:**
+ * - {@link RolesToggles}
+ */
+export class Roles {
+    settings: RolesToggles;
+    immune: string[];
+    noPing: string[];
+    streaming: string;
+    mute: string;
+
+    constructor({ settings = new RolesToggles({}), immune = [], noPing = [], streaming = "", mute = "" }: Partial<Roles>) {
+        this.settings = new RolesToggles(settings);
+        this.immune = immune;
+        this.noPing = noPing;
+        this.streaming = streaming;
         this.mute = mute;
 
         return this;
@@ -55,7 +81,7 @@ export class WelcomeMessage {
 /**
  * Welcomer configuration
  * 
- * Uses:
+ * **Uses:**
  * - {@link WelcomeMessage}
  */
 export class Welcome {
@@ -98,7 +124,7 @@ export class DeletedPings {
 /**
  * Anti ghost ping configuration
  * 
- * Uses:
+ * **Uses:**
  * - {@link DeletedPings}
  */
 export class GhostPing {
@@ -154,7 +180,7 @@ export class Alts {
 /**
  * User anti-raid configuration
  * 
- * Uses:
+ * **Uses:**
  * - {@link Alts}
  */
 export class AntiRaid {
@@ -293,7 +319,7 @@ export class LogsActions {
 /**
  * Logging configuration
  * 
- * Uses:
+ * **Uses:**
  * - {@link LogsActions}
  */
 export class Logs {
@@ -340,7 +366,7 @@ export class XP {
 /**
  * Leveling & XP configuration
  * 
- * Uses:
+ * **Uses:**
  * - {@link XP}
  */
 export class Leveling {
@@ -417,7 +443,7 @@ export class Drops {
 /**
  * Economy & gambling configuration
  * 
- * Uses:
+ * **Uses:**
  * - {@link Currency}
  * - {@link Gambling}
  * - {@link Drops}

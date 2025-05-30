@@ -146,6 +146,7 @@ export default new Command(
                             ],
                         });
                     } catch (err) {
+                        console.trace(err);
                         console.warn(`Failed to send nickname block DM to user ${User.username} (${User.id}): ${err}`);
                     };
                 } else {
@@ -256,6 +257,7 @@ export default new Command(
                         ],
                     });
                 } catch (err) {
+                    console.trace(err);
                     console.warn(`Failed to send nickname unblock DM to user ${User.username} (${User.id}): ${err}`);
                 };
             } else if (subcommand === "set") {

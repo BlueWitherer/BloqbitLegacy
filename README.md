@@ -11,19 +11,20 @@ Need it? Got it.
 ### Progression
 Further development of manual operations will be prioritized before automated operations of each feature.
 
-| Feature         | Status                | Progress  |
-|:---------------:|-----------------------|:---------:|
-| Database        | ✅ Complete           | `100%`    |
-| Logs            | ✅ Complete           | `100%`    |
-| Auto-publish    | ✅ Complete           | `100%`    |
-| Ghost Ping      | 🔄️ Under Development  | **`0%`**  |
-| Moderation      | ⏸️ Halted             | `45%`     |
-| *Leveling*      | ⏸️ Halted             | `10%`     |
-| Economy         | ⛔ Not Developed      | `--%`     |
-| Welcomer        | ⛔ Not Developed      | `--%`     |
-| Birthdays       | ⛔ Not Developed      | `--%`     |
-| Games           | ⛔ Not Developed      | `--%`     |
-| Cleverbot       | ⛔ Not Developed      | `--%`     |
+|   Feature    | Status              | Progress  |
+| :----------: | ------------------- | :-------: |
+|   Database   | ✅ Complete          |  `100%`   |
+|     Logs     | ✅ Complete          |  `100%`   |
+| Auto-publish | ✅ Complete          |  `100%`   |
+|  Ghost Ping  | ✅ Complete          |  `100%`   |
+|  Moderation  | ⏸️ Halted            |   `45%`   |
+|    Roles     | ⏸️ Halted            |   `5%`    |
+|  *Leveling*  | 🔄️ Under Development | **`10%`** |
+|   Economy    | ⛔ Not Developed     |   `--%`   |
+|   Welcomer   | ⛔ Not Developed     |   `--%`   |
+|  Birthdays   | ⛔ Not Developed     |   `--%`   |
+|    Games     | ⛔ Not Developed     |   `--%`   |
+|  Cleverbot   | ⛔ Not Developed     |   `--%`   |
 
 ---
 

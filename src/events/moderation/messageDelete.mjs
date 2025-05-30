@@ -28,22 +28,31 @@ export default new BotEvent(
                      */
                     const pings = [];
 
-                    const userPings = Array.from(mentions.users.values()).filter((u) => {
-                        if (!u.bot && system.ghostping.settings.users) return true;
-                        if (u.bot && system.ghostping.settings.bots) return true;
+                    if (mentions.users?.size > 0) {
+                        const userPings = Array.from(mentions.users.values()).filter((u) => {
+                            if (!u.bot && system.ghostping.settings.users) return true;
+                            if (u.bot && system.ghostping.settings.bots) return true;
 
-                        return false;
-                    });
+                            return false;
+                        });
 
-                    const rolePings = Array.from(mentions.roles.values()).filter((r) => {
-                        if (r.id === msg.guild?.id && system.ghostping.settings.everyone) return true;
-                        if (r && system.ghostping.settings.roles) return true;
+                        if (userPings.length > 0) userPings.forEach((u) => pings.push(`<@!${u.id}>`));
+                    } else {
+                        console.warn(`Message of ID ${msg.id} has no user mentions`);
+                    };
 
-                        return false;
-                    });
+                    if (mentions.roles?.size > 0) {
+                        const rolePings = Array.from(mentions.roles.values()).filter((r) => {
+                            if (r.id === msg.guild?.id && system.ghostping.settings.everyone) return true;
+                            if (r && system.ghostping.settings.roles) return true;
 
-                    if (userPings.length > 0) userPings.forEach((u) => pings.push(`<@!${u.id}>`));
-                    if (rolePings.length > 0) rolePings.forEach((r) => pings.push(r.id === msg.guild?.id ? `@everyone` : `<@!${r.id}>`));
+                            return false;
+                        });
+
+                        if (rolePings.length > 0) rolePings.forEach((r) => pings.push(r.id === msg.guild?.id ? `@everyone` : `<@!${r.id}>`));
+                    } else {
+                        console.warn(`Message of ID ${msg.id} has no role mentions`);
+                    };
 
                     const emb = new EmbedBuilder({
                         "author": {
