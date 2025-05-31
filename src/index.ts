@@ -217,40 +217,58 @@ export default class Bot {
     };
 };
 
-const dat = JSON.parse(process.argv[2]);
-const bloqbit = new BloqbitClient(
-    dat.MAIN_TOKEN || "",
-    dat.MAIN_LOG_WH || "",
-    dat.MONGO_URI || "",
-    dat.MAIN_SECRET || undefined,
-);
+const checkEnv: (env: string, name: string) => string = (env: string, name: string) => {
+    try {
+        if (env) {
+            return env;
+        } else {
+            throw new Error(`Missing environment variable '${name}'`, { "cause": "env" });
+        };
+    } catch (err) {
+        console.trace(err);
+        process.exit(1);
+    };
+};
 
-const bb = new Bot({ botModel: bloqbit });
+try {
+    const dat = JSON.parse(process.argv[2]);
+    const bloqbit = new BloqbitClient(
+        checkEnv(dat.MAIN_TOKEN, "MAIN_TOKEN"),
+        checkEnv(dat.MAIN_LOG_WH, "MAIN_LOG_WH"),
+        checkEnv(dat.MONGO_URI, "MONGO_URI"),
+        dat.MAIN_SECRET || undefined,
+    );
 
-process.on("message", async (msg: string) => {
-    if (typeof msg === "string") {
-        if (msg === "flushDb") {
-            try {
-                await cache.flushToDb(bb.botModel.db);
-            } catch (err) {
-                console.trace(err);
-            } finally {
-                console.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
-            };
-        } else if (msg === 'flushClose') {
-            try {
-                if (typeof cache?.flushToDb === 'function') await cache.flushToDb(bb.botModel.db);
-                if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
+    const bb = new Bot({ botModel: bloqbit });
 
-                if (process.send) process.send('shutdownComplete');
-            } catch (err) {
-                console.error('Error during shard shutdown:', err);
-                if (process.send) process.send('shutdownError');
+    process.on("message", async (msg: string) => {
+        if (typeof msg === "string") {
+            if (msg === "flushDb") {
+                try {
+                    await cache.flushToDb(bb.botModel.db);
+                } catch (err) {
+                    console.trace(err);
+                } finally {
+                    console.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
+                };
+            } else if (msg === 'flushClose') {
+                try {
+                    if (typeof cache?.flushToDb === 'function') await cache.flushToDb(bb.botModel.db);
+                    if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
+
+                    if (process.send) process.send('shutdownComplete');
+                } catch (err) {
+                    console.error('Error during shard shutdown:', err);
+                    if (process.send) process.send('shutdownError');
+                };
+            } else {
+                console.error(`Index of shard of ID ${bb.botModel.client?.shard?.ids[0]} received invalid message`);
             };
         } else {
-            console.error(`Index of shard of ID ${bb.botModel.client?.shard?.ids[0]} received invalid message`);
+            console.error(`Index of shard of ID ${bb.botModel.client?.shard?.ids[0]} received invalid event type`);
         };
-    } else {
-        console.error(`Index of shard of ID ${bb.botModel.client?.shard?.ids[0]} received invalid event type`);
-    };
-});
+    });
+} catch (err) {
+    console.trace(err);
+    process.exit(1);
+};

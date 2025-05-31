@@ -123,21 +123,24 @@ const start = async () => {
             console.log("Initiating shutdown process...");
 
             try {
-                let shutdownsReceived: number = 0;
+                const shutdownsReceived = new Set<number>();
+
                 manager.shards?.forEach((sh) => {
+                    sh.removeAllListeners('message');
+
                     sh.on('message', (msg) => {
                         if (msg === 'shutdownComplete') {
-                            shutdownsReceived++;
+                            shutdownsReceived.add(sh.id);
 
-                            if (shutdownsReceived === manager.totalShards) {
-                                console.log(`All shards have completed shutdown. Total: ${shutdownsReceived}/${manager.totalShards}`);
+                            if (shutdownsReceived.size === manager.totalShards) {
+                                console.log(`All shards have completed shutdown`);
 
                                 server.close(() => {
                                     console.log("Server has been stopped");
                                     process.exit(0);
                                 });
                             } else {
-                                console.log(`Shard ${sh.id} has completed shutdown. Total: ${shutdownsReceived}/${manager.totalShards}`);
+                                console.log(`Shard ${sh.id + 1} (${shutdownsReceived.size} / ${manager.totalShards}) has completed shutdown`);
                             };
                         } else if (msg === 'shutdownError') {
                             console.error('A shard reported an error during shutdown');
@@ -147,8 +150,7 @@ const start = async () => {
                     });
                 });
 
-                await manager.broadcastEval(async (client) => {
-                    console.log(`Flushing data cached on shard of ID ${client.shard?.ids[0]} to database...`);
+                await manager.broadcastEval(() => {
                     if (process.send) process.send('flushClose');
                 });
             } catch (err) {
