@@ -129,23 +129,37 @@ const start = async () => {
                     sh.removeAllListeners('message');
 
                     sh.on('message', (msg) => {
-                        if (msg === 'shutdownComplete') {
-                            shutdownsReceived.add(sh.id);
+                        switch (msg) {
+                            case 'shutdownComplete':
+                                try {
+                                    shutdownsReceived.add(sh.id);
 
-                            if (shutdownsReceived.size === manager.totalShards) {
-                                console.log(`All shards have completed shutdown`);
+                                    if (shutdownsReceived.size === manager.totalShards) {
+                                        console.log(`All shards have completed shutdown`);
 
-                                server.close(() => {
-                                    console.log("Server has been stopped");
-                                    process.exit(0);
-                                });
-                            } else {
-                                console.log(`Shard ${sh.id + 1} (${shutdownsReceived.size} / ${manager.totalShards}) has completed shutdown`);
-                            };
-                        } else if (msg === 'shutdownError') {
-                            console.error('A shard reported an error during shutdown');
-                        } else {
-                            console.warn(`Received unknown message from shard ${sh.id}:`, msg);
+                                        server.close(() => {
+                                            console.log("Server has been stopped");
+                                            process.exit(0);
+                                        });
+                                    } else {
+                                        console.log(`Shard ${sh.id + 1} (${shutdownsReceived.size} / ${manager.totalShards}) has completed shutdown`);
+                                    };
+                                } catch (err) {
+                                    console.trace(err);
+                                };
+                                break;
+
+                            case 'shutdownError':
+                                try {
+                                    console.error('A shard reported an error during shutdown');
+                                } catch (err) {
+                                    console.trace(err);
+                                };
+                                break;
+
+                            default:
+                                console.error(`Received unknown message from shard ${sh.id}:`, msg);
+                                break;
                         };
                     });
                 });
