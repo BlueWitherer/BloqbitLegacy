@@ -1,10 +1,15 @@
-# <img src="icon.ico" width="25" alt="Logo" /> Bloqbit
+# <img src="favicon.ico" width="25" alt="Logo" /> Bloqbit
 Need it? Got it.
 
 > [<img alt="Latest Version" src="https://img.shields.io/github/v/release/CubicCommunity/Bloqbit?include_prereleases&sort=semver&display_name=release&style=for-the-badge&logo=github&logoColor=ffffff&label=Version">](../../releases/)    [<img alt="Code License" src="https://img.shields.io/github/license/CubicCommunity/Bloqbit?style=for-the-badge&logo=gnu&logoColor=ffffff&label=License">](LICENSE.md)
 >
 > [<img alt="Discord" src="https://img.shields.io/discord/460081436637134859?style=for-the-badge&logo=discord&logoColor=ffffff">
 ](https://dsc.gg/cubic)
+
+---
+
+## About
+*Bloqbit* is designed to improve moderation and boost server engagement with its grand variety of features. From economy to incredible auto-moderation, this bot aims to bring everything you need to your server.
 
 ---
 

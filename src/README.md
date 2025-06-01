@@ -1,4 +1,4 @@
-# <img src="../icon.ico" width="25" alt="Logo" /> Bloqbit
+# <img src="../favicon.ico" width="25" alt="Logo" /> Bloqbit
 Need it? Got it.
 
 ---

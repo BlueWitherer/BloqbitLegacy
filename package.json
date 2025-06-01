@@ -81,7 +81,7 @@
     "discord",
     "bot"
   ],
-  "icon": "./icon.ico",
+  "icon": "./favicon.ico",
   "bugs": {
     "email": "bloqbit@cubicstudios.xyz",
     "url": "https://www.github.com/CubicCommunity/Bloqbit/issues/"
