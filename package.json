@@ -1,5 +1,21 @@
 {
   "name": "bloqbit",
+  "displayName": "Bloqbit",
+  "api": "none",
+  "badges": [
+    {
+      "name": "Website",
+      "description": "Visit the official Bloqbit website",
+      "href": "https://bloqbit.cubicstudios.xyz/",
+      "url": "https://bloqbit.cubicstudios.xyz/"
+    },
+    {
+      "name": "GitHub",
+      "description": "View the source code on GitHub",
+      "href": "https://www.github.com/CubicCommunity/Bloqbit/",
+      "url": "https://bloqbit.cubicstudios.xyz/"
+    }
+  ],
   "description": "The all-in-one solution for your Discord server.",
   "version": "1.0.0",
   "author": "Cubic Studios",
@@ -8,7 +24,7 @@
   "dependencies": {
     "@discordjs/builders": "^1.11.2",
     "axios": "^1.9.0",
-    "discord-api-types": "^0.38.8",
+    "discord-api-types": "^0.38.10",
     "discord.js": "^14.19.3",
     "dotenv": "^16.5.0",
     "fs": "^0.0.1-security",
@@ -51,8 +67,8 @@
     "@eslint/js": "^9.28.0",
     "@types/mysql": "^2.15.27",
     "@types/node": "^22.15.29",
-    "@typescript-eslint/eslint-plugin": "^8.33.0",
-    "@typescript-eslint/parser": "^8.33.0",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
     "eslint": "^9.28.0",
     "globals": "^16.2.0",
     "rimraf": "^6.0.1",
