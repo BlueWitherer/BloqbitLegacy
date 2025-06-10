@@ -24,7 +24,7 @@ export default new Command(
             data.push('<:badge_partner:824328233964011581> ');
         } else if (interaction.guild?.verified) {
             data.push('<:badge_verified:824328233931505714> ');
-        } else if (interaction.guild?.verified&& interaction.guild?.partnered) {
+        } else if (interaction.guild?.verified && interaction.guild?.partnered) {
             data.push('<:badge_verifiedpartnered:824329742597226608> ');
         };
 
@@ -44,7 +44,7 @@ export default new Command(
                         "title": `${data.join("")}${interaction.guild?.name ?? "Unknown Server"}`,
                         "description": `${interaction.guild?.description ?? "-# *No description*"}`,
                         "thumbnail": {
-                            "url": `${interaction.guild?.iconURL({ "forceStatic": false, size: 64 })}`,
+                            "url": `${interaction.guild?.iconURL({ "forceStatic": false, size: 64 }) ?? assets.images.defaults.guild}`,
                         },
                         "image": {
                             "url": interaction.guild?.bannerURL({ size: 512 }) ?? "",

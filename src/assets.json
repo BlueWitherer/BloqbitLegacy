@@ -32,6 +32,17 @@
             "tertiary": "#00007E"
         }
     },
+    "images": {
+        "logo": "https://cdn.cubicstudios.xyz/bloqbit/logo.png",
+        "banner": "https://cdn.cubicstudios.xyz/bloqbit/banner.png",
+        "favicon": "https://cdn.cubicstudios.xyz/bloqbit/favicon.ico",
+        "favicon16": "https://cdn.cubicstudios.xyz/bloqbit/favicon16.ico",
+        "favicon32": "https://cdn.cubicstudios.xyz/bloqbit/favicon32.ico",
+        "defaults": {
+            "avatar": "https://cdn.cubicstudios.xyz/bloqbit/default_avatar.png",
+            "guild": "https://cdn.cubicstudios.xyz/bloqbit/default_guild.png"
+        }
+    },
     "social": {
         "website": "https://bloqbit.cubicstudios.xyz/",
         "company": {

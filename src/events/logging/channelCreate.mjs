@@ -25,7 +25,7 @@ export default new BotEvent(
                     const emb = new EmbedBuilder({
                         "author": {
                             "name": `${channel.guild?.name}`,
-                            "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
+                            "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 }) ?? bot.assets.images.defaults.guild}`,
                         },
                         "title": `${bot.assets.icons.plus} Channel Created`,
                         "color": bot.assets.colors.primary,

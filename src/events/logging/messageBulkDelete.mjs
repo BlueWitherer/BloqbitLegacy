@@ -28,7 +28,7 @@ export default new BotEvent(
                     const emb = new EmbedBuilder({
                         "author": {
                             "name": `${msg.guild?.name}`,
-                            "icon_url": `${msg.guild?.iconURL({ "forceStatic": false, "size": 128 })}`,
+                            "icon_url": `${msg.guild?.iconURL({ "forceStatic": false, "size": 128 }) ?? bot.assets.images.defaults.guild}`,
                         },
                         "title": `${bot.assets.icons.xmark} Messages Bulk Deleted`,
                         "description": `**${msgs.size}** messages deleted`,

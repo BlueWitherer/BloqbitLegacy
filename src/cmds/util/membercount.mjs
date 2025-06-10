@@ -18,6 +18,10 @@ export default new Command(
             "content": "",
             "embeds": [
                 {
+                    "author": {
+                        "name": `${interaction.guild?.name ?? "Unknown Server"}`,
+                        "icon_url": `${interaction.guild?.iconURL({ "forceStatic": false, "size": 128 }) ?? assets.images.defaults.guild}`,
+                    },
                     "color": assets.colors.primary,
                     "fields": [
                         {
