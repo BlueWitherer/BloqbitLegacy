@@ -245,8 +245,7 @@ export default new Command(
                         name: "exclude",
                         value: MessageFilterMode.EXCLUDE,
                     },
-                )))
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+                ))),
     async (interaction, assets, system, db) => {
         const subCmd = interaction.options?.getSubcommand(true);
 

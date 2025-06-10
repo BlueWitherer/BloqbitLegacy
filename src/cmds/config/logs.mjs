@@ -135,8 +135,7 @@ export default new Command(
             .addBooleanOption((o) => o
                 .setName("enable")
                 .setDescription("Toggle detection of this action.")
-                .setRequired(true)))
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+                .setRequired(true))),
     async (interaction, assets, system, db) => {
         const subCmd = interaction.options?.getSubcommand(true);
 
