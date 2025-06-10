@@ -6,7 +6,7 @@ import resolve from '../../modules/resolve.js';
 export default new Command(
     new SlashCommandBuilder()
         .setName("member-count")
-        .setDescription("View the member count of the server.")
+        .setDescription("View the member count of this server.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false),
@@ -15,13 +15,14 @@ export default new Command(
         const botCount = interaction.guild?.members?.cache?.filter((m) => m.user.bot).size ?? 0;
 
         await interaction.reply({
+            "content": "",
             "embeds": [
                 {
                     "color": assets.colors.primary,
                     "fields": [
                         {
                             "name": "Member Count",
-                            "value": `# ${memberCount}`,
+                            "value": `**\`\`\`${memberCount}\`\`\`**`,
                             "inline": true,
                         },
                     ],
@@ -30,7 +31,6 @@ export default new Command(
                     },
                 },
             ],
-            "ephemeral": true,
         });
 
         return;

@@ -1,11 +1,7 @@
-import { ServerLogEventType, Command } from '../../classes.js';
-import { Roles } from '../../classes/Config.js';
+import { Command } from '../../classes.js';
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
-import fetch from '../../modules/fetch.js';
-import resolve from '../../modules/resolve.js';
-import cache from '../../cache.mjs';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default new Command(
     new SlashCommandBuilder()
