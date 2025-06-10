@@ -1,5 +1,5 @@
 import { ServerLogEventType, Command } from '../../classes.js';
-import { Roles } from 'classes/Config.js';
+import { Roles } from '../../classes/Config.js';
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';

@@ -1,7 +1,7 @@
 import { Command } from '../../classes.js';
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import resolve from 'modules/resolve.js';
+import resolve from '../../modules/resolve.js';
 
 export default new Command(
     new SlashCommandBuilder()
