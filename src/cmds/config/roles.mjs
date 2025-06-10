@@ -7,7 +7,7 @@ import fetch from '../../modules/fetch.js';
 import resolve from '../../modules/resolve.js';
 import cache from '../../cache.mjs';
 
-new Command(
+export default new Command(
     new SlashCommandBuilder()
         .setName("roles")
         .setDescription("Configure special roles on this server")

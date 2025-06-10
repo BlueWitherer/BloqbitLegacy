@@ -24,13 +24,13 @@
   "dependencies": {
     "@discordjs/builders": "^1.11.2",
     "axios": "^1.9.0",
-    "discord-api-types": "^0.38.10",
+    "discord-api-types": "^0.38.11",
     "discord.js": "^14.19.3",
     "dotenv": "^16.5.0",
     "fs": "^0.0.1-security",
     "google-auth-library": "^9.15.1",
     "groq-sdk": "^0.23.0",
-    "mongodb": "^6.16.0",
+    "mongodb": "^6.17.0",
     "node-cache": "^5.1.2",
     "path": "^0.12.7",
     "tsconfig-paths": "^4.2.0",
@@ -38,7 +38,7 @@
   },
   "main": "main.ts",
   "engines": {
-    "node": ">=23.1.0",
+    "node": ">=21.0.0",
     "vscode": "^1.22.0"
   },
   "eslintConfig": {
@@ -66,9 +66,9 @@
   "devDependencies": {
     "@eslint/js": "^9.28.0",
     "@types/mysql": "^2.15.27",
-    "@types/node": "^22.15.29",
-    "@typescript-eslint/eslint-plugin": "^8.33.1",
-    "@typescript-eslint/parser": "^8.33.1",
+    "@types/node": "^22.15.30",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
     "eslint": "^9.28.0",
     "globals": "^16.2.0",
     "rimraf": "^6.0.1",
@@ -88,6 +88,10 @@
   "repository": {
     "type": "git",
     "url": "https://www.github.com/CubicCommunity/Bloqbit/"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://www.github.com/sponsors/CubicCommunity/"
   },
   "keywords": [
     "bloqbit",
