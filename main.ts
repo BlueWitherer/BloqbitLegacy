@@ -43,7 +43,9 @@ import { ShardingManager, User } from 'discord.js';
 
 dotenv.config();
 
-// start the whole program
+/**
+ * Start Bloqbit
+ */
 const start = async () => {
     let allShards: number = 0;
 
@@ -120,6 +122,9 @@ const start = async () => {
 
         let shuttingDown: boolean = false;
 
+        /**
+         * Shut the program down
+         */
         const shutDown = async (): Promise<void> => {
             shuttingDown = true;
             console.log("Initiating shutdown process...");
@@ -209,6 +214,7 @@ const start = async () => {
     };
 };
 
+// Run the program
 (async () => {
     try {
         await start();
