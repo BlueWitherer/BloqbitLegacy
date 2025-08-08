@@ -9,12 +9,12 @@ export default class BotEvent {
     /**
      * Enum of the event type
      */
-    event: Events;
+    public event: Events;
 
     /**
      * Function to execute for this log event type
      */
-    execute: (bot: BloqbitClient, ...args: unknown[]) => Promise<void>;
+    public execute: (bot: BloqbitClient, ...args: unknown[]) => Promise<void>;
 
     /**
      * Creates a new instance

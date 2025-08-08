@@ -8,7 +8,7 @@ Need it? Got it.
 ---
 
 ## About
-*Bloqbit* is designed to improve moderation and boost server engagement with its grand variety of features. From economy to incredible auto-moderation, this bot aims to bring everything you need to your server.
+*Bloqbit* is an all-in-one solution to your Discord server. From a robust economy system to incredible auto-moderation, this bot aims to bring you the things you need most to your server.
 
 ---
 

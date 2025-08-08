@@ -26,6 +26,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 console.log('Starting system...');
 
+// garbage collection
 if (global.gc) {
     global.gc();
 
@@ -42,6 +43,7 @@ import { ShardingManager, User } from 'discord.js';
 
 dotenv.config();
 
+// start the whole program
 const start = async () => {
     let allShards: number = 0;
 
