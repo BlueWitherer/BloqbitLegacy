@@ -1,4 +1,4 @@
-import { SaveDataClient, Config } from '../classes.js';
+import { SaveDataClient, Config } from '../include.js';
 
 import cacheModule from '../cache.mjs';
 

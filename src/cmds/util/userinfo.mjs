@@ -1,4 +1,4 @@
-import { Command } from '../../classes.js';
+import { Command } from '../../include.js';
 import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField, Role } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
@@ -219,4 +219,5 @@ export default new Command(
         };
 
         return;
-    });
+    },
+);

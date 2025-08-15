@@ -1,6 +1,6 @@
 import { Events, Message, EmbedBuilder, PermissionFlagsBits } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "../../classes.js";
+import { BloqbitClient, BotEvent } from "../../include.js";
 
 import fetch from "../../modules/fetch.js";
 export default new BotEvent(

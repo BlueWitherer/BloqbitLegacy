@@ -1,13 +1,13 @@
 import '../console.mjs';
 
-import { BloqbitClient, Command, BotEvent } from './classes.js';
+import { BloqbitClient, Command, BotEvent } from './include.js';
 
 import * as fs from 'node:fs';
 import * as path from 'path';
 import * as url from 'url';
 
 import { Events, PresenceUpdateStatus, WebhookClient } from 'discord.js';
-import { Routes } from 'discord-api-types/v9';
+import { Routes } from 'discord-api-types/v10';
 
 import cache from './cache.mjs';
 import fetch from './modules/fetch.js';

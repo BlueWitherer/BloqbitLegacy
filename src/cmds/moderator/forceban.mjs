@@ -1,7 +1,7 @@
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { Command } from '../../classes.js';
+import { Command } from '../../include.js';
 import fetch from '../../modules/fetch.js';
 
 export default new Command(
@@ -125,4 +125,5 @@ export default new Command(
                 console.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}.`);
             };
         };
-    });
+    },
+);

@@ -1,4 +1,4 @@
-import { BloqbitClient } from '../classes.js';
+import { BloqbitClient } from '../include.js';
 import { Events, Message, ChannelType, WebhookClient } from 'discord.js';
 
 export default {

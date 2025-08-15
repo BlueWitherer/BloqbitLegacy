@@ -1,7 +1,7 @@
 import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField } from 'discord.js';
 import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { Command } from '../../classes.js';
+import { Command } from '../../include.js';
 import fetch from '../../modules/fetch.js';
 
 export default new Command(

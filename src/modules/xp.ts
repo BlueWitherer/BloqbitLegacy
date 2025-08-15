@@ -1,4 +1,4 @@
-import { LevelRecord, SaveDataClient } from "classes";
+import { LevelRecord, SaveDataClient } from "../include.js";
 
 import cache from "../cache.mjs";
 

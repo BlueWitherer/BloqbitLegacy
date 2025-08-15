@@ -1,4 +1,4 @@
-import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord } from './classes.js';
+import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord } from './include.js';
 
 import NodeCache from 'node-cache';
 import { MongoClient, Db } from 'mongodb';

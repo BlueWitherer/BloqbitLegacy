@@ -10,7 +10,7 @@ export interface WarnObject {
     warning: Warning;
 };
 
-import { Config, ModeratorActionType } from '../classes.js';
+import { Config, ModeratorActionType } from '../include.js';
 
 import { GuildMember, Message } from 'discord.js';
 

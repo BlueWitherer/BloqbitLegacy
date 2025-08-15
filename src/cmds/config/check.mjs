@@ -1,4 +1,4 @@
-import { Command, MessageFilterClass } from '../../classes.js';
+import { Command, MessageFilterClass } from '../../include.js';
 import { ApplicationIntegrationType, EmbedBuilder, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
@@ -261,4 +261,5 @@ export default new Command(
         };
 
         return;
-    });
+    },
+);

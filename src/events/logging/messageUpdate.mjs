@@ -1,6 +1,6 @@
 import { Events, Message, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "../../classes.js";
+import { BloqbitClient, BotEvent } from "../../include.js";
 
 import fetch from "../../modules/fetch.js";
 
@@ -74,7 +74,7 @@ export default new BotEvent(
                         },
                     }).data;
 
-                    if (!newMsg.author?.bot && !(oldMsg.content === newMsg.content)) await fetch.sendLog(bot.client, system, bot.db, emb, newMsg.guild);
+                    if (!newMsg.author?.bot && (oldMsg.content !== newMsg.content)) await fetch.sendLog(bot.client, system, bot.db, emb, newMsg.guild);
                 } else {
                     console.warn(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };
@@ -122,7 +122,7 @@ export default new BotEvent(
                         },
                     }).data;
 
-                    if (newMsg.pinned && !oldMsg.pinned) await fetch.sendLog(bot.client, system, bot.db, emb, newMsg.guild);
+                    if (!oldMsg.pinned && newMsg.pinned) await fetch.sendLog(bot.client, system, bot.db, emb, newMsg.guild);
                 } else {
                     console.warn(`Logs for pinned messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };

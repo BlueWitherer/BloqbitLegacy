@@ -1,4 +1,4 @@
-import { ModeratorActionType, MessageFilterMode } from '../classes.js';
+import { ModeratorActionType, MessageFilterMode } from '../include.js';
 
 import { Warning, WarnObject } from './moderation.js';
 

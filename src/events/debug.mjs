@@ -1,4 +1,4 @@
-import { BloqbitClient } from '../classes.js';
+import { BloqbitClient } from '../include.js';
 
 import { Events } from 'discord.js';
 

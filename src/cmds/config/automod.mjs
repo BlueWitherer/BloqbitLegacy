@@ -1,4 +1,4 @@
-import { MessageFilterMode, ModeratorActionType, Command } from '../../classes.js';
+import { MessageFilterMode, ModeratorActionType, Command } from '../../include.js';
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
@@ -971,4 +971,5 @@ export default new Command(
         };
 
         return;
-    });
+    },
+);
