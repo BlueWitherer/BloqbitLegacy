@@ -1,4 +1,4 @@
-import { Command } from '../../include.js';
+import { Command } from "#bloqbit/include";
 import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField, Role } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 

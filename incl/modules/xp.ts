@@ -1,4 +1,4 @@
-import { LevelRecord, SaveDataClient } from "../include.js";
+import { LevelRecord, SaveDataClient } from "#bloqbit/include";
 
 import cache from "../cache.mjs";
 

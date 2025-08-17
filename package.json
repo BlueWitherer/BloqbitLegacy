@@ -21,6 +21,12 @@
   "author": "Cubic Studios",
   "license": "GPL-3.0-only",
   "type": "module",
+  "imports": {
+    "#bloqbit/*": [
+      "./incl/*.ts",
+      "./incl/*.mjs"
+    ]
+  },
   "dependencies": {
     "@discordjs/builders": "^1.11.3",
     "axios": "^1.11.0",

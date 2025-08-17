@@ -1,8 +1,8 @@
 import { Events, EmbedBuilder, GuildMember, VoiceState } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "../../include.js";
+import { BloqbitClient, BotEvent } from "#bloqbit/include";
 
-import fetch from "../../modules/fetch.js";
+import fetch from "#bloqbit/modules/fetch";
 
 export default new BotEvent(
     Events.VoiceStateUpdate,

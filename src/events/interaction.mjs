@@ -1,10 +1,10 @@
-import { BloqbitClient } from '../include.js';
+import { BloqbitClient } from "#bloqbit/include";
 
 import { Events, WebhookClient } from 'discord.js';
 
-import cache from '../cache.mjs';
+import cache from "#bloqbit/cache";
 
-import fetch from '../modules/fetch.js';
+import fetch from "#bloqbit/modules/fetch";
 
 export default {
     name: Events.InteractionCreate,

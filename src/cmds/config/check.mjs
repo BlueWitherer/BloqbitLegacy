@@ -1,9 +1,9 @@
-import { Command, MessageFilterClass } from '../../include.js';
+import { Command, MessageFilterClass } from "#bloqbit/include";
 import { ApplicationIntegrationType, EmbedBuilder, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import fetch from '../../modules/fetch.js';
-import resolve from '../../modules/resolve.js';
+import fetch from "#bloqbit/modules/fetch";
+import resolve from "#bloqbit/modules/resolve";
 
 export default new Command(
     new SlashCommandBuilder()

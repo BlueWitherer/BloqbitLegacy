@@ -1,4 +1,4 @@
-import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord } from './include.js';
+import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord } from "#bloqbit/include";
 
 import NodeCache from 'node-cache';
 import { MongoClient, Db } from 'mongodb';

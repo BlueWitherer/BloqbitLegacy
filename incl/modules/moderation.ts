@@ -10,7 +10,7 @@ export interface WarnObject {
     warning: Warning;
 };
 
-import { Config, ModeratorActionType } from '../include.js';
+import { Config, ModeratorActionType } from "#bloqbit/include";
 
 import { GuildMember, Message } from 'discord.js';
 

@@ -32,7 +32,13 @@
     },
     "include": [
         "src/**/*",
+        "*.ts",
+        "*.mjs",
+        "*.js",
         "src/assets.json",
+        "incl/*.ts",
+        "incl/**/*.ts",
+        "incl/*.mjs",
     ],
     "exclude": [
         "node_modules",

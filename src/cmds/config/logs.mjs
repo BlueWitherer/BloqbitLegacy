@@ -1,10 +1,10 @@
-import { ServerLogEventType, Command } from '../../include.js';
+import { ServerLogEventType, Command } from "#bloqbit/include";
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
-import fetch from '../../modules/fetch.js';
-import resolve from '../../modules/resolve.js';
-import cache from '../../cache.mjs';
+import fetch from "#bloqbit/modules/fetch";
+import resolve from "#bloqbit/modules/resolve";
+import cache from "#bloqbit/cache";
 
 export default new Command(
     new SlashCommandBuilder()
