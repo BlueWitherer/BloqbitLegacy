@@ -1,7 +1,7 @@
 import Config from './Config.js';
 import SaveDataClient from './SaveDataClient.js';
 
-import SysAssets from "#bloqbit/assets" with { type: 'json' };
+import SysAssets from "#assets" with { type: 'json' };
 
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, SlashCommandOptionsOnlyBuilder } from 'discord.js';
 

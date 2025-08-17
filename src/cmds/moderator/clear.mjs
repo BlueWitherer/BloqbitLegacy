@@ -1,7 +1,7 @@
 import { ApplicationIntegrationType, Collection, InteractionContextType, TextChannel } from 'discord.js';
 import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { Command } from "#bloqbit/include";
+import { Command, log } from "#bloqbit/include";
 import fetch from "#bloqbit/modules/fetch";
 
 export default new Command(
@@ -117,7 +117,7 @@ export default new Command(
                         ],
                     });
                 } else {
-                    console.error(`Failed to fetch messages from user ${User.id} in channel ${interaction.channel?.id}.`);
+                    log.error(`Failed to fetch messages from user ${User.id} in channel ${interaction.channel?.id}.`);
 
                     await interaction.reply({
                         "content": "",
@@ -131,7 +131,7 @@ export default new Command(
                 };
             };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
 
             await interaction.reply({
                 "content": "",
@@ -172,7 +172,7 @@ export default new Command(
 
                 if (interaction.guild) await fetch.sendLog(interaction.client, system, db, emb, interaction.guild);
             } else {
-                console.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}.`);
+                log.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}.`);
             };
 
             setTimeout(async () => {

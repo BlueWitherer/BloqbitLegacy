@@ -1,4 +1,4 @@
-import { BloqbitClient } from "#bloqbit/include";
+import { BloqbitClient, log } from "#bloqbit/include";
 
 import { Events } from 'discord.js';
 
@@ -14,9 +14,9 @@ export default {
      */
     execute: async (bot, message) => {
         try {
-            console.debug(message);
+            log.debug(message);
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
         };
 
         return;

@@ -1,4 +1,4 @@
-import { BloqbitClient } from "#bloqbit/include";
+import { BloqbitClient, log } from "#bloqbit/include";
 import { Events, Message, ChannelType, WebhookClient } from 'discord.js';
 
 export default {
@@ -18,7 +18,7 @@ export default {
         try {
             if (msg.channel?.type === ChannelType.DM || msg.channel?.type === ChannelType.GroupDM) {
                 if (msg.author?.bot) {
-                    console.error(`Direct message author ${msg.author?.username} (${msg.author?.id}) is a bot or invalid`);
+                    log.error(`Direct message author ${msg.author?.username} (${msg.author?.id}) is a bot or invalid`);
                 } else if (devWH) {
                     await devWH.send({
                         "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
@@ -45,15 +45,15 @@ export default {
                         ],
                     });
                 } else {
-                    console.error(`Direct message author ${msg.author?.username} (${msg.author?.id}) is a bot or invalid`);
+                    log.error(`Direct message author ${msg.author?.username} (${msg.author?.id}) is a bot or invalid`);
                 };
             } else {
                 const msgs = await msg.channel?.messages?.fetch({ "limit": 100 });
 
-                console.debug(`Cached ${msgs?.size}/${msg.channel?.messages?.cache?.size} messages from guild channel`);
+                log.debug(`Cached ${msgs?.size}/${msg.channel?.messages?.cache?.size} messages from guild channel`);
             };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
         };
 
         return;

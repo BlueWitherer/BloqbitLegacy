@@ -1,28 +1,11 @@
+import NodeCache from 'node-cache';
+import { MongoClient, Db, Filter, Document } from 'mongodb';
 import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord, log } from "#bloqbit/include";
 
-import NodeCache from 'node-cache';
-import { MongoClient, Db } from 'mongodb';
-
-/**
- * MongoDB client instance
- * @type {MongoClient}
- */
-let dbClient;
-
-/**
- * Local memory cache
- * @type {NodeCache}
- */
+let dbClient: MongoClient | undefined;
 const cache = new NodeCache({ stdTTL: 3600, checkperiod: 600 });
 
-/**
- * Get MongoDB client instance
- * 
- * @param {string} mongoUri MongoDB URI
- * 
- * @returns {Promise<Db | void>} MongoDB client instance
- */
-const getDbClient = async (mongoUri) => {
+const getDbClient = async (mongoUri: string): Promise<Db | undefined> => {
     if (mongoUri) {
         if (!dbClient) {
             dbClient = new MongoClient(mongoUri);
@@ -36,14 +19,7 @@ const getDbClient = async (mongoUri) => {
     };
 };
 
-/**
- * Flush dirty cache data to the database.
- * 
- * @param {SaveDataClient} db Bot database model
- * 
- * @returns {Promise<void>}
- */
-const flushToDb = async (db) => {
+const flushToDb = async (db: SaveDataClient): Promise<void> => {
     try {
         const dirtyKeys = cache.keys().filter((k) => k.endsWith(":dirty"));
 
@@ -54,7 +30,7 @@ const flushToDb = async (db) => {
                 const cachedData = cache.get(key);
 
                 if (cachedData) {
-                    const system = cachedData;
+                    const system = new Config(cachedData);
                     const database = await getDbClient(db.mongo_uri);
 
                     if (database) {
@@ -84,15 +60,13 @@ const flushToDb = async (db) => {
     };
 };
 
-/**
- * 
- * @param {string} coll 
- * @param {string} server 
- * @param {string} user 
- * @param {SaveDataClient} db
- * @param {import('mongodb').Filter<import('mongodb').Document>} filter 
- */
-const handleFetchData = async (coll, server, user, db, filter) => {
+const handleFetchData = async (
+    coll: string,
+    server: string,
+    user: string,
+    db: SaveDataClient,
+    filter: Filter<Document>
+): Promise<Partial<InfractionRecord | LevelRecord | MuteRecord | NicknameRecord | RolesRecord> | void> => {
     try {
         const database = await getDbClient(db.mongo_uri);
 
@@ -104,6 +78,8 @@ const handleFetchData = async (coll, server, user, db, filter) => {
 
             if (found) {
                 const { _id, ...dat } = found;
+
+                log.debug(`[II] Fetched query of ID ${_id}`);
 
                 log.error(`[O] Data from collection '${coll}' for server ${server} found`);
                 return dat;
@@ -121,14 +97,12 @@ const handleFetchData = async (coll, server, user, db, filter) => {
     };
 };
 
-/**
- * 
- * @param {string} coll 
- * @param {InfractionRecord | LevelRecord | MuteRecord | NicknameRecord | RolesRecord} record 
- * @param {SaveDataClient} db 
- * @param {import('mongodb').Filter<import('mongodb').Document>} filter 
- */
-const handleUpdateData = async (coll, record, db, filter) => {
+const handleUpdateData = async (
+    coll: string,
+    record: InfractionRecord | LevelRecord | MuteRecord | NicknameRecord | RolesRecord,
+    db: SaveDataClient,
+    filter: Filter<Document>
+): Promise<Partial<InfractionRecord | LevelRecord | MuteRecord | NicknameRecord | RolesRecord> | void> => {
     if (record && db) {
         try {
             const database = await getDbClient(db.mongo_uri);
@@ -173,7 +147,7 @@ export default {
      * 
      * @returns {Promise<Config | void>} Queried settings object
      */
-    fetch: async (server, db) => {
+    fetch: async (server: string, db: SaveDataClient): Promise<Config | void> => {
         if (server && db) {
             try {
                 const cachedData = cache.get(`server:${server}`);
@@ -193,6 +167,8 @@ export default {
                         if (found) {
                             const { _id, ...conf } = found;
                             const res = new Config(conf);
+
+                            log.debug(`[II] Fetched query of ID ${_id}`);
 
                             cache.set(`server:${server}`, res);
                             log.error(`[O] Settings for server ${server} found and cached`);
@@ -224,7 +200,7 @@ export default {
      * 
      * @returns {Promise<Config | void>} Updated settings object
      */
-    update: async (system, db) => {
+    update: async (system: Config, db: SaveDataClient): Promise<Config | void> => {
         if (system && db) {
             try {
                 const database = await getDbClient(db.mongo_uri);
@@ -275,9 +251,9 @@ export default {
          * 
          * @returns {Promise<InfractionRecord | void>} Queried data object
          */
-        fetch: async (server, user, db) => {
+        fetch: async (server: string, user: string, db: SaveDataClient): Promise<InfractionRecord | void> => {
             const data = await handleFetchData("warns", server, user, db, { server: server, user: user });
-            if (data) return new InfractionRecord({ server: data.server || "", user: data.user || "", data: data.data || [] });
+            if (data && ('data' in data)) return new InfractionRecord({ server: data.server || "", user: data.user || "", data: data.data || [] });
         },
 
         /**
@@ -288,7 +264,7 @@ export default {
          * 
          * @returns {Promise<InfractionRecord | void>} Updated data object
          */
-        update: async (record, db) => {
+        update: async (record: InfractionRecord, db: SaveDataClient): Promise<InfractionRecord | void> => {
             const data = await handleUpdateData("warns", record, db, { server: record.server, user: record.server });
             if (data) return record;
         },
@@ -304,9 +280,9 @@ export default {
          * 
          * @returns {Promise<LevelRecord | void>} Queried data object
          */
-        fetch: async (server, user, db) => {
+        fetch: async (server: string, user: string, db: SaveDataClient): Promise<LevelRecord | void> => {
             const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
-            if (data) return new LevelRecord({ server: data.server || "", user: data.user || "", level: data.level || 1, xp: data.xp || 0 });
+            if (data && ('level' in data && 'xp' in data)) return new LevelRecord({ server: data.server || "", user: data.user || "", level: data.level || 1, xp: data.xp || 0 });
         },
 
         /**
@@ -317,7 +293,7 @@ export default {
          * 
          * @returns {Promise<LevelRecord | void>} Updated data object
          */
-        update: async (record, db) => {
+        update: async (record: LevelRecord, db: SaveDataClient): Promise<LevelRecord | void> => {
             const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
             if (data) return record;
         },
@@ -333,9 +309,9 @@ export default {
          * 
          * @returns {Promise<MuteRecord | void>} Queried data object
          */
-        fetch: async (server, user, db) => {
+        fetch: async (server: string, user: string, db: SaveDataClient): Promise<MuteRecord | void> => {
             const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
-            if (data) return new MuteRecord({ server: data.server || "", user: data.user || "", unix: data.unix || 0, reason: data.reason || "", mod: data.mod || "", until: data.until || 0 });
+            if (data && ('unix' in data && 'until' in data)) return new MuteRecord({ server: data.server || "", user: data.user || "", unix: data.unix || 0, reason: data.reason || "", mod: data.mod || "", until: data.until || 0 });
         },
 
         /**
@@ -346,7 +322,7 @@ export default {
          * 
          * @returns {Promise<MuteRecord | void>} Updated data object
          */
-        update: async (record, db) => {
+        update: async (record: MuteRecord, db: SaveDataClient): Promise<MuteRecord | void> => {
             const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
             if (data) return record;
         },
@@ -362,9 +338,9 @@ export default {
          * 
          * @returns {Promise<NicknameRecord | void>} Queried data object
          */
-        fetch: async (server, user, db) => {
+        fetch: async (server: string, user: string, db: SaveDataClient): Promise<NicknameRecord | void> => {
             const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
-            if (data) return new NicknameRecord({ server: data.server || "", user: data.user || "", nickname: data.nickname || "", reason: data.reason || "", mod: data.mod || "", unix: data.unix || 0, });
+            if (data && ('nickname' in data)) return new NicknameRecord({ server: data.server || "", user: data.user || "", nickname: data.nickname || "", reason: data.reason || "", mod: data.mod || "", unix: data.unix || 0, });
         },
 
         /**
@@ -375,7 +351,7 @@ export default {
          * 
          * @returns {Promise<NicknameRecord | void>} Updated data object
          */
-        update: async (record, db) => {
+        update: async (record: NicknameRecord, db: SaveDataClient): Promise<NicknameRecord | void> => {
             const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
             if (data) return record;
         },
@@ -391,9 +367,9 @@ export default {
          * 
          * @returns {Promise<RolesRecord | void>} Queried data object
          */
-        fetch: async (server, user, db) => {
+        fetch: async (server: string, user: string, db: SaveDataClient): Promise<RolesRecord | void> => {
             const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
-            if (data) return new RolesRecord({ server: data.server || "", user: data.user || "", roles: data.roles || [""] });
+            if (data && ('roles' in data)) return new RolesRecord({ server: data.server || "", user: data.user || "", roles: data.roles || [""] });
         },
 
         /**
@@ -404,7 +380,7 @@ export default {
          * 
          * @returns {Promise<RolesRecord | void>} Updated data object
          */
-        update: async (record, db) => {
+        update: async (record: RolesRecord, db: SaveDataClient): Promise<RolesRecord | void> => {
             const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
             if (data) return record;
         },

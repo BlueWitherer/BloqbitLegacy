@@ -1,38 +1,38 @@
-import "./console.mjs";
+import { log } from "#bloqbit/include";
 
 process.on("SIGUSR1", () => {
-    console.log("Received SIGUSR1 - Debugger may be activated.");
+    log.print("Received SIGUSR1 - Debugger may be activated.");
 });
 
 process.on("SIGUSR2", () => {
-    console.log("Received SIGUSR2 - Debugger may be activated.");
+    log.print("Received SIGUSR2 - Debugger may be activated.");
 });
 
 process.on("SIGABRT", () => {
-    console.error("Process aborted unexpectedly!");
+    log.error("Process aborted unexpectedly!");
 });
 
 process.on('uncaughtException', (err) => {
-    console.error('Unhandled Exception:', err.stack);
+    log.error('Unhandled Exception:', err.stack);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
     if (reason instanceof Error) {
-        console.trace('Unhandled Rejection:', reason.stack || 'No stack trace available', "\n", promise);
+        log.trace('Unhandled Rejection:', reason.stack || 'No stack trace available', "\n", promise);
     } else {
-        console.error('Unhandled Rejection:', reason, "\n", promise);
+        log.error('Unhandled Rejection:', reason, "\n", promise);
     };
 });
 
-console.log('Starting system...');
+log.print('Starting system...');
 
 // garbage collection
 if (global.gc) {
     global.gc();
 
-    console.debug('Garbage collection triggered manually');
+    log.debug('Garbage collection triggered manually');
 } else {
-    console.warn('Garbage collection is not exposed. Use --expose-gc to enable it.');
+    log.warn('Garbage collection is not exposed. Use --expose-gc to enable it.');
 };
 
 import path from 'path';
@@ -50,26 +50,26 @@ const start = async () => {
     let allShards: number = 0;
 
     process.on("debug", (debugInfo) => {
-        console.log("Debug Info:", debugInfo);
+        log.print("Debug Info:", debugInfo);
     });
 
     process.on('warning', (warning) => {
-        console.warn('Node Warning:', warning.name, warning.message, warning.stack);
+        log.warn('Node Warning:', warning.name, warning.message, warning.stack);
     });
 
     process.on("beforeExit", (code) => {
-        console.log(`Process is exiting with code ${code}...`);
+        log.print(`Process is exiting with code ${code}...`);
     });
 
     process.on("exit", (code) => {
-        console.log(`Process exited with code ${code}`);
+        log.print(`Process exited with code ${code}`);
     });
 
     const SERVER_IP = (process.env.APP_HOST || process.env.REDIS_HOST || process.env.IP || process.env.SERVER_IP) || "0.0.0.0";
     const SERVER_PORT = parseInt((process.env.APP_PORT || process.env.REDIS_PORT || process.env.PORT || process.env.SERVER_PORT) || '3000');
 
     const server = http.createServer((req, res) => {
-        console.debug(`Request details:\n      URL: ${req.url}\n      Method: ${req.method}\n      Headers:`, req.rawHeaders.map((h, i) => {
+        log.debug(`Request details:\n      URL: ${req.url}\n      Method: ${req.method}\n      Headers:`, req.rawHeaders.map((h, i) => {
             return i % 2 === 0 ? `\n            ${h}: ${req.rawHeaders[i + 1]}` : null;
         }).filter((h) => h !== null));
 
@@ -96,20 +96,20 @@ const start = async () => {
         manager.on("shardCreate", async (shard) => {
             shard.once("ready", async () => {
                 allShards++;
-                console.info(`Bot client of shard ${allShards}/${manager.shardList?.length} starting...`);
+                log.info(`Bot client of shard ${allShards}/${manager.shardList?.length} starting...`);
 
                 if (allShards === manager.shardList?.length) {
-                    console.log(`All bot client shards started`);
+                    log.print(`All bot client shards started`);
 
                     shard.process?.once("message", async (msg: { type: string, user: User, shard: number }) => {
                         if (typeof msg === "object") if (msg.type === "shard") {
-                            if (allShards === manager.shardList?.length) console.log(`Bloqbit is online - system is running on ${allShards} shard${allShards > 1 ? 's' : ''}, operating on client @${msg.user?.username} (${msg.user?.id})`);
+                            if (allShards === manager.shardList?.length) log.done(`Bloqbit is online - system is running on ${allShards} shard${allShards > 1 ? 's' : ''}, operating on client @${msg.user?.username} (${msg.user?.id})`);
                         } else {
-                            console.error(`Entrypoint event listener received invalid event type`);
+                            log.error(`Entrypoint event listener received invalid event type`);
                         };
                     });
                 } else {
-                    console.debug(`Shards have yet to start...`);
+                    log.debug(`Shards have yet to start...`);
                 };
             });
         });
@@ -127,7 +127,7 @@ const start = async () => {
          */
         const shutDown = async (): Promise<void> => {
             shuttingDown = true;
-            console.log("Initiating shutdown process...");
+            log.print("Initiating shutdown process...");
 
             try {
                 const shutdownsReceived = new Set<number>();
@@ -142,30 +142,30 @@ const start = async () => {
                                     shutdownsReceived.add(sh.id);
 
                                     if (shutdownsReceived.size === manager.totalShards) {
-                                        console.log(`All shards have completed shutdown`);
+                                        log.print(`All shards have completed shutdown`);
 
                                         server.close(() => {
-                                            console.log("Server has been stopped");
+                                            log.print("Server has been stopped");
                                             process.exit(0);
                                         });
                                     } else {
-                                        console.log(`Shard ${sh.id + 1} (${shutdownsReceived.size} / ${manager.totalShards}) has completed shutdown`);
+                                        log.print(`Shard ${sh.id + 1} (${shutdownsReceived.size} / ${manager.totalShards}) has completed shutdown`);
                                     };
                                 } catch (err) {
-                                    console.trace(err);
+                                    log.trace(err);
                                 };
                                 break;
 
                             case 'shutdownError':
                                 try {
-                                    console.error('A shard reported an error during shutdown');
+                                    log.error('A shard reported an error during shutdown');
                                 } catch (err) {
-                                    console.trace(err);
+                                    log.trace(err);
                                 };
                                 break;
 
                             default:
-                                console.error(`Received unknown message from shard ${sh.id}:`, msg);
+                                log.error(`Received unknown message from shard ${sh.id}:`, msg);
                                 break;
                         };
                     });
@@ -175,12 +175,12 @@ const start = async () => {
                     if (process.send) process.send('flushClose');
                 });
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 process.exit(1);
             };
 
             setTimeout(() => {
-                console.warn('Shutdown timeout reached, forcing exit...');
+                log.warn('Shutdown timeout reached, forcing exit...');
                 process.exit(1);
             }, 60000); // 60 sec
         };
@@ -189,27 +189,27 @@ const start = async () => {
             try {
                 if (process.send) process.send('flushDb');
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
             } finally {
-                console.debug('Sent event to flush data to database');
+                log.debug('Sent event to flush data to database');
             };
         }, 3600000); // 60 min
 
         process.on('SIGINT', async () => {
-            shuttingDown ? null : console.warn('Received SIGINT. Shutting down gracefully...');
+            shuttingDown ? null : log.warn('Received SIGINT. Shutting down gracefully...');
             return shuttingDown ? null : await shutDown();
         });
 
         process.on('SIGTERM', async () => {
-            shuttingDown ? null : console.warn('Received SIGTERM. Shutting down gracefully...');
+            shuttingDown ? null : log.warn('Received SIGTERM. Shutting down gracefully...');
             return shuttingDown ? null : await shutDown();
         });
 
         server.listen(SERVER_PORT, () => {
-            console.log(`Server running on IP address ${SERVER_IP} with port ${SERVER_PORT}`);
+            log.print(`Server running on IP address ${SERVER_IP} with port ${SERVER_PORT}`);
         });
     } catch (err) {
-        console.trace(err);
+        log.trace(err);
         process.exit(1);
     };
 };
@@ -219,7 +219,7 @@ const start = async () => {
     try {
         await start();
     } catch (err) {
-        console.trace(err);
+        log.trace(err);
         return;
     } finally {
         return;

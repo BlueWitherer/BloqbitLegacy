@@ -1,4 +1,4 @@
-import { BloqbitClient } from "#bloqbit/include";
+import { BloqbitClient, log } from "#bloqbit/include";
 
 import { Events, WebhookClient } from 'discord.js';
 
@@ -18,7 +18,7 @@ export default {
         const devWH = new WebhookClient({ url: bot.dev_wh });
 
         try {
-            console.error(shardId, error, error.stack);
+            log.error(shardId, error, error.stack);
 
             await devWH.send({
                 "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
@@ -49,7 +49,7 @@ export default {
                 ],
             });
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
         };
 
         return;

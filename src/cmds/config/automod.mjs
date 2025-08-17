@@ -1,4 +1,4 @@
-import { MessageFilterMode, ModeratorActionType, Command } from "#bloqbit/include";
+import { MessageFilterMode, ModeratorActionType, Command, log } from "#bloqbit/include";
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
@@ -283,7 +283,7 @@ export default new Command(
                     await fetch.commandErrorResponse(interaction, assets);
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 await fetch.commandErrorResponse(interaction, assets);
             };
         };
@@ -310,7 +310,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the swear filter`,
                         "color": assets.colors.secondary,
@@ -338,7 +338,7 @@ export default new Command(
                         });
                     };
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter`,
                         "color": assets.colors.secondary,
@@ -371,7 +371,7 @@ export default new Command(
 
                     system.automod.swearFilter.channels = chnls;
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter channel permission`,
                         "color": assets.colors.secondary,
@@ -404,7 +404,7 @@ export default new Command(
 
                     system.automod.swearFilter.roles = roles;
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter role permission`,
                         "color": assets.colors.secondary,
@@ -421,7 +421,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter punishment`,
                         "color": assets.colors.secondary,
@@ -438,7 +438,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter logging channel`,
                         "color": assets.colors.secondary,
@@ -455,7 +455,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter's filtering mode`,
                         "color": assets.colors.secondary,
@@ -472,7 +472,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the swear filter's role filtering mode`,
                         "color": assets.colors.secondary,
@@ -501,7 +501,7 @@ export default new Command(
 
                 return;
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 await fetch.commandErrorResponse(interaction, assets);
 
                 return;
@@ -530,7 +530,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the invite filter`,
                         "color": assets.colors.secondary,
@@ -558,7 +558,7 @@ export default new Command(
                         });
                     };
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter`,
                         "color": assets.colors.secondary,
@@ -591,7 +591,7 @@ export default new Command(
 
                     system.automod.inviteFilter.channels = chnls;
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter channel permission`,
                         "color": assets.colors.secondary,
@@ -624,7 +624,7 @@ export default new Command(
 
                     system.automod.inviteFilter.roles = roles;
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter role permission`,
                         "color": assets.colors.secondary,
@@ -641,7 +641,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter punishment`,
                         "color": assets.colors.secondary,
@@ -658,7 +658,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter logging channel`,
                         "color": assets.colors.secondary,
@@ -675,7 +675,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter's filtering mode`,
                         "color": assets.colors.secondary,
@@ -692,7 +692,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the invite filter's role filtering mode`,
                         "color": assets.colors.secondary,
@@ -721,7 +721,7 @@ export default new Command(
 
                 return;
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 await fetch.commandErrorResponse(interaction, assets);
 
                 return;
@@ -750,7 +750,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to toggle the link filter`,
                         "color": assets.colors.secondary,
@@ -778,7 +778,7 @@ export default new Command(
                         });
                     };
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter`,
                         "color": assets.colors.secondary,
@@ -811,7 +811,7 @@ export default new Command(
 
                     system.automod.linkFilter.channels = chnls;
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter channel permission`,
                         "color": assets.colors.secondary,
@@ -844,7 +844,7 @@ export default new Command(
 
                     system.automod.linkFilter.roles = roles;
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter role permission`,
                         "color": assets.colors.secondary,
@@ -861,7 +861,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter punishment`,
                         "color": assets.colors.secondary,
@@ -878,7 +878,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter logging channel`,
                         "color": assets.colors.secondary,
@@ -895,7 +895,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter's filtering mode`,
                         "color": assets.colors.secondary,
@@ -912,7 +912,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     });
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     allEmbeds.push({
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to modify the link filter's role filtering mode`,
                         "color": assets.colors.secondary,
@@ -941,7 +941,7 @@ export default new Command(
 
                 return;
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 await fetch.commandErrorResponse(interaction, assets);
 
                 return;

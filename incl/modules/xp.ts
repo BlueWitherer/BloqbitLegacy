@@ -1,4 +1,4 @@
-import { LevelRecord, SaveDataClient } from "#bloqbit/include";
+import { LevelRecord, SaveDataClient, log } from "#bloqbit/include";
 
 import cache from "../cache.mjs";
 
@@ -23,7 +23,7 @@ export default {
         try {
             return { level: level, xp: xp, untilUp: untilUp(level), };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
 
             return {
                 level: 0,

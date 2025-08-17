@@ -1,6 +1,6 @@
 import { Events, Message, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
 export default new BotEvent(
@@ -16,7 +16,7 @@ export default new BotEvent(
         const msg = /** @type {import('discord.js').OmitPartialGroupDMChannel<Message | import('discord.js').PartialMessage>} */ (args[0]);
 
         if (msg.guild) {
-            console.debug(`Handling deleted message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);
+            log.debug(`Handling deleted message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);
             const system = await fetch.fetchGuild((msg.guild?.id || msg.guildId) ?? '', bot.db);
 
             if (system) {
@@ -64,15 +64,15 @@ export default new BotEvent(
 
                     if (!msg.author?.bot) await fetch.sendLog(bot.client, system, bot.db, emb, msg.guild);
                 } else {
-                    console.warn(`Logs for deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                    log.warn(`Logs for deleted messages not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
+                log.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Message of ID ${msg.id} not in a guild`);
+            log.error(`Message of ID ${msg.id} not in a guild`);
             return;
         };
     });

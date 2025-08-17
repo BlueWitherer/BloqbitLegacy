@@ -1,4 +1,4 @@
-import { ServerLogEventType, Command } from "#bloqbit/include";
+import { ServerLogEventType, Command, log } from "#bloqbit/include";
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
@@ -302,7 +302,7 @@ export default new Command(
                     break;
 
                 default:
-                    console.error(`Unknown log action type: '${action}'`);
+                    log.error(`Unknown log action type: '${action}'`);
                     break;
             };
 

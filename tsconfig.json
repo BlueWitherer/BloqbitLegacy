@@ -10,6 +10,9 @@
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {
+      "#bloqbit/*": [
+        "./incl/*"
+      ],
       "*": [
         "*",
       ],
@@ -36,7 +39,7 @@
     "*.ts",
     "*.mjs",
     "*.js",
-    "src/assets.json",
+    "*.json",
     "incl/*.ts",
     "incl/**/*.ts",
     "incl/*.mjs",

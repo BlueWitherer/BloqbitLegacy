@@ -1,6 +1,6 @@
 import { Events, EmbedBuilder, GuildMember } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
 
@@ -17,7 +17,7 @@ export default new BotEvent(
         const member = /** @type {GuildMember} */ (args[0]);
 
         if (member.guild) {
-            console.debug(`Handling member join log event on guild of ID ${member.guild?.id}...`);
+            log.debug(`Handling member join log event on guild of ID ${member.guild?.id}...`);
             const system = await fetch.fetchGuild(member.guild?.id, bot.db);
 
             if (system) {
@@ -45,15 +45,15 @@ export default new BotEvent(
 
                     await fetch.sendLog(bot.client, system, bot.db, emb, member.guild);
                 } else {
-                    console.warn(`Logs for member joins not enabled in guild '${member.guild?.name}' (${member.guild?.id})`);
+                    log.warn(`Logs for member joins not enabled in guild '${member.guild?.name}' (${member.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${member.guild?.name}' (${member.guild?.id}) not registered in database`);
+                log.error(`Server '${member.guild?.name}' (${member.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Member of ID ${member.id} not in a guild`);
+            log.error(`Member of ID ${member.id} not in a guild`);
             return;
         };
     });

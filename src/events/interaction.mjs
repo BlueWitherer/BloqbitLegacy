@@ -1,4 +1,4 @@
-import { BloqbitClient } from "#bloqbit/include";
+import { BloqbitClient, log } from "#bloqbit/include";
 
 import { Events, WebhookClient } from 'discord.js';
 
@@ -28,7 +28,7 @@ export default {
                     try {
                         await command.execute(interaction, bot.assets, interactionServer, bot.db);
                     } catch (err) {
-                        console.trace(err);
+                        log.trace(err);
 
                         try {
                             if (interaction.replied || interaction.deferred) {
@@ -47,12 +47,12 @@ export default {
                                 });
                             };
                         } catch (err) {
-                            console.trace(err);
+                            log.trace(err);
                         };
                     } finally {
                         const date = Math.floor(Date.now() / 1000);
 
-                        console.debug(`Interaction /${interaction.commandName} (${interaction.id}) executed by ${interaction.user?.username} (${interaction.user?.id})`);
+                        log.debug(`Interaction /${interaction.commandName} (${interaction.id}) executed by ${interaction.user?.username} (${interaction.user?.id})`);
 
                         await devWH.send({
                             "avatarURL": interaction.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 128 }),
@@ -82,10 +82,10 @@ export default {
 
                     return;
                 } else if (!command) {
-                    console.error(`Command ${interaction.commandName} not found`);
+                    log.error(`Command ${interaction.commandName} not found`);
                     await fetch.commandErrorResponse(interaction, bot.assets);
                 } else if (!interactionServer) {
-                    console.error(`Interaction ${interaction.id} not found in database`);
+                    log.error(`Interaction ${interaction.id} not found in database`);
                     await fetch.databaseErrorResponse(interaction, bot.assets);
                 } else {
                     if (interaction.replied || interaction.deferred) {
@@ -107,10 +107,10 @@ export default {
                     return;
                 };
             } else {
-                console.error(`Interaction ${interaction.id} not a command`);
+                log.error(`Interaction ${interaction.id} not a command`);
             };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
 
             await fetch.commandErrorResponse(interaction, bot.assets);
             return;

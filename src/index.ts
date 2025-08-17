@@ -1,6 +1,4 @@
-import '../console.mjs';
-
-import { BloqbitClient, Command, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, Command, BotEvent, log } from "#bloqbit/include";
 
 import * as fs from 'node:fs';
 import * as path from 'path';
@@ -31,13 +29,13 @@ export default class Bot {
         try {
             return await this.activate(this.testMode);
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
             return;
         };
     };
 
     private activate = async (testMode: boolean = false): Promise<BloqbitClient> => {
-        if (testMode) console.log("Test mode active.");
+        if (testMode) log.print("Test mode active.");
 
         const bot = this.botModel;
 
@@ -58,12 +56,12 @@ export default class Bot {
                             const module: any = (await import(url.pathToFileURL(filePath).href)).default;
                             await callback(module);
                         } catch (err) {
-                            console.trace(err);
+                            log.trace(err);
                             if (testMode) process.exit(1);
                         };
                     };
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     process.exit(1);
                 };
             };
@@ -80,12 +78,12 @@ export default class Bot {
                         bot.commands.push(command.data?.toJSON());
                         bot.cmds.set(command.data?.name, command);
 
-                        console.debug(`Loaded command /${command.data.name}`);
+                        log.debug(`Loaded command /${command.data.name}`);
                     });
                 };
 
                 try {
-                    console.log(`Refreshing ${bot.commands.length} application (/) commands...`);
+                    log.print(`Refreshing ${bot.commands.length} application (/) commands...`);
 
                     const data = await bot.rest.put(
                         Routes.applicationCommands(client?.user?.id),
@@ -93,13 +91,13 @@ export default class Bot {
                     );
 
                     // @ts-ignore
-                    console.info(`Successfully reloaded ${data.length} application (/) commands`);
+                    log.info(`Successfully reloaded ${data.length} application (/) commands`);
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     if (testMode) process.exit(1);
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 process.exit(1);
             };
 
@@ -113,7 +111,7 @@ export default class Bot {
                             try {
                                 await event.execute(bot, ...args);
                             } catch (err) {
-                                console.trace(err);
+                                log.trace(err);
                             };
                         });
                     } else {
@@ -121,15 +119,15 @@ export default class Bot {
                             try {
                                 await event.execute(bot, ...args);
                             } catch (err) {
-                                console.trace(err);
+                                log.trace(err);
                             };
                         });
                     };
 
-                    console.debug(`Loaded event listener for ${event.name}`);
+                    log.debug(`Loaded event listener for ${event.name}`);
                 });
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 process.exit(1);
             };
 
@@ -139,11 +137,11 @@ export default class Bot {
                         try {
                             await botEvent.execute(bot, ...args);
                         } catch (err) {
-                            console.trace(err);
+                            log.trace(err);
                         };
                     });
 
-                    console.debug(`Loaded guild ${folder} event for ${botEvent.event.toString()}`);
+                    log.debug(`Loaded guild ${folder} event for ${botEvent.event.toString()}`);
                 };
 
                 const loadSubFolder = async (sub: string) => {
@@ -157,7 +155,7 @@ export default class Bot {
                 await loadSubFolder('logging');
                 await loadSubFolder('moderation');
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 process.exit(1);
             };
 
@@ -165,7 +163,7 @@ export default class Bot {
 
             try {
                 if (testMode) {
-                    console.info(`All start-up operations successful, shutting down...`);
+                    log.info(`All start-up operations successful, shutting down...`);
 
                     await client.destroy();
                     process.exit(0);
@@ -195,13 +193,13 @@ export default class Bot {
 
                     if (process.send) {
                         const event = process.send({ type: "shard", user: client.user, shard: clientShard });
-                        if (event) console.info(`Bot client instance on shard of ID ${clientShard} started`);
+                        if (event) log.info(`Bot client instance on shard of ID ${clientShard} started`);
                     } else {
-                        console.error(`Unable to communicate ready state with entrypoint`);
+                        log.error(`Unable to communicate ready state with entrypoint`);
                     };
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 process.exit(1);
             };
         });
@@ -209,7 +207,7 @@ export default class Bot {
         try {
             await bot.client?.login(bot.token);
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
             if (testMode) process.exit(1);
         };
 
@@ -225,7 +223,7 @@ const checkEnv: (env: string, name: string) => string = (env: string, name: stri
             throw new Error(`Missing environment variable '${name}'`, { "cause": "env" });
         };
     } catch (err) {
-        console.trace(err);
+        log.trace(err);
         process.exit(1);
     };
 };
@@ -254,9 +252,9 @@ try {
             case "flushDb":
                 try {
                     await cache.flushToDb(bb.botModel.db);
-                    console.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
+                    log.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                 };
                 break;
 
@@ -266,19 +264,19 @@ try {
                     if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
 
                     if (process.send) process.send('shutdownComplete');
-                    console.debug(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} shutdown complete`);
+                    log.debug(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} shutdown complete`);
                 } catch (err) {
-                    console.trace(err);
+                    log.trace(err);
                     if (process.send) process.send('shutdownError');
                 };
                 break;
 
             default:
-                console.error(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} received unknown message:`, msg);
+                log.error(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} received unknown message:`, msg);
                 break;
         };
     });
 } catch (err) {
-    console.trace(err);
+    log.trace(err);
     process.exit(1);
 };

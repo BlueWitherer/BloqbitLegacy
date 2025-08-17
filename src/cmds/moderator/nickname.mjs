@@ -1,4 +1,4 @@
-import { Command } from "#bloqbit/include";
+import { Command, log } from "#bloqbit/include";
 import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField } from 'discord.js';
 import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
@@ -146,11 +146,11 @@ export default new Command(
                             ],
                         });
                     } catch (err) {
-                        console.trace(err);
-                        console.warn(`Failed to send nickname block DM to user ${User.username} (${User.id}): ${err}`);
+                        log.trace(err);
+                        log.warn(`Failed to send nickname block DM to user ${User.username} (${User.id}): ${err}`);
                     };
                 } else {
-                    console.error(`Invalid user: ${User.username}`);
+                    log.error(`Invalid user: ${User.username}`);
 
                     await interaction.reply({
                         "content": "",
@@ -257,8 +257,8 @@ export default new Command(
                         ],
                     });
                 } catch (err) {
-                    console.trace(err);
-                    console.warn(`Failed to send nickname unblock DM to user ${User.username} (${User.id}): ${err}`);
+                    log.trace(err);
+                    log.warn(`Failed to send nickname unblock DM to user ${User.username} (${User.id}): ${err}`);
                 };
             } else if (subcommand === "set") {
                 const User = interaction.options?.getUser("user", true);
@@ -278,7 +278,7 @@ export default new Command(
                         ],
                     });
                 } else {
-                    console.error(`Invalid user: ${User.username}`);
+                    log.error(`Invalid user: ${User.username}`);
 
                     await interaction.reply({
                         "content": "",
@@ -312,7 +312,7 @@ export default new Command(
                         ],
                     });
                 } else {
-                    console.error(`Invalid user: ${User.username}`);
+                    log.error(`Invalid user: ${User.username}`);
 
                     await interaction.reply({
                         "content": "",
@@ -330,7 +330,7 @@ export default new Command(
                     return;
                 };
             } else {
-                console.error(`Invalid subcommand: ${subcommand}`);
+                log.error(`Invalid subcommand: ${subcommand}`);
 
                 await interaction.reply({
                     "content": "",
@@ -346,7 +346,7 @@ export default new Command(
                 });
             };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
 
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred while processing the command.`,
@@ -382,7 +382,7 @@ export default new Command(
 
                 if (interaction.guild) await fetch.sendLog(interaction.client, system, db, emb, interaction.guild);
             } else {
-                console.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}`);
+                log.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}`);
             };
         };
     },

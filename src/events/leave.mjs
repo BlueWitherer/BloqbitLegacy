@@ -1,5 +1,5 @@
 import fetch from "#bloqbit/modules/fetch";
-import { BloqbitClient } from "#bloqbit/include";
+import { BloqbitClient, log } from "#bloqbit/include";
 import { Events, Guild, WebhookClient, PresenceUpdateStatus } from 'discord.js';
 
 export default {
@@ -18,7 +18,7 @@ export default {
             const devWH = new WebhookClient({ url: bot.dev_wh, });
             const date = Math.floor(Date.now() / 1000);
 
-            console.debug(`Forced to leave guild ${guild.name} (${guild.id})`);
+            log.debug(`Forced to leave guild ${guild.name} (${guild.id})`);
 
             await devWH.send({
                 "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
@@ -47,7 +47,7 @@ export default {
             const srvs = await bot.client?.guilds?.fetch();
             fetch.setPresence(bot.client, `Alpha Testing!`, `Active across ${srvs.size} servers on shard ${clientShard}!`, PresenceUpdateStatus.Online);
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
         };
 
         return;

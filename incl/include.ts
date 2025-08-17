@@ -1,3 +1,5 @@
+import log from './log.mjs';
+
 import BloqbitClient from './classes/BloqbitClient.ts';
 import Command from './classes/Command.ts';
 import Config from './classes/Config.ts';
@@ -18,6 +20,8 @@ import MessageFilterClass from './classes/enum/MessageFilterClass.ts';
 import MessageFilterMode from './classes/enum/MessageFilterMode.ts';
 
 export {
+    log,
+
     BloqbitClient,
     Command,
     Config,

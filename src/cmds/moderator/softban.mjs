@@ -1,4 +1,4 @@
-import { Command } from "#bloqbit/include";
+import { Command, log } from "#bloqbit/include";
 import { ApplicationIntegrationType, InteractionContextType, PermissionsBitField } from 'discord.js';
 import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
@@ -113,11 +113,11 @@ export default new Command(
                     ],
                 });
             } catch (err) {
-                console.trace(err);
-                console.warn(`Failed to send soft-ban DM to user ${User.username} (${User.id}):`, err);
+                log.trace(err);
+                log.warn(`Failed to send soft-ban DM to user ${User.username} (${User.id}):`, err);
             };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
 
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred`,
@@ -160,7 +160,7 @@ export default new Command(
 
                 if (interaction.guild) await fetch.sendLog(interaction.client, system, db, emb, interaction.guild);
             } else {
-                console.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}`);
+                log.warn(`Logs for moderator actions not enabled in guild ${interaction.guild?.id}`);
             };
         };
     },

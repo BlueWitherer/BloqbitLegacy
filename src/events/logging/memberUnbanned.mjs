@@ -1,6 +1,6 @@
 import { Events, EmbedBuilder, GuildBan } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
 
@@ -17,7 +17,7 @@ export default new BotEvent(
         const ban = /** @type {GuildBan} */ (args[0]);
 
         if (ban.guild) {
-            console.debug(`Handling unban log event on guild of ID ${ban.guild?.id}...`);
+            log.debug(`Handling unban log event on guild of ID ${ban.guild?.id}...`);
             const system = await fetch.fetchGuild(ban.guild?.id, bot.db);
 
             if (system) {
@@ -50,15 +50,15 @@ export default new BotEvent(
 
                     await fetch.sendLog(bot.client, system, bot.db, emb, ban.guild);
                 } else {
-                    console.warn(`Logs for unbans not enabled in guild '${ban.guild?.name}' (${ban.guild?.id})`);
+                    log.warn(`Logs for unbans not enabled in guild '${ban.guild?.name}' (${ban.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${ban.guild?.name}' (${ban.guild?.id}) not registered in database`);
+                log.error(`Server '${ban.guild?.name}' (${ban.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Unbanned user of ID ${ban.user?.id} not from a guild`);
+            log.error(`Unbanned user of ID ${ban.user?.id} not from a guild`);
             return;
         };
     });

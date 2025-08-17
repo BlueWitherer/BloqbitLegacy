@@ -1,4 +1,4 @@
-import { SaveDataClient, Config } from "#bloqbit/include";
+import { SaveDataClient, Config, log } from "#bloqbit/include";
 
 import cacheModule from "#bloqbit/cache";
 
@@ -16,7 +16,7 @@ import {
     GuildBasedChannel,
 } from 'discord.js';
 
-import SysAssets from "#bloqbit/assets" with { type: 'json' };
+import SysAssets from "#assets" with { type: 'json' };
 
 export default {
     /**
@@ -43,11 +43,11 @@ export default {
             try {
                 return await cacheModule.fetch(server, db);
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
                 return;
             };
         } else {
-            console.error(`Server or database not found`);
+            log.error(`Server or database not found`);
             return;
         };
     },
@@ -69,12 +69,12 @@ export default {
                     ephemeral: true,
                 });
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
             };
 
             return;
         } else {
-            console.error(`Command error response not sent, interaction type is not a command`);
+            log.error(`Command error response not sent, interaction type is not a command`);
         };
 
         return;
@@ -98,10 +98,10 @@ export default {
                     await interaction.reply({ embeds: [embed] });
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
             };
         } else {
-            console.error(`Command error response not sent, interaction type is not a command`);
+            log.error(`Command error response not sent, interaction type is not a command`);
         };
 
         return;
@@ -125,7 +125,7 @@ export default {
                 "status": status,
             });
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
             return;
         };
     },
@@ -147,9 +147,9 @@ export default {
             if (channel.type === ChannelType.GuildText) {
                 if (system.logs.webhook) {
                     webhookClient = new WebhookClient({ url: system.logs.webhook });
-                    console.debug(`Found logs webhook for channel #${channel.name} (${channel.id})`);
+                    log.debug(`Found logs webhook for channel #${channel.name} (${channel.id})`);
                 } else {
-                    console.debug(`Logs webhook for channel #${channel.name} (${channel.id}) not found, creating...`);
+                    log.debug(`Logs webhook for channel #${channel.name} (${channel.id}) not found, creating...`);
 
                     const newWebhook = await channel.createWebhook({
                         name: "Bloqbit",
@@ -165,12 +165,12 @@ export default {
                     await cacheModule.update(system, db);
 
                     webhookClient = new WebhookClient({ url: system.logs.webhook });
-                    console.debug(`Created logs webhook for channel #${channel.name} (${channel.id}) and updated save data`);
+                    log.debug(`Created logs webhook for channel #${channel.name} (${channel.id}) and updated save data`);
                 };
 
                 return webhookClient;
             } else {
-                console.error(`Logs channel of ID ${channelId || system.logs.channel} is not a text channel, cannot create webhook`);
+                log.error(`Logs channel of ID ${channelId || system.logs.channel} is not a text channel, cannot create webhook`);
                 return;
             };
         };
@@ -183,16 +183,16 @@ export default {
                     if (webhookClient) {
                         await webhookClient.send({ embeds: [emb], avatarURL: client.user?.displayAvatarURL({ size: 1024, extension: "jpg", forceStatic: true }), username: client.user?.displayName });
                     } else {
-                        console.error(`Failed to create logs webhook for channel of ID ${channelId || system.logs.channel} in guild '${guild.name}' (${guild.id})`);
+                        log.error(`Failed to create logs webhook for channel of ID ${channelId || system.logs.channel} in guild '${guild.name}' (${guild.id})`);
                     };
                 } else {
                     await channel.send({ embeds: [emb] });
                 };
             } else {
-                console.error(`Logs channel of ID ${channelId || system.logs.channel} not found or incorrect type for guild ${guild.name} (${guild.id})`);
+                log.error(`Logs channel of ID ${channelId || system.logs.channel} not found or incorrect type for guild ${guild.name} (${guild.id})`);
             };
         } else {
-            console.error(`Logs channel of ID ${channelId || system.logs.channel} not found for guild ${guild.name} (${guild.id})`);
+            log.error(`Logs channel of ID ${channelId || system.logs.channel} not found for guild ${guild.name} (${guild.id})`);
         };
 
         return;
@@ -206,17 +206,17 @@ export default {
             try {
                 for (let i = 0; i < channels.length; i++) {
                     if (server.channels?.cache?.get(channels[i])) {
-                        console.debug(`Channel of ID ${channels[i]} exists`);
+                        log.debug(`Channel of ID ${channels[i]} exists`);
                     } else {
-                        console.warn(`Channel of ID ${channels[i]} does not exist, removing from list...`);
+                        log.warn(`Channel of ID ${channels[i]} does not exist, removing from list...`);
                         channels.splice(i, 1);
                     };
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
             };
         } else {
-            console.error(`Server not provided, skipping channel scans...`);
+            log.error(`Server not provided, skipping channel scans...`);
         };
 
         return channels;
@@ -230,17 +230,17 @@ export default {
             try {
                 for (let i = 0; i < roles.length; i++) {
                     if (server.roles?.cache?.get(roles[i])) {
-                        console.debug(`Role of ID ${roles[i]} exists`);
+                        log.debug(`Role of ID ${roles[i]} exists`);
                     } else {
-                        console.warn(`Role of ID ${roles[i]} does not exist, removing from list...`);
+                        log.warn(`Role of ID ${roles[i]} does not exist, removing from list...`);
                         roles.splice(i, 1);
                     };
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
             };
         } else {
-            console.error(`Server not provided, skipping role scans...`);
+            log.error(`Server not provided, skipping role scans...`);
         };
 
         return roles;

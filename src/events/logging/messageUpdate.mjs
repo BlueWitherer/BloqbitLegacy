@@ -1,6 +1,6 @@
 import { Events, Message, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
 
@@ -18,7 +18,7 @@ export default new BotEvent(
         const newMsg = /** @type {import('discord.js').OmitPartialGroupDMChannel<Message>} */ (args[1]);
 
         if (oldMsg.guild && newMsg.guild) {
-            console.debug(`Handling message update log event on guild of ID ${(newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)}...`);
+            log.debug(`Handling message update log event on guild of ID ${(newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)}...`);
             const system = await fetch.fetchGuild(((newMsg.guild?.id || oldMsg.guild?.id) || (newMsg.guildId || oldMsg.guildId)) ?? '', bot.db);
 
             if (system) {
@@ -76,7 +76,7 @@ export default new BotEvent(
 
                     if (!newMsg.author?.bot && (oldMsg.content !== newMsg.content)) await fetch.sendLog(bot.client, system, bot.db, emb, newMsg.guild);
                 } else {
-                    console.warn(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
+                    log.warn(`Logs for edited messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };
 
                 // message pin
@@ -124,15 +124,15 @@ export default new BotEvent(
 
                     if (!oldMsg.pinned && newMsg.pinned) await fetch.sendLog(bot.client, system, bot.db, emb, newMsg.guild);
                 } else {
-                    console.warn(`Logs for pinned messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
+                    log.warn(`Logs for pinned messages not enabled in guild '${newMsg.guild?.name}' (${newMsg.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);
+                log.error(`Server '${newMsg.guild?.name}' (${newMsg.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Message of ID ${newMsg.id} not in a guild`);
+            log.error(`Message of ID ${newMsg.id} not in a guild`);
             return;
         };
     });

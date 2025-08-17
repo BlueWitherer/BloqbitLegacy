@@ -1,9 +1,9 @@
 import { Events, Message, ChannelType } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
-import moderation from "../../modules/moderation.js";
+import moderation from "#bloqbit/modules/moderation";
 
 export default new BotEvent(
     Events.MessageCreate,
@@ -18,7 +18,7 @@ export default new BotEvent(
         const msg = /** @type {import("discord.js").OmitPartialGroupDMChannel<Message>} */ (args[0]);
 
         if (msg.guild) {
-            console.debug(`Handling created message moderation event on guild of ID ${msg.guild?.id || msg.guildId}...`);
+            log.debug(`Handling created message moderation event on guild of ID ${msg.guild?.id || msg.guildId}...`);
             const system = await fetch.fetchGuild((msg.guild?.id || msg.guildId) ?? '', bot.db);
 
             if (system) {
@@ -26,7 +26,7 @@ export default new BotEvent(
                 if (system.automod.enabled) {
                     try {
                         if (msg.author?.bot) {
-                            console.warn(`Message author of ID ${msg.author?.id} is a bot`);
+                            log.warn(`Message author of ID ${msg.author?.id} is a bot`);
                         } else {
                             await (async () => {
                                 const inF = moderation.inFilter(system, msg);
@@ -40,13 +40,13 @@ export default new BotEvent(
                                 if (dtF.punishment >= 1) return await moderation.punish(dtF.punishment, msg, dtF.warning.value);
                             })();
 
-                            console.debug(`Message of ID ${msg.id} handled with moderation filters`);
+                            log.debug(`Message of ID ${msg.id} handled with moderation filters`);
                         };
                     } catch (err) {
-                        console.trace(err);
+                        log.trace(err);
                     };
                 } else {
-                    console.warn(`Auto-moderator not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                    log.warn(`Auto-moderator not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
                 };
 
                 // autopublish
@@ -58,30 +58,30 @@ export default new BotEvent(
                                     if (msg.crosspostable) {
                                         await msg.crosspost();
                                     } else {
-                                        console.error(`Message of ID ${msg.id} could not be published`);
+                                        log.error(`Message of ID ${msg.id} could not be published`);
                                     };
                                 } else {
-                                    console.error(`Message author of ID ${msg.author?.id} is invalid`);
+                                    log.error(`Message author of ID ${msg.author?.id} is invalid`);
                                 };
                             } else {
-                                console.error(`Channel of ID ${msg.channel?.id} is not an announcement channel`);
+                                log.error(`Channel of ID ${msg.channel?.id} is not an announcement channel`);
                             };
                         } else {
-                            console.warn(`Channel of ID ${msg.channel?.id} not included in auto-publisher`);
+                            log.warn(`Channel of ID ${msg.channel?.id} not included in auto-publisher`);
                         };
                     } catch (err) {
-                        console.trace(err);
+                        log.trace(err);
                     };
                 } else {
-                    console.warn(`Auto-publisher not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                    log.warn(`Auto-publisher not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
+                log.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Message of ID ${msg.id} not in a guild`);
+            log.error(`Message of ID ${msg.id} not in a guild`);
             return;
         };
     });

@@ -1,4 +1,4 @@
-import { Command } from "#bloqbit/include";
+import { Command, log } from "#bloqbit/include";
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
@@ -65,7 +65,7 @@ export default new Command(
                     ],
                 });
             } else {
-                console.error(`Failed to update ghost ping logger configuration in guild '${interaction.guild?.name}' (${interaction.guild?.id})`);
+                log.error(`Failed to update ghost ping logger configuration in guild '${interaction.guild?.name}' (${interaction.guild?.id})`);
                 await fetch.commandErrorResponse(interaction, assets);
             };
         };
@@ -139,7 +139,7 @@ export default new Command(
                     });
                 };
             } else {
-                console.error(`Failed to update ghost ping logger configuration in guild '${interaction.guild?.name}' (${interaction.guild?.id})`);
+                log.error(`Failed to update ghost ping logger configuration in guild '${interaction.guild?.name}' (${interaction.guild?.id})`);
                 await fetch.commandErrorResponse(interaction, assets);
             };
         };

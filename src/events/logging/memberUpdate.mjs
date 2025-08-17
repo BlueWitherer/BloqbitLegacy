@@ -1,9 +1,9 @@
 import { Events, EmbedBuilder, GuildMember } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
-import resolve from "../../modules/resolve.js";
+import resolve from "#bloqbit/modules/resolve";
 
 export default new BotEvent(
     Events.GuildMemberUpdate,
@@ -19,7 +19,7 @@ export default new BotEvent(
         const newMember = /** @type {GuildMember} */ (args[1]);
 
         if (oldMember.guild && newMember.guild) {
-            console.debug(`Handling member update log event on guild of ID ${oldMember.guild?.id || newMember.guild?.id}...`);
+            log.debug(`Handling member update log event on guild of ID ${oldMember.guild?.id || newMember.guild?.id}...`);
             const system = await fetch.fetchGuild(oldMember.guild?.id || newMember.guild?.id, bot.db);
 
             const oldRoles = oldMember.roles?.cache;
@@ -59,7 +59,7 @@ export default new BotEvent(
 
                     if (oldMember.nickname !== newMember.nickname) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
-                    console.warn(`Logs for member nickname update not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                    log.warn(`Logs for member nickname update not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
 
                 // timeout begin
@@ -87,7 +87,7 @@ export default new BotEvent(
 
                     if (!oldMember.isCommunicationDisabled().valueOf() && newMember.isCommunicationDisabled().valueOf()) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
-                    console.warn(`Logs for member timed out not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                    log.warn(`Logs for member timed out not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
 
                 // timeout end
@@ -115,7 +115,7 @@ export default new BotEvent(
 
                     if (oldMember.isCommunicationDisabled().valueOf() && !newMember.isCommunicationDisabled().valueOf()) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
-                    console.warn(`Logs for member timeout expiring not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                    log.warn(`Logs for member timeout expiring not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
 
                 // roles given
@@ -143,7 +143,7 @@ export default new BotEvent(
 
                     if (addedRoles.size > 0) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
-                    console.warn(`Logs for member roles given not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                    log.warn(`Logs for member roles given not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
 
                 // roles taken
@@ -171,15 +171,15 @@ export default new BotEvent(
 
                     if (removedRoles.size > 0) await fetch.sendLog(bot.client, system, bot.db, emb, newMember.guild);
                 } else {
-                    console.warn(`Logs for member roles taken not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
+                    log.warn(`Logs for member roles taken not enabled in guild '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id}) not registered in database`);
+                log.error(`Server '${newMember.guild?.name}' (${oldMember.guild?.id || newMember.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Member of ID ${newMember.id} not in a guild`);
+            log.error(`Member of ID ${newMember.id} not in a guild`);
             return;
         };
     });

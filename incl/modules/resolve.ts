@@ -1,4 +1,4 @@
-import { ModeratorActionType, MessageFilterMode } from "#bloqbit/include";
+import { ModeratorActionType, MessageFilterMode, log } from "#bloqbit/include";
 
 import { Warning, WarnObject } from './moderation.js';
 
@@ -15,7 +15,7 @@ export default {
         try {
             return { name, value: description };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
 
             return {
                 name: "Error",
@@ -38,7 +38,7 @@ export default {
                 warning: { name: object.name, value: object.value },
             };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
 
             return {
                 punishment: 0,
@@ -147,14 +147,14 @@ export default {
         try {
             if (Number.isSafeInteger(x)) {
                 const numString = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                console.debug(numString);
+                log.debug(numString);
                 return numString;
             } else {
-                console.error(`${x} is not a number`);
+                log.error(`${x} is not a number`);
                 return "0";
             };
         } catch (err) {
-            console.trace(err);
+            log.trace(err);
             return "0";
         };
     },

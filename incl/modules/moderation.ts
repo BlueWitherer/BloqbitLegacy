@@ -10,7 +10,7 @@ export interface WarnObject {
     warning: Warning;
 };
 
-import { Config, ModeratorActionType } from "#bloqbit/include";
+import { Config, ModeratorActionType, log } from "#bloqbit/include";
 
 import { GuildMember, Message } from 'discord.js';
 
@@ -51,41 +51,41 @@ export default {
             try {
                 switch (level) {
                     case ModeratorActionType.Warn:
-                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} warned for message ${message.id}`);
+                        log.error(`[MOD] ${message.guild?.name} - User ${message.author?.id} warned for message ${message.id}`);
                         break;
 
                     case ModeratorActionType.Mute:
-                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} muted for message ${message.id}`);
+                        log.error(`[MOD] ${message.guild?.name} - User ${message.author?.id} muted for message ${message.id}`);
                         break;
 
                     case ModeratorActionType.Timeout:
                         await timeout(message.member, reason);
-                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} timed out for message ${message.id}`);
+                        log.error(`[MOD] ${message.guild?.name} - User ${message.author?.id} timed out for message ${message.id}`);
                         break;
 
                     case ModeratorActionType.Softban:
                         await softban(message.member, reason);
-                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} soft-banned for message ${message.id}`);
+                        log.error(`[MOD] ${message.guild?.name} - User ${message.author?.id} soft-banned for message ${message.id}`);
                         break;
 
                     case ModeratorActionType.Ban:
                         await ban(message.member, reason);
-                        console.info(`[MOD] ${message.guild?.name} - User ${message.author?.id} banned for message ${message.id}`);
+                        log.error(`[MOD] ${message.guild?.name} - User ${message.author?.id} banned for message ${message.id}`);
                         break;
 
                     case ModeratorActionType.None:
-                        console.debug(`[MOD] ${message.guild?.name} - User ${message.author?.id} not affected for message ${message.id}`);
+                        log.debug(`[MOD] ${message.guild?.name} - User ${message.author?.id} not affected for message ${message.id}`);
                         break;
 
                     default:
-                        console.error(`[MOD] ${message.guild?.name} - Invalid punishment level`);
+                        log.error(`[MOD] ${message.guild?.name} - Invalid punishment level`);
                         break;
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
             };
         } else {
-            console.error(`[MOD] ${message.guild?.name} - Invalid member`);
+            log.error(`[MOD] ${message.guild?.name} - Invalid member`);
         };
     },
 
@@ -123,7 +123,7 @@ export default {
                     );
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
 
                 return resolve.warnObj(
                     ModeratorActionType.None,
@@ -172,7 +172,7 @@ export default {
                     );
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
 
                 return resolve.warnObj(
                     ModeratorActionType.None,
@@ -221,7 +221,7 @@ export default {
                     );
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
 
                 return resolve.warnObj(
                     ModeratorActionType.None,
@@ -279,7 +279,7 @@ export default {
                     );
                 };
             } catch (err) {
-                console.trace(err);
+                log.trace(err);
 
                 return resolve.warnObj(
                     ModeratorActionType.None,

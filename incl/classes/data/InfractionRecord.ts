@@ -1,4 +1,4 @@
-import Record from "./Record";
+import Record from "./Record.js";
 
 export default class InfractionRecord {
     public server: string;

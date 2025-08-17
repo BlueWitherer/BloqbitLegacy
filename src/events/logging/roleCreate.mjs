@@ -1,6 +1,6 @@
 import { Events, EmbedBuilder, Role } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
 
@@ -17,7 +17,7 @@ export default new BotEvent(
         const role = /** @type {import('discord.js').Role} */ (args[0]);
 
         if (role.guild) {
-            console.debug(`Handling created role log event on guild of ID ${role.guild?.id}...`);
+            log.debug(`Handling created role log event on guild of ID ${role.guild?.id}...`);
             const system = await fetch.fetchGuild(role.guild?.id ?? '', bot.db);
 
             if (system) {
@@ -60,15 +60,15 @@ export default new BotEvent(
 
                     await fetch.sendLog(bot.client, system, bot.db, emb, role.guild);
                 } else {
-                    console.warn(`Logs for created roles not enabled in guild '${role.guild?.name}' (${role.guild?.id})`);
+                    log.warn(`Logs for created roles not enabled in guild '${role.guild?.name}' (${role.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${role.guild?.name}' (${role.guild?.id}) not registered in database`);
+                log.error(`Server '${role.guild?.name}' (${role.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Role of ID ${role.id} not in a guild`);
+            log.error(`Role of ID ${role.id} not in a guild`);
             return;
         };
     });

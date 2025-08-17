@@ -1,4 +1,4 @@
-import Record from "./Record";
+import Record from "./Record.js";
 
 /**
  * Blocked user display name record class

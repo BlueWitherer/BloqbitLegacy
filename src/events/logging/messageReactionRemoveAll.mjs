@@ -1,9 +1,9 @@
 import { Events, Message, EmbedBuilder, MessageReaction } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
-import resolve from "../../modules/resolve.js";
+import resolve from "#bloqbit/modules/resolve";
 
 export default new BotEvent(
     Events.MessageReactionRemoveAll,
@@ -19,7 +19,7 @@ export default new BotEvent(
         const reactions = /** @type {import("discord.js").ReadonlyCollection<string | import("discord.js").Snowflake, MessageReaction>} */ (args[1]);
 
         if (msg.guild) {
-            console.debug(`Handling all reactions deleted from message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);
+            log.debug(`Handling all reactions deleted from message log event on guild of ID ${msg.guild?.id || msg.guildId}...`);
             const system = await fetch.fetchGuild((msg.guild?.id || msg.guildId) ?? '', bot.db);
 
             if (system) {
@@ -72,15 +72,15 @@ export default new BotEvent(
 
                     if (!msg.author?.bot) await fetch.sendLog(bot.client, system, bot.db, emb, msg.guild);
                 } else {
-                    console.warn(`Logs for all reactions deleted from message not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
+                    log.warn(`Logs for all reactions deleted from message not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
+                log.error(`Server '${msg.guild?.name}' (${msg.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Message of ID ${msg.id} not in a guild`);
+            log.error(`Message of ID ${msg.id} not in a guild`);
             return;
         };
     });

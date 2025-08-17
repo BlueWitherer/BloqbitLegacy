@@ -1,6 +1,6 @@
 import { Events, DMChannel, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, BotEvent } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
 
 import fetch from "#bloqbit/modules/fetch";
 
@@ -17,7 +17,7 @@ export default new BotEvent(
         const channel = /** @type {DMChannel | import("discord.js").NonThreadGuildBasedChannel} */ (args[0]);
 
         if (!(channel instanceof DMChannel) && channel.guild) {
-            console.debug(`Handling deleted channel log event on guild of ID ${channel.guild?.id || channel.guildId}...`);
+            log.debug(`Handling deleted channel log event on guild of ID ${channel.guild?.id || channel.guildId}...`);
             const system = await fetch.fetchGuild(channel.guild?.id || channel.guildId, bot.db);
 
             if (system) {
@@ -55,15 +55,15 @@ export default new BotEvent(
 
                     await fetch.sendLog(bot.client, system, bot.db, emb, channel.guild);
                 } else {
-                    console.warn(`Logs for deleted channels not enabled in guild '${channel.guild?.name}' (${channel.guild?.id})`);
+                    log.warn(`Logs for deleted channels not enabled in guild '${channel.guild?.name}' (${channel.guild?.id})`);
                 };
             } else {
-                console.error(`Server '${channel.guild?.name}' (${channel.guild?.id}) not registered in database`);
+                log.error(`Server '${channel.guild?.name}' (${channel.guild?.id}) not registered in database`);
             };
 
             return;
         } else {
-            console.error(`Channel of ID ${channel.id} not in a guild`);
+            log.error(`Channel of ID ${channel.id} not in a guild`);
             return;
         };
     });

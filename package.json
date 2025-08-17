@@ -24,9 +24,10 @@
   "imports": {
     "#bloqbit/*": [
       "./incl/*.ts",
-      "./incl/*.mjs",
-      "./assets.json",
-      "./favicon.ico"
+      "./incl/*.mjs"
+    ],
+    "#assets": [
+      "./assets.json"
     ]
   },
   "dependencies": {

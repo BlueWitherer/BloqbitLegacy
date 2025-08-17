@@ -1,17 +1,13 @@
-const cons = {
-    debug: console.debug,
-    log: console.log,
-    info: console.info,
-    warn: console.warn,
-    error: console.error,
-};
-
+/**
+ * Colors and formatting for console logs
+ */
 const col = {
     gray: '\x1b[90m', // debug
     white: '\x1b[37m', // log
     cyan: '\x1b[36m', // info
     yellow: '\x1b[93m', // warn
     red: '\x1b[91m', // error
+    green: '\x1b[92m', // done
     bold: '\x1b[1m', // tag
     reset: '\x1b[0m', // default
 };
@@ -64,28 +60,63 @@ const logMsg = (time, color, tag, ...args) => {
     return `${time}${color} | ${col.bold}${tag}${col.reset}${color} | ${msg}${col.reset}`;
 };
 
-// Override OG console methods to add formatting
-console.debug = (...args) => {
-    const time = timeStamp();
-    cons.debug(logMsg(time, col.gray, 'DEBUG', ...args));
-};
+/**
+ * Custom console methods with formatting
+ */
+export default class log {
+    /**
+     * Print log
+     * @param  {...any} args 
+     */
+    static print = (...args) => {
+        console.log(logMsg(timeStamp(), col.white, ' LOG ', ...args));
+    };
 
-console.log = (...args) => {
-    const time = timeStamp();
-    cons.log(logMsg(time, col.white, ' LOG ', ...args));
-};
+    /**
+     * Debug log
+     * @param  {...any} args 
+     */
+    static debug = (...args) => {
+        console.debug(logMsg(timeStamp(), col.gray, 'DEBUG', ...args));
+    };
 
-console.info = (...args) => {
-    const time = timeStamp();
-    cons.info(logMsg(time, col.cyan, ' INFO', ...args));
-};
+    /**
+     * Info log
+     * @param  {...any} args 
+     */
+    static info = (...args) => {
+        console.info(logMsg(timeStamp(), col.cyan, 'INFO', ...args));
+    };
 
-console.warn = (...args) => {
-    const time = timeStamp();
-    cons.warn(logMsg(time, col.yellow, ' WARN', ...args));
-};
+    /**
+     * Done log
+     * @param  {...any} args 
+     */
+    static done = (...args) => {
+        console.log(logMsg(timeStamp(), col.green, 'DONE', ...args));
+    };
 
-console.error = (...args) => {
-    const time = timeStamp();
-    cons.error(logMsg(time, col.red, 'ERROR', ...args));
+    /**
+     * Warn log
+     * @param  {...any} args 
+     */
+    static warn = (...args) => {
+        console.warn(logMsg(timeStamp(), col.yellow, 'WARN', ...args));
+    };
+
+    /**
+     * Error log
+     * @param  {...any} args 
+     */
+    static error = (...args) => {
+        console.error(logMsg(timeStamp(), col.red, 'ERROR', ...args));
+    };
+
+    /**
+     * Trace log
+     * @param  {...any} args 
+     */
+    static trace = (...args) => {
+        console.trace(logMsg(timeStamp(), col.gray, 'TRACE', ...args));
+    };
 };
