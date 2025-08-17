@@ -1,13 +1,19 @@
-import NodeCache from 'node-cache';
-import { MongoClient, Db, Filter, Document } from 'mongodb';
 import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord, log } from "#bloqbit/include";
+
+import { MongoClient, Db, Filter, Document } from 'mongodb';
+
+import NodeCache from 'node-cache';
 
 let dbClient: MongoClient | undefined;
 const cache = new NodeCache({ stdTTL: 3600, checkperiod: 600 });
 
 const getDbClient = async (mongoUri: string): Promise<Db | undefined> => {
     if (mongoUri) {
-        if (!dbClient) {
+        if (dbClient) {
+            log.debug(`[I] Using existing MongoDB connection`);
+        } else {
+            log.debug(`[I] Creating new MongoDB connection`);
+
             dbClient = new MongoClient(mongoUri);
             await dbClient.connect();
         };
@@ -44,7 +50,7 @@ const flushToDb = async (db: SaveDataClient): Promise<void> => {
                         );
 
                         cache.del(dKey);
-                        log.error(`[O] Dirty cache for server ID ${system.server} flushed to database`);
+                        log.info(`[O] Dirty cache for server ID ${system.server} flushed to database`);
                     } else {
                         log.error(`[X] Database connection failed`);
                     };
@@ -81,7 +87,7 @@ const handleFetchData = async (
 
                 log.debug(`[II] Fetched query of ID ${_id}`);
 
-                log.error(`[O] Data from collection '${coll}' for server ${server} found`);
+                log.info(`[O] Data from collection '${coll}' for server ${server} found`);
                 return dat;
             } else {
                 log.error(`[X] Data from collection '${coll}' for server ${server} not found`);
@@ -118,9 +124,9 @@ const handleUpdateData = async (
                 );
 
                 if (result.upsertedCount >= 1) {
-                    log.error(`[O] New data from collection '${coll}' for server ${record.server} inserted into database`);
+                    log.info(`[O] New data from collection '${coll}' for server ${record.server} inserted into database`);
                 } else {
-                    log.error(`[O] Data for from collection '${coll}' server ${record.server} updated`);
+                    log.info(`[O] Data for from collection '${coll}' server ${record.server} updated`);
                 };
 
                 return record;
@@ -171,7 +177,7 @@ export default {
                             log.debug(`[II] Fetched query of ID ${_id}`);
 
                             cache.set(`server:${server}`, res);
-                            log.error(`[O] Settings for server ${server} found and cached`);
+                            log.info(`[O] Settings for server ${server} found and cached`);
                             return res;
                         } else {
                             log.error(`[X] Settings for server ${server} not found`);
@@ -218,9 +224,9 @@ export default {
                     if (cache.get(`server:${system.server}`)) cache.set(`server:${system.server}`, system);
 
                     if (result.upsertedCount >= 1) {
-                        log.error(`[O] New settings for server ${system.server} inserted into database`);
+                        log.info(`[O] New settings for server ${system.server} inserted into database`);
                     } else {
-                        log.error(`[O] Settings for server ${system.server} updated`);
+                        log.info(`[O] Settings for server ${system.server} updated`);
                     };
 
                     return system;

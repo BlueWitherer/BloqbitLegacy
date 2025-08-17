@@ -55,11 +55,7 @@ export default new BotEvent(
                         if (system.autopublish.channels.includes(msg.channel?.id)) {
                             if (msg.channel?.type === ChannelType.GuildAnnouncement) {
                                 if (!msg.author?.bot || (msg.author?.bot && system.autopublish.bots)) {
-                                    if (msg.crosspostable) {
-                                        await msg.crosspost();
-                                    } else {
-                                        log.error(`Message of ID ${msg.id} could not be published`);
-                                    };
+                                    if (msg.crosspostable) await msg.crosspost();
                                 } else {
                                     log.error(`Message author of ID ${msg.author?.id} is invalid`);
                                 };
