@@ -1,13 +1,9 @@
-export interface WarningData {
-    reason: string;
-    unix: number;
-    mod: string;
-};
+import Record from "./Record";
 
 export default class InfractionRecord {
     public server: string;
     public user: string;
-    public data: WarningData[];
+    public data: Record[];
 
     constructor({ server = "", user = "", data = [] }: Partial<InfractionRecord>) {
         this.server = server;

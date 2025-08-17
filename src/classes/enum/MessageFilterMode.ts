@@ -1,5 +1,5 @@
 /**
- * Enum representing the type of filtering.
+ * @enum Enum representing the type of filtering.
  */
 enum MessageFilterMode {
     INCLUDE = 1,

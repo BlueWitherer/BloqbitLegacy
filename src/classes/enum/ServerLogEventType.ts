@@ -1,5 +1,5 @@
 /**
- * Enum representing the type of server action to be logged.
+ * @enum Enum representing the type of server action to be logged.
  */
 enum ServerLogEventType {
     AutoModerator = "bloqbit_automoderator",

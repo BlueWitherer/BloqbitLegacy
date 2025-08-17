@@ -1,5 +1,5 @@
 /**
- * Enum representing the code name for the type of automated filter.
+ * @enum Enum representing the code name for the type of automated filter.
  */
 enum MessageFilterClass {
     SWEAR = "swearFilter",

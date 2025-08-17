@@ -1,5 +1,5 @@
 /**
- * Enum representing the code name of the bot command category.
+ * @enum Enum representing the code name of the bot command category.
  */
 enum BotCommandCategory {
     CONFIG = "config",

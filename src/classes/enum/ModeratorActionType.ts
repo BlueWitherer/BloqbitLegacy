@@ -1,5 +1,5 @@
 /**
- * Enum representing the type of moderation action.
+ * @enum Enum representing the type of moderation action.
  */
 enum ModeratorActionType {
     None = 0,

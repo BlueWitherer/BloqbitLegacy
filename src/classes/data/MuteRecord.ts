@@ -1,16 +1,12 @@
-export default class MuteRecord {
-    public server: string;
-    public user: string;
-    public reason: string;
-    public unix: number;
+import Record from "./Record";
+
+export default class MuteRecord extends Record {
     public mod: string;
     public until: number;
 
     constructor({ server = "", user = "", reason = "", unix = 0, mod = "", until = 0 }: Partial<MuteRecord>) {
-        this.server = server;
-        this.user = user;
-        this.reason = reason;
-        this.unix = unix;
+        super({ server, user, reason, unix });
+
         this.mod = mod;
         this.until = until;
 

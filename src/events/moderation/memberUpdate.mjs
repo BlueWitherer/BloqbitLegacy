@@ -3,7 +3,6 @@ import { Events, EmbedBuilder, GuildMember, PresenceUpdateStatus, ActivityType }
 import { BloqbitClient, BotEvent } from "../../include.js";
 
 import fetch from "../../modules/fetch.js";
-import resolve from "../../modules/resolve.js";
 
 export default new BotEvent(
     Events.GuildMemberUpdate,

@@ -1,17 +1,16 @@
-export default class NicknameRecord {
-    public server: string;
-    public user: string;
-    public reason: string;
+import Record from "./Record";
+
+/**
+ * Blocked user display name record class
+ */
+export default class NicknameRecord extends Record {
     public nickname: string;
-    public unix: number;
     public mod: string;
 
-    constructor({ server = "", user = "", reason = "", nickname = "", unix = 0, mod = "", }: Partial<NicknameRecord>) {
-        this.server = server;
-        this.user = user;
-        this.reason = reason;
+    constructor({ server = "", user = "", reason = "", unix = 0, nickname = "", mod = "", }: Partial<NicknameRecord>) {
+        super({ server, user, reason, unix });
+
         this.nickname = nickname;
-        this.unix = unix;
         this.mod = mod;
 
         return this;

@@ -4,6 +4,7 @@ import Config from './classes/Config.ts';
 import BotEvent from './classes/BotEvent.ts';
 import SaveDataClient from './classes/SaveDataClient.ts';
 
+import Record from './classes/data/Record.ts';
 import InfractionRecord from './classes/data/InfractionRecord.ts';
 import LevelRecord from './classes/data/LevelRecord.ts';
 import MuteRecord from './classes/data/MuteRecord.ts';
@@ -23,6 +24,7 @@ export {
     BotEvent,
     SaveDataClient,
 
+    Record,
     InfractionRecord,
     LevelRecord,
     MuteRecord,
