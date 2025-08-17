@@ -16,7 +16,7 @@ import {
     GuildBasedChannel,
 } from 'discord.js';
 
-import SysAssets from '../assets.json' with { type: 'json' };
+import SysAssets from "#bloqbit/assets" with { type: 'json' };
 
 export default {
     /**

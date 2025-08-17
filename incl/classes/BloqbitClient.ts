@@ -1,7 +1,7 @@
 import Command from './Command.js';
 import SaveDataClient from './SaveDataClient.js';
 
-import SysAssets from '../assets.json' with { type: 'json' };
+import SysAssets from "#bloqbit/assets" with { type: 'json' };
 
 import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { REST } from '@discordjs/rest';
