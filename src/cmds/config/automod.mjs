@@ -4,7 +4,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from "#bloqbit/modules/fetch";
 import resolve from "#bloqbit/modules/resolve";
-import cache from "#bloqbit/cache";
+import cache from "#bloqbit/database";
 
 export default new Command(
     new SlashCommandBuilder()

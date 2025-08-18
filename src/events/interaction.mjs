@@ -2,7 +2,7 @@ import { BloqbitClient, log } from "#bloqbit/include";
 
 import { Events, WebhookClient } from 'discord.js';
 
-import cache from "#bloqbit/cache";
+import cache from "#bloqbit/database";
 
 import fetch from "#bloqbit/modules/fetch";
 

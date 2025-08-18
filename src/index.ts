@@ -7,7 +7,7 @@ import * as url from 'url';
 import { Events, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { Routes } from 'discord-api-types/v10';
 
-import cache from "#bloqbit/cache";
+import cache from "#bloqbit/database";
 import fetch from "#bloqbit/modules/fetch";
 
 const __filename = url.fileURLToPath(import.meta.url);

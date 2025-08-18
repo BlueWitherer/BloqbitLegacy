@@ -1,24 +1,27 @@
 import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord, log } from "#bloqbit/include";
 
+// import { Connection } from 'mariadb';
 import { MongoClient, Db, Filter, Document } from 'mongodb';
 
 import NodeCache from 'node-cache';
 
-let dbClient: MongoClient | undefined;
+// let dbClient: Connection | undefined;
+let mongoClient: MongoClient | undefined;
+
 const cache = new NodeCache({ stdTTL: 3600, checkperiod: 600 });
 
 const getDbClient = async (mongoUri: string): Promise<Db | undefined> => {
     if (mongoUri) {
-        if (dbClient) {
+        if (mongoClient) {
             log.debug(`[I] Using existing MongoDB connection`);
         } else {
             log.debug(`[I] Creating new MongoDB connection`);
 
-            dbClient = new MongoClient(mongoUri);
-            await dbClient.connect();
+            mongoClient = new MongoClient(mongoUri);
+            await mongoClient.connect();
         };
 
-        return dbClient.db("Bloqbit");
+        return mongoClient.db("Bloqbit");
     } else {
         log.error(`[X] MongoDB URI not provided`);
         return;

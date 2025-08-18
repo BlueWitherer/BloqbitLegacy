@@ -1,6 +1,6 @@
 import { SaveDataClient, Config, log } from "#bloqbit/include";
 
-import cacheModule from "#bloqbit/cache";
+import cacheModule from "#bloqbit/database";
 
 import {
     ChannelType,
