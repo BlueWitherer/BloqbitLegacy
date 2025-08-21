@@ -1,26 +1,26 @@
 {
     "icons": {
         "eball": "🎱",
-        "check": "<:bb_check:1335277885996400680>",
-        "xmark": "<:bb_xmark:1335277956947509369>",
-        "info": "<:bb_info:1335278327165882388>",
-        "exclamation": "<:bb_exclaim:1335277900823527486>",
-        "question": "<:bb_question:1335277919081201735>",
-        "entry": "⭕",
-        "noentry": "🚫",
-        "update": "🔄",
-        "plus": "<:bb_plus:1335280224408961096>",
-        "minus": "<:bb_minus:1335280204985401375>",
-        "dollar": "<:bb_dollar:1335278309147279370>",
+        "check": "<:bb_check:1407517838540931253>",
+        "xmark": "<:bb_xmark:1407517869901873264>",
+        "info": "<:bb_info:1407517847399305266>",
+        "exclamation": "<:bb_exclaim:1407517845012746250>",
+        "question": "<:bb_question:1407517861429252218>",
+        "entry": "<:bb_entry:1408065319838290041>",
+        "noentry": "<:bb_noentry:1408065322006614096>",
+        "update": "<:bb_update:1408066291390091294>",
+        "plus": "<:bb_plus:1407517858962870364>",
+        "minus": "<:bb_minus:1407517849890590892>",
+        "dollar": "<:bb_dollar:1407517842114347089>",
         "coin": {
             "heads": "<:ico:848176412317712384>",
             "tails": "<:ico:848176411734048799>"
         },
-        "play": "<:bb_play:1335279168669356102>",
-        "pause": "<:bb_pause:1335279153267740753>",
-        "stop": "<:bb_stop:1335281116046954547>",
-        "record": "⏺️",
-        "blank": "<:bb_template:1335277939884949605>"
+        "play": "<:bb_play:1407517855049846844>",
+        "pause": "<:bb_pause:1407517852080148630>",
+        "stop": "<:bb_stop:1407517864239435888>",
+        "record": "<:bb_record:1408067309972623413>",
+        "blank": "<:bb_template:1407517867628302376>"
     },
     "colors": {
         "primary": 41983,

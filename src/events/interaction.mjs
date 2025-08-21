@@ -26,6 +26,7 @@ export default {
 
                 if (command && interactionServer) {
                     try {
+                        log.debug(`Running command /${interaction.commandName} (${interaction.id}) executed by ${interaction.user?.username} (${interaction.user?.id})`);
                         await command.execute(interaction, bot.assets, interactionServer, bot.db);
                     } catch (err) {
                         log.trace(err);
