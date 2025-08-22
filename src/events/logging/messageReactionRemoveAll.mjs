@@ -29,7 +29,7 @@ export default new BotEvent(
                             "name": `${msg.author?.username}`,
                             "iconURL": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.exclamation} All Reactions Removed from Message`,
+                        "title": `:exclamation: All Reactions Removed from Message`,
                         "description": `${msg.cleanContent}`,
                         "color": bot.assets.colors.tertiary,
                         "fields": [

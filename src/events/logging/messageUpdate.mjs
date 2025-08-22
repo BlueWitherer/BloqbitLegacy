@@ -29,7 +29,7 @@ export default new BotEvent(
                             "name": `${newMsg.author?.username}`,
                             "iconURL": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.info} Message Edited`,
+                        "title": `:information_source: Message Edited`,
                         "color": bot.assets.colors.tertiary,
                         "fields": [
                             {
@@ -86,7 +86,7 @@ export default new BotEvent(
                             "name": `${newMsg.author?.username}`,
                             "icon_url": `${newMsg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.info} Message Pinned`,
+                        "title": `:information_source: Message Pinned`,
                         "description": `${newMsg.cleanContent}`,
                         "color": bot.assets.colors.tertiary,
                         "fields": [

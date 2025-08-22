@@ -27,7 +27,7 @@ export default new BotEvent(
                             "name": `${role.guild?.name}`,
                             "icon_url": `${role.guild?.iconURL({ "forceStatic": false, "size": 128 }) ?? bot.assets.images.defaults.guild}`,
                         },
-                        "title": `${bot.assets.icons.minus} Role Deleted`,
+                        "title": `:heavy_minus_sign: Role Deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

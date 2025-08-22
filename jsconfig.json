@@ -41,7 +41,8 @@
         "*.json",
         "incl/*.ts",
         "incl/**/*.ts",
-        "incl/*.mjs",
+        "incl/*.mts",
+        "incl/**/*.mts",
     ],
     "exclude": [
         "node_modules",

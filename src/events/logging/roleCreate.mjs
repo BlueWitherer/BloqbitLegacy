@@ -27,7 +27,7 @@ export default new BotEvent(
                             "name": `${role.guild?.name}`,
                             "icon_url": `${role.guild?.iconURL({ "forceStatic": false, "size": 128 }) ?? bot.assets.images.defaults.guild}`,
                         },
-                        "title": `${bot.assets.icons.plus} Role Created`,
+                        "title": `:heavy_plus_sign: Role Created`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {

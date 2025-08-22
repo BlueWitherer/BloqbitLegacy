@@ -24,7 +24,7 @@
   "imports": {
     "#bloqbit/*": [
       "./incl/*.ts",
-      "./incl/*.mjs"
+      "./incl/*.mts"
     ],
     "#assets": [
       "./assets.json"

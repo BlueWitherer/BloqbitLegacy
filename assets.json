@@ -52,30 +52,5 @@
         "bot": {
             "bluesky": "https://bsky.app/profile/bloqbit.cubicstudios.xyz/"
         }
-    },
-    "default": {
-        "icons": {
-            "eball": "🎱",
-            "check": "✅",
-            "xmark": "❌",
-            "info": "ℹ️",
-            "exclamation": "❗",
-            "question": "❓",
-            "entry": "⭕",
-            "noentry": "🚫",
-            "update": "🔄",
-            "plus": "➕",
-            "minus": "➖",
-            "dollar": "💰",
-            "coin": {
-                "heads": "<:ico:848176412317712384>",
-                "tails": "<:ico:848176411734048799>"
-            },
-            "play": "▶️",
-            "pause": "⏸️",
-            "stop": "⏹️",
-            "record": "⏺️",
-            "blank": "🔵"
-        }
     }
 }

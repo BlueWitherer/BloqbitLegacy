@@ -1,4 +1,4 @@
-import log from './log.mjs';
+import log from './log.mts';
 
 import BloqbitClient from './classes/BloqbitClient.ts';
 import Command from './classes/Command.ts';

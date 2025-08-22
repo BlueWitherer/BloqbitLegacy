@@ -26,7 +26,7 @@ export default new BotEvent(
                             "name": `${msg.author?.username}`,
                             "iconURL": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.minus} Message Deleted`,
+                        "title": `:heavy_minus_sign: Message Deleted`,
                         "description": `${msg.cleanContent}`,
                         "color": bot.assets.colors.secondary,
                         "fields": [

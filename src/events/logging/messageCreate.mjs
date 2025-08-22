@@ -30,7 +30,7 @@ export default new BotEvent(
                             "name": `${msg.author?.username}`,
                             "iconURL": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.exclamation} Server Invite Posted`,
+                        "title": `:exclamation: Server Invite Posted`,
                         "description": `${isInvite && matchInvite ? `${matchInvite[0]}` : ""}`,
                         "color": bot.assets.colors.tertiary,
                         "fields": [

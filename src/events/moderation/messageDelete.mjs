@@ -60,7 +60,7 @@ export default new BotEvent(
                             "name": `${msg.author?.username}`,
                             "iconURL": `${msg.author?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.exclamation} Ghost Ping`,
+                        "title": `:exclamation: Ghost Ping`,
                         "description": `${msg.cleanContent || `-# *Empty*`}`,
                         "color": bot.assets.colors.secondary,
                         "fields": [

@@ -181,7 +181,7 @@ export default class Bot {
                                 "author": {
                                     "name": `Service Status`,
                                 },
-                                "description": `${bot.assets.default.icons.check} **${client.user?.displayName}** is now __online__ on shard ${clientShard}`,
+                                "description": `${bot.assets.icons.check} **${client.user?.displayName}** is now __online__ on shard ${clientShard}`,
                                 "color": bot.assets.colors.primary,
                                 "footer": {
                                     "text": client.user?.username,

@@ -151,10 +151,8 @@ export default {
     /**
      * Fetch settings for a server from cache or database.
      * 
-     * @param {string} server Server ID for query
-     * @param {SaveDataClient} db Bot database model
-     * 
-     * @returns {Promise<Config | void>} Queried settings object
+     * @param server Server ID for query
+     * @param db Bot database model
      */
     fetch: async (server: string, db: SaveDataClient): Promise<Config | void> => {
         if (server && db) {
@@ -204,10 +202,8 @@ export default {
     /**
      * Update settings for a server and invalidate cache.
      * 
-     * @param {Config} system Object for query
-     * @param {SaveDataClient} db Bot database model
-     * 
-     * @returns {Promise<Config | void>} Updated settings object
+     * @param system Object for query
+     * @param db Bot database model
      */
     update: async (system: Config, db: SaveDataClient): Promise<Config | void> => {
         if (system && db) {
@@ -254,11 +250,9 @@ export default {
         /**
          * Fetch warning data for a server from cache or database.
          * 
-         * @param {string} server Server ID for query
-         * @param {string} user User ID for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<InfractionRecord | void>} Queried data object
+         * @param server Server ID for query
+         * @param user User ID for query
+         * @param db Bot database model
          */
         fetch: async (server: string, user: string, db: SaveDataClient): Promise<InfractionRecord | void> => {
             const data = await handleFetchData("warns", server, user, db, { server: server, user: user });
@@ -268,10 +262,8 @@ export default {
         /**
          * Update warning data for a server and invalidate cache.
          * 
-         * @param {InfractionRecord} record Object for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<InfractionRecord | void>} Updated data object
+         * @param record Object for query
+         * @param db Bot database model
          */
         update: async (record: InfractionRecord, db: SaveDataClient): Promise<InfractionRecord | void> => {
             const data = await handleUpdateData("warns", record, db, { server: record.server, user: record.server });
@@ -283,11 +275,9 @@ export default {
         /**
          * Fetch XP data for a server from cache or database.
          * 
-         * @param {string} server Server ID for query
-         * @param {string} user User ID for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<LevelRecord | void>} Queried data object
+         * @param server Server ID for query
+         * @param user User ID for query
+         * @param db Bot database model
          */
         fetch: async (server: string, user: string, db: SaveDataClient): Promise<LevelRecord | void> => {
             const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
@@ -297,10 +287,8 @@ export default {
         /**
          * Update XP data for a server and invalidate cache.
          * 
-         * @param {LevelRecord} record Object for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<LevelRecord | void>} Updated data object
+         * @param record Object for query
+         * @param db Bot database model
          */
         update: async (record: LevelRecord, db: SaveDataClient): Promise<LevelRecord | void> => {
             const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
@@ -312,11 +300,9 @@ export default {
         /**
          * Fetch mute data for a server from cache or database.
          * 
-         * @param {string} server Server ID for query
-         * @param {string} user User ID for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<MuteRecord | void>} Queried data object
+         * @param server Server ID for query
+         * @param user User ID for query
+         * @param db Bot database model
          */
         fetch: async (server: string, user: string, db: SaveDataClient): Promise<MuteRecord | void> => {
             const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
@@ -326,10 +312,8 @@ export default {
         /**
          * Update mute data for a server and invalidate cache.
          * 
-         * @param {MuteRecord} record Object for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<MuteRecord | void>} Updated data object
+         * @param record Object for query
+         * @param db Bot database model
          */
         update: async (record: MuteRecord, db: SaveDataClient): Promise<MuteRecord | void> => {
             const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
@@ -341,11 +325,9 @@ export default {
         /**
          * Fetch nickname data for a server from cache or database.
          * 
-         * @param {string} server Server ID for query
-         * @param {string} user User ID for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<NicknameRecord | void>} Queried data object
+         * @param server Server ID for query
+         * @param user User ID for query
+         * @param db Bot database model
          */
         fetch: async (server: string, user: string, db: SaveDataClient): Promise<NicknameRecord | void> => {
             const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
@@ -355,10 +337,8 @@ export default {
         /**
          * Update nickname data for a server and invalidate cache.
          * 
-         * @param {NicknameRecord} record Object for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<NicknameRecord | void>} Updated data object
+         * @param record Object for query
+         * @param db Bot database model
          */
         update: async (record: NicknameRecord, db: SaveDataClient): Promise<NicknameRecord | void> => {
             const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
@@ -370,11 +350,9 @@ export default {
         /**
          * Fetch nickname data for a server from cache or database.
          * 
-         * @param {string} server Server ID for query
-         * @param {string} user User ID for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<RolesRecord | void>} Queried data object
+         * @param server Server ID for query
+         * @param user User ID for query
+         * @param db Bot database model
          */
         fetch: async (server: string, user: string, db: SaveDataClient): Promise<RolesRecord | void> => {
             const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
@@ -384,10 +362,8 @@ export default {
         /**
          * Update nickname data for a server and invalidate cache.
          * 
-         * @param {RolesRecord} record Object for query
-         * @param {SaveDataClient} db Bot database model
-         * 
-         * @returns {Promise<RolesRecord | void>} Updated data object
+         * @param record Object for query
+         * @param db Bot database model
          */
         update: async (record: RolesRecord, db: SaveDataClient): Promise<RolesRecord | void> => {
             const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });

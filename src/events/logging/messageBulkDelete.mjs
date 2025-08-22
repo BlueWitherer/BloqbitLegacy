@@ -30,7 +30,7 @@ export default new BotEvent(
                             "name": `${msg.guild?.name}`,
                             "icon_url": `${msg.guild?.iconURL({ "forceStatic": false, "size": 128 }) ?? bot.assets.images.defaults.guild}`,
                         },
-                        "title": `${bot.assets.icons.xmark} Messages Bulk Deleted`,
+                        "title": `:x: Messages Bulk Deleted`,
                         "description": `**${msgs.size}** messages deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [

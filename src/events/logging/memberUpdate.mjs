@@ -36,7 +36,7 @@ export default new BotEvent(
                             "name": `${newMember.user?.username}`,
                             "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.info} User Nickname Updated`,
+                        "title": `:information_source: User Nickname Updated`,
                         "color": bot.assets.colors.tertiary,
                         "fields": [
                             {
@@ -69,7 +69,7 @@ export default new BotEvent(
                             "name": `${newMember.user?.username}`,
                             "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.xmark} User Timed Out`,
+                        "title": `:x: User Timed Out`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
@@ -97,7 +97,7 @@ export default new BotEvent(
                             "name": `${newMember.user?.username}`,
                             "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.check} User Timeout Expired`,
+                        "title": `:white_check_mark: User Timeout Expired`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {
@@ -125,7 +125,7 @@ export default new BotEvent(
                             "name": `${newMember.user?.username}`,
                             "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.plus} User Roles Given`,
+                        "title": `:heavy_plus_sign: User Roles Given`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {
@@ -153,7 +153,7 @@ export default new BotEvent(
                             "name": `${newMember.user?.username}`,
                             "icon_url": `${newMember.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.minus} User Roles Taken`,
+                        "title": `:heavy_minus_sign: User Roles Taken`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

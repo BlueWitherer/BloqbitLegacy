@@ -27,7 +27,7 @@ export default new BotEvent(
                             "name": `${channel.guild?.name}`,
                             "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 }) ?? bot.assets.images.defaults.guild}`,
                         },
-                        "title": `${bot.assets.icons.minus} Channel Deleted`,
+                        "title": `:heavy_minus_sign: Channel Deleted`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

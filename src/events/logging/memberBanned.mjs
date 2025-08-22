@@ -27,7 +27,7 @@ export default new BotEvent(
                             "name": `${ban.user?.username}`,
                             "icon_url": `${ban.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.xmark} User Banned`,
+                        "title": `:x: User Banned`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

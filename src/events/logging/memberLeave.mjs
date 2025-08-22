@@ -27,7 +27,7 @@ export default new BotEvent(
                             "name": `${member.user?.username}`,
                             "icon_url": `${member.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.minus} User Left`,
+                        "title": `:heavy_minus_sign: User Left`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {

@@ -28,7 +28,7 @@ export default new BotEvent(
                             "name": `${newState.member?.user?.username}`,
                             "icon_url": `${newState.member?.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.plus} User Joined Voice Channel`,
+                        "title": `:heavy_plus_sign: User Joined Voice Channel`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {
@@ -55,7 +55,7 @@ export default new BotEvent(
                             "name": `${oldState.member?.user?.username}`,
                             "icon_url": `${oldState.member?.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.minus} User Left Voice Channel`,
+                        "title": `:heavy_minus_sign: User Left Voice Channel`,
                         "color": bot.assets.colors.secondary,
                         "fields": [
                             {
@@ -82,7 +82,7 @@ export default new BotEvent(
                             "name": `${newState.member?.user?.username}`,
                             "icon_url": `${newState.member?.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.info} User Moved To Voice Channel`,
+                        "title": `:information_source: User Moved To Voice Channel`,
                         "color": bot.assets.colors.tertiary,
                         "fields": [
                             {

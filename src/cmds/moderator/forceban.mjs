@@ -98,7 +98,7 @@ export default new Command(
                         "name": interaction.user?.username,
                         "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
                     },
-                    "title": `${assets.icons.exclamation} Moderator`,
+                    "title": `:exclamation: Moderator`,
                     "description": `**${interaction.user?.username}** has taken a moderation action on \`${User}\``,
                     "color": assets.colors.tertiary,
                     "fields": [

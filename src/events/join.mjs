@@ -27,7 +27,7 @@ export default {
                         "author": {
                             "name": `Servers`,
                         },
-                        "description": `${bot.assets.default.icons.plus} **${bot.client?.user?.username}** was authorized to join the guild __${guild.name}__`,
+                        "description": `${bot.assets.icons.plus} **${bot.client?.user?.username}** was authorized to join the guild __${guild.name}__`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {

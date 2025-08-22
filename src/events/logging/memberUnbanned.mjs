@@ -27,7 +27,7 @@ export default new BotEvent(
                             "name": `${ban.user?.username}`,
                             "icon_url": `${ban.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                         },
-                        "title": `${bot.assets.icons.check} User Unbanned`,
+                        "title": `:white_check_mark: User Unbanned`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {

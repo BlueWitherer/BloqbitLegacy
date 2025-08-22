@@ -1,4 +1,4 @@
-import resolve from './resolve.js';
+import resolve from './resolve.mjs';
 
 export interface Warning {
     name: string;

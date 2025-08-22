@@ -33,12 +33,10 @@ const timeStamp = () => {
 /**
  * Format multi-line logs
  * 
- * @param {string} t Text
- * @param {string} c Color code
- * 
- * @returns {string}
+ * @param t Text
+ * @param c Color code
  */
-const formatLog = (t, c) => {
+const formatLog = (t: string, c: string): string => {
     const lines = t.split('\n');
     return lines.map((ln) => `${c}${ln}${col.reset}`).join('\n');
 };
@@ -46,14 +44,12 @@ const formatLog = (t, c) => {
 /**
  * Get fully formatted log message
  * 
- * @param {string} time Timestamp
- * @param {string} color Color code
- * @param {string} tag Log level
- * @param {[message?: any, ...optionalParams: any[]]} args All arguments
- * 
- * @returns {string}
+ * @param time Timestamp
+ * @param color Color code
+ * @param tag Log level
+ * @param args All arguments
  */
-const logMsg = (time, color, tag, ...args) => {
+const logMsg = (time: string, color: string, tag: string, ...args: [message?: any, ...optionalParams: any[]]): string => {
     const txt = args.join(' ');
     const msg = formatLog(txt, color);
 
@@ -66,57 +62,57 @@ const logMsg = (time, color, tag, ...args) => {
 export default class log {
     /**
      * Print log
-     * @param  {...any} args 
+     * @param args 
      */
-    static print = (...args) => {
+    static print = (...args: any) => {
         console.log(logMsg(timeStamp(), col.white, ' LOG ', ...args));
     };
 
     /**
      * Debug log
-     * @param  {...any} args 
+     * @param args 
      */
-    static debug = (...args) => {
+    static debug = (...args: any) => {
         console.debug(logMsg(timeStamp(), col.gray, 'DEBUG', ...args));
     };
 
     /**
      * Info log
-     * @param  {...any} args 
+     * @param args
      */
-    static info = (...args) => {
+    static info = (...args: any) => {
         console.info(logMsg(timeStamp(), col.cyan, 'INFO', ...args));
     };
 
     /**
      * Done log
-     * @param  {...any} args 
+     * @param args
      */
-    static done = (...args) => {
+    static done = (...args: any) => {
         console.log(logMsg(timeStamp(), col.green, 'DONE', ...args));
     };
 
     /**
      * Warn log
-     * @param  {...any} args 
+     * @param args
      */
-    static warn = (...args) => {
+    static warn = (...args: any) => {
         console.warn(logMsg(timeStamp(), col.yellow, 'WARN', ...args));
     };
 
     /**
      * Error log
-     * @param  {...any} args 
+     * @param args
      */
-    static error = (...args) => {
+    static error = (...args: any) => {
         console.error(logMsg(timeStamp(), col.red, 'ERROR', ...args));
     };
 
     /**
      * Trace log
-     * @param  {...any} args 
+     * @param args
      */
-    static trace = (...args) => {
+    static trace = (...args: any) => {
         console.trace(logMsg(timeStamp(), col.gray, 'TRACE', ...args));
     };
 };

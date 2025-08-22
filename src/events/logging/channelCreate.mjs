@@ -27,7 +27,7 @@ export default new BotEvent(
                             "name": `${channel.guild?.name}`,
                             "icon_url": `${channel.guild?.iconURL({ "forceStatic": false, "size": 128 }) ?? bot.assets.images.defaults.guild}`,
                         },
-                        "title": `${bot.assets.icons.plus} Channel Created`,
+                        "title": `:heavy_plus_sign: Channel Created`,
                         "color": bot.assets.colors.primary,
                         "fields": [
                             {
