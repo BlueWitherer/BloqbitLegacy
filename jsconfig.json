@@ -39,9 +39,7 @@
         "*.mjs",
         "*.js",
         "*.json",
-        "incl/*.ts",
         "incl/**/*.ts",
-        "incl/*.mts",
         "incl/**/*.mts",
     ],
     "exclude": [

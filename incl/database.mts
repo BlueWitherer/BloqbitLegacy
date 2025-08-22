@@ -147,6 +147,9 @@ const handleUpdateData = async (
     };
 };
 
+/**
+ * Database helper methods
+ */
 export default {
     /**
      * Fetch settings for a server from cache or database.
