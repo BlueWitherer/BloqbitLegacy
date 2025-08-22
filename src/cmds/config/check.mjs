@@ -135,7 +135,6 @@ export default new Command(
             };
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     returnEmbed,
                 ],
@@ -192,7 +191,6 @@ export default new Command(
                 ]).data;
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     returnEmbed,
                 ],
@@ -230,7 +228,6 @@ export default new Command(
                 });
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     returnEmbed,
                 ],

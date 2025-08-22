@@ -19,7 +19,6 @@ export default new Command(
 
         if (User) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "author": {
@@ -45,7 +44,6 @@ export default new Command(
             return;
         } else {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "author": {

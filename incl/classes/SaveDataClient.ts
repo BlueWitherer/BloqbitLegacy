@@ -9,7 +9,7 @@ export default class SaveDataClient {
 
     /**
      * Creates a new instance of SaveDataClient.
-     * @param {string} uri URI of the MongoDB database.
+     * @param uri URI of the MongoDB database.
      */
     constructor(uri: string) {
         this.mongo_uri = uri;

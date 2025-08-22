@@ -175,7 +175,6 @@ export default class Bot {
 
                     await devWH.send({
                         "avatarURL": client.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),
-                        "content": "",
                         "embeds": [
                             {
                                 "author": {

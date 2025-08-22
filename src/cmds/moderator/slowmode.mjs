@@ -64,7 +64,6 @@ export default new Command(
 
                 if (Time === 3600 && Cooldown > 12) {
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} Slowmode cannot be set to over 12 hours`,
@@ -80,7 +79,6 @@ export default new Command(
                         await interaction.channel.setRateLimitPerUser(duration, `${interaction.user?.username} Slowmode set`);
 
                         await interaction.reply({
-                            "content": "",
                             "embeds": [
                                 {
                                     "author": {
@@ -106,7 +104,6 @@ export default new Command(
                         });
                     } else {
                         await interaction.reply({
-                            "content": "",
                             "embeds": [
                                 {
                                     "description": `${assets.icons.xmark} Slowmode cannot be set in this channel`,
@@ -124,7 +121,6 @@ export default new Command(
                     await interaction.channel.setRateLimitPerUser(0, `${interaction.user?.username} Slowmode removed`);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "author": {
@@ -145,7 +141,6 @@ export default new Command(
                     });
                 } else {
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} Slowmode cannot be removed in this channel`,
@@ -161,7 +156,6 @@ export default new Command(
                 log.error(`Invalid subcommand: ${subcommand}`);
 
                 await interaction.reply({
-                    "content": "",
                     "embeds": [
                         {
                             "description": `${assets.icons.xmark} Invalid subcommand`,

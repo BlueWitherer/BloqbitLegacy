@@ -97,7 +97,6 @@ export default new Command(
                 if (!UserPermissions) UserPermissions = 'None';
 
                 await interaction.reply({
-                    "content": "",
                     "embeds": [
                         {
                             "title": `${assets.icons.info} ${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
@@ -161,7 +160,6 @@ export default new Command(
             const createdAtU = Math.floor(interaction.user?.createdTimestamp / 1000);
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "title": `${assets.icons.info} ${interaction.user?.username}`,

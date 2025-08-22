@@ -62,7 +62,6 @@ export default new Command(
 
         if (Member?.permissions instanceof PermissionsBitField && Member.permissions.has([PermissionFlagsBits.ManageNicknames])) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} You cannot moderate another moderator`,
@@ -88,7 +87,6 @@ export default new Command(
                     await Member.setNickname("[Username Blocked]", `${interaction.user?.username} | Block Display Name - ${Reason}`);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "author": {
@@ -120,7 +118,6 @@ export default new Command(
 
                     try {
                         await User.send({
-                            "content": "",
                             "embeds": [
                                 {
                                     "author": {
@@ -153,7 +150,6 @@ export default new Command(
                     log.error(`Invalid user: ${User.username}`);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} **${interaction.user?.username}** - This user is not a member of this server`,
@@ -179,7 +175,6 @@ export default new Command(
 
                 if (blocked) {
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "author": {
@@ -210,7 +205,6 @@ export default new Command(
                     });
                 } else {
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} **${interaction.user?.username}** - This user has no blocked names`,
@@ -223,7 +217,6 @@ export default new Command(
                 const User = interaction.options?.getUser("user", true);
 
                 await interaction.reply({
-                    "content": "",
                     "embeds": [
                         {
                             "author": {
@@ -248,7 +241,6 @@ export default new Command(
 
                 try {
                     await User.send({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.info} Your name has been unblocked. Have fun!`,
@@ -269,7 +261,6 @@ export default new Command(
                     await Member.setNickname(name);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.check} Set **${User.username}**'s nickname`,
@@ -281,7 +272,6 @@ export default new Command(
                     log.error(`Invalid user: ${User.username}`);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} **${interaction.user?.username}** - This user is not a member of this server`,
@@ -303,7 +293,6 @@ export default new Command(
                     await Member.setNickname(null, `${interaction.user?.username} - Reset Nickname`);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.check} Reset **${User.username}**'s nickname`,
@@ -315,7 +304,6 @@ export default new Command(
                     log.error(`Invalid user: ${User.username}`);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} **${interaction.user?.username}** - This user is not a member of this server`,
@@ -333,7 +321,6 @@ export default new Command(
                 log.error(`Invalid subcommand: ${subcommand}`);
 
                 await interaction.reply({
-                    "content": "",
                     "embeds": [
                         {
                             "description": `${assets.icons.xmark} **${interaction.user?.username}** - Invalid subcommand`,

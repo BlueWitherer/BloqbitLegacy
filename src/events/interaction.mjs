@@ -57,7 +57,6 @@ export default {
 
                         await devWH.send({
                             "avatarURL": interaction.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 128 }),
-                            "content": "",
                             "embeds": [
                                 {
                                     "author": {

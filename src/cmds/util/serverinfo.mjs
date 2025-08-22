@@ -34,7 +34,6 @@ export default new Command(
 
         if (owner) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "author": {

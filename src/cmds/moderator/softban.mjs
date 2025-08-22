@@ -27,7 +27,6 @@ export default new Command(
 
         if (Member?.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.BanMembers)) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} You cannot softban another moderator`,
@@ -50,7 +49,6 @@ export default new Command(
             if (banned) await interaction.guild?.members?.unban(User.id, `${interaction.user?.username} | Soft-ban - ${Reason}`);
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "author": {
@@ -82,7 +80,6 @@ export default new Command(
 
             try {
                 await User.send({
-                    "content": "",
                     "embeds": [
                         {
                             "author": {

@@ -22,7 +22,6 @@ export default {
                 } else if (devWH) {
                     await devWH.send({
                         "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
-                        "content": "",
                         "embeds": [
                             {
                                 "author": {

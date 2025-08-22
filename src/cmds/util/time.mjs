@@ -21,7 +21,6 @@ export default new Command(
 
         if (customUnixDate) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "author": {
@@ -57,7 +56,6 @@ export default new Command(
             return;
         } else {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "author": {

@@ -27,7 +27,6 @@ export default new Command(
 
         if (Member?.permissions.has([PermissionFlagsBits.BanMembers])) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} You cannot ban another moderator`,
@@ -49,7 +48,6 @@ export default new Command(
             });
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "author": {

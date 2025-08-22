@@ -260,7 +260,6 @@ export default new Command(
                 if (update) {
                     if (interaction.replied) {
                         await interaction.followUp({
-                            "content": "",
                             "embeds": [
                                 {
                                     "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ auto-moderator`,
@@ -270,7 +269,6 @@ export default new Command(
                         });
                     } else {
                         await interaction.reply({
-                            "content": "",
                             "embeds": [
                                 {
                                     "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ auto-moderator`,

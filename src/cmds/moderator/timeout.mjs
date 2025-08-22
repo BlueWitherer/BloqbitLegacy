@@ -76,7 +76,6 @@ export default new Command(
 
                 if (Member?.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} You cannot moderate another moderator`,
@@ -93,7 +92,6 @@ export default new Command(
 
                 if (duration > 2419200000) { // 4 weeks in milliseconds
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} Timeout cannot be set to over 4 weeks`,
@@ -111,7 +109,6 @@ export default new Command(
                         await Member.timeout(duration, `${interaction.user?.username} | Timeout - ${Reason}`);
 
                         await interaction.reply({
-                            "content": "",
                             "embeds": [
                                 {
                                     "author": {
@@ -147,7 +144,6 @@ export default new Command(
                         });
                     } else {
                         await interaction.reply({
-                            "content": "",
                             "embeds": [
                                 {
                                     "description": `${assets.icons.xmark} Unable to timeout the user. Invalid member type`,
@@ -165,7 +161,6 @@ export default new Command(
 
                 if (Member?.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} You cannot moderate another moderator`,
@@ -184,7 +179,6 @@ export default new Command(
                     await Member.timeout(0, `${interaction.user?.username} Timeout removed`);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "author": {
@@ -210,7 +204,6 @@ export default new Command(
                     });
                 } else {
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} Unable to remove timeout. Invalid member type`,

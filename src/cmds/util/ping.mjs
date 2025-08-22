@@ -11,7 +11,6 @@ export default new Command(
         .setNSFW(false),
     async (interaction, assets, system, db) => {
         await interaction.reply({
-            "content": "",
             "flags": [
                 "Ephemeral",
             ],

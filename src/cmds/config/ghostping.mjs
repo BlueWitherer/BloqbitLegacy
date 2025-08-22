@@ -56,7 +56,6 @@ export default new Command(
 
             if (update) {
                 await interaction.reply({
-                    "content": "",
                     "embeds": [
                         {
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the ghost ping logger.`,

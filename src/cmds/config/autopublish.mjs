@@ -51,7 +51,6 @@ export default new Command(
 
             if (update) {
                 await interaction.reply({
-                    "content": "",
                     "embeds": [
                         {
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the auto-publisher${bots ? ` including bot messages` : ``}.`,
@@ -83,7 +82,6 @@ export default new Command(
 
             if (update) {
                 await interaction.reply({
-                    "content": "",
                     "embeds": [
                         {
                             "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully __${resolve.abled(toggle)}__ the auto-publisher in <#${channel.id}>.`,

@@ -28,6 +28,15 @@ export default new Command(
             )
             .setRequired(true)),
     async (interaction, assets, system, db) => {
+        await interaction.reply({
+            "embeds": [
+                {
+                    "description": `${assets.icons.update} ${interaction.client?.user?.displayName} is making a move...`,
+                    "color": assets.colors.tertiary,
+                },
+            ],
+        });
+
         /**
          * @type {Record<string, string>}
          * @description Moves for the game
@@ -62,8 +71,7 @@ export default new Command(
             winner = outcomes[userMove][botMove];
         };
 
-        await interaction.reply({
-            "content": "",
+        await interaction.editReply({
             "embeds": [
                 {
                     "author": {

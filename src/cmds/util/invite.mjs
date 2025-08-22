@@ -44,7 +44,6 @@ export default new Command(
 
         if (invite) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.check} **${interaction.user?.username}** - Successfully created permanent invite code \`${invite.code}\``,
@@ -56,7 +55,6 @@ export default new Command(
             return;
         } else {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} **${interaction.user?.username}** - Failed to create invite code`,

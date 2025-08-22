@@ -38,7 +38,6 @@ export default new Command(
                     if (interaction.channel instanceof TextChannel) await interaction.channel.bulkDelete(msgs, true);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "author": {
@@ -64,7 +63,6 @@ export default new Command(
                     });
                 } else {
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} No messages to clear`,
@@ -87,7 +85,6 @@ export default new Command(
                     if (interaction.channel instanceof TextChannel) await interaction.channel?.bulkDelete(memberMsgs, true);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "author": {
@@ -120,7 +117,6 @@ export default new Command(
                     log.error(`Failed to fetch messages from user ${User.id} in channel ${interaction.channel?.id}.`);
 
                     await interaction.reply({
-                        "content": "",
                         "embeds": [
                             {
                                 "description": `${assets.icons.xmark} No messages to clear`,
@@ -134,7 +130,6 @@ export default new Command(
             log.trace(err);
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} An error occurred while clearing messages`,

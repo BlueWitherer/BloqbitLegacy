@@ -26,7 +26,6 @@ export default new Command(
 
         if (channel && channel === interaction.channel && channel.isTextBased() && 'send' in channel) {
             await channel.send({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${message}`,
@@ -36,7 +35,6 @@ export default new Command(
             });
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.check} Message sent`,
@@ -51,7 +49,6 @@ export default new Command(
             return;
         } else if (channel && 'send' in channel) {
             await channel.send({
-                "content": "",
                 "embeds": [
                     {
                         "description": message,
@@ -61,7 +58,6 @@ export default new Command(
             });
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.check} Message sent in ${channel}`,
@@ -73,7 +69,6 @@ export default new Command(
             return;
         } else if (!channel) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": message,

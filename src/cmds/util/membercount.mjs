@@ -15,7 +15,6 @@ export default new Command(
         const botCount = interaction.guild?.members?.cache?.filter((m) => m.user.bot).size ?? 0;
 
         await interaction.reply({
-            "content": "",
             "embeds": [
                 {
                     "author": {

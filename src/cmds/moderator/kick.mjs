@@ -27,7 +27,6 @@ export default new Command(
 
         if (Member && Member.permissions instanceof PermissionsBitField && Member.permissions.has(PermissionFlagsBits.KickMembers)) {
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "description": `${assets.icons.xmark} You cannot kick another moderator`,
@@ -45,7 +44,6 @@ export default new Command(
             const kickResult = await interaction.guild?.members?.kick(User.id, `${interaction.user?.username} | Kick - ${Reason}`);
 
             await interaction.reply({
-                "content": "",
                 "embeds": [
                     {
                         "author": {
@@ -77,7 +75,6 @@ export default new Command(
 
             try {
                 await User.send({
-                    "content": "",
                     "embeds": [
                         {
                             "author": {
