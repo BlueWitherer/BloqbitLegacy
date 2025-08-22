@@ -1,4 +1,4 @@
-import { ModeratorActionType, MessageFilterMode, log } from "#bloqbit/include";
+import { ModeratorActionType, MessageFilterMode, log } from "#bloqbit/include.ts";
 
 import { Warning, WarnObject } from './moderation.mjs';
 

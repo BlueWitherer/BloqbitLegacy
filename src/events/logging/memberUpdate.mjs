@@ -1,9 +1,9 @@
 import { Events, EmbedBuilder, GuildMember } from "discord.js";
 
-import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include.ts";
 
-import fetch from "#bloqbit/modules/fetch";
-import resolve from "#bloqbit/modules/resolve";
+import fetch from "#bloqbit/modules/fetch.mjs";
+import resolve from "#bloqbit/modules/resolve.mjs";
 
 export default new BotEvent(
     Events.GuildMemberUpdate,

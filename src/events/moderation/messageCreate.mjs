@@ -1,9 +1,9 @@
 import { Events, Message, ChannelType } from "discord.js";
 
-import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include.ts";
 
-import fetch from "#bloqbit/modules/fetch";
-import moderation from "#bloqbit/modules/moderation";
+import fetch from "#bloqbit/modules/fetch.mjs";
+import moderation from "#bloqbit/modules/moderation.mjs";
 
 export default new BotEvent(
     Events.MessageCreate,

@@ -1,6 +1,6 @@
-import { LevelRecord, SaveDataClient, log } from "#bloqbit/include";
+import { LevelRecord, SaveDataClient, log } from "#bloqbit/include.ts";
 
-import cache from "#bloqbit/database";
+import cache from "#bloqbit/database.mjs";
 
 export interface LevelCard {
     level: number;

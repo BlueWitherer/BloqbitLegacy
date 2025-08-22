@@ -1,4 +1,4 @@
-import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord, log } from "#bloqbit/include";
+import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord, log } from "#bloqbit/include.ts";
 
 // import { Connection } from 'mariadb';
 import { MongoClient, Db, Filter, Document } from 'mongodb';

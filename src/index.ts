@@ -1,4 +1,4 @@
-import { BloqbitClient, Command, BotEvent, log } from "#bloqbit/include";
+import { BloqbitClient, Command, BotEvent, log } from "#bloqbit/include.ts";
 
 import * as fs from 'node:fs';
 import * as path from 'path';
@@ -7,8 +7,8 @@ import * as url from 'url';
 import { Events, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { Routes } from 'discord-api-types/v10';
 
-import cache from "#bloqbit/database";
-import fetch from "#bloqbit/modules/fetch";
+import cache from "#bloqbit/database.mjs";
+import fetch from "#bloqbit/modules/fetch.mjs";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

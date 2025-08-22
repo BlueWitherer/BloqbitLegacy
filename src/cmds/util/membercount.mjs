@@ -1,7 +1,7 @@
-import { Command, log } from "#bloqbit/include";
+import { Command, log } from "#bloqbit/include.ts";
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import resolve from "#bloqbit/modules/resolve";
+import resolve from "#bloqbit/modules/resolve.mjs";
 
 export default new Command(
     new SlashCommandBuilder()

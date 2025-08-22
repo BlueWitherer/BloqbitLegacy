@@ -1,4 +1,4 @@
-import { log } from "#bloqbit/include";
+import { log } from "#bloqbit/include.ts";
 
 process.on("SIGUSR1", () => {
     log.print("Received SIGUSR1 - Debugger may be activated.");

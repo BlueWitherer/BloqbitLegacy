@@ -1,8 +1,8 @@
 import { Events, Message, EmbedBuilder } from "discord.js";
 
-import { BloqbitClient, BotEvent, log } from "#bloqbit/include";
+import { BloqbitClient, BotEvent, log } from "#bloqbit/include.ts";
 
-import fetch from "#bloqbit/modules/fetch";
+import fetch from "#bloqbit/modules/fetch.mjs";
 export default new BotEvent(
     Events.MessageDelete,
     /**

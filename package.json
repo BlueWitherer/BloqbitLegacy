@@ -23,8 +23,8 @@
   "type": "module",
   "imports": {
     "#bloqbit/*": [
-      "./incl/*.ts",
-      "./incl/*.mts"
+      "./incl/*",
+      "./incl/**/*"
     ],
     "#assets": [
       "./assets.json"

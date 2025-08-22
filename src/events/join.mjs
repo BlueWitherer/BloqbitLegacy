@@ -1,5 +1,5 @@
-import fetch from "#bloqbit/modules/fetch";
-import { BloqbitClient, log } from "#bloqbit/include";
+import fetch from "#bloqbit/modules/fetch.mjs";
+import { BloqbitClient, log } from "#bloqbit/include.ts";
 import { Events, Guild, WebhookClient, PresenceUpdateStatus } from 'discord.js';
 
 export default {

@@ -113,6 +113,6 @@ export default class log {
      * @param args
      */
     static trace = (...args: any) => {
-        console.trace(logMsg(timeStamp(), col.gray, 'TRACE', ...args));
+        console.trace(logMsg(timeStamp(), col.red, 'TRACE', ...args));
     };
 };

@@ -1,8 +1,8 @@
-import { Command, log } from "#bloqbit/include";
+import { Command, log } from "#bloqbit/include.ts";
 import { ApplicationIntegrationType, GuildMember, InteractionContextType, PermissionsBitField } from 'discord.js';
 import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import fetch from "#bloqbit/modules/fetch";
+import fetch from "#bloqbit/modules/fetch.mjs";
 
 export default new Command(
     new SlashCommandBuilder()
