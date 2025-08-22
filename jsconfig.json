@@ -11,11 +11,8 @@
         "baseUrl": ".",
         "paths": {
             "#bloqbit/*": [
-                "./incl/*"
+                "./incl/*",
             ],
-            "*": [
-                "src/*"
-            ]
         },
         "lib": [
             "ESNext",
