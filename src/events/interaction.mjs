@@ -35,16 +35,12 @@ export default {
                             if (interaction.replied || interaction.deferred) {
                                 await interaction.followUp({
                                     "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
-                                    "flags": [
-                                        "Ephemeral",
-                                    ],
+                                    "flags": ["Ephemeral"],
                                 });
                             } else {
                                 await interaction.reply({
                                     "content": `${bot.assets.icons.xmark} There was an error while executing this command.`,
-                                    "flags": [
-                                        "Ephemeral",
-                                    ],
+                                    "flags": ["Ephemeral"],
                                 });
                             };
                         } catch (err) {
@@ -63,7 +59,7 @@ export default {
                                         "name": "Interaction",
                                     },
                                     "color": bot.assets.colors.tertiary,
-                                    "description": `Used **/${interaction.commandName}** in guild __${interaction.guild?.name}__`,
+                                    "description": interaction.context === InteractionContextType.Guild ? `Used **/${interaction.commandName}** in guild __${interaction.guild?.name}__` : `Used **/${interaction.commandName}** in user context`,
                                     "fields": [
                                         {
                                             "name": "Used At",
@@ -79,8 +75,6 @@ export default {
                             ],
                         });
                     };
-
-                    return;
                 } else if (!command) {
                     log.error(`Command ${interaction.commandName} not found`);
                     await fetch.commandErrorResponse(interaction, bot.assets);
@@ -91,29 +85,21 @@ export default {
                     if (interaction.replied || interaction.deferred) {
                         await interaction.followUp({
                             "content": `${bot.assets.icons.xmark} There was an error while executing this command`,
-                            "flags": [
-                                "Ephemeral",
-                            ],
+                            "flags": ["Ephemeral"],
                         });
                     } else {
                         await interaction.reply({
                             "content": `${bot.assets.icons.xmark} There was an error while executing this command`,
-                            "flags": [
-                                "Ephemeral",
-                            ],
+                            "flags": ["Ephemeral"],
                         });
                     };
-
-                    return;
                 };
             } else {
                 log.error(`Interaction ${interaction.id} not a command`);
             };
         } catch (err) {
-            log.trace(err);
-
             await fetch.commandErrorResponse(interaction, bot.assets);
-            return;
+            log.trace(err);
         };
     },
 };

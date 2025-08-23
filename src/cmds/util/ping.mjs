@@ -7,13 +7,10 @@ export default new Command(
         .setName("ping")
         .setDescription("Ping the bot, test its latency.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
-        .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel])
+        .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel, InteractionContextType.BotDM])
         .setNSFW(false),
     async (interaction, assets, system, db) => {
         await interaction.reply({
-            "flags": [
-                "Ephemeral",
-            ],
             "embeds": [{
                 "author": {
                     "name": interaction.user?.username,
@@ -34,6 +31,7 @@ export default new Command(
                     },
                 ],
             }],
+            "flags": ["Ephemeral"],
         });
 
         return;

@@ -14,10 +14,11 @@ export default new Command(
             .setDescription("The user whose profile picture to view.")
             .setRequired(false)),
     async (interaction, assets, system, db) => {
-        const User = interaction.options?.getUser("user");
-        const Member = interaction.options?.getMember("user");
+        const User = interaction.options?.getUser("user", false);
 
         if (User) {
+            const Member = interaction.options?.getMember("user");
+
             await interaction.reply({
                 "embeds": [
                     {
