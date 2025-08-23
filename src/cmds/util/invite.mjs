@@ -7,7 +7,7 @@ export default new Command(
     new SlashCommandBuilder()
         .setName("invite")
         .setDescription("Create a permanent invite for this server.")
-        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .addChannelOption((c) => c

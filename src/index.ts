@@ -126,6 +126,8 @@ export default class Bot {
 
                     log.debug(`Loaded event listener for ${event.name}`);
                 });
+
+                log.info(`Successfully reloaded event listeners`);
             } catch (err) {
                 log.trace(err);
                 process.exit(1);
@@ -154,6 +156,8 @@ export default class Bot {
 
                 await loadSubFolder('logging');
                 await loadSubFolder('moderation');
+
+                log.info(`Successfully reloaded guild event listeners`);
             } catch (err) {
                 log.trace(err);
                 process.exit(1);

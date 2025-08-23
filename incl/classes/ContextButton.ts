@@ -3,41 +3,41 @@ import SaveDataClient from './SaveDataClient.js';
 
 import SysAssets from "#assets" with { type: 'json' };
 
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, SlashCommandOptionsOnlyBuilder } from 'discord.js';
+import { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction } from 'discord.js';
 
 /**
  * Type definition for the execute function of a command.
  */
-export type ExecuteCommand = (
-    interaction: ChatInputCommandInteraction,
+export type ExecuteContextButton = (
+    interaction: MessageContextMenuCommandInteraction,
     assets: typeof SysAssets,
     system: Config,
     db: SaveDataClient,
 ) => Promise<void>;
 
 /**
- * Command class for defining bot commands.
+ * Context menu button class for defining bot commands.
  */
-export default class Command {
+export default class ContextButton {
     /**
      * Data of the command.
      */
-    public data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandOptionsOnlyBuilder;
+    public data: ContextMenuCommandBuilder;
 
     /**
      * Function to execute for this command.
      */
-    public execute: ExecuteCommand;
+    public execute: ExecuteContextButton;
 
     /**
      * Constructor for the Command class.
      * 
-     * @param data Data of the command.
+     * @param data Data of the context menu button.
      * @param execute Function to execute for this command
      */
     constructor(
-        data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandOptionsOnlyBuilder,
-        execute: ExecuteCommand,
+        data: ContextMenuCommandBuilder,
+        execute: ExecuteContextButton,
     ) {
         this.data = data;
         this.execute = execute;

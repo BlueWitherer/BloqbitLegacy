@@ -6,8 +6,8 @@ export default new Command(
     new SlashCommandBuilder()
         .setName("ping")
         .setDescription("Ping the bot, test its latency.")
-        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
-        .setContexts([InteractionContextType.Guild])
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
+        .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel])
         .setNSFW(false),
     async (interaction, assets, system, db) => {
         await interaction.reply({

@@ -1,6 +1,6 @@
-import { BloqbitClient, log } from "#bloqbit/include.ts";
+import { BloqbitClient, Config, log } from "#bloqbit/include.ts";
 
-import { Events, WebhookClient } from 'discord.js';
+import { Events, InteractionContextType, WebhookClient } from 'discord.js';
 
 import cache from "#bloqbit/database.mjs";
 
@@ -22,7 +22,7 @@ export default {
                 const command = bot.cmds?.get(interaction.commandName);
 
                 const devWH = new WebhookClient({ url: bot.dev_wh, });
-                const interactionServer = await fetch.fetchGuild(interaction.guild?.id ?? '', bot.db);
+                const interactionServer = await fetch.fetchGuild(interaction.guild?.id ?? '', bot.db) || new Config({});
 
                 if (command && interactionServer) {
                     try {

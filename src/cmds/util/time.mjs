@@ -6,8 +6,8 @@ export default new Command(
     new SlashCommandBuilder()
         .setName("time")
         .setDescription("View a timestamp.")
-        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
-        .setContexts([InteractionContextType.Guild])
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
+        .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel, InteractionContextType.BotDM])
         .setNSFW(false)
         .addNumberOption((o) => o
             .setName("time")

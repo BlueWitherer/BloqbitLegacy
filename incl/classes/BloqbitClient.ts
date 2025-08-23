@@ -81,7 +81,7 @@ export default class BloqbitClient {
         this.cmds = new Collection();
 
         this.client = new Client({
-            intents: [
+            "intents": [
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildExpressions,
                 GatewayIntentBits.GuildPresences,
@@ -97,7 +97,7 @@ export default class BloqbitClient {
                 GatewayIntentBits.DirectMessages,
                 GatewayIntentBits.AutoModerationExecution,
             ],
-            partials: [
+            "partials": [
                 Partials.Channel,
                 Partials.Message,
                 Partials.User,

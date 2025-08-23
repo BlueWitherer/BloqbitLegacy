@@ -6,7 +6,7 @@ export default new Command(
     new SlashCommandBuilder()
         .setName("avatar")
         .setDescription("View a user's profile picture.")
-        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false)
         .addUserOption((o) => o

@@ -6,8 +6,8 @@ export default new Command(
     new SlashCommandBuilder()
         .setName("rps")
         .setDescription("Play a match of Rock-Paper-Scissors.")
-        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
-        .setContexts([InteractionContextType.Guild])
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
+        .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel, InteractionContextType.BotDM])
         .setNSFW(false)
         .addStringOption((s) => s
             .setName("move")
@@ -31,11 +31,13 @@ export default new Command(
         await interaction.reply({
             "embeds": [
                 {
-                    "description": `${assets.icons.update} ${interaction.client?.user?.displayName} is making a move...`,
+                    "description": `${assets.icons.update} *${interaction.client?.user?.displayName} is making a move...*`,
                     "color": assets.colors.tertiary,
                 },
             ],
         });
+
+        log.debug(`[I] Picking RPS move for ${interaction.user?.username}...`);
 
         /**
          * @type {Record<string, string>}
@@ -63,6 +65,8 @@ export default new Command(
             Paper: { Rock: human, Scissors: robot },
         };
 
+        log.debug(`[II] ${interaction.user?.username} played ${userMove}, bot played ${botMove}`);
+
         let winner;
 
         if (userMove === botMove) {
@@ -71,12 +75,14 @@ export default new Command(
             winner = outcomes[userMove][botMove];
         };
 
+        log.info(`[O] RPS winner is ${winner}`);
+
         await interaction.editReply({
             "embeds": [
                 {
                     "author": {
                         "name": `${interaction.user?.username}`,
-                        "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`
+                        "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
                     },
                     "title": `${assets.icons.exclamation} Rock-Paper-Scissors`,
                     "color": assets.colors.primary,

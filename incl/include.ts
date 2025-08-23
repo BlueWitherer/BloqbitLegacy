@@ -3,6 +3,7 @@ import log from './log.mts';
 import BloqbitClient from './classes/BloqbitClient.ts';
 import Command from './classes/Command.ts';
 import Config from './classes/Config.ts';
+import ContextButton from './classes/ContextButton.ts';
 import BotEvent from './classes/BotEvent.ts';
 import SaveDataClient from './classes/SaveDataClient.ts';
 
@@ -25,6 +26,7 @@ export {
     BloqbitClient,
     Command,
     Config,
+    ContextButton,
     BotEvent,
     SaveDataClient,
 

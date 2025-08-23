@@ -105,7 +105,6 @@ export default new Command(
                 });
             } catch (err) {
                 log.trace(err);
-                log.warn(`Failed to send ban DM to user ${User.username} (${User.id}):`, err);
             };
         } catch (err) {
             log.trace(err);

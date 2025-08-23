@@ -7,7 +7,7 @@ export default new Command(
     new SlashCommandBuilder()
         .setName("member-count")
         .setDescription("View the member count of this server.")
-        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
         .setContexts([InteractionContextType.Guild])
         .setNSFW(false),
     async (interaction, assets, system, db) => {
