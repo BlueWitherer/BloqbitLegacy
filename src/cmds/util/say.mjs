@@ -41,9 +41,7 @@ export default new Command(
                         "color": assets.colors.primary,
                     },
                 ],
-                "flags": [
-                    "Ephemeral",
-                ],
+                "flags": ["Ephemeral"],
             });
 
             return;

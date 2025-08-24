@@ -7,14 +7,13 @@ export default new ContextButton(
     new ContextMenuCommandBuilder()
         .setName("Mock Them")
         .setType(ApplicationCommandType.Message)
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
     async (interaction, assets, system, db) => {
         const targetM = interaction.isMessageContextMenuCommand() ? interaction.targetMessage : null;
 
         if (targetM) {
-            const mocked = targetM.content.split('').map(c => Math.random() > 0.5 ? c.toLowerCase() : c.toUpperCase()).join('');
+            const mocked = targetM.content.split('').map((c) => Math.random() > 0.5 ? c.toLowerCase() : c.toUpperCase()).join('');
 
             try {
                 await interaction.reply({
@@ -37,7 +36,7 @@ export default new ContextButton(
                 await interaction.editReply({
                     "embeds": [
                         {
-                            "description": `${assets.icons.check} That person has been mocked! Hehehe...`,
+                            "description": `${assets.icons.check} That ${targetM.author?.username} person has been mocked! Hehehe...`,
                             "color": assets.colors.primary,
                         },
                     ]

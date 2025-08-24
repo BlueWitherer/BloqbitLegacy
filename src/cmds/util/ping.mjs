@@ -14,7 +14,7 @@ export default new Command(
             "embeds": [{
                 "author": {
                     "name": interaction.user?.username,
-                    "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })
+                    "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 }),
                 },
                 "title": `${assets.icons.info} Ping`,
                 "color": assets.colors.primary,
@@ -22,12 +22,12 @@ export default new Command(
                     {
                         "name": `Latency`,
                         "value": `${Date.now() - interaction.createdTimestamp}ms`,
-                        "inline": false
+                        "inline": false,
                     },
                     {
                         "name": `API Latency`,
                         "value": `${Math.round(interaction.client?.ws.ping)}ms`,
-                        "inline": false
+                        "inline": false,
                     },
                 ],
             }],

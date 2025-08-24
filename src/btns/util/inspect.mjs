@@ -1,4 +1,4 @@
-import { ContextButton } from "#bloqbit/include.ts";
+import { ContextButton, log } from "#bloqbit/include.ts";
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
 import { ContextMenuCommandBuilder } from '@discordjs/builders';
 import { ApplicationCommandType, PermissionFlagsBits } from 'discord-api-types/v10';
@@ -51,6 +51,8 @@ export default new ContextButton(
                 "flags": ["Ephemeral"],
             });
         } else {
+            log.error(`Failed to fetch target message for inspection in guild ${interaction.guild?.id} (${interaction.guild?.name}) by user ${interaction.user?.id} (${interaction.user?.username}).`);
+
             await interaction.reply({
                 "content": `${assets.icons.xmark} Unable to fetch the target message.`,
                 "flags": ["Ephemeral"],
