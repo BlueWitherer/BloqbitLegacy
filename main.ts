@@ -220,7 +220,7 @@ const start = async () => {
         log.warn('Sharding is disabled, starting single process (not recommended for production)...');
 
         try {
-            const IndexModule = await import("src/index");
+            const IndexModule = await import("./src/index");
             const Bot = IndexModule.default;
 
             const b = new Bot({
