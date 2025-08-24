@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as url from 'url';
 
 import { Events, PresenceUpdateStatus, WebhookClient } from 'discord.js';
-import { Routes } from 'discord-api-types/v10';
+import { RESTPostAPIChatInputApplicationCommandsJSONBody, RESTPostAPIContextMenuApplicationCommandsJSONBody, Routes } from 'discord-api-types/v10';
 
 import cache from "#bloqbit/database.mjs";
 import fetch from "#bloqbit/modules/fetch.mjs";
@@ -174,23 +174,19 @@ export default class Bot {
                 };
 
                 try {
-                    log.print(`Refreshing ${bot.commands.length} application (/) commands...`);
+                    const interactions: Array<RESTPostAPIChatInputApplicationCommandsJSONBody | RESTPostAPIContextMenuApplicationCommandsJSONBody> = [];
 
-                    const cData = await bot.rest.put(
+                    bot.commands.forEach((cmd) => interactions.push(cmd));
+                    bot.buttons.forEach((btn) => interactions.push(btn));
+
+                    log.print(`Refreshing ${interactions.length} application interactions...`);
+
+                    const data = await bot.rest.put(
                         Routes.applicationCommands(client?.user?.id),
-                        { body: bot.commands }
+                        { body: interactions }
                     ) as import('discord-api-types/v10').APIApplicationCommand[];
 
-                    log.info(`Successfully reloaded ${cData.length} application (/) commands`);
-
-                    log.print(`Refreshing ${bot.buttons.length} application context buttons...`);
-
-                    const bData = await bot.rest.put(
-                        Routes.applicationCommands(client?.user?.id),
-                        { body: bot.buttons }
-                    ) as import('discord-api-types/v10').APIApplicationCommand[];
-
-                    log.info(`Successfully reloaded ${bData.length} application context buttons`);
+                    log.info(`Successfully reloaded ${data.length} application interactions`);
                 } catch (err) {
                     log.trace(err);
                     if (testMode) process.exit(1);
