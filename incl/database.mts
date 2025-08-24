@@ -1,10 +1,8 @@
 import { SaveDataClient, Config, log } from "#bloqbit/include.ts";
 
 import mariadb from "mariadb";
-import NodeCache from "node-cache";
 
 let dbPool: mariadb.Pool | undefined;
-const cache = new NodeCache({ stdTTL: 3600, checkperiod: 600 });
 
 /**
  * Gets a MariaDB connection from the pool, creating the pool if it doesn't exist.
@@ -52,180 +50,171 @@ function safeParseJSON<T>(input: string | null | undefined, fallback: T): T {
 const fetch = async (server: string, db: SaveDataClient): Promise<Config | void> => {
     if (server && db) {
         try {
-            const cachedData = cache.get(`server:${server}`);
+            const conn = await database(db);
 
-            if (cachedData) {
-                log.debug(`[I] Cache hit for server ID ${server}`);
-                return new Config(cachedData);
-            } else {
-                const conn = await database(db);
+            if (conn) {
+                // Fetch config base
+                const configRows = await conn.query(`SELECT id, server FROM config WHERE server = ? LIMIT 1`, [server]);
 
-                if (conn) {
-                    // Fetch config base
-                    const configRows = await conn.query(`SELECT id, server FROM config WHERE server = ? LIMIT 1`, [server]);
-
-                    if (configRows.length === 0) {
-                        await conn.release();
-                        log.error(`[X] Settings for server ${server} not found`);
-
-                        const blank = new Config({ "server": server });
-                        cache.set(`server:${server}`, blank);
-
-                        return await update(blank, db);
-                    };
-
-                    const configId = configRows[0].id;
-
-                    // Fetch automod
-                    const automodRows = await conn.query(`SELECT id, enabled FROM automod WHERE config_id = ? LIMIT 1`, [configId]);
-                    const automodId = automodRows[0]?.id;
-
-                    // Fetch filters
-                    const filterRows: any[] = await conn.query(`SELECT * FROM filter WHERE automod_id = ?`, [automodId]);
-
-                    // Fetch ghostping
-                    const ghostpingRows = await conn.query(`SELECT * FROM ghostping WHERE config_id = ? LIMIT 1`, [configId]);
-
-                    // Fetch autopublish
-                    const autopublishRows = await conn.query(`SELECT * FROM autopublish WHERE config_id = ? LIMIT 1`, [configId]);
-
-                    // Fetch logs
-                    const logsRows = await conn.query(`SELECT * FROM logs WHERE config_id = ? LIMIT 1`, [configId]);
-
-                    // Fetch roles
-                    const rolesRows = await conn.query(`SELECT * FROM roles WHERE config_id = ? LIMIT 1`, [configId]);
-
-                    // Fetch welcome
-                    const welcomeRows = await conn.query(`SELECT * FROM welcome WHERE config_id = ? LIMIT 1`, [configId]);
-
-                    // Fetch leveling
-                    const levelingRows = await conn.query(`SELECT * FROM leveling WHERE config_id = ? LIMIT 1`, [configId]);
-
-                    // Fetch economy
-                    const economyRows = await conn.query(`SELECT * FROM economy WHERE config_id = ? LIMIT 1`, [configId]);
-
+                if (configRows.length === 0) {
                     await conn.release();
+                    log.error(`[X] Settings for server ${server} not found`);
 
-                    // Parse JSON columns for filters
-                    for (const filter of filterRows) {
-                        filter.roles = safeParseJSON(filter.roles, []);
-                        filter.channels = safeParseJSON(filter.channels, []);
-                        filter.keywords = safeParseJSON(filter.keywords, []);
-                    };
+                    const blank = new Config({ "server": server });
 
-                    // Construct config object
-                    const configObj: any = {
-                        server: configRows[0].server,
-                        automod: {
-                            enabled: !!automodRows[0]?.enabled,
-                            swearFilter: filterRows.find(f => f.type === "swear") || {},
-                            linkFilter: filterRows.find(f => f.type === "link") || {},
-                            inviteFilter: filterRows.find(f => f.type === "invite") || {},
-                            dupetextFilter: filterRows.find(f => f.type === "dupetext") || {},
-                            massmentionFilter: filterRows.find(f => f.type === "massmention") || {},
-                            nicknameFilter: filterRows.find(f => f.type === "nickname") || {},
-                            antispam: filterRows.find(f => f.type === "antispam") || {},
-                            antialt: filterRows.find(f => f.type === "antialt") || {},
-                            antichain: filterRows.find(f => f.type === "antichain") || {},
-                            antiping: filterRows.find(f => f.type === "antiping") || {},
-                        },
-                        ghostping: ghostpingRows[0]
-                            ? {
-                                enabled: !!ghostpingRows[0].enabled,
-                                noMods: !!ghostpingRows[0].noMods,
-                                settings: safeParseJSON(ghostpingRows[0].settings, {}),
-                            }
-                            : {},
-                        autopublish: autopublishRows[0]
-                            ? {
-                                enabled: !!autopublishRows[0].enabled,
-                                channels: safeParseJSON(autopublishRows[0].channels, []),
-                                bots: !!autopublishRows[0].bots,
-                            }
-                            : {},
-                        logs: logsRows[0]
-                            ? {
-                                enabled: !!logsRows[0].enabled,
-                                webhookEnabled: !!logsRows[0].webhookEnabled,
-                                channel: logsRows[0].channel || "",
-                                webhook: logsRows[0].webhook || "",
-                                inbox: logsRows[0].inbox || "",
-                                actions: safeParseJSON(logsRows[0].actions, {}),
-                            }
-                            : {},
-                        roles: rolesRows[0]
-                            ? {
-                                settings: safeParseJSON(rolesRows[0].settings, {}),
-                                immune: safeParseJSON(rolesRows[0].immune, []),
-                                noPing: safeParseJSON(rolesRows[0].noPing, []),
-                                streaming: rolesRows[0].streaming || "",
-                                mute: rolesRows[0].mute || "",
-                            }
-                            : {},
-                        welcome: welcomeRows[0]
-                            ? {
-                                enabled: !!welcomeRows[0].enabled,
-                                webhookEnabled: !!welcomeRows[0].webhookEnabled,
-                                channel: welcomeRows[0].channel || "",
-                                webhook: welcomeRows[0].webhook || "",
-                                message: { content: welcomeRows[0].message || "" },
-                            }
-                            : {},
-                        leveling: levelingRows[0]
-                            ? {
-                                enabled: !!levelingRows[0].enabled,
-                                xp: {
-                                    min: levelingRows[0].xp_min ?? 5,
-                                    max: levelingRows[0].xp_max ?? 25,
-                                    roles: safeParseJSON(levelingRows[0].xp_roles, []),
-                                    channels: safeParseJSON(levelingRows[0].xp_channels, []),
-                                    filterMode: levelingRows[0].xp_filterMode ?? 0,
-                                },
-                                levelMax: levelingRows[0].levelMax ?? 100,
-                                levelRewarding: !!levelingRows[0].levelRewarding,
-                            }
-                            : {},
-                        economy: economyRows[0]
-                            ? {
-                                enabled: !!economyRows[0].enabled,
-                                currency: {
-                                    name: economyRows[0].currency_name || "",
-                                    namePlural: economyRows[0].currency_namePlural || "",
-                                    symbol: economyRows[0].currency_symbol || "",
-                                    image: economyRows[0].currency_image || "",
-                                    useImg: !!economyRows[0].currency_useImg,
-                                },
-                                gambling: {
-                                    enabled: !!economyRows[0].gambling_enabled,
-                                    min: economyRows[0].gambling_min ?? 5,
-                                    max: economyRows[0].gambling_max ?? 100,
-                                },
-                                drops: {
-                                    enabled: !!economyRows[0].drops_enabled,
-                                    channels: safeParseJSON(economyRows[0].drops_channels, []),
-                                    filterMode: economyRows[0].drops_filterMode ?? 0,
-                                },
-                            }
-                            : {},
-                    };
+                    return await update(blank, db);
+                };
 
-                    cache.set(`server:${server}`, configObj);
-                    log.info(`[O] Settings for server ${server} found and cached`);
+                const configId = configRows[0].id;
 
-                    return new Config(configObj);
-                } else {
-                    log.error(`[X] Database connection failed`);
-                    return;
-                }
-            }
+                // Fetch automod
+                const automodRows = await conn.query(`SELECT id, enabled FROM automod WHERE config_id = ? LIMIT 1`, [configId]);
+                const automodId = automodRows[0]?.id;
+
+                // Fetch filters
+                const filterRows: any[] = await conn.query(`SELECT * FROM filter WHERE automod_id = ?`, [automodId]);
+
+                // Fetch ghostping
+                const ghostpingRows = await conn.query(`SELECT * FROM ghostping WHERE config_id = ? LIMIT 1`, [configId]);
+
+                // Fetch autopublish
+                const autopublishRows = await conn.query(`SELECT * FROM autopublish WHERE config_id = ? LIMIT 1`, [configId]);
+
+                // Fetch logs
+                const logsRows = await conn.query(`SELECT * FROM logs WHERE config_id = ? LIMIT 1`, [configId]);
+
+                // Fetch roles
+                const rolesRows = await conn.query(`SELECT * FROM roles WHERE config_id = ? LIMIT 1`, [configId]);
+
+                // Fetch welcome
+                const welcomeRows = await conn.query(`SELECT * FROM welcome WHERE config_id = ? LIMIT 1`, [configId]);
+
+                // Fetch leveling
+                const levelingRows = await conn.query(`SELECT * FROM leveling WHERE config_id = ? LIMIT 1`, [configId]);
+
+                // Fetch economy
+                const economyRows = await conn.query(`SELECT * FROM economy WHERE config_id = ? LIMIT 1`, [configId]);
+
+                await conn.release();
+
+                // Parse JSON columns for filters
+                for (const filter of filterRows) {
+                    filter.roles = safeParseJSON(filter.roles, []);
+                    filter.channels = safeParseJSON(filter.channels, []);
+                    filter.keywords = safeParseJSON(filter.keywords, []);
+                };
+
+                // Construct config object
+                const configObj: any = {
+                    server: configRows[0].server,
+                    automod: {
+                        enabled: !!automodRows[0]?.enabled,
+                        swearFilter: filterRows.find(f => f.type === "swear") || {},
+                        linkFilter: filterRows.find(f => f.type === "link") || {},
+                        inviteFilter: filterRows.find(f => f.type === "invite") || {},
+                        dupetextFilter: filterRows.find(f => f.type === "dupetext") || {},
+                        massmentionFilter: filterRows.find(f => f.type === "massmention") || {},
+                        nicknameFilter: filterRows.find(f => f.type === "nickname") || {},
+                        antispam: filterRows.find(f => f.type === "antispam") || {},
+                        antialt: filterRows.find(f => f.type === "antialt") || {},
+                        antichain: filterRows.find(f => f.type === "antichain") || {},
+                        antiping: filterRows.find(f => f.type === "antiping") || {},
+                    },
+                    ghostping: ghostpingRows[0]
+                        ? {
+                            enabled: !!ghostpingRows[0].enabled,
+                            noMods: !!ghostpingRows[0].noMods,
+                            settings: safeParseJSON(ghostpingRows[0].settings, {}),
+                        }
+                        : {},
+                    autopublish: autopublishRows[0]
+                        ? {
+                            enabled: !!autopublishRows[0].enabled,
+                            channels: safeParseJSON(autopublishRows[0].channels, []),
+                            bots: !!autopublishRows[0].bots,
+                        }
+                        : {},
+                    logs: logsRows[0]
+                        ? {
+                            enabled: !!logsRows[0].enabled,
+                            webhookEnabled: !!logsRows[0].webhookEnabled,
+                            channel: logsRows[0].channel || "",
+                            webhook: logsRows[0].webhook || "",
+                            inbox: logsRows[0].inbox || "",
+                            actions: safeParseJSON(logsRows[0].actions, {}),
+                        }
+                        : {},
+                    roles: rolesRows[0]
+                        ? {
+                            settings: safeParseJSON(rolesRows[0].settings, {}),
+                            immune: safeParseJSON(rolesRows[0].immune, []),
+                            noPing: safeParseJSON(rolesRows[0].noPing, []),
+                            streaming: rolesRows[0].streaming || "",
+                            mute: rolesRows[0].mute || "",
+                        }
+                        : {},
+                    welcome: welcomeRows[0]
+                        ? {
+                            enabled: !!welcomeRows[0].enabled,
+                            webhookEnabled: !!welcomeRows[0].webhookEnabled,
+                            channel: welcomeRows[0].channel || "",
+                            webhook: welcomeRows[0].webhook || "",
+                            message: { content: welcomeRows[0].message || "" },
+                        }
+                        : {},
+                    leveling: levelingRows[0]
+                        ? {
+                            enabled: !!levelingRows[0].enabled,
+                            xp: {
+                                min: levelingRows[0].xp_min ?? 5,
+                                max: levelingRows[0].xp_max ?? 25,
+                                roles: safeParseJSON(levelingRows[0].xp_roles, []),
+                                channels: safeParseJSON(levelingRows[0].xp_channels, []),
+                                filterMode: levelingRows[0].xp_filterMode ?? 0,
+                            },
+                            levelMax: levelingRows[0].levelMax ?? 100,
+                            levelRewarding: !!levelingRows[0].levelRewarding,
+                        }
+                        : {},
+                    economy: economyRows[0]
+                        ? {
+                            enabled: !!economyRows[0].enabled,
+                            currency: {
+                                name: economyRows[0].currency_name || "",
+                                namePlural: economyRows[0].currency_namePlural || "",
+                                symbol: economyRows[0].currency_symbol || "",
+                                image: economyRows[0].currency_image || "",
+                                useImg: !!economyRows[0].currency_useImg,
+                            },
+                            gambling: {
+                                enabled: !!economyRows[0].gambling_enabled,
+                                min: economyRows[0].gambling_min ?? 5,
+                                max: economyRows[0].gambling_max ?? 100,
+                            },
+                            drops: {
+                                enabled: !!economyRows[0].drops_enabled,
+                                channels: safeParseJSON(economyRows[0].drops_channels, []),
+                                filterMode: economyRows[0].drops_filterMode ?? 0,
+                            },
+                        }
+                        : {},
+                };
+
+                log.info(`[O] Settings for server ${server} found and cached`);
+
+                return new Config(configObj);
+            } else {
+                log.error(`[X] Database connection failed`);
+                return;
+            };
         } catch (err) {
             log.trace(err);
             return;
-        }
+        };
     } else {
         log.error(`[X] Query ID or database model not provided`);
         return;
-    }
+    };
 };
 
 const update = async (system: Config, db: SaveDataClient): Promise<Config | void> => {
@@ -237,7 +226,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 // Upsert config row
                 const configResult = await conn.query(
                     `INSERT INTO config (server) VALUES (?) ON DUPLICATE KEY UPDATE server = VALUES(server)`,
-                    [system.server]
+                    [system.server],
                 );
 
                 // MariaDB returns insertId=0 for REPLACE if row existed, so fetch id if needed
@@ -251,7 +240,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 // Upsert automod row
                 const automodResult = await conn.query(
                     `REPLACE INTO automod (config_id, enabled) VALUES (?, ?)`,
-                    [configId, !!system.automod.enabled]
+                    [configId, !!system.automod.enabled],
                 );
 
                 let automodId = automodResult.insertId;
@@ -412,7 +401,6 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                     ],
                 );
 
-                cache.set(`server:${system.server}`, system);
                 log.info(`[O] Settings for server ${system.server} updated`);
 
                 conn.release();
