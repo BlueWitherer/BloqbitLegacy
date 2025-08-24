@@ -1,7 +1,7 @@
 import { ContextButton, log } from "#bloqbit/include.ts";
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
-import { ContextMenuCommandBuilder } from '@discordjs/builders';
-import { ApplicationCommandType, PermissionFlagsBits } from 'discord-api-types/v10';
+import { ActionRowBuilder, ButtonBuilder, ContextMenuCommandBuilder } from '@discordjs/builders';
+import { ApplicationCommandType, ButtonStyle } from 'discord-api-types/v10';
 
 export default new ContextButton(
     new ContextMenuCommandBuilder()
@@ -26,12 +26,19 @@ export default new ContextButton(
                     "flags": ["Ephemeral"],
                 });
 
-                await interaction.followUp({
+                const reply = await interaction.followUp({
                     "content": mocked,
                     "allowedMentions": {
                         "repliedUser": false,
                     },
                 });
+
+                const button = new ButtonBuilder()
+                    .setCustomId("view-mock")
+                    .setLabel("View Message")
+                    .setStyle(ButtonStyle.Primary)
+                    .setURL(reply.url);
+                const row = new ActionRowBuilder().addComponents(button);
 
                 await interaction.editReply({
                     "embeds": [
@@ -39,8 +46,9 @@ export default new ContextButton(
                             "description": `${assets.icons.check} That ${targetM.author?.username} person has been mocked! Hehehe...`,
                             "color": assets.colors.primary,
                         },
-                    ]
-                })
+                    ],
+                    "components": [row.toJSON()],
+                });
             } catch (err) {
                 log.trace(err);
                 await interaction.reply({
