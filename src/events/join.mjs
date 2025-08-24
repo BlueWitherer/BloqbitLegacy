@@ -15,8 +15,8 @@ export default {
     execute: async (bot, guild) => {
         try {
             const clientShard = bot.client?.shard?.ids[0] || 0;
-            const devWH = new WebhookClient({ url: bot.dev_wh, });
             const date = Math.floor(Date.now() / 1000);
+            const devWH = new WebhookClient({ url: bot.dev_wh, });
 
             log.debug(`Authorized to join guild ${guild.name} (${guild.id})`);
 

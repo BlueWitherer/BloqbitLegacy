@@ -186,7 +186,7 @@ export default class Bot {
                         { body: interactions }
                     ) as import('discord-api-types/v10').APIApplicationCommand[];
 
-                    log.info(`Successfully reloaded ${data.length} application interactions`);
+                    log.info(`Successfully reloaded ${data.length}/${interactions.length} application interactions`);
                 } catch (err) {
                     log.trace(err);
                     if (testMode) process.exit(1);

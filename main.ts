@@ -26,9 +26,8 @@ process.on('unhandledRejection', (reason, promise) => {
 
 log.print('Starting system...');
 
-// garbage collection
-if (global.gc) {
-    global.gc(true);
+if (global.gc) { // garbage collection
+    global.gc(true); // enable minor gc
 
     log.debug('Garbage collection triggered manually');
 } else {
