@@ -189,16 +189,6 @@ const start = async () => {
                 }, 60000); // 60 sec
             };
 
-            setInterval(async () => {
-                try {
-                    if (process.send) process.send('flushDb');
-                } catch (err) {
-                    log.trace(err);
-                } finally {
-                    log.debug('Sent event to flush data to database');
-                };
-            }, 3600000); // 60 min
-
             process.on('SIGINT', async () => {
                 shuttingDown ? null : log.warn('Received SIGINT. Shutting down gracefully...');
                 return shuttingDown ? null : await shutDown();

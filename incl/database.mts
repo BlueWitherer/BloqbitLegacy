@@ -33,47 +33,8 @@ const database = async (dbConfig: SaveDataClient): Promise<mariadb.PoolConnectio
     } catch (err) {
         log.error(`[X] MariaDB connection failed`);
         log.trace(err);
+
         return;
-    };
-};
-
-const flush = async (db: SaveDataClient): Promise<void> => {
-    try {
-        const dirtyKeys = cache.keys().filter((k) => k.endsWith(":dirty"));
-
-        for (const dKey of dirtyKeys) {
-            const key = dKey.replace(":dirty", "");
-
-            if (key.startsWith("server:")) {
-                const cachedData = cache.get(key);
-
-                if (cachedData) {
-                    const system = new Config(cachedData);
-                    const conn = await database(db);
-
-                    if (conn) {
-                        // Upsert logic for config table
-                        await conn.query(
-                            `INSERT INTO config (server) VALUES (?) ON DUPLICATE KEY UPDATE server = VALUES(server)`,
-                            [system.server]
-                        );
-
-                        cache.del(dKey);
-                        log.info(`[O] Dirty cache for server ID ${system.server} flushed to database`);
-
-                        conn.release();
-                    } else {
-                        log.error(`[X] Database connection failed`);
-                    };
-                } else {
-                    log.error(`[X] No cached data found for ${key}`);
-                };
-            } else {
-                log.error(`[X] Invalid cache key ${key}`);
-            };
-        };
-    } catch (err) {
-        log.trace(err);
     };
 };
 
@@ -106,7 +67,11 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                     if (configRows.length === 0) {
                         await conn.release();
                         log.error(`[X] Settings for server ${server} not found`);
-                        return new Config({});
+
+                        const blank = new Config({ "server": server });
+                        cache.set(`server:${server}`, blank);
+
+                        return await update(blank, db);
                     };
 
                     const configId = configRows[0].id;
@@ -471,5 +436,4 @@ export default {
     fetch,
     update,
     database,
-    flush,
 };

@@ -7,7 +7,6 @@ import * as url from 'url';
 import { Events, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { RESTPostAPIChatInputApplicationCommandsJSONBody, RESTPostAPIContextMenuApplicationCommandsJSONBody, Routes } from 'discord-api-types/v10';
 
-import * as cache from "#bloqbit/database.mjs";
 import fetch from "#bloqbit/modules/fetch.mjs";
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -351,18 +350,8 @@ try {
         };
 
         switch (eventType) {
-            case "flushDb":
-                try {
-                    await cache.default.flush(bb.botModel.db);
-                    log.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
-                } catch (err) {
-                    log.trace(err);
-                };
-                break;
-
             case "flushClose":
                 try {
-                    if (typeof cache.default.flush === 'function') await cache.default.flush(bb.botModel.db);
                     if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
 
                     if (process.send) process.send('shutdownComplete');
