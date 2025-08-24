@@ -4,7 +4,6 @@ import mariadb from "mariadb";
 import NodeCache from "node-cache";
 
 let dbPool: mariadb.Pool | undefined;
-import { MongoClient, Document } from 'mongodb';
 const cache = new NodeCache({ stdTTL: 3600, checkperiod: 600 });
 
 /**
