@@ -39,7 +39,85 @@ export default class Bot {
 
         const bot = this.botModel;
 
-        bot.client?.once(Events.ClientReady, async (client) => {
+        const devWH = new WebhookClient({ "url": bot.dev_wh, });
+
+        bot.client?.on(Events.Debug, async (message): Promise<void> => {
+            try {
+                log.debug(message);
+            } catch (err) {
+                log.trace(err);
+            };
+        });
+
+        bot.client?.on(Events.Warn, async (message): Promise<void> => {
+            const date = Math.floor(Date.now() / 1000);
+
+            try {
+                log.warn(message);
+
+                await devWH.send({
+                    "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": `Warning`,
+                            },
+                            "description": `\`\`\`${message}\`\`\``,
+                            "color": bot.assets.colors.tertiary,
+                            "fields": [
+                                {
+                                    "name": "Time of Warning",
+                                    "value": `<t:${date}:F> • <t:${date}:R>`,
+                                    "inline": false,
+                                },
+                            ],
+                            "footer": {
+                                "text": bot.client?.user?.username || "Unknown User",
+                                "icon_url": bot.client?.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
+                            },
+                        },
+                    ],
+                });
+            } catch (err) {
+                log.trace(err);
+            };
+        });
+
+        bot.client?.on(Events.Error, async (error): Promise<void> => {
+            const date = Math.floor(Date.now() / 1000);
+
+            try {
+                log.error(error.stack);
+
+                await devWH.send({
+                    "avatarURL": bot.client?.user?.displayAvatarURL({ "forceStatic": true, "size": 512, }),
+                    "embeds": [
+                        {
+                            "author": {
+                                "name": `Error`,
+                            },
+                            "description": `\`\`\`${error.message}\`\`\``,
+                            "color": bot.assets.colors.secondary,
+                            "fields": [
+                                {
+                                    "name": "Time of Error",
+                                    "value": `<t:${date}:F> • <t:${date}:R>`,
+                                    "inline": false,
+                                },
+                            ],
+                            "footer": {
+                                "text": bot.client?.user?.username ?? '',
+                                "icon_url": bot.client?.user?.displayAvatarURL({ "forceStatic": false, "size": 128 }),
+                            },
+                        },
+                    ],
+                });
+            } catch (err) {
+                log.trace(err);
+            };
+        });
+
+        bot.client?.once(Events.ClientReady, async (client): Promise<void> => {
             const clientShard = client.shard?.ids[0] || 0;
             fetch.setPresence(client, `Starting...`, `Bot is starting up, please wait...`, PresenceUpdateStatus.DoNotDisturb);
 
@@ -196,8 +274,6 @@ export default class Bot {
                     const srvs = await client.guilds?.fetch();
                     fetch.setPresence(client, `Alpha Testing!`, `Active across ${srvs.size} servers on shard ${clientShard}!`, PresenceUpdateStatus.Online);
 
-                    const devWH = new WebhookClient({ "url": bot.dev_wh, });
-
                     await devWH.send({
                         "avatarURL": client.user?.displayAvatarURL({ "forceStatic": true, "size": 512 }),
                         "embeds": [
@@ -232,7 +308,7 @@ export default class Bot {
             await bot.client?.login(bot.token);
         } catch (err) {
             log.trace(err);
-            if (testMode) process.exit(1);
+            process.exit(1);
         };
 
         return bot;
