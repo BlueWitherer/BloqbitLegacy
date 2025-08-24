@@ -34,7 +34,6 @@ export default new ContextButton(
                 });
 
                 const button = new ButtonBuilder()
-                    .setCustomId("view-mock")
                     .setLabel("View Message")
                     .setStyle(ButtonStyle.Primary)
                     .setURL(reply.url);

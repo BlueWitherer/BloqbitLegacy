@@ -1,34 +1,265 @@
-import { SaveDataClient, Config, LevelRecord, InfractionRecord, MuteRecord, NicknameRecord, RolesRecord, log } from "#bloqbit/include.ts";
+import { SaveDataClient, Config, log } from "#bloqbit/include.ts";
 
-// import { Connection } from 'mariadb';
-import { MongoClient, Db, Filter, Document } from 'mongodb';
+import mariadb from "mariadb";
+import NodeCache from "node-cache";
 
-import NodeCache from 'node-cache';
-
-// let dbClient: Connection | undefined;
-let mongoClient: MongoClient | undefined;
-
+let dbPool: mariadb.Pool | undefined;
+import { MongoClient, Document } from 'mongodb';
 const cache = new NodeCache({ stdTTL: 3600, checkperiod: 600 });
 
-const getDbClient = async (mongoUri: string): Promise<Db | undefined> => {
-    if (mongoUri) {
-        if (mongoClient) {
-            log.debug(`[I] Using existing MongoDB connection`);
-        } else {
-            log.debug(`[I] Creating new MongoDB connection`);
+/**
+ * Migrates a server's config from MongoDB to MariaDB if it doesn't exist in MariaDB yet.
+ * @param serverId The server ID to migrate.
+ * @param db MariaDB connection system.
+ */
+export const migrateServerConfig = async (
+    serverId: string,
+    db: SaveDataClient
+): Promise<boolean> => {
+    try {
+        const mongoClient = new MongoClient(process.env.MONGO_URI || "mongodb://localhost:27017");
+        await mongoClient.connect();
 
-            mongoClient = new MongoClient(mongoUri);
-            await mongoClient.connect();
+        const conn = await database(db);
+        if (!conn) {
+            log.error(`[X] Database connections failed`);
+            await mongoClient.close();
+            return false;
         };
 
-        return mongoClient.db("Bloqbit");
+        // Check if config already exists in MariaDB
+        const configRows = await conn.query(`SELECT id FROM config WHERE server = ? LIMIT 1`, [serverId]);
+        if (configRows.length > 0) {
+            log.info(`[I] Server ${serverId} already exists in MariaDB, skipping migration`);
+            await conn.release();
+            await mongoClient.close();
+            return false;
+        };
+
+        // Fetch config from MongoDB
+        const mongoDb = mongoClient.db("Bloqbit");
+        const mongoEntry = await mongoDb.collection("servers").findOne({ server: serverId });
+
+        if (!mongoEntry) {
+            log.error(`[X] No MongoDB config found for server ${serverId}`);
+
+            await conn.release();
+            await mongoClient.close();
+
+            return false;
+        };
+
+        // Construct Config instance from MongoDB entry
+        const system = new Config(mongoEntry as Document);
+
+        // Insert into config table
+        const configResult = await conn.query(
+            `INSERT INTO config (server) VALUES (?)`,
+            [system.server],
+        );
+        const configId = configResult.insertId;
+
+        // Insert into automod table
+        const automodResult = await conn.query(
+            `INSERT INTO automod (config_id, enabled) VALUES (?, ?)`,
+            [configId, !!system.automod.enabled],
+        );
+        const automodId = automodResult.insertId;
+
+        // Insert filters (example for each filter type)
+        const filterTypes = [
+            { type: "swear", filter: system.automod.swearFilter },
+            { type: "link", filter: system.automod.linkFilter },
+            { type: "invite", filter: system.automod.inviteFilter },
+            { type: "dupetext", filter: system.automod.dupetextFilter },
+            { type: "massmention", filter: system.automod.massmentionFilter },
+            { type: "nickname", filter: system.automod.nicknameFilter },
+            { type: "antispam", filter: system.automod.antispam },
+            { type: "antialt", filter: system.automod.antialt },
+            { type: "antichain", filter: system.automod.antichain },
+            { type: "antiping", filter: system.automod.antiping },
+        ];
+
+        for (const { type, filter } of filterTypes) {
+            await conn.query(
+                `INSERT INTO filter (automod_id, type, enabled, roles, channels, filterMode, permFilterMode, punishment, keywords, logs)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    automodId,
+                    type,
+                    !!filter.enabled,
+                    JSON.stringify(filter.roles),
+                    JSON.stringify(filter.channels),
+                    filter.filterMode ?? 0,
+                    filter.permFilterMode ?? 0,
+                    filter.punishment ?? 0,
+                    JSON.stringify(filter.keywords),
+                    filter.logs ?? "",
+                ],
+            );
+        };
+
+        // Insert ghostping
+        await conn.query(
+            `INSERT INTO ghostping (config_id, enabled, noMods, settings)
+             VALUES (?, ?, ?, ?)`,
+            [
+                configId,
+                !!system.ghostping.enabled,
+                !!system.ghostping.noMods,
+                JSON.stringify(system.ghostping.settings),
+            ],
+        );
+
+        // Insert autopublish
+        await conn.query(
+            `INSERT INTO autopublish (config_id, enabled, channels, bots)
+             VALUES (?, ?, ?, ?)`,
+            [
+                configId,
+                !!system.autopublish.enabled,
+                JSON.stringify(system.autopublish.channels),
+                !!system.autopublish.bots
+            ]
+        );
+
+        // Insert logs
+        await conn.query(
+            `INSERT INTO logs (config_id, enabled, webhookEnabled, channel, webhook, inbox, actions)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [
+                configId,
+                !!system.logs.enabled,
+                !!system.logs.webhookEnabled,
+                system.logs.channel ?? "",
+                system.logs.webhook ?? "",
+                system.logs.inbox ?? "",
+                JSON.stringify(system.logs.actions)
+            ]
+        );
+
+        // Insert roles
+        await conn.query(
+            `INSERT INTO roles (config_id, settings, immune, noPing, streaming, mute)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [
+                configId,
+                JSON.stringify(system.roles.settings),
+                JSON.stringify(system.roles.immune),
+                JSON.stringify(system.roles.noPing),
+                system.roles.streaming ?? "",
+                system.roles.mute ?? ""
+            ]
+        );
+
+        // Insert welcome
+        await conn.query(
+            `INSERT INTO welcome (config_id, enabled, webhookEnabled, channel, webhook, message)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [
+                configId,
+                !!system.welcome.enabled,
+                !!system.welcome.webhookEnabled,
+                system.welcome.channel ?? "",
+                system.welcome.webhook ?? "",
+                system.welcome.message?.content ?? ""
+            ]
+        );
+
+        // Insert leveling
+        await conn.query(
+            `INSERT INTO leveling (config_id, enabled, xp_min, xp_max, xp_roles, xp_channels, xp_filterMode, levelMax, levelRewarding)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                configId,
+                !!system.leveling.enabled,
+                system.leveling.xp?.min ?? 5,
+                system.leveling.xp?.max ?? 25,
+                JSON.stringify(system.leveling.xp?.roles ?? []),
+                JSON.stringify(system.leveling.xp?.channels ?? []),
+                system.leveling.xp?.filterMode ?? 0,
+                system.leveling.levelMax ?? 100,
+                !!system.leveling.levelRewarding
+            ]
+        );
+
+        // Insert economy
+        await conn.query(
+            `INSERT INTO economy (
+                config_id,
+                enabled,
+                currency_name,
+                currency_namePlural,
+                currency_symbol,
+                currency_image,
+                currency_useImg,
+                gambling_enabled,
+                gambling_min,
+                gambling_max,
+                drops_enabled,
+                drops_channels,
+                drops_filterMode
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                configId,
+                !!system.economy.enabled,
+                system.economy.currency?.name ?? "",
+                system.economy.currency?.namePlural ?? "",
+                system.economy.currency?.symbol ?? "",
+                system.economy.currency?.image ?? "",
+                !!system.economy.currency?.useImg,
+                !!system.economy.gambling?.enabled,
+                system.economy.gambling?.min ?? 5,
+                system.economy.gambling?.max ?? 100,
+                !!system.economy.drops?.enabled,
+                JSON.stringify(system.economy.drops?.channels ?? []),
+                system.economy.drops?.filterMode ?? 0
+            ]
+        );
+
+        log.info(`[O] Migrated server ${serverId} from MongoDB to MariaDB`);
+
+        await mongoClient.close();
+        await conn.release();
+        return true;
+    } catch (err) {
+        log.trace(err);
+        return false;
+    }
+};
+
+/**
+ * Gets a MariaDB connection from the pool, creating the pool if it doesn't exist.
+ * 
+ * @param dbConfig Database configuration object
+ */
+const database = async (dbConfig: SaveDataClient): Promise<mariadb.PoolConnection | undefined> => {
+    if (dbPool) {
+        log.debug(`[I] Reusing existing MariaDB connection pool`);
     } else {
-        log.error(`[X] MongoDB URI not provided`);
+        log.debug(`[I] Creating new MariaDB connection pool`);
+
+        dbPool = mariadb.createPool({
+            host: dbConfig.host,
+            user: dbConfig.user,
+            password: dbConfig.password,
+            database: dbConfig.database,
+            connectionLimit: 5,
+        });
+    };
+
+    log.info(`[O] Connecting to MariaDB database at ${dbConfig.host}`);
+
+    try {
+        return await dbPool.getConnection();
+    } catch (err) {
+        log.error(`[X] MariaDB connection failed`);
+        log.trace(err);
         return;
     };
 };
 
-const flushToDb = async (db: SaveDataClient): Promise<void> => {
+const flush = async (db: SaveDataClient): Promise<void> => {
     try {
         const dirtyKeys = cache.keys().filter((k) => k.endsWith(":dirty"));
 
@@ -40,20 +271,19 @@ const flushToDb = async (db: SaveDataClient): Promise<void> => {
 
                 if (cachedData) {
                     const system = new Config(cachedData);
-                    const database = await getDbClient(db.mongo_uri);
+                    const conn = await database(db);
 
-                    if (database) {
-                        const collection = database.collection("servers");
-
-                        log.debug(`[I] Flushing dirty cache for server ID ${system.server} to database...`);
-                        await collection.updateOne(
-                            { server: system.server },
-                            { $set: system },
-                            { upsert: true },
+                    if (conn) {
+                        // Upsert logic for config table
+                        await conn.query(
+                            `INSERT INTO config (server) VALUES (?) ON DUPLICATE KEY UPDATE server = VALUES(server)`,
+                            [system.server]
                         );
 
                         cache.del(dKey);
                         log.info(`[O] Dirty cache for server ID ${system.server} flushed to database`);
+
+                        conn.release();
                     } else {
                         log.error(`[X] Database connection failed`);
                     };
@@ -69,70 +299,384 @@ const flushToDb = async (db: SaveDataClient): Promise<void> => {
     };
 };
 
-const handleFetchData = async (
-    coll: string,
-    server: string,
-    user: string,
-    db: SaveDataClient,
-    filter: Filter<Document>
-): Promise<Partial<InfractionRecord | LevelRecord | MuteRecord | NicknameRecord | RolesRecord> | void> => {
+// Safe JSON parse helper
+function safeParseJSON<T>(input: string | null | undefined, fallback: T): T {
+    if (!input) return fallback;
+
     try {
-        const database = await getDbClient(db.mongo_uri);
-
-        if (database) {
-            const collection = database.collection(coll);
-
-            log.debug(`[I] Querying database for warning data of server ID ${server}...`);
-            const found = await collection.findOne(filter);
-
-            if (found) {
-                const { _id, ...dat } = found;
-
-                log.debug(`[II] Fetched query of ID ${_id}`);
-
-                log.info(`[O] Data from collection '${coll}' for server ${server} found`);
-                return dat;
-            } else {
-                log.error(`[X] Data from collection '${coll}' for server ${server} not found`);
-                return {};
-            };
-        } else {
-            log.error(`[X] Database connection failed`);
-            return;
-        };
-    } catch (err) {
-        log.trace(err);
-        return;
+        return JSON.parse(input);
+    } catch {
+        return fallback;
     };
 };
 
-const handleUpdateData = async (
-    coll: string,
-    record: InfractionRecord | LevelRecord | MuteRecord | NicknameRecord | RolesRecord,
-    db: SaveDataClient,
-    filter: Filter<Document>
-): Promise<Partial<InfractionRecord | LevelRecord | MuteRecord | NicknameRecord | RolesRecord> | void> => {
-    if (record && db) {
+const fetch = async (server: string, db: SaveDataClient): Promise<Config | void> => {
+    if (server && db) {
         try {
-            const database = await getDbClient(db.mongo_uri);
+            await migrateServerConfig(server, db);
 
-            if (database) {
-                const collection = database.collection(coll);
+            const cachedData = cache.get(`server:${server}`);
 
-                log.debug(`[I] Updating warning database for server ID ${record.server}...`);
-                const result = await collection.updateOne(
-                    filter,
-                    { $set: record },
-                    { upsert: true },
+            if (cachedData) {
+                log.debug(`[I] Cache hit for server ID ${server}`);
+                return new Config(cachedData);
+            } else {
+                const conn = await database(db);
+
+                if (conn) {
+                    // Fetch config base
+                    const configRows = await conn.query(`SELECT id, server FROM config WHERE server = ? LIMIT 1`, [server]);
+
+                    if (configRows.length === 0) {
+                        await conn.release();
+                        log.error(`[X] Settings for server ${server} not found`);
+                        return new Config({});
+                    };
+
+                    const configId = configRows[0].id;
+
+                    // Fetch automod
+                    const automodRows = await conn.query(`SELECT id, enabled FROM automod WHERE config_id = ? LIMIT 1`, [configId]);
+                    const automodId = automodRows[0]?.id;
+
+                    // Fetch filters
+                    const filterRows: any[] = await conn.query(`SELECT * FROM filter WHERE automod_id = ?`, [automodId]);
+
+                    // Fetch ghostping
+                    const ghostpingRows = await conn.query(`SELECT * FROM ghostping WHERE config_id = ? LIMIT 1`, [configId]);
+
+                    // Fetch autopublish
+                    const autopublishRows = await conn.query(`SELECT * FROM autopublish WHERE config_id = ? LIMIT 1`, [configId]);
+
+                    // Fetch logs
+                    const logsRows = await conn.query(`SELECT * FROM logs WHERE config_id = ? LIMIT 1`, [configId]);
+
+                    // Fetch roles
+                    const rolesRows = await conn.query(`SELECT * FROM roles WHERE config_id = ? LIMIT 1`, [configId]);
+
+                    // Fetch welcome
+                    const welcomeRows = await conn.query(`SELECT * FROM welcome WHERE config_id = ? LIMIT 1`, [configId]);
+
+                    // Fetch leveling
+                    const levelingRows = await conn.query(`SELECT * FROM leveling WHERE config_id = ? LIMIT 1`, [configId]);
+
+                    // Fetch economy
+                    const economyRows = await conn.query(`SELECT * FROM economy WHERE config_id = ? LIMIT 1`, [configId]);
+
+                    await conn.release();
+
+                    // Parse JSON columns for filters
+                    for (const filter of filterRows) {
+                        filter.roles = safeParseJSON(filter.roles, []);
+                        filter.channels = safeParseJSON(filter.channels, []);
+                        filter.keywords = safeParseJSON(filter.keywords, []);
+                    };
+
+                    // Construct config object
+                    const configObj: any = {
+                        server: configRows[0].server,
+                        automod: {
+                            enabled: !!automodRows[0]?.enabled,
+                            swearFilter: filterRows.find(f => f.type === "swear") || {},
+                            linkFilter: filterRows.find(f => f.type === "link") || {},
+                            inviteFilter: filterRows.find(f => f.type === "invite") || {},
+                            dupetextFilter: filterRows.find(f => f.type === "dupetext") || {},
+                            massmentionFilter: filterRows.find(f => f.type === "massmention") || {},
+                            nicknameFilter: filterRows.find(f => f.type === "nickname") || {},
+                            antispam: filterRows.find(f => f.type === "antispam") || {},
+                            antialt: filterRows.find(f => f.type === "antialt") || {},
+                            antichain: filterRows.find(f => f.type === "antichain") || {},
+                            antiping: filterRows.find(f => f.type === "antiping") || {},
+                        },
+                        ghostping: ghostpingRows[0]
+                            ? {
+                                enabled: !!ghostpingRows[0].enabled,
+                                noMods: !!ghostpingRows[0].noMods,
+                                settings: safeParseJSON(ghostpingRows[0].settings, {}),
+                            }
+                            : {},
+                        autopublish: autopublishRows[0]
+                            ? {
+                                enabled: !!autopublishRows[0].enabled,
+                                channels: safeParseJSON(autopublishRows[0].channels, []),
+                                bots: !!autopublishRows[0].bots,
+                            }
+                            : {},
+                        logs: logsRows[0]
+                            ? {
+                                enabled: !!logsRows[0].enabled,
+                                webhookEnabled: !!logsRows[0].webhookEnabled,
+                                channel: logsRows[0].channel || "",
+                                webhook: logsRows[0].webhook || "",
+                                inbox: logsRows[0].inbox || "",
+                                actions: safeParseJSON(logsRows[0].actions, {}),
+                            }
+                            : {},
+                        roles: rolesRows[0]
+                            ? {
+                                settings: safeParseJSON(rolesRows[0].settings, {}),
+                                immune: safeParseJSON(rolesRows[0].immune, []),
+                                noPing: safeParseJSON(rolesRows[0].noPing, []),
+                                streaming: rolesRows[0].streaming || "",
+                                mute: rolesRows[0].mute || "",
+                            }
+                            : {},
+                        welcome: welcomeRows[0]
+                            ? {
+                                enabled: !!welcomeRows[0].enabled,
+                                webhookEnabled: !!welcomeRows[0].webhookEnabled,
+                                channel: welcomeRows[0].channel || "",
+                                webhook: welcomeRows[0].webhook || "",
+                                message: { content: welcomeRows[0].message || "" },
+                            }
+                            : {},
+                        leveling: levelingRows[0]
+                            ? {
+                                enabled: !!levelingRows[0].enabled,
+                                xp: {
+                                    min: levelingRows[0].xp_min ?? 5,
+                                    max: levelingRows[0].xp_max ?? 25,
+                                    roles: safeParseJSON(levelingRows[0].xp_roles, []),
+                                    channels: safeParseJSON(levelingRows[0].xp_channels, []),
+                                    filterMode: levelingRows[0].xp_filterMode ?? 0,
+                                },
+                                levelMax: levelingRows[0].levelMax ?? 100,
+                                levelRewarding: !!levelingRows[0].levelRewarding,
+                            }
+                            : {},
+                        economy: economyRows[0]
+                            ? {
+                                enabled: !!economyRows[0].enabled,
+                                currency: {
+                                    name: economyRows[0].currency_name || "",
+                                    namePlural: economyRows[0].currency_namePlural || "",
+                                    symbol: economyRows[0].currency_symbol || "",
+                                    image: economyRows[0].currency_image || "",
+                                    useImg: !!economyRows[0].currency_useImg,
+                                },
+                                gambling: {
+                                    enabled: !!economyRows[0].gambling_enabled,
+                                    min: economyRows[0].gambling_min ?? 5,
+                                    max: economyRows[0].gambling_max ?? 100,
+                                },
+                                drops: {
+                                    enabled: !!economyRows[0].drops_enabled,
+                                    channels: safeParseJSON(economyRows[0].drops_channels, []),
+                                    filterMode: economyRows[0].drops_filterMode ?? 0,
+                                },
+                            }
+                            : {},
+                    };
+
+                    cache.set(`server:${server}`, configObj);
+                    log.info(`[O] Settings for server ${server} found and cached`);
+
+                    return new Config(configObj);
+                } else {
+                    log.error(`[X] Database connection failed`);
+                    return;
+                }
+            }
+        } catch (err) {
+            log.trace(err);
+            return;
+        }
+    } else {
+        log.error(`[X] Query ID or database model not provided`);
+        return;
+    }
+};
+
+const update = async (system: Config, db: SaveDataClient): Promise<Config | void> => {
+    if (system && db) {
+        try {
+            const conn = await database(db);
+
+            if (conn) {
+                // Upsert config row
+                const configResult = await conn.query(
+                    `INSERT INTO config (server) VALUES (?) ON DUPLICATE KEY UPDATE server = VALUES(server)`,
+                    [system.server]
                 );
 
-                if (result.upsertedCount >= 1) {
-                    log.info(`[O] New data from collection '${coll}' for server ${record.server} inserted into database`);
-                } else {
-                    log.info(`[O] Data for from collection '${coll}' server ${record.server} updated`);
+                // MariaDB returns insertId=0 for REPLACE if row existed, so fetch id if needed
+                let configId = configResult.insertId;
+
+                if (!configId) {
+                    const configRows = await conn.query(`SELECT id FROM config WHERE server = ? LIMIT 1`, [system.server]);
+                    configId = configRows[0]?.id;
                 };
 
-                return record;
+                // Upsert automod row
+                const automodResult = await conn.query(
+                    `REPLACE INTO automod (config_id, enabled) VALUES (?, ?)`,
+                    [configId, !!system.automod.enabled]
+                );
+
+                let automodId = automodResult.insertId;
+
+                if (!automodId) {
+                    const automodRows = await conn.query(`SELECT id FROM automod WHERE config_id = ? LIMIT 1`, [configId]);
+                    automodId = automodRows[0]?.id;
+                };
+
+                // Upsert filters
+                const filterTypes = [
+                    { type: "swear", filter: system.automod.swearFilter },
+                    { type: "link", filter: system.automod.linkFilter },
+                    { type: "invite", filter: system.automod.inviteFilter },
+                    { type: "dupetext", filter: system.automod.dupetextFilter },
+                    { type: "massmention", filter: system.automod.massmentionFilter },
+                    { type: "nickname", filter: system.automod.nicknameFilter },
+                    { type: "antispam", filter: system.automod.antispam },
+                    { type: "antialt", filter: system.automod.antialt },
+                    { type: "antichain", filter: system.automod.antichain },
+                    { type: "antiping", filter: system.automod.antiping },
+                ];
+
+                for (const { type, filter } of filterTypes) {
+                    await conn.query(
+                        `REPLACE INTO filter (automod_id, type, enabled, roles, channels, filterMode, permFilterMode, punishment, keywords, logs)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                        [
+                            automodId,
+                            type,
+                            !!filter.enabled,
+                            JSON.stringify(filter.roles),
+                            JSON.stringify(filter.channels),
+                            filter.filterMode ?? 0,
+                            filter.permFilterMode ?? 0,
+                            filter.punishment ?? 0,
+                            JSON.stringify(filter.keywords),
+                            filter.logs ?? "",
+                        ],
+                    );
+                };
+
+                // Upsert ghostping
+                await conn.query(
+                    `REPLACE INTO ghostping (config_id, enabled, noMods, settings)
+                        VALUES (?, ?, ?, ?)`,
+                    [
+                        configId,
+                        !!system.ghostping.enabled,
+                        !!system.ghostping.noMods,
+                        JSON.stringify(system.ghostping.settings),
+                    ],
+                );
+
+                // Upsert autopublish
+                await conn.query(
+                    `REPLACE INTO autopublish (config_id, enabled, channels, bots)
+                        VALUES (?, ?, ?, ?)`,
+                    [
+                        configId,
+                        !!system.autopublish.enabled,
+                        JSON.stringify(system.autopublish.channels),
+                        !!system.autopublish.bots,
+                    ],
+                );
+
+                // Upsert logs
+                await conn.query(
+                    `REPLACE INTO logs (config_id, enabled, webhookEnabled, channel, webhook, inbox, actions)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [
+                        configId,
+                        !!system.logs.enabled,
+                        !!system.logs.webhookEnabled,
+                        system.logs.channel ?? "",
+                        system.logs.webhook ?? "",
+                        system.logs.inbox ?? "",
+                        JSON.stringify(system.logs.actions),
+                    ],
+                );
+
+                // Upsert roles
+                await conn.query(
+                    `REPLACE INTO roles (config_id, settings, immune, noPing, streaming, mute)
+                        VALUES (?, ?, ?, ?, ?, ?)`,
+                    [
+                        configId,
+                        JSON.stringify(system.roles.settings),
+                        JSON.stringify(system.roles.immune),
+                        JSON.stringify(system.roles.noPing),
+                        system.roles.streaming ?? "",
+                        system.roles.mute ?? "",
+                    ],
+                );
+
+                // Upsert welcome
+                await conn.query(
+                    `REPLACE INTO welcome (config_id, enabled, webhookEnabled, channel, webhook, message)
+                        VALUES (?, ?, ?, ?, ?, ?)`,
+                    [
+                        configId,
+                        !!system.welcome.enabled,
+                        !!system.welcome.webhookEnabled,
+                        system.welcome.channel ?? "",
+                        system.welcome.webhook ?? "",
+                        system.welcome.message?.content ?? "",
+                    ],
+                );
+
+                // Upsert leveling
+                await conn.query(
+                    `REPLACE INTO leveling (config_id, enabled, xp_min, xp_max, xp_roles, xp_channels, xp_filterMode, levelMax, levelRewarding)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [
+                        configId,
+                        !!system.leveling.enabled,
+                        system.leveling.xp?.min ?? 5,
+                        system.leveling.xp?.max ?? 25,
+                        JSON.stringify(system.leveling.xp?.roles ?? []),
+                        JSON.stringify(system.leveling.xp?.channels ?? []),
+                        system.leveling.xp?.filterMode ?? 0,
+                        system.leveling.levelMax ?? 100,
+                        !!system.leveling.levelRewarding,
+                    ],
+                );
+
+                // Upsert economy
+                await conn.query(
+                    `REPLACE INTO economy (
+                            config_id,
+                            enabled,
+                            currency_name,
+                            currency_namePlural,
+                            currency_symbol,
+                            currency_image,
+                            currency_useImg,
+                            gambling_enabled,
+                            gambling_min,
+                            gambling_max,
+                            drops_enabled,
+                            drops_channels,
+                            drops_filterMode
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [
+                        configId,
+                        !!system.economy.enabled,
+                        system.economy.currency?.name ?? "",
+                        system.economy.currency?.namePlural ?? "",
+                        system.economy.currency?.symbol ?? "",
+                        system.economy.currency?.image ?? "",
+                        !!system.economy.currency?.useImg,
+                        !!system.economy.gambling?.enabled,
+                        system.economy.gambling?.min ?? 5,
+                        system.economy.gambling?.max ?? 100,
+                        !!system.economy.drops?.enabled,
+                        JSON.stringify(system.economy.drops?.channels ?? []),
+                        system.economy.drops?.filterMode ?? 0,
+                    ],
+                );
+
+                cache.set(`server:${system.server}`, system);
+                log.info(`[O] Settings for server ${system.server} updated`);
+
+                conn.release();
+
+                return system;
             } else {
                 log.error(`[X] Database connection failed`);
                 return;
@@ -147,230 +691,9 @@ const handleUpdateData = async (
     };
 };
 
-/**
- * Database helper methods
- */
 export default {
-    /**
-     * Fetch settings for a server from cache or database.
-     * 
-     * @param server Server ID for query
-     * @param db Bot database model
-     */
-    fetch: async (server: string, db: SaveDataClient): Promise<Config | void> => {
-        if (server && db) {
-            try {
-                const cachedData = cache.get(`server:${server}`);
-
-                if (cachedData) {
-                    log.debug(`[I] Cache hit for server ID ${server}`);
-                    return new Config(cachedData);
-                } else {
-                    const database = await getDbClient(db.mongo_uri);
-
-                    if (database) {
-                        const collection = database.collection("servers");
-
-                        log.debug(`[I] Querying database for server ID ${server}...`);
-                        const found = await collection.findOne({ server });
-
-                        if (found) {
-                            const { _id, ...conf } = found;
-                            const res = new Config(conf);
-
-                            log.debug(`[II] Fetched query of ID ${_id}`);
-
-                            cache.set(`server:${server}`, res);
-                            log.info(`[O] Settings for server ${server} found and cached`);
-                            return res;
-                        } else {
-                            log.error(`[X] Settings for server ${server} not found`);
-                            return new Config({});
-                        };
-                    } else {
-                        log.error(`[X] Database connection failed`);
-                        return;
-                    };
-                };
-            } catch (err) {
-                log.trace(err);
-                return;
-            };
-        } else {
-            log.error(`[X] Query ID or database model not provided`);
-            return;
-        };
-    },
-
-    /**
-     * Update settings for a server and invalidate cache.
-     * 
-     * @param system Object for query
-     * @param db Bot database model
-     */
-    update: async (system: Config, db: SaveDataClient): Promise<Config | void> => {
-        if (system && db) {
-            try {
-                const database = await getDbClient(db.mongo_uri);
-
-                if (database) {
-                    const collection = database.collection("servers");
-
-                    log.debug(`[I] Updating database for server ID ${system.server}...`);
-                    const result = await collection.updateOne(
-                        { server: system.server },
-                        { $set: system },
-                        { upsert: true },
-                    );
-
-                    if (cache.get(`server:${system.server}`)) cache.set(`server:${system.server}`, system);
-
-                    if (result.upsertedCount >= 1) {
-                        log.info(`[O] New settings for server ${system.server} inserted into database`);
-                    } else {
-                        log.info(`[O] Settings for server ${system.server} updated`);
-                    };
-
-                    return system;
-                } else {
-                    log.error(`[X] Database connection failed`);
-                    return;
-                };
-            } catch (err) {
-                log.trace(err);
-                return;
-            };
-        } else {
-            log.error(`[X] Query object or database model not provided`);
-            return;
-        };
-    },
-
-    getDbClient,
-    flushToDb,
-
-    warns: {
-        /**
-         * Fetch warning data for a server from cache or database.
-         * 
-         * @param server Server ID for query
-         * @param user User ID for query
-         * @param db Bot database model
-         */
-        fetch: async (server: string, user: string, db: SaveDataClient): Promise<InfractionRecord | void> => {
-            const data = await handleFetchData("warns", server, user, db, { server: server, user: user });
-            if (data && ('data' in data)) return new InfractionRecord({ server: data.server || "", user: data.user || "", data: data.data || [] });
-        },
-
-        /**
-         * Update warning data for a server and invalidate cache.
-         * 
-         * @param record Object for query
-         * @param db Bot database model
-         */
-        update: async (record: InfractionRecord, db: SaveDataClient): Promise<InfractionRecord | void> => {
-            const data = await handleUpdateData("warns", record, db, { server: record.server, user: record.server });
-            if (data) return record;
-        },
-    },
-
-    xp: {
-        /**
-         * Fetch XP data for a server from cache or database.
-         * 
-         * @param server Server ID for query
-         * @param user User ID for query
-         * @param db Bot database model
-         */
-        fetch: async (server: string, user: string, db: SaveDataClient): Promise<LevelRecord | void> => {
-            const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
-            if (data && ('level' in data && 'xp' in data)) return new LevelRecord({ server: data.server || "", user: data.user || "", level: data.level || 1, xp: data.xp || 0 });
-        },
-
-        /**
-         * Update XP data for a server and invalidate cache.
-         * 
-         * @param record Object for query
-         * @param db Bot database model
-         */
-        update: async (record: LevelRecord, db: SaveDataClient): Promise<LevelRecord | void> => {
-            const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
-            if (data) return record;
-        },
-    },
-
-    mutes: {
-        /**
-         * Fetch mute data for a server from cache or database.
-         * 
-         * @param server Server ID for query
-         * @param user User ID for query
-         * @param db Bot database model
-         */
-        fetch: async (server: string, user: string, db: SaveDataClient): Promise<MuteRecord | void> => {
-            const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
-            if (data && ('unix' in data && 'until' in data)) return new MuteRecord({ server: data.server || "", user: data.user || "", unix: data.unix || 0, reason: data.reason || "", mod: data.mod || "", until: data.until || 0 });
-        },
-
-        /**
-         * Update mute data for a server and invalidate cache.
-         * 
-         * @param record Object for query
-         * @param db Bot database model
-         */
-        update: async (record: MuteRecord, db: SaveDataClient): Promise<MuteRecord | void> => {
-            const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
-            if (data) return record;
-        },
-    },
-
-    nicknames: {
-        /**
-         * Fetch nickname data for a server from cache or database.
-         * 
-         * @param server Server ID for query
-         * @param user User ID for query
-         * @param db Bot database model
-         */
-        fetch: async (server: string, user: string, db: SaveDataClient): Promise<NicknameRecord | void> => {
-            const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
-            if (data && ('nickname' in data)) return new NicknameRecord({ server: data.server || "", user: data.user || "", nickname: data.nickname || "", reason: data.reason || "", mod: data.mod || "", unix: data.unix || 0, });
-        },
-
-        /**
-         * Update nickname data for a server and invalidate cache.
-         * 
-         * @param record Object for query
-         * @param db Bot database model
-         */
-        update: async (record: NicknameRecord, db: SaveDataClient): Promise<NicknameRecord | void> => {
-            const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
-            if (data) return record;
-        },
-    },
-
-    roles: {
-        /**
-         * Fetch nickname data for a server from cache or database.
-         * 
-         * @param server Server ID for query
-         * @param user User ID for query
-         * @param db Bot database model
-         */
-        fetch: async (server: string, user: string, db: SaveDataClient): Promise<RolesRecord | void> => {
-            const data = await handleFetchData("xp", server, user, db, { server: server, user: user });
-            if (data && ('roles' in data)) return new RolesRecord({ server: data.server || "", user: data.user || "", roles: data.roles || [""] });
-        },
-
-        /**
-         * Update nickname data for a server and invalidate cache.
-         * 
-         * @param record Object for query
-         * @param db Bot database model
-         */
-        update: async (record: RolesRecord, db: SaveDataClient): Promise<RolesRecord | void> => {
-            const data = await handleUpdateData("xp", record, db, { server: record.server, user: record.user });
-            if (data) return record;
-        },
-    },
+    fetch,
+    update,
+    database,
+    flush,
 };

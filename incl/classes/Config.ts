@@ -158,43 +158,6 @@ export class AutoPublish {
     };
 };
 
-/**
- * @memberof AntiRaid
- */
-export class Alts {
-    public enabled: boolean;
-    public punishment: number;
-    public untilPunish: number;
-    public timeThreshold: number;
-
-    constructor({ enabled = false, punishment = 0, untilPunish = 10, timeThreshold = 5 }: Partial<Alts>) {
-        this.enabled = enabled;
-        this.punishment = punishment;
-        this.untilPunish = untilPunish;
-        this.timeThreshold = timeThreshold;
-
-        return this;
-    };
-};
-
-/**
- * User anti-raid configuration
- * 
- * **Uses:**
- * - {@link Alts}
- */
-export class AntiRaid {
-    public text: Filter;
-    public alts: Alts;
-
-    constructor({ text = new Filter({}), alts = new Alts({}) }: Partial<AntiRaid>) {
-        this.text = new Filter(text);
-        this.alts = new Alts(alts);
-
-        return this;
-    };
-};
-
 export class AutoMod {
     public enabled: boolean;
     public swearFilter: Filter;
@@ -204,7 +167,6 @@ export class AutoMod {
     public massmentionFilter: Filter;
     public nicknameFilter: Filter;
     public antispam: Filter;
-    public antiraid: AntiRaid;
     public antialt: Filter;
     public antichain: Filter;
     public antiping: Filter;
@@ -218,7 +180,6 @@ export class AutoMod {
         massmentionFilter = new Filter({}),
         nicknameFilter = new Filter({}),
         antispam = new Filter({}),
-        antiraid = new AntiRaid({}),
         antialt = new Filter({}),
         antichain = new Filter({}),
         antiping = new Filter({}),
@@ -231,7 +192,6 @@ export class AutoMod {
         this.massmentionFilter = new Filter(massmentionFilter);
         this.nicknameFilter = new Filter(nicknameFilter);
         this.antispam = new Filter(antispam);
-        this.antiraid = new AntiRaid(antiraid);
         this.antialt = new Filter(antialt);
         this.antichain = new Filter(antichain);
         this.antiping = new Filter(antiping);
@@ -465,29 +425,6 @@ export class Economy {
 };
 
 /**
- * AI chat bot configuration
- */
-export class Cleverbot {
-    public enabled: boolean;
-    public personality: string;
-    public channels: string[];
-    public roles: string[];
-    public filterMode: number;
-    public permFilterMode: number;
-
-    constructor({ enabled = false, personality = "", channels = [], roles = [], filterMode = 0, permFilterMode = 0 }: Partial<Cleverbot>) {
-        this.enabled = enabled;
-        this.personality = personality;
-        this.channels = channels;
-        this.roles = roles;
-        this.filterMode = filterMode;
-        this.permFilterMode = permFilterMode;
-
-        return this;
-    };
-};
-
-/**
  * Full server configuration
  */
 export default class Config {
@@ -500,7 +437,6 @@ export default class Config {
     public welcome: Welcome;
     public leveling: Leveling;
     public economy: Economy;
-    public cleverbot: Cleverbot;
 
     constructor({
         server = "",
@@ -512,7 +448,6 @@ export default class Config {
         welcome = new Welcome({}),
         leveling = new Leveling({}),
         economy = new Economy({}),
-        cleverbot = new Cleverbot({})
     }: Partial<Config>) {
         this.server = server;
         this.automod = new AutoMod(automod);
@@ -523,7 +458,6 @@ export default class Config {
         this.welcome = new Welcome(welcome);
         this.leveling = new Leveling(leveling);
         this.economy = new Economy(economy);
-        this.cleverbot = new Cleverbot(cleverbot);
 
         return this;
     };

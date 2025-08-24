@@ -2,6 +2,8 @@ import Command from './Command.js';
 import ContextButton from './ContextButton.js';
 import SaveDataClient from './SaveDataClient.js';
 
+import { DatabaseConfig } from "./SaveDataClient.js";
+
 import SysAssets from "#assets" with { type: 'json' };
 
 import { Client, Collection, GatewayIntentBits, Partials, } from 'discord.js';
@@ -76,14 +78,14 @@ export default class BloqbitClient {
      * @param data MongoDB database URI
      * @param gil Guilded bot token
      */
-    constructor(token: string, web: string, data: string, secret: string | undefined = undefined) {
+    constructor(token: string, web: string, data: DatabaseConfig, secret: string | undefined = undefined) {
         const noEnv = (env: string): never => { throw new Error(`Environment variable '${env}' is not defined!`); };
 
         this.token = token || noEnv('MAIN_TOKEN');
 
         this.dev_wh = web || noEnv('MAIN_LOG_WH');
 
-        this.db = new SaveDataClient(data || noEnv('MONGO_URI'));
+        this.db = new SaveDataClient(data);
 
         this.commands = [];
         this.buttons = [];
@@ -126,5 +128,7 @@ export default class BloqbitClient {
         this.secret = secret;
 
         this.rest.setToken(this.token);
+
+        return this;
     };
 };

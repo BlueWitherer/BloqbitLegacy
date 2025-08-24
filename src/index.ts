@@ -7,7 +7,7 @@ import * as url from 'url';
 import { Events, PresenceUpdateStatus, WebhookClient } from 'discord.js';
 import { RESTPostAPIChatInputApplicationCommandsJSONBody, RESTPostAPIContextMenuApplicationCommandsJSONBody, Routes } from 'discord-api-types/v10';
 
-import cache from "#bloqbit/database.mjs";
+import * as cache from "#bloqbit/database.mjs";
 import fetch from "#bloqbit/modules/fetch.mjs";
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -17,7 +17,7 @@ export default class Bot {
     public botModel: BloqbitClient;
     private testMode: boolean;
 
-    constructor({ botModel = new BloqbitClient("", "", "", "") }: Partial<Bot>, testMode: boolean = false) {
+    constructor({ botModel = new BloqbitClient("", "", { "host": "", "port": 3000, "user": "", "password": "", "database": "" }, "") }: Partial<Bot>, testMode: boolean = false) {
         this.botModel = botModel;
         this.testMode = testMode;
 
@@ -311,7 +311,7 @@ export default class Bot {
     };
 };
 
-const checkEnv: (env: string, name: string) => string = (env: string, name: string) => {
+export const checkEnv: (env: string | undefined, name: string) => string = (env: string | undefined, name: string) => {
     try {
         if (env) {
             return env;
@@ -329,7 +329,13 @@ try {
     const bloqbit = new BloqbitClient(
         checkEnv(dat.MAIN_TOKEN, "MAIN_TOKEN"),
         checkEnv(dat.MAIN_LOG_WH, "MAIN_LOG_WH"),
-        checkEnv(dat.MONGO_URI, "MONGO_URI"),
+        {
+            "host": checkEnv(dat.DB_HOST, "DB_HOST"),
+            "port": parseInt(checkEnv(dat.DB_PORT, "DB_PORT"), 10),
+            "user": checkEnv(dat.DB_USERNAME, "DB_USERNAME"),
+            "password": checkEnv(dat.DB_PASSWORD, "DB_PASSWORD"),
+            "database": checkEnv(dat.DB_DATABASE, "DB_DATABASE"),
+        },
         dat.MAIN_SECRET || undefined,
     );
 
@@ -347,7 +353,7 @@ try {
         switch (eventType) {
             case "flushDb":
                 try {
-                    await cache.flushToDb(bb.botModel.db);
+                    await cache.default.flush(bb.botModel.db);
                     log.debug(`Cache from shard of ID ${bb.botModel.client?.shard?.ids[0]} flushed to database`);
                 } catch (err) {
                     log.trace(err);
@@ -356,7 +362,7 @@ try {
 
             case "flushClose":
                 try {
-                    if (typeof cache?.flushToDb === 'function') await cache.flushToDb(bb.botModel.db);
+                    if (typeof cache.default.flush === 'function') await cache.default.flush(bb.botModel.db);
                     if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
 
                     if (process.send) process.send('shutdownComplete');

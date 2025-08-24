@@ -1,6 +1,4 @@
-import { LevelRecord, SaveDataClient, log } from "#bloqbit/include.ts";
-
-import cache from "#bloqbit/database.mjs";
+import { log } from "#bloqbit/include.ts";
 
 export interface LevelCard {
     level: number;
@@ -31,20 +29,6 @@ export default {
                 untilUp: untilUp(1),
             };
         };
-    },
-
-    /**
-     * Fetches data from the database for the user's level in this server
-     */
-    fetchData: async (server: string, user: string, db: SaveDataClient): Promise<LevelRecord | void> => {
-        return await cache.xp.fetch(server, user, db);
-    },
-
-    /**
-     * Updates data in the database of the user's level in this server
-     */
-    updateData: async (record: LevelRecord, db: SaveDataClient): Promise<LevelRecord | void> => {
-        return await cache.xp.update(record, db);
     },
 
     untilUp,

@@ -155,7 +155,7 @@ export default new Command(
 
             const returnEmbed = new EmbedBuilder()
                 .setTitle(`${assets.icons.info} Set of active logs for ${interaction.guild?.name}`)
-                .setDescription(`Logs are currently **${resolve.abled(lg.enabled)}**${loggingIn()}!`)
+                .setDescription(`Logs are currently **${resolve.abled(lg.enabled)}**${loggingIn() || ""}!`)
                 .setColor(assets.colors.primary)
                 .setFields([
                     {
