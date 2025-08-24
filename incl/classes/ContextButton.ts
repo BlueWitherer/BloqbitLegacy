@@ -3,13 +3,13 @@ import SaveDataClient from './SaveDataClient.js';
 
 import SysAssets from "#assets" with { type: 'json' };
 
-import { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction } from 'discord.js';
+import { CacheType, ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction } from 'discord.js';
 
 /**
  * Type definition for the execute function of a command.
  */
 export type ExecuteContextButton = (
-    interaction: MessageContextMenuCommandInteraction,
+    interaction: MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction<CacheType>,
     assets: typeof SysAssets,
     system: Config,
     db: SaveDataClient,

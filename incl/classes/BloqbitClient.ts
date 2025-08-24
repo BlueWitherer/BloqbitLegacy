@@ -1,9 +1,11 @@
 import Command from './Command.js';
+import ContextButton from './ContextButton.js';
 import SaveDataClient from './SaveDataClient.js';
 
 import SysAssets from "#assets" with { type: 'json' };
 
-import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
+import { Client, Collection, GatewayIntentBits, Partials, } from 'discord.js';
+import { RESTPostAPIChatInputApplicationCommandsJSONBody, RESTPostAPIContextMenuApplicationCommandsJSONBody } from 'discord-api-types/rest/v10';
 import { REST } from '@discordjs/rest';
 
 const parsedSysAssets = JSON.parse(JSON.stringify(SysAssets));
@@ -30,7 +32,12 @@ export default class BloqbitClient {
     /**
      * Array of commands
      */
-    public commands: Array<import('discord.js').SlashCommandOptionsOnlyBuilder>;
+    public commands: RESTPostAPIChatInputApplicationCommandsJSONBody[];
+
+    /**
+     * Array of context buttons
+     */
+    public buttons: RESTPostAPIContextMenuApplicationCommandsJSONBody[];
 
     /**
      * Object of emote and color assets
@@ -46,6 +53,11 @@ export default class BloqbitClient {
      * Commands collection
      */
     public cmds: Collection<string, Command>;
+
+    /**
+     * Context buttons collection
+     */
+    public btns: Collection<string, ContextButton>;
 
     /**
      * Discord bot client
@@ -74,11 +86,14 @@ export default class BloqbitClient {
         this.db = new SaveDataClient(data || noEnv('MONGO_URI'));
 
         this.commands = [];
+        this.buttons = [];
 
         this.assets = parsedSysAssets;
 
         this.rest = new REST();
+
         this.cmds = new Collection();
+        this.btns = new Collection();
 
         this.client = new Client({
             "intents": [

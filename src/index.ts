@@ -1,4 +1,4 @@
-import { BloqbitClient, Command, BotEvent, log } from "#bloqbit/include.ts";
+import { BloqbitClient, Command, BotEvent, log, ContextButton } from "#bloqbit/include.ts";
 
 import * as fs from 'node:fs';
 import * as path from 'path';
@@ -67,31 +67,52 @@ export default class Bot {
             };
 
             try {
-                const foldersPath = path.join(__dirname, 'cmds');
-                const commandFolders = fs.readdirSync(foldersPath);
+                const cmdFoldersPath = path.join(__dirname, 'cmds');
+                const commandFolders = fs.readdirSync(cmdFoldersPath);
 
                 for (const folder of commandFolders) {
-                    const commandsPath = path.join(foldersPath, folder);
+                    const commandsPath = path.join(cmdFoldersPath, folder);
 
                     await loadFiles(commandsPath, async (command: Command) => {
-                        // @ts-ignore
                         bot.commands.push(command.data?.toJSON());
                         bot.cmds.set(command.data?.name, command);
 
-                        log.debug(`Loaded command /${command.data.name}`);
+                        log.debug(`Loaded ${folder} command /${command.data.name}`);
+                    });
+                };
+
+                const btnFoldersPath = path.join(__dirname, 'btns');
+                const buttonFolders = fs.readdirSync(btnFoldersPath);
+
+                for (const folder of buttonFolders) {
+                    const buttonsPath = path.join(btnFoldersPath, folder);
+
+                    await loadFiles(buttonsPath, async (button: ContextButton) => {
+                        bot.buttons.push(button.data?.toJSON());
+                        bot.btns.set(button.data?.name, button);
+
+                        log.debug(`Loaded ${folder} context button ${button.data.name}`);
                     });
                 };
 
                 try {
                     log.print(`Refreshing ${bot.commands.length} application (/) commands...`);
 
-                    const data = await bot.rest.put(
+                    const cData = await bot.rest.put(
                         Routes.applicationCommands(client?.user?.id),
                         { body: bot.commands }
-                    );
+                    ) as import('discord-api-types/v10').APIApplicationCommand[];
 
-                    // @ts-ignore
-                    log.info(`Successfully reloaded ${data.length} application (/) commands`);
+                    log.info(`Successfully reloaded ${cData.length} application (/) commands`);
+
+                    log.print(`Refreshing ${bot.buttons.length} application context buttons...`);
+
+                    const bData = await bot.rest.put(
+                        Routes.applicationCommands(client?.user?.id),
+                        { body: bot.buttons }
+                    ) as import('discord-api-types/v10').APIApplicationCommand[];
+
+                    log.info(`Successfully reloaded ${bData.length} application context buttons`);
                 } catch (err) {
                     log.trace(err);
                     if (testMode) process.exit(1);

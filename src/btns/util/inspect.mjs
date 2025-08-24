@@ -1,10 +1,7 @@
-import { MessageFilterMode, ModeratorActionType, ContextButton, log } from "#bloqbit/include.ts";
+import { ContextButton } from "#bloqbit/include.ts";
 import { ApplicationIntegrationType, InteractionContextType } from 'discord.js';
-import { ContextMenuCommandBuilder, SlashCommandBuilder } from '@discordjs/builders';
-import { ApplicationCommandType, ChannelType, PermissionFlagsBits } from 'discord-api-types/v10';
-import fetch from "#bloqbit/modules/fetch.mjs";
-import resolve from "#bloqbit/modules/resolve.mjs";
-import cache from "#bloqbit/database.mjs";
+import { ContextMenuCommandBuilder } from '@discordjs/builders';
+import { ApplicationCommandType, PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default new ContextButton(
     new ContextMenuCommandBuilder()
@@ -14,7 +11,7 @@ export default new ContextButton(
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
     async (interaction, assets, system, db) => {
-        const targetM = interaction.targetMessage;
+        const targetM = interaction.isMessageContextMenuCommand() ? interaction.targetMessage : null;
 
         if (targetM) {
             await interaction.reply({
@@ -55,7 +52,7 @@ export default new ContextButton(
             });
         } else {
             await interaction.reply({
-                "content": `${assets.icons.xmark} | Unable to fetch the target message.`,
+                "content": `${assets.icons.xmark} Unable to fetch the target message.`,
                 "flags": ["Ephemeral"],
             });
         };
