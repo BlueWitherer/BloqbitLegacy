@@ -239,7 +239,8 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert automod row
                 const automodResult = await conn.query(
-                    `INSERT INTO automod (config_id, enabled) VALUES (?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                    `INSERT INTO automod (config_id, enabled) VALUES (?, ?) ON DUPLICATE KEY UPDATE 
+                    enabled = VALUES(enabled)`,
                     [configId, !!system.automod.enabled],
                 );
 
@@ -267,7 +268,15 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 for (const { type, filter } of filterTypes) {
                     await conn.query(
                         `INSERT INTO filter (automod_id, type, enabled, roles, channels, filterMode, permFilterMode, punishment, keywords, logs)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE automod_id = VALUES(automod_id)`,
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                            enabled = VALUES(enabled),
+                            roles = VALUES(roles),
+                            channels = VALUES(channels),
+                            filterMode = VALUES(filterMode),
+                            permFilterMode = VALUES(permFilterMode),
+                            punishment = VALUES(punishment),
+                            keywords = VALUES(keywords),
+                            logs = VALUES(logs)`,
                         [
                             automodId,
                             type,
@@ -286,7 +295,10 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 // Upsert ghostping
                 await conn.query(
                     `INSERT INTO ghostping (config_id, enabled, noMods, settings)
-                        VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                        VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                        enabled = VALUES(enabled),
+                        noMods = VALUES(noMods),
+                        settings = VALUES(settings)`,
                     [
                         configId,
                         !!system.ghostping.enabled,
@@ -298,7 +310,10 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 // Upsert autopublish
                 await conn.query(
                     `INSERT INTO autopublish (config_id, enabled, channels, bots)
-                        VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                        VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                        enabled = VALUES(enabled),
+                        channels = VALUES(channels),
+                        bots = VALUES(bots)`,
                     [
                         configId,
                         !!system.autopublish.enabled,
@@ -310,7 +325,13 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 // Upsert logs
                 await conn.query(
                     `INSERT INTO logs (config_id, enabled, webhookEnabled, channel, webhook, inbox, actions)
-                        VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                        VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                        enabled = VALUES(enabled),
+                        webhookEnabled = VALUES(webhookEnabled),
+                        channel = VALUES(channel),
+                        webhook = VALUES(webhook),
+                        inbox = VALUES(inbox),
+                        actions = VALUES(actions)`,
                     [
                         configId,
                         !!system.logs.enabled,
@@ -325,7 +346,12 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 // Upsert roles
                 await conn.query(
                     `INSERT INTO roles (config_id, settings, immune, noPing, streaming, mute)
-                        VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                        VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                        settings = VALUES(settings),
+                        immune = VALUES(immune),
+                        noPing = VALUES(noPing),
+                        streaming = VALUES(streaming),
+                        mute = VALUES(mute)`,
                     [
                         configId,
                         JSON.stringify(system.roles.settings),
@@ -339,7 +365,12 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 // Upsert welcome
                 await conn.query(
                     `INSERT INTO welcome (config_id, enabled, webhookEnabled, channel, webhook, message)
-                        VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                        VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                        enabled = VALUES(enabled),
+                        webhookEnabled = VALUES(webhookEnabled),
+                        channel = VALUES(channel),
+                        webhook = VALUES(webhook),
+                        message = VALUES(message)`,
                     [
                         configId,
                         !!system.welcome.enabled,
@@ -353,7 +384,15 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 // Upsert leveling
                 await conn.query(
                     `INSERT INTO leveling (config_id, enabled, xp_min, xp_max, xp_roles, xp_channels, xp_filterMode, levelMax, levelRewarding)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                        enabled = VALUES(enabled),
+                        xp_min = VALUES(xp_min),
+                        xp_max = VALUES(xp_max),
+                        xp_roles = VALUES(xp_roles),
+                        xp_channels = VALUES(xp_channels),
+                        xp_filterMode = VALUES(xp_filterMode),
+                        levelMax = VALUES(levelMax),
+                        levelRewarding = VALUES(levelRewarding)`,
                     [
                         configId,
                         !!system.leveling.enabled,
@@ -383,7 +422,19 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                             drops_enabled,
                             drops_channels,
                             drops_filterMode
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                         enabled = VALUES(enabled),
+                         currency_name = VALUES(currency_name),
+                         currency_namePlural = VALUES(currency_namePlural),
+                         currency_symbol = VALUES(currency_symbol),
+                         currency_image = VALUES(currency_image),
+                         currency_useImg = VALUES(currency_useImg),
+                         gambling_enabled = VALUES(gambling_enabled),
+                         gambling_min = VALUES(gambling_min),
+                         gambling_max = VALUES(gambling_max),
+                         drops_enabled = VALUES(drops_enabled),
+                         drops_channels = VALUES(drops_channels),
+                         drops_filterMode = VALUES(drops_filterMode)`,
                     [
                         configId,
                         !!system.economy.enabled,
