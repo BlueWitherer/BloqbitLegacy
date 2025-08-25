@@ -267,7 +267,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 for (const { type, filter } of filterTypes) {
                     await conn.query(
                         `INSERT INTO filter (automod_id, type, enabled, roles, channels, filterMode, permFilterMode, punishment, keywords, logs)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE automod_id = VALUES(automod_id)`,
                         [
                             automodId,
                             type,
