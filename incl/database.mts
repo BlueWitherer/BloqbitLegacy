@@ -200,6 +200,7 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                         : {},
                 };
 
+                log.debug(configObj);
                 log.info(`[O] Settings for server ${server} found and cached`);
 
                 return new Config(configObj);
@@ -452,6 +453,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                     ],
                 );
 
+                log.debug(system);
                 log.info(`[O] Settings for server ${system.server} updated`);
 
                 await conn.release();
