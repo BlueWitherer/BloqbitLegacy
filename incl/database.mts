@@ -239,7 +239,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert automod row
                 const automodResult = await conn.query(
-                    `REPLACE INTO automod (config_id, enabled) VALUES (?, ?)`,
+                    `INSERT INTO automod (config_id, enabled) VALUES (?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                     [configId, !!system.automod.enabled],
                 );
 
@@ -266,8 +266,8 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 for (const { type, filter } of filterTypes) {
                     await conn.query(
-                        `REPLACE INTO filter (automod_id, type, enabled, roles, channels, filterMode, permFilterMode, punishment, keywords, logs)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                        `INSERT INTO filter (automod_id, type, enabled, roles, channels, filterMode, permFilterMode, punishment, keywords, logs)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                         [
                             automodId,
                             type,
@@ -285,8 +285,8 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert ghostping
                 await conn.query(
-                    `REPLACE INTO ghostping (config_id, enabled, noMods, settings)
-                        VALUES (?, ?, ?, ?)`,
+                    `INSERT INTO ghostping (config_id, enabled, noMods, settings)
+                        VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                     [
                         configId,
                         !!system.ghostping.enabled,
@@ -297,8 +297,8 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert autopublish
                 await conn.query(
-                    `REPLACE INTO autopublish (config_id, enabled, channels, bots)
-                        VALUES (?, ?, ?, ?)`,
+                    `INSERT INTO autopublish (config_id, enabled, channels, bots)
+                        VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                     [
                         configId,
                         !!system.autopublish.enabled,
@@ -309,8 +309,8 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert logs
                 await conn.query(
-                    `REPLACE INTO logs (config_id, enabled, webhookEnabled, channel, webhook, inbox, actions)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    `INSERT INTO logs (config_id, enabled, webhookEnabled, channel, webhook, inbox, actions)
+                        VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                     [
                         configId,
                         !!system.logs.enabled,
@@ -324,8 +324,8 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert roles
                 await conn.query(
-                    `REPLACE INTO roles (config_id, settings, immune, noPing, streaming, mute)
-                        VALUES (?, ?, ?, ?, ?, ?)`,
+                    `INSERT INTO roles (config_id, settings, immune, noPing, streaming, mute)
+                        VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                     [
                         configId,
                         JSON.stringify(system.roles.settings),
@@ -338,8 +338,8 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert welcome
                 await conn.query(
-                    `REPLACE INTO welcome (config_id, enabled, webhookEnabled, channel, webhook, message)
-                        VALUES (?, ?, ?, ?, ?, ?)`,
+                    `INSERT INTO welcome (config_id, enabled, webhookEnabled, channel, webhook, message)
+                        VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                     [
                         configId,
                         !!system.welcome.enabled,
@@ -352,8 +352,8 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert leveling
                 await conn.query(
-                    `REPLACE INTO leveling (config_id, enabled, xp_min, xp_max, xp_roles, xp_channels, xp_filterMode, levelMax, levelRewarding)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    `INSERT INTO leveling (config_id, enabled, xp_min, xp_max, xp_roles, xp_channels, xp_filterMode, levelMax, levelRewarding)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                     [
                         configId,
                         !!system.leveling.enabled,
@@ -369,7 +369,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 // Upsert economy
                 await conn.query(
-                    `REPLACE INTO economy (
+                    `INSERT INTO economy (
                             config_id,
                             enabled,
                             currency_name,
@@ -383,7 +383,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                             drops_enabled,
                             drops_channels,
                             drops_filterMode
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE config_id = VALUES(config_id)`,
                     [
                         configId,
                         !!system.economy.enabled,
@@ -403,7 +403,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
 
                 log.info(`[O] Settings for server ${system.server} updated`);
 
-                conn.release();
+                await conn.release();
 
                 return system;
             } else {
