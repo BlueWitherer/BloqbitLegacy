@@ -204,7 +204,11 @@ export default {
     scanChannels: (server: Guild | null, channels: string[]): string[] => {
         if (server) {
             try {
+                log.debug(`Scanning ${channels.length} channels for deletions...`);
+
                 for (let i = 0; i < channels.length; i++) {
+                    log.debug(`Checking channel of ID ${channels[i]}...`);
+
                     if (server.channels?.cache?.get(channels[i])) {
                         log.debug(`Channel of ID ${channels[i]} exists`);
                     } else {
@@ -212,6 +216,8 @@ export default {
                         channels.splice(i, 1);
                     };
                 };
+
+                log.info(`Channel scan complete, ${channels.length} channels remain`);
             } catch (err) {
                 log.trace(err);
             };

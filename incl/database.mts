@@ -109,29 +109,29 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                     server: configRows[0].server,
                     automod: {
                         enabled: !!automodRows[0]?.enabled,
-                        swearFilter: filterRows.find(f => f.type === "swear") || {},
-                        linkFilter: filterRows.find(f => f.type === "link") || {},
-                        inviteFilter: filterRows.find(f => f.type === "invite") || {},
-                        dupetextFilter: filterRows.find(f => f.type === "dupetext") || {},
-                        massmentionFilter: filterRows.find(f => f.type === "massmention") || {},
-                        nicknameFilter: filterRows.find(f => f.type === "nickname") || {},
-                        antispam: filterRows.find(f => f.type === "antispam") || {},
-                        antialt: filterRows.find(f => f.type === "antialt") || {},
-                        antichain: filterRows.find(f => f.type === "antichain") || {},
-                        antiping: filterRows.find(f => f.type === "antiping") || {},
+                        swearFilter: filterRows.find((f) => f.type === "swear") || {},
+                        linkFilter: filterRows.find((f) => f.type === "link") || {},
+                        inviteFilter: filterRows.find((f) => f.type === "invite") || {},
+                        dupetextFilter: filterRows.find((f) => f.type === "dupetext") || {},
+                        massmentionFilter: filterRows.find((f) => f.type === "massmention") || {},
+                        nicknameFilter: filterRows.find((f) => f.type === "nickname") || {},
+                        antispam: filterRows.find((f) => f.type === "antispam") || {},
+                        antialt: filterRows.find((f) => f.type === "antialt") || {},
+                        antichain: filterRows.find((f) => f.type === "antichain") || {},
+                        antiping: filterRows.find((f) => f.type === "antiping") || {},
                     },
-                    ghostping: ghostpingRows[0]
-                        ? {
-                            enabled: !!ghostpingRows[0].enabled,
-                            noMods: !!ghostpingRows[0].noMods,
-                            settings: safeParseJSON(ghostpingRows[0].settings, {}),
-                        }
-                        : {},
                     autopublish: autopublishRows[0]
                         ? {
                             enabled: !!autopublishRows[0].enabled,
                             channels: safeParseJSON(autopublishRows[0].channels, []),
                             bots: !!autopublishRows[0].bots,
+                        }
+                        : {},
+                    ghostping: ghostpingRows[0]
+                        ? {
+                            enabled: !!ghostpingRows[0].enabled,
+                            noMods: !!ghostpingRows[0].noMods,
+                            settings: safeParseJSON(ghostpingRows[0].settings, {}),
                         }
                         : {},
                     logs: logsRows[0]
@@ -292,21 +292,6 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                     );
                 };
 
-                // Upsert ghostping
-                await conn.query(
-                    `INSERT INTO ghostping (config_id, enabled, noMods, settings)
-                        VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE
-                        enabled = VALUES(enabled),
-                        noMods = VALUES(noMods),
-                        settings = VALUES(settings)`,
-                    [
-                        configId,
-                        !!system.ghostping.enabled,
-                        !!system.ghostping.noMods,
-                        JSON.stringify(system.ghostping.settings),
-                    ],
-                );
-
                 // Upsert autopublish
                 await conn.query(
                     `INSERT INTO autopublish (config_id, enabled, channels, bots)
@@ -319,6 +304,21 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                         !!system.autopublish.enabled,
                         JSON.stringify(system.autopublish.channels),
                         !!system.autopublish.bots,
+                    ],
+                );
+
+                // Upsert ghostping
+                await conn.query(
+                    `INSERT INTO ghostping (config_id, enabled, noMods, settings)
+                        VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                        enabled = VALUES(enabled),
+                        noMods = VALUES(noMods),
+                        settings = VALUES(settings)`,
+                    [
+                        configId,
+                        !!system.ghostping.enabled,
+                        !!system.ghostping.noMods,
+                        JSON.stringify(system.ghostping.settings),
                     ],
                 );
 

@@ -68,8 +68,7 @@ export default new Command(
             const toggle = interaction.options?.getBoolean("enable", true);
 
             const chnls = fetch.scanChannels(interaction.guild, system.autopublish.channels);
-
-            const foundChannel = chnls.findIndex((c) => c === channel.id);
+            const foundChannel = chnls?.findIndex((c) => c === channel.id) || -1;
 
             if (foundChannel >= 0) {
                 if (!toggle) chnls.splice(foundChannel, 1);
