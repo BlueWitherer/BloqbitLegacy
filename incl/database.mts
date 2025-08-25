@@ -4,6 +4,34 @@ import mariadb from "mariadb";
 
 let dbPool: mariadb.Pool | undefined;
 
+// Safe JSON parse helper
+function safeParseJSON<T = unknown>(
+    input: string | null | undefined,
+    fallback: T
+): T {
+    if (!input) return fallback;
+
+    try {
+        return JSON.parse(input);
+    } catch {
+        return fallback;
+    };
+};
+
+function safeParseArray<T = unknown>(
+    input: string | null | undefined,
+    fallback: T[] = []
+): T[] {
+    if (!input) return fallback;
+
+    try {
+        const parsed = JSON.parse(input);
+        return Array.isArray(parsed) ? parsed : fallback;
+    } catch {
+        return fallback;
+    };
+};
+
 /**
  * Gets a MariaDB connection from the pool, creating the pool if it doesn't exist.
  * 
@@ -33,17 +61,6 @@ const database = async (dbConfig: SaveDataClient): Promise<mariadb.PoolConnectio
         log.trace(err);
 
         return;
-    };
-};
-
-// Safe JSON parse helper
-function safeParseJSON<T>(input: string | null | undefined, fallback: T): T {
-    if (!input) return fallback;
-
-    try {
-        return JSON.parse(input);
-    } catch {
-        return fallback;
     };
 };
 
@@ -99,9 +116,9 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
 
                 // Parse JSON columns for filters
                 for (const filter of filterRows) {
-                    filter.roles = safeParseJSON(filter.roles, []);
-                    filter.channels = safeParseJSON(filter.channels, []);
-                    filter.keywords = safeParseJSON(filter.keywords, []);
+                    filter.roles = safeParseArray(filter.roles, []);
+                    filter.channels = safeParseArray(filter.channels, []);
+                    filter.keywords = safeParseArray(filter.keywords, []);
                 };
 
                 // Construct config object
@@ -123,7 +140,7 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                     autopublish: autopublishRows[0]
                         ? {
                             enabled: !!autopublishRows[0].enabled,
-                            channels: safeParseJSON(autopublishRows[0].channels, []),
+                            channels: safeParseArray(autopublishRows[0].channels, []),
                             bots: !!autopublishRows[0].bots,
                         }
                         : {},
@@ -147,8 +164,8 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                     roles: rolesRows[0]
                         ? {
                             settings: safeParseJSON(rolesRows[0].settings, {}),
-                            immune: safeParseJSON(rolesRows[0].immune, []),
-                            noPing: safeParseJSON(rolesRows[0].noPing, []),
+                            immune: safeParseArray(rolesRows[0].immune, []),
+                            noPing: safeParseArray(rolesRows[0].noPing, []),
                             streaming: rolesRows[0].streaming || "",
                             mute: rolesRows[0].mute || "",
                         }
@@ -168,8 +185,8 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                             xp: {
                                 min: levelingRows[0].xp_min ?? 5,
                                 max: levelingRows[0].xp_max ?? 25,
-                                roles: safeParseJSON(levelingRows[0].xp_roles, []),
-                                channels: safeParseJSON(levelingRows[0].xp_channels, []),
+                                roles: safeParseArray(levelingRows[0].xp_roles, []),
+                                channels: safeParseArray(levelingRows[0].xp_channels, []),
                                 filterMode: levelingRows[0].xp_filterMode ?? 0,
                             },
                             levelMax: levelingRows[0].levelMax ?? 100,
@@ -193,7 +210,7 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                             },
                             drops: {
                                 enabled: !!economyRows[0].drops_enabled,
-                                channels: safeParseJSON(economyRows[0].drops_channels, []),
+                                channels: safeParseArray(economyRows[0].drops_channels, []),
                                 filterMode: economyRows[0].drops_filterMode ?? 0,
                             },
                         }
