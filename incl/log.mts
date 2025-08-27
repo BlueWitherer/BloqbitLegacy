@@ -45,18 +45,20 @@ const getLogLevel = (): number => {
     };
 };
 
+const logLevel = getLogLevel();
+
 /**
  * Colors and formatting for console logs
  */
 export class LogFormat {
-    static gray: '\x1b[90m'; // debug
-    static white: '\x1b[37m'; // log
-    static cyan: '\x1b[36m'; // info
-    static yellow: '\x1b[93m'; // warn
-    static red: '\x1b[91m'; // error
-    static green: '\x1b[92m'; // done
-    static bold: '\x1b[1m'; // tag
-    static reset: '\x1b[0m'; // default
+    public static gray = '\x1b[90m'; // debug
+    public static white = '\x1b[37m'; // log
+    public static cyan = '\x1b[36m'; // info
+    public static yellow = '\x1b[93m'; // warn
+    public static red = '\x1b[91m'; // error
+    public static green = '\x1b[92m'; // done
+    public static bold = '\x1b[1m'; // tag
+    public static reset = '\x1b[0m'; // default
 };
 
 /**
@@ -109,55 +111,55 @@ export default class log {
      * Trace log
      * @param args
      */
-    static trace = (...args: any): void => {
-        if (getLogLevel() <= LogLevel.TRACE) console.trace(logMsg(timeStamp(), LogFormat.red, 'TRACE', ...args));
+    public static trace = (...args: any): void => {
+        if (logLevel <= LogLevel.TRACE) console.trace(logMsg(timeStamp(), LogFormat.red, 'TRACE', ...args));
     };
 
     /**
      * Debug log
      * @param args 
      */
-    static debug = (...args: any): void => {
-        if (getLogLevel() <= LogLevel.DEBUG) console.debug(logMsg(timeStamp(), LogFormat.gray, 'DEBUG', ...args));
+    public static debug = (...args: any): void => {
+        if (logLevel <= LogLevel.DEBUG) console.debug(logMsg(timeStamp(), LogFormat.gray, 'DEBUG', ...args));
     };
 
     /**
      * Info log
      * @param args
      */
-    static info = (...args: any): void => {
-        if (getLogLevel() <= LogLevel.INFO) console.info(logMsg(timeStamp(), LogFormat.cyan, 'INFO', ...args));
+    public static info = (...args: any): void => {
+        if (logLevel <= LogLevel.INFO) console.info(logMsg(timeStamp(), LogFormat.cyan, 'INFO', ...args));
     };
 
     /**
      * Warn log
      * @param args
      */
-    static warn = (...args: any): void => {
-        if (getLogLevel() <= LogLevel.WARN) console.warn(logMsg(timeStamp(), LogFormat.yellow, 'WARN', ...args));
+    public static warn = (...args: any): void => {
+        if (logLevel <= LogLevel.WARN) console.warn(logMsg(timeStamp(), LogFormat.yellow, 'WARN', ...args));
     };
 
     /**
      * Error log
      * @param args
      */
-    static error = (...args: any): void => {
-        if (getLogLevel() <= LogLevel.ERROR) console.error(logMsg(timeStamp(), LogFormat.red, 'ERROR', ...args));
+    public static error = (...args: any): void => {
+        if (logLevel <= LogLevel.ERROR) console.error(logMsg(timeStamp(), LogFormat.red, 'ERROR', ...args));
     };
 
     /**
      * Done log
      * @param args
      */
-    static done = (...args: any): void => {
-        if (getLogLevel() <= LogLevel.DONE) console.log(logMsg(timeStamp(), LogFormat.green, 'DONE', ...args));
+    public static done = (...args: any): void => {
+        if (logLevel <= LogLevel.DONE) console.log(logMsg(timeStamp(), LogFormat.green, 'DONE', ...args));
     };
 
     /**
      * Print log
      * @param args 
      */
-    static print = (...args: any): void => {
-        if (getLogLevel() <= LogLevel.PRINT) console.log(logMsg(timeStamp(), LogFormat.white, ' LOG ', ...args));
+    public static print = (...args: any): void => {
+        if (logLevel <= LogLevel.PRINT) console.log(logMsg(timeStamp(), LogFormat.white, ' LOG ', ...args));
     };
 };
