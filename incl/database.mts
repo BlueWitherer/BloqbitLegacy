@@ -11,12 +11,17 @@ function safeParseJSON<T = unknown>(
 ): T {
     if (input) {
         try {
-            log.debug(`Scanning stringified JSON ${input} with fallback ${JSON.stringify(fallback)}`);
+            if (typeof input === 'object') {
+                log.info(`JSON object already parsed ${JSON.stringify(input)}`);
+                return input || fallback;
+            } else {
+                log.debug(`Scanning stringified JSON ${input} with fallback ${JSON.stringify(fallback)}`);
 
-            const parsed = JSON.parse(input);
-            log.info(`Returning parsed JSON object ${JSON.stringify(parsed)}`);
+                const parsed = JSON.parse(input);
+                log.info(`Returning parsed JSON object ${JSON.stringify(parsed)}`);
 
-            return parsed;
+                return parsed;
+            };
         } catch (err) {
             log.error("Couldn't safe parse JSON object");
             log.trace(err);
@@ -99,7 +104,6 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
             if (conn) {
                 // Fetch config base
                 const configRows = await conn.query<any[]>(`SELECT id, server FROM config WHERE server = ? LIMIT 1`, [server]);
-                console.debug(`Server configuration entries for server of ID ${server}`, configRows);
 
                 if (configRows.length === 0) {
                     await conn.release();
@@ -114,39 +118,29 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                 const automodRows = await conn.query(`SELECT id, enabled FROM automod WHERE config_id = ? LIMIT 1`, [configId]);
                 const automodId = automodRows[0]?.id;
 
-                console.debug(`Automod configuration entries for server of ID ${server}`, automodRows);
-
                 // Fetch filters
                 const filterRows = await conn.query<any[]>(`SELECT * FROM filter WHERE automod_id = ?`, [automodId]);
-                console.debug(`Filter configuration entries for server of ID ${server}`, filterRows);
 
                 // Fetch ghostping
                 const ghostpingRows = await conn.query(`SELECT * FROM ghostping WHERE config_id = ? LIMIT 1`, [configId]);
-                console.debug(`Ghost ping configuration entries for server of ID ${server}`, ghostpingRows);
 
                 // Fetch autopublish
                 const autopublishRows = await conn.query(`SELECT * FROM autopublish WHERE config_id = ? LIMIT 1`, [configId]);
-                console.debug(`Auto-publish configuration entries for server of ID ${server}`, autopublishRows);
 
                 // Fetch logs
                 const logsRows = await conn.query(`SELECT * FROM logs WHERE config_id = ? LIMIT 1`, [configId]);
-                console.debug(`Logs configuration entries for server of ID ${server}`, logsRows);
 
                 // Fetch roles
                 const rolesRows = await conn.query(`SELECT * FROM roles WHERE config_id = ? LIMIT 1`, [configId]);
-                console.debug(`Role configuration entries for server of ID ${server}`, rolesRows);
 
                 // Fetch welcome
                 const welcomeRows = await conn.query(`SELECT * FROM welcome WHERE config_id = ? LIMIT 1`, [configId]);
-                console.debug(`Welcomer configuration entries for server of ID ${server}`, welcomeRows);
 
                 // Fetch leveling
                 const levelingRows = await conn.query(`SELECT * FROM leveling WHERE config_id = ? LIMIT 1`, [configId]);
-                console.debug(`Leveling configuration entries for server of ID ${server}`, levelingRows);
 
                 // Fetch economy
                 const economyRows = await conn.query(`SELECT * FROM economy WHERE config_id = ? LIMIT 1`, [configId]);
-                console.debug(`Economy configuration entries for server of ID ${server}`, economyRows);
 
                 await conn.release();
 
