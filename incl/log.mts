@@ -1,23 +1,68 @@
 /**
+ * @enum Log levels.
+ */
+export enum LogLevel {
+    TRACE = 0,
+    DEBUG = 1,
+    INFO = 2,
+    WARN = 3,
+    ERROR = 4,
+    DONE = 5,
+    PRINT = 6,
+};
+
+/**
+ * Get the current set log level.
+ */
+const getLogLevel = (): number => {
+    const env = process.env.LOG_LEVEL || "trace";
+    const level = env.normalize().toLowerCase(); // super safe !
+
+    switch (level) {
+        case "trace":
+            return 0;
+
+        case "debug":
+            return 1;
+
+        case "info":
+            return 2;
+
+        case "warn":
+            return 3;
+
+        case "error":
+            return 4;
+
+        case "done":
+            return 5;
+
+        case "print":
+            return 6;
+
+        default:
+            return 0;
+    };
+};
+
+/**
  * Colors and formatting for console logs
  */
-const col = {
-    gray: '\x1b[90m', // debug
-    white: '\x1b[37m', // log
-    cyan: '\x1b[36m', // info
-    yellow: '\x1b[93m', // warn
-    red: '\x1b[91m', // error
-    green: '\x1b[92m', // done
-    bold: '\x1b[1m', // tag
-    reset: '\x1b[0m', // default
+export class LogFormat {
+    static gray: '\x1b[90m'; // debug
+    static white: '\x1b[37m'; // log
+    static cyan: '\x1b[36m'; // info
+    static yellow: '\x1b[93m'; // warn
+    static red: '\x1b[91m'; // error
+    static green: '\x1b[92m'; // done
+    static bold: '\x1b[1m'; // tag
+    static reset: '\x1b[0m'; // default
 };
 
 /**
  * Format time
- * 
- * @returns {string}
  */
-const timeStamp = () => {
+const timeStamp = (): string => {
     const now = new Date();
 
     const yyyy = now.getUTCFullYear();
@@ -36,9 +81,9 @@ const timeStamp = () => {
  * @param t Text
  * @param c Color code
  */
-const formatLog = (t: string, c: string): string => {
+const formatLog = (t: string, c: LogFormat): string => {
     const lines = t.split('\n');
-    return lines.map((ln) => `${c}${ln}${col.reset}`).join('\n');
+    return lines.map((ln) => `${c}${ln}${LogFormat.reset}`).join('\n');
 };
 
 /**
@@ -49,11 +94,11 @@ const formatLog = (t: string, c: string): string => {
  * @param tag Log level
  * @param args All arguments
  */
-const logMsg = (time: string, color: string, tag: string, ...args: [message?: any, ...optionalParams: any[]]): string => {
+const logMsg = (time: string, color: LogFormat, tag: string, ...args: [message?: any, ...optionalParams: any[]]): string => {
     const txt = args.join(' ');
     const msg = formatLog(txt, color);
 
-    return `${time}${color} | ${col.bold}${tag}${col.reset}${color} | ${msg}${col.reset}`;
+    return `${time}${color} | ${LogFormat.bold}${tag}${LogFormat.reset}${color} | ${msg}${LogFormat.reset}`;
 };
 
 /**
@@ -61,58 +106,58 @@ const logMsg = (time: string, color: string, tag: string, ...args: [message?: an
  */
 export default class log {
     /**
-     * Print log
-     * @param args 
+     * Trace log
+     * @param args
      */
-    static print = (...args: any) => {
-        console.log(logMsg(timeStamp(), col.white, ' LOG ', ...args));
+    static trace = (...args: any): void => {
+        if (getLogLevel() <= LogLevel.TRACE) console.trace(logMsg(timeStamp(), LogFormat.red, 'TRACE', ...args));
     };
 
     /**
      * Debug log
      * @param args 
      */
-    static debug = (...args: any) => {
-        console.debug(logMsg(timeStamp(), col.gray, 'DEBUG', ...args));
+    static debug = (...args: any): void => {
+        if (getLogLevel() <= LogLevel.DEBUG) console.debug(logMsg(timeStamp(), LogFormat.gray, 'DEBUG', ...args));
     };
 
     /**
      * Info log
      * @param args
      */
-    static info = (...args: any) => {
-        console.info(logMsg(timeStamp(), col.cyan, 'INFO', ...args));
-    };
-
-    /**
-     * Done log
-     * @param args
-     */
-    static done = (...args: any) => {
-        console.log(logMsg(timeStamp(), col.green, 'DONE', ...args));
+    static info = (...args: any): void => {
+        if (getLogLevel() <= LogLevel.INFO) console.info(logMsg(timeStamp(), LogFormat.cyan, 'INFO', ...args));
     };
 
     /**
      * Warn log
      * @param args
      */
-    static warn = (...args: any) => {
-        console.warn(logMsg(timeStamp(), col.yellow, 'WARN', ...args));
+    static warn = (...args: any): void => {
+        if (getLogLevel() <= LogLevel.WARN) console.warn(logMsg(timeStamp(), LogFormat.yellow, 'WARN', ...args));
     };
 
     /**
      * Error log
      * @param args
      */
-    static error = (...args: any) => {
-        console.error(logMsg(timeStamp(), col.red, 'ERROR', ...args));
+    static error = (...args: any): void => {
+        if (getLogLevel() <= LogLevel.ERROR) console.error(logMsg(timeStamp(), LogFormat.red, 'ERROR', ...args));
     };
 
     /**
-     * Trace log
+     * Done log
      * @param args
      */
-    static trace = (...args: any) => {
-        console.trace(logMsg(timeStamp(), col.red, 'TRACE', ...args));
+    static done = (...args: any): void => {
+        if (getLogLevel() <= LogLevel.DONE) console.log(logMsg(timeStamp(), LogFormat.green, 'DONE', ...args));
+    };
+
+    /**
+     * Print log
+     * @param args 
+     */
+    static print = (...args: any): void => {
+        if (getLogLevel() <= LogLevel.PRINT) console.log(logMsg(timeStamp(), LogFormat.white, ' LOG ', ...args));
     };
 };

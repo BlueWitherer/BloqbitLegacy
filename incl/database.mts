@@ -9,25 +9,52 @@ function safeParseJSON<T = unknown>(
     input: string | null | undefined,
     fallback: T
 ): T {
-    if (!input) return fallback;
+    if (input) {
+        try {
+            log.debug(`Scanning stringified JSON ${input} with fallback ${JSON.stringify(fallback)}`);
 
-    try {
-        return JSON.parse(input);
-    } catch {
+            const parsed = JSON.parse(input);
+            log.info(`Returning parsed JSON object ${JSON.stringify(parsed)}`);
+
+            return parsed;
+        } catch (err) {
+            log.error("Couldn't safe parse JSON object");
+            log.trace(err);
+
+            return fallback;
+        };
+    } else {
+        log.error(`Stringified JSON object ${input} is invalid`);
         return fallback;
     };
 };
 
+// Safe array parse helper
 function safeParseArray<T = unknown>(
-    input: string | null | undefined,
+    input: string | any[] | null | undefined,
     fallback: T[] = []
 ): T[] {
-    if (!input) return fallback;
+    if (input) {
+        try {
+            if (Array.isArray(input)) {
+                log.info(`Array already parsed ${JSON.stringify(input)}`);
+                return input || fallback;
+            } else {
+                log.debug(`Scanning stringified array ${input} with fallback ${JSON.stringify(fallback)}`);
 
-    try {
-        const parsed = JSON.parse(input);
-        return Array.isArray(parsed) ? parsed : fallback;
-    } catch {
+                const parsed = JSON.parse(input);
+                log.info(`Returning parsed array ${JSON.stringify(parsed)}`);
+
+                return Array.isArray(parsed) ? parsed : fallback;
+            };
+        } catch (err) {
+            log.error("Couldn't safe parse array");
+            log.trace(err);
+
+            return fallback;
+        };
+    } else {
+        log.error(`Stringified array ${input} is invalid`);
         return fallback;
     };
 };
@@ -71,15 +98,14 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
 
             if (conn) {
                 // Fetch config base
-                const configRows = await conn.query(`SELECT id, server FROM config WHERE server = ? LIMIT 1`, [server]);
+                const configRows = await conn.query<any[]>(`SELECT id, server FROM config WHERE server = ? LIMIT 1`, [server]);
+                console.debug(`Server configuration entries for server of ID ${server}`, configRows);
 
                 if (configRows.length === 0) {
                     await conn.release();
                     log.error(`[X] Settings for server ${server} not found`);
 
-                    const blank = new Config({ "server": server });
-
-                    return await update(blank, db);
+                    return await update(new Config({ "server": server }), db);
                 };
 
                 const configId = configRows[0].id;
@@ -88,37 +114,47 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                 const automodRows = await conn.query(`SELECT id, enabled FROM automod WHERE config_id = ? LIMIT 1`, [configId]);
                 const automodId = automodRows[0]?.id;
 
+                console.debug(`Automod configuration entries for server of ID ${server}`, automodRows);
+
                 // Fetch filters
-                const filterRows: any[] = await conn.query(`SELECT * FROM filter WHERE automod_id = ?`, [automodId]);
+                const filterRows = await conn.query<any[]>(`SELECT * FROM filter WHERE automod_id = ?`, [automodId]);
+                console.debug(`Filter configuration entries for server of ID ${server}`, filterRows);
 
                 // Fetch ghostping
                 const ghostpingRows = await conn.query(`SELECT * FROM ghostping WHERE config_id = ? LIMIT 1`, [configId]);
+                console.debug(`Ghost ping configuration entries for server of ID ${server}`, ghostpingRows);
 
                 // Fetch autopublish
                 const autopublishRows = await conn.query(`SELECT * FROM autopublish WHERE config_id = ? LIMIT 1`, [configId]);
+                console.debug(`Auto-publish configuration entries for server of ID ${server}`, autopublishRows);
 
                 // Fetch logs
                 const logsRows = await conn.query(`SELECT * FROM logs WHERE config_id = ? LIMIT 1`, [configId]);
+                console.debug(`Logs configuration entries for server of ID ${server}`, logsRows);
 
                 // Fetch roles
                 const rolesRows = await conn.query(`SELECT * FROM roles WHERE config_id = ? LIMIT 1`, [configId]);
+                console.debug(`Role configuration entries for server of ID ${server}`, rolesRows);
 
                 // Fetch welcome
                 const welcomeRows = await conn.query(`SELECT * FROM welcome WHERE config_id = ? LIMIT 1`, [configId]);
+                console.debug(`Welcomer configuration entries for server of ID ${server}`, welcomeRows);
 
                 // Fetch leveling
                 const levelingRows = await conn.query(`SELECT * FROM leveling WHERE config_id = ? LIMIT 1`, [configId]);
+                console.debug(`Leveling configuration entries for server of ID ${server}`, levelingRows);
 
                 // Fetch economy
                 const economyRows = await conn.query(`SELECT * FROM economy WHERE config_id = ? LIMIT 1`, [configId]);
+                console.debug(`Economy configuration entries for server of ID ${server}`, economyRows);
 
                 await conn.release();
 
                 // Parse JSON columns for filters
                 for (const filter of filterRows) {
-                    filter.roles = safeParseArray(filter.roles, []);
-                    filter.channels = safeParseArray(filter.channels, []);
-                    filter.keywords = safeParseArray(filter.keywords, []);
+                    filter.roles = safeParseArray<string>(filter.roles, []);
+                    filter.channels = safeParseArray<string>(filter.channels, []);
+                    filter.keywords = safeParseArray<string>(filter.keywords, []);
                 };
 
                 // Construct config object
@@ -140,7 +176,7 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                     autopublish: autopublishRows[0]
                         ? {
                             enabled: !!autopublishRows[0].enabled,
-                            channels: safeParseArray(autopublishRows[0].channels, []),
+                            channels: safeParseArray<string>(autopublishRows[0].channels, []),
                             bots: !!autopublishRows[0].bots,
                         }
                         : {},
@@ -164,8 +200,8 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                     roles: rolesRows[0]
                         ? {
                             settings: safeParseJSON(rolesRows[0].settings, {}),
-                            immune: safeParseArray(rolesRows[0].immune, []),
-                            noPing: safeParseArray(rolesRows[0].noPing, []),
+                            immune: safeParseArray<string>(rolesRows[0].immune, []),
+                            noPing: safeParseArray<string>(rolesRows[0].noPing, []),
                             streaming: rolesRows[0].streaming || "",
                             mute: rolesRows[0].mute || "",
                         }
@@ -185,8 +221,8 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                             xp: {
                                 min: levelingRows[0].xp_min ?? 5,
                                 max: levelingRows[0].xp_max ?? 25,
-                                roles: safeParseArray(levelingRows[0].xp_roles, []),
-                                channels: safeParseArray(levelingRows[0].xp_channels, []),
+                                roles: safeParseArray<string>(levelingRows[0].xp_roles, []),
+                                channels: safeParseArray<string>(levelingRows[0].xp_channels, []),
                                 filterMode: levelingRows[0].xp_filterMode ?? 0,
                             },
                             levelMax: levelingRows[0].levelMax ?? 100,
@@ -210,14 +246,13 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                             },
                             drops: {
                                 enabled: !!economyRows[0].drops_enabled,
-                                channels: safeParseArray(economyRows[0].drops_channels, []),
+                                channels: safeParseArray<string>(economyRows[0].drops_channels, []),
                                 filterMode: economyRows[0].drops_filterMode ?? 0,
                             },
                         }
                         : {},
                 };
 
-                log.debug(configObj);
                 log.info(`[O] Settings for server ${server} found and cached`);
 
                 return new Config(configObj);
@@ -470,7 +505,6 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                     ],
                 );
 
-                log.debug(system);
                 log.info(`[O] Settings for server ${system.server} updated`);
 
                 await conn.release();

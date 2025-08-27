@@ -199,25 +199,33 @@ export default {
     },
 
     /**
-     * Removes deleted channels from array
+     * Removes deleted and duplicated channels from array
      */
     scanChannels: (server: Guild | null, channels: string[]): string[] => {
+        const scanned: string[] = [];
+
         if (server) {
             try {
-                log.debug(`Scanning ${channels.length} channels for deletions...`);
+                log.debug(`Scanning ${channels.length} channels for deletions and duplications...`);
+
+                const seen = new Set<string>();
 
                 for (let i = 0; i < channels.length; i++) {
                     log.debug(`Checking channel of ID ${channels[i]}...`);
 
-                    if (server.channels?.cache?.get(channels[i])) {
+                    if (seen.has(channels[i])) {
+                        log.warn(`Channel of ID ${channels[i]} was already scanned, skipping duplicate...`);
+                    } else if (server.channels?.cache?.get(channels[i])) {
                         log.debug(`Channel of ID ${channels[i]} exists`);
+
+                        scanned.push(channels[i]);
+                        seen.add(channels[i]);
                     } else {
-                        log.warn(`Channel of ID ${channels[i]} does not exist, removing from list...`);
-                        channels.splice(i, 1);
+                        log.warn(`Channel of ID ${channels[i]} does not exist, skipping from list...`);
                     };
                 };
 
-                log.info(`Channel scan complete, ${channels.length} channels remain`);
+                log.info(`Channel scan complete, ${scanned.length}/${channels.length} channels remain`);
             } catch (err) {
                 log.trace(err);
             };
@@ -225,21 +233,31 @@ export default {
             log.error(`Server not provided, skipping channel scans...`);
         };
 
-        return channels;
+        return scanned;
     },
 
     /**
-     * Removes deleted roles from array
+     * Removes deleted and duplicated roles from array
      */
     scanRoles: (server: Guild | null, roles: string[]): string[] => {
+        const scanned: string[] = [];
+
         if (server) {
             try {
+                log.debug(`Scanning ${roles.length} roles for deletions and duplications...`);
+
+                const seen = new Set<string>();
+
                 for (let i = 0; i < roles.length; i++) {
-                    if (server.roles?.cache?.get(roles[i])) {
+                    if (seen.has(roles[i])) {
+                        log.warn(`Role of ID ${roles[i]} was already scanned, skipping duplicate...`);
+                    } else if (server.roles?.cache?.get(roles[i])) {
                         log.debug(`Role of ID ${roles[i]} exists`);
+
+                        scanned.push(roles[i]);
+                        seen.add(roles[i]);
                     } else {
-                        log.warn(`Role of ID ${roles[i]} does not exist, removing from list...`);
-                        roles.splice(i, 1);
+                        log.warn(`Role of ID ${roles[i]} does not exist, skipping from list...`);
                     };
                 };
             } catch (err) {
@@ -249,6 +267,6 @@ export default {
             log.error(`Server not provided, skipping role scans...`);
         };
 
-        return roles;
+        return scanned;
     },
 };
