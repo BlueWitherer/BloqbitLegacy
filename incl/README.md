@@ -13,7 +13,6 @@ Bloqbit is open-source. You may take its source code directly and modify it to f
 | **`MAIN_TOKEN`**  | Token for the bot client of the Discord application you will utilize. | **`Yes`** |
 | **`MAIN_LOG_WH`** | URL for the webhook used to log important bot events.                 | **`Yes`** |
 |  **`MONGO_URI`**  | URI to access your [MongoDB](https://www.mongodb.com/) database.      | **`Yes`** |
-|   `MAIN_SECRET`   | The Discord bot client's secret.                                      |   `No`    |
 
 ---
 

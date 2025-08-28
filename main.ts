@@ -92,7 +92,6 @@ const start = async () => {
                         DB_USERNAME: process.env.DB_USERNAME,
                         DB_PASSWORD: process.env.DB_PASSWORD,
                         DB_DATABASE: process.env.DB_DATABASE,
-                        MAIN_SECRET: process.env.MAIN_SECRET,
                     }),
                 ],
             });
@@ -224,7 +223,6 @@ const start = async () => {
                         "password": IndexModule.checkEnv(process.env.DB_PASSWORD, "DB_PASSWORD"),
                         "database": IndexModule.checkEnv(process.env.DB_DATABASE, "DB_DATABASE"),
                     },
-                    process.env.MAIN_SECRET,
                 ),
             }, false);
 

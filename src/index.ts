@@ -16,7 +16,7 @@ export default class Bot {
     public botModel: BloqbitClient;
     private testMode: boolean;
 
-    constructor({ botModel = new BloqbitClient("", "", { "host": "", "port": 3000, "user": "", "password": "", "database": "" }, "") }: Partial<Bot>, testMode: boolean = false) {
+    constructor({ botModel = new BloqbitClient("", "", { "host": "", "port": 3000, "user": "", "password": "", "database": "" }) }: Partial<Bot>, testMode: boolean = false) {
         this.botModel = botModel;
         this.testMode = testMode;
 
@@ -335,7 +335,6 @@ try {
             "password": checkEnv(dat.DB_PASSWORD, "DB_PASSWORD"),
             "database": checkEnv(dat.DB_DATABASE, "DB_DATABASE"),
         },
-        dat.MAIN_SECRET || undefined,
     );
 
     const bb = new Bot({ botModel: bloqbit });

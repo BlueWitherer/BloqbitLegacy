@@ -67,18 +67,12 @@ export default class BloqbitClient {
     public client: Client;
 
     /**
-     * Discord bot secret
-     */
-    public secret: string | undefined;
-
-    /**
      * @param token Discord bot token
-     * @param secret Discord application secret
      * @param web Developer logging Discord webhook URL
      * @param data MongoDB database URI
      * @param gil Guilded bot token
      */
-    constructor(token: string, web: string, data: DatabaseConfig, secret: string | undefined = undefined) {
+    constructor(token: string, web: string, data: DatabaseConfig) {
         const noEnv = (env: string): never => { throw new Error(`Environment variable '${env}' is not defined!`); };
 
         this.token = token || noEnv('MAIN_TOKEN');
@@ -124,8 +118,6 @@ export default class BloqbitClient {
                 Partials.ThreadMember,
             ],
         });
-
-        this.secret = secret;
 
         this.rest.setToken(this.token);
 
