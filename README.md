@@ -24,9 +24,9 @@ Further development of manual operations will be prioritized before automated op
 |  Moderation  | 🔄️ Under Development | **`45%`** |
 |    Roles     | ⏸️ Halted            |   `5%`    |
 |  *Leveling*  | ⛔ Not Developed     |   `--%`   |
-|   Economy    | ⛔ Not Developed     |   `--%`   |
 |   Welcomer   | ⛔ Not Developed     |   `--%`   |
 |  Birthdays   | ⛔ Not Developed     |   `--%`   |
+|   Economy    | ⛔ Not Developed     |   `--%`   |
 |    Games     | ⛔ Not Developed     |   `--%`   |
 
 ---

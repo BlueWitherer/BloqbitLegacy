@@ -1,7 +1,7 @@
-import { ApplicationIntegrationType, Collection, InteractionContextType, TextChannel } from 'discord.js';
-import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { Command, log } from "#bloqbit/include.ts";
+import { ApplicationIntegrationType, Collection, EmbedBuilder, InteractionContextType, TextChannel } from 'discord.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from "#bloqbit/modules/fetch.mjs";
 
 export default new Command(

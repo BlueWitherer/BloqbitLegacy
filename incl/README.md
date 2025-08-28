@@ -4,7 +4,7 @@ Need it? Got it.
 ---
 
 ### Development
-###### Work with the bot directly.
+###### Work with the program directly.
 
 Bloqbit is open-source. You may take its source code directly and modify it to fit your own needs. First, let's start by defining our environment variables. These are used to store sensitive data such as tokens. You can do this using a `.env` file.
 

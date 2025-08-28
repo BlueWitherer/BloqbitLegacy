@@ -76,7 +76,7 @@ const start = async () => {
         res.end('Server is running\n');
     });
 
-    if (parseInt(process.env.USE_SHARDS || '0', 10) > 0) {
+    if (parseInt(process.env.USE_SHARDS || '0', 10) >= 1) {
         try {
             const manager = new ShardingManager(path.resolve("./src/index.ts"), {
                 "execArgv": ["--loader", "ts-node/esm"],

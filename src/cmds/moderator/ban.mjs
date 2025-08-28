@@ -1,6 +1,6 @@
 import { Command, log } from "#bloqbit/include.ts";
-import { ApplicationIntegrationType, GuildMember, InteractionContextType } from 'discord.js';
-import { EmbedBuilder, SlashCommandBuilder } from '@discordjs/builders';
+import { ApplicationIntegrationType, EmbedBuilder, GuildMember, InteractionContextType } from 'discord.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import fetch from "#bloqbit/modules/fetch.mjs";
 
