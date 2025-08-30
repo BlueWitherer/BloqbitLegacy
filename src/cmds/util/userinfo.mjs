@@ -37,54 +37,51 @@ export default new Command(
                 if (!UserPermissions) UserPermissions = 'None';
 
                 await interaction.reply({
-                    "embeds": [{
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
+                    "embeds": [
+                        {
+                            "title": `${assets.icons.info} ${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
+                            "color": assets.colors.primary,
+                            "thumbnail": {
+                                "url": `${Member instanceof GuildMember ? Member.user?.displayAvatarURL({ forceStatic: false }) : ''}`,
+                            },
+                            "fields": [
+                                {
+                                    "name": "Member",
+                                    "value": `${Member}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Username",
+                                    "value": `${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "User ID",
+                                    "value": `${Member instanceof GuildMember ? Member.user?.id : 'Unknown ID'}`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Account Created",
+                                    "value": `<t:${createdAt}:F> • <t:${createdAt}:R>`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": "Joined Server",
+                                    "value": `<t:${joinedAt}:F> • <t:${joinedAt}:R>`,
+                                    "inline": true,
+                                },
+                                {
+                                    "name": `Roles [${Array.isArray(Member.roles) ? Member.roles.length : Member.roles?.cache?.size}]`,
+                                    "value": `${Member.roles?.cache?.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
+                                    "inline": false,
+                                },
+                                {
+                                    "name": "Server Permissions",
+                                    "value": `\`${UserPermissions}\``,
+                                    "inline": false,
+                                },
+                            ],
                         },
-                        "title": `${assets.icons.info} ${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
-                        "color": assets.colors.primary,
-                        "thumbnail": {
-                            "url": `${Member instanceof GuildMember ? Member.user?.displayAvatarURL({ forceStatic: false }) : ''}`,
-                        },
-                        "fields": [
-                            {
-                                "name": "Member",
-                                "value": `${Member}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Username",
-                                "value": `${Member instanceof GuildMember ? Member.user?.username : 'Unknown User'}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "User ID",
-                                "value": `${Member instanceof GuildMember ? Member.user?.id : 'Unknown ID'}`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Account Created",
-                                "value": `<t:${createdAt}:F> • <t:${createdAt}:R>`,
-                                "inline": true,
-                            },
-                            {
-                                "name": "Joined Server",
-                                "value": `<t:${joinedAt}:F> • <t:${joinedAt}:R>`,
-                                "inline": true,
-                            },
-                            {
-                                "name": `Roles [${Array.isArray(Member.roles) ? Member.roles.length : Member.roles?.cache?.size}]`,
-                                "value": `${Member.roles?.cache?.filter(r => r.id !== interaction.guild?.id).map(r => `${r}`).join(' | ')}`,
-                                "inline": false,
-                            },
-                            {
-                                "name": "Server Permissions",
-                                "value": `\`${UserPermissions}\``,
-                                "inline": false,
-                            },
-                        ],
-                    },
                     ],
                 });
 
@@ -103,10 +100,6 @@ export default new Command(
                             "color": assets.colors.primary,
                             "thumbnail": {
                                 "url": `${Member instanceof GuildMember ? Member.user?.displayAvatarURL({ forceStatic: false }) : ''}`,
-                            },
-                            "author": {
-                                "name": `${interaction.user?.username}`,
-                                "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
                             },
                             "fields": [
                                 {
@@ -166,10 +159,6 @@ export default new Command(
                         "color": assets.colors.primary,
                         "thumbnail": {
                             "url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
-                        },
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
                         },
                         "fields": [
                             {

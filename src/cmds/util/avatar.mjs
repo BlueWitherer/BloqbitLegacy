@@ -14,60 +14,44 @@ export default new Command(
             .setDescription("The user whose profile picture to view.")
             .setRequired(false)),
     async (interaction, assets, system, db) => {
-        const User = interaction.options?.getUser("user", false);
+        const targetU = interaction.options?.getUser("user", false);
+        const targetM = interaction.options?.getMember("user");
 
-        if (User) {
-            const Member = interaction.options?.getMember("user");
+        let username = "";
 
-            await interaction.reply({
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`
-                        },
-                        "title": `${assets.icons.info} ${User.username}'s Avatar`,
-                        "color": assets.colors.primary,
-                        "image": {
-                            "url": `${Member instanceof GuildMember ? Member.displayAvatarURL({ "forceStatic": false, size: 1024 }) : User.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
-                            "width": 1024,
-                            "height": 1024,
-                        },
-                        "thumbnail": {
-                            "url": User.displayAvatarURL({ "forceStatic": false, size: 1024 }),
-                            "width": 1024,
-                            "height": 1024,
-                        },
-                    },
-                ],
-            });
+        let globalAv = "";
+        let serverAv = "";
 
-            return;
+        if (targetU && targetM) {
+            username = targetU.username;
+
+            globalAv = targetU.displayAvatarURL({ "forceStatic": false, size: 1024 });
+            serverAv = targetM instanceof GuildMember ? targetM.displayAvatarURL({ "forceStatic": false, size: 1024 }) : targetU.displayAvatarURL({ "forceStatic": false, size: 1024 })
         } else {
-            await interaction.reply({
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`
-                        },
-                        "title": `${assets.icons.info} ${interaction.user?.username}'s Avatar`,
-                        "color": assets.colors.primary,
-                        "image": {
-                            "url": `${interaction.member instanceof GuildMember ? interaction.member?.displayAvatarURL({ "forceStatic": false, size: 1024 }) : interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
-                            "width": 1024,
-                            "height": 1024,
-                        },
-                        "thumbnail": {
-                            "url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 }),
-                            "width": 1024,
-                            "height": 1024,
-                        },
-                    },
-                ],
-            });
+            username = interaction.user?.username;
 
-            return;
+            globalAv = interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 });
+            serverAv = interaction.member instanceof GuildMember ? interaction.member?.displayAvatarURL({ "forceStatic": false, size: 1024 }) : interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 });
         };
+
+        await interaction.reply({
+            "embeds": [
+                {
+                    "title": `${assets.icons.info} ${username}'s Avatar`,
+                    "color": assets.colors.primary,
+                    "thumbnail": {
+                        "url": globalAv,
+                        "width": 1024,
+                        "height": 1024,
+                    },
+                    "image": {
+                        "url": serverAv,
+                        "width": 1024,
+                        "height": 1024,
+                    },
+                },
+            ],
+            "flags": ["Ephemeral"],
+        });
     },
 );

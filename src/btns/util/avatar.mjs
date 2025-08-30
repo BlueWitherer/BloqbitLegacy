@@ -13,37 +13,42 @@ export default new ContextButton(
         const targetU = interaction.isUserContextMenuCommand() ? interaction.targetUser : null;
         const targetM = interaction.isUserContextMenuCommand() ? interaction.targetMember : null;
 
-        if (targetU) {
-            await interaction.reply({
-                "embeds": [
-                    {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`
-                        },
-                        "title": `${assets.icons.info} ${targetU.username}'s Avatar`,
-                        "color": assets.colors.primary,
-                        "image": {
-                            "url": `${targetM instanceof GuildMember ? targetM.displayAvatarURL({ "forceStatic": false, size: 1024 }) : targetU.displayAvatarURL({ "forceStatic": false, size: 1024 })}`,
-                            "width": 1024,
-                            "height": 1024,
-                        },
-                        "thumbnail": {
-                            "url": targetU.displayAvatarURL({ "forceStatic": false, size: 1024 }),
-                            "width": 1024,
-                            "height": 1024,
-                        },
-                    },
-                ],
-                "flags": ["Ephemeral"],
-            });
-        } else {
-            log.error(`Failed to fetch target user for avatar inspection in guild ${interaction.guild?.id} (${interaction.guild?.name}) by user ${interaction.user?.id} (${interaction.user?.username}).`);
+        let username = "";
 
-            await interaction.reply({
-                "content": `${assets.icons.xmark} Unable to fetch the target user.`,
-                "flags": ["Ephemeral"],
-            });
+        let globalAv = "";
+        let serverAv = "";
+
+        if (targetU && targetM) {
+            username = targetU.username;
+
+            globalAv = targetU.displayAvatarURL({ "forceStatic": false, size: 1024 });
+            serverAv = targetM instanceof GuildMember ? targetM.displayAvatarURL({ "forceStatic": false, size: 1024 }) : targetU.displayAvatarURL({ "forceStatic": false, size: 1024 })
+        } else {
+            username = interaction.user?.username;
+
+            globalAv = interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 });
+            serverAv = interaction.member instanceof GuildMember ? interaction.member?.displayAvatarURL({ "forceStatic": false, size: 1024 }) : interaction.user?.displayAvatarURL({ "forceStatic": false, size: 1024 });
         };
+
+        await interaction.reply({
+            "content": (targetU && targetM) ? "" : `${assets.icons.exclamation} Failed to get target user`,
+            "embeds": [
+                {
+                    "title": `${assets.icons.info} ${username}'s Avatar`,
+                    "color": assets.colors.primary,
+                    "thumbnail": {
+                        "url": globalAv,
+                        "width": 1024,
+                        "height": 1024,
+                    },
+                    "image": {
+                        "url": serverAv,
+                        "width": 1024,
+                        "height": 1024,
+                    },
+                },
+            ],
+            "flags": ["Ephemeral"],
+        });
     },
 )

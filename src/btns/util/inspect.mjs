@@ -17,10 +17,6 @@ export default new ContextButton(
             await interaction.reply({
                 "embeds": [
                     {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false })}`,
-                        },
                         "title": `${assets.icons.info} Message Inspection`,
                         "description": `\`\`\`txt\n${targetM.content}\n\`\`\``,
                         "color": assets.colors.primary,

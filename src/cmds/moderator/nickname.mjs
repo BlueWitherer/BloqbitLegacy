@@ -89,10 +89,6 @@ export default new Command(
                     await interaction.reply({
                         "embeds": [
                             {
-                                "author": {
-                                    "name": `${interaction.user?.username}`,
-                                    "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
-                                },
                                 "title": `${assets.icons.check} Username Blocked`,
                                 "color": assets.colors.primary,
                                 "fields": [
@@ -177,10 +173,6 @@ export default new Command(
                     await interaction.reply({
                         "embeds": [
                             {
-                                "author": {
-                                    "name": `${interaction.user?.username}`,
-                                    "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
-                                },
                                 "title": `${assets.icons.info} ${User.username}'s Blocked Username`,
                                 "color": assets.colors.primary,
                                 "fields": [
@@ -219,10 +211,6 @@ export default new Command(
                 await interaction.reply({
                     "embeds": [
                         {
-                            "author": {
-                                "name": `${interaction.user?.username}`,
-                                "icon_url": `${interaction.user?.displayAvatarURL({ forceStatic: false, size: 64 })}`,
-                            },
                             "fields": [
                                 {
                                     "name": "User",

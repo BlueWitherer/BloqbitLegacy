@@ -50,10 +50,6 @@ export default new Command(
             await interaction.reply({
                 "embeds": [
                     {
-                        "author": {
-                            "name": `${interaction.user?.username}`,
-                            "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
-                        },
                         "title": `${assets.icons.noentry} User Banned`,
                         "color": assets.colors.primary,
                         "fields": [

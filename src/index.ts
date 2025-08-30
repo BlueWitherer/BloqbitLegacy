@@ -16,7 +16,7 @@ export default class Bot {
     public botModel: BloqbitClient;
     private testMode: boolean;
 
-    constructor({ botModel = new BloqbitClient("", "", { "host": "", "port": 3000, "user": "", "password": "", "database": "" }) }: Partial<Bot>, testMode: boolean = false) {
+    constructor({ botModel = new BloqbitClient("", "", { "host": "", "port": 3000, "user": "admin", "password": "admin", "database": "bloqbit" }) }: Partial<Bot>, testMode: boolean = false) {
         this.botModel = botModel;
         this.testMode = testMode;
 

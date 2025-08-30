@@ -58,10 +58,6 @@ export default new Command(
         await interaction.editReply({
             "embeds": [
                 {
-                    "author": {
-                        "name": `${interaction.user?.username}`,
-                        "icon_url": `${interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 })}`,
-                    },
                     "title": `${assets.icons.exclamation} Dice Roll`,
                     "description": `You rolled ${amount} dice.`,
                     "color": assets.colors.primary,
