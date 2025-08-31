@@ -32,10 +32,8 @@
   },
   "dependencies": {
     "@discordjs/builders": "^1.11.3",
-    "axios": "^1.11.0",
     "discord-api-types": "^0.38.22",
     "discord.js": "^14.22.1",
-    "dotenv": "^17.2.1",
     "fs": "^0.0.1-security",
     "mariadb": "^3.4.5",
     "node-cache": "^5.1.2",

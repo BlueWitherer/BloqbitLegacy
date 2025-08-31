@@ -63,8 +63,9 @@ jspm_packages
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
+*.env
+*.env.test
+*.bat
 
 # PM2 PID file
 pm2.pid

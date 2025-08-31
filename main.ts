@@ -24,6 +24,20 @@ process.on('unhandledRejection', (reason, promise) => {
     };
 });
 
+log.debug("Populating environment variables...");
+
+const args = process.argv.slice(2);
+
+for (const arg of args) {
+    const eqIndex = arg.indexOf('=');
+    if (eqIndex === -1) continue;
+
+    const key = arg.slice(0, eqIndex);
+    const value = arg.slice(eqIndex + 1);
+
+    if (key && value !== undefined) process.env[key] = value;
+};
+
 log.print('Starting system...');
 
 if (global.gc) { // garbage collection
@@ -36,11 +50,8 @@ if (global.gc) { // garbage collection
 
 import path from 'path';
 import http from 'http';
-import dotenv from 'dotenv';
 
 import { ShardingManager, User } from 'discord.js';
-
-dotenv.config();
 
 /**
  * Start Bloqbit
