@@ -51,7 +51,6 @@ export default new Command(
                     },
                 },
             ],
-            "flags": ["Ephemeral"],
         });
     },
 );
