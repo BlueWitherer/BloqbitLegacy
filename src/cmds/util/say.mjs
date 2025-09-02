@@ -37,7 +37,7 @@ export default new Command(
             await interaction.reply({
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} Message sent`,
+                        "description": `${assets.icons.check} Message sent.`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -56,7 +56,7 @@ export default new Command(
             await interaction.reply({
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} Message sent in ${msg.url}`,
+                        "description": `${assets.icons.check} Message sent in ${msg.url}.`,
                         "color": assets.colors.primary,
                     },
                 ],
