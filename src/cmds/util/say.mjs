@@ -17,12 +17,12 @@ export default new Command(
         .addChannelOption((c) => c
             .setName("channel")
             .setDescription("The channel to send a message to.")
-            .addChannelTypes([ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildAnnouncement, ChannelType.GuildStageVoice])
+            .addChannelTypes([ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildAnnouncement, ChannelType.GuildStageVoice, ChannelType.PublicThread, ChannelType.PrivateThread, ChannelType.AnnouncementThread])
             .setRequired(false))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
     async (interaction, assets, system, db) => {
-        const channel = interaction.options?.getChannel("channel", false, [ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.GuildStageVoice, ChannelType.GuildVoice]);
         const message = interaction.options?.getString("message", true);
+        const channel = interaction.options?.getChannel("channel", false, [ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildAnnouncement, ChannelType.GuildStageVoice, ChannelType.PublicThread, ChannelType.PrivateThread, ChannelType.AnnouncementThread]);
 
         if (channel && channel === interaction.channel && channel.isTextBased() && 'send' in channel) {
             await channel.send({
@@ -43,10 +43,8 @@ export default new Command(
                 ],
                 "flags": ["Ephemeral"],
             });
-
-            return;
         } else if (channel && 'send' in channel) {
-            await channel.send({
+            const msg = await channel.send({
                 "embeds": [
                     {
                         "description": message,
@@ -58,13 +56,11 @@ export default new Command(
             await interaction.reply({
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} Message sent in ${channel}`,
+                        "description": `${assets.icons.check} Message sent in ${msg.url}`,
                         "color": assets.colors.primary,
                     },
                 ],
             });
-
-            return;
         } else if (!channel) {
             await interaction.reply({
                 "embeds": [
@@ -74,8 +70,6 @@ export default new Command(
                     },
                 ],
             });
-
-            return;
         };
     },
 );
