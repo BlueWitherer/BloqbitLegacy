@@ -19,7 +19,7 @@ export default new Command(
         await interaction.reply({
             "embeds": [
                 {
-                    "description": `${assets.icons.eball} *Asking the magic 8-ball...*`,
+                    "description": `:8ball: *Asking the magic 8-ball...*`,
                     "color": assets.colors.tertiary,
                 },
             ],
@@ -61,7 +61,7 @@ export default new Command(
                         "name": interaction.user?.username,
                         "icon_url": interaction.user?.displayAvatarURL({ "forceStatic": false, size: 64 }),
                     },
-                    "title": `${assets.icons.eball} The Magic 8-Ball`,
+                    "title": `:8ball: The Magic 8-Ball`,
                     "color": assets.colors.primary,
                     "fields": [
                         {

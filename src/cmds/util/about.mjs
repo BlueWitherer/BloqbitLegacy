@@ -5,7 +5,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 export default new Command(
     new SlashCommandBuilder()
         .setName("about")
-        .setDescription("View detailed information about the current installation of BloqGo.")
+        .setDescription("View detailed information about the current installation of Bloqbit.")
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall])
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel, InteractionContextType.BotDM])
         .setNSFW(false),
