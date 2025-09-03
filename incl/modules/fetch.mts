@@ -20,6 +20,22 @@ import SysAssets from "#assets" with { type: 'json' };
 
 export default {
     /**
+     * Get the uptime formatted as a string.
+     * 
+     * @param client The Discord client.
+     */
+    uptime: (client: Client): string => {
+        const totalSeconds = Math.floor((client.uptime?.valueOf() || 0) / 1000);
+
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        return `Uptime: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+    },
+
+    /**
      * Returns the URL of the first image found in a message.
      */
     ifImage: (msg: Message): string | void => {
