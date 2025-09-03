@@ -22,7 +22,7 @@ export default new Command(
                         "name": interaction.client?.user?.username,
                         "icon_url": interaction.client?.user?.displayAvatarURL({ "forceStatic": false, "size": 512 }),
                     },
-                    "title": `Bloqbit **\`v${process.env.npm_package_version || "0.0.1"}\`**`,
+                    "title": `Bloqbit \`v${process.env.npm_package_version || "0.0.1"}\``,
                     "description": `Running as Discord bot client **\`${interaction.client?.user?.username}\`**\`#${interaction.client?.user?.discriminator}\` (\`${interaction.client?.user?.id}\`) on shard **#${interaction.client?.shard?.ids[0] || 0}**`,
                     "color": assets.colors.primary,
                     "fields": [

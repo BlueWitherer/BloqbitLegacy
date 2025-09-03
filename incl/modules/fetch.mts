@@ -32,7 +32,7 @@ export default {
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
 
-        return `Uptime: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+        return `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
     },
 
     /**
