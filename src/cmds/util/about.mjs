@@ -13,7 +13,7 @@ export default new Command(
     async (interaction, assets, system, db) => {
         log.info(`Sending about message in guild of ID ${interaction.guild?.id}`);
 
-        const uptimeSince = Math.floor(Date.now() - interaction.client?.uptime) / 1000;
+        const uptimeSince = Math.floor((Date.now() - interaction.client?.uptime) / 1000);
 
         await interaction.reply({
             "embeds": [
@@ -43,7 +43,7 @@ export default new Command(
                         },
                     ],
                     "footer": {
-                        "text": `This command is in the works - expect more information added soon.`,
+                        "text": `This command is in the works - expect more information to be added soon.`,
                     },
                 },
             ],
