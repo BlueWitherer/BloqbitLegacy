@@ -10,6 +10,9 @@ export default new Command(
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel, InteractionContextType.BotDM])
         .setNSFW(false),
     async (interaction, assets, system, db) => {
+        const ping = Date.now() - interaction.createdTimestamp;
+        log.debug(`Pinging command in guild with ${ping}ms`);
+
         await interaction.reply({
             "embeds": [{
                 "author": {
@@ -21,19 +24,17 @@ export default new Command(
                 "fields": [
                     {
                         "name": `Latency`,
-                        "value": `${Date.now() - interaction.createdTimestamp}ms`,
+                        "value": `${ping}ms`,
                         "inline": false,
                     },
                     {
                         "name": `API Latency`,
-                        "value": `${Math.round(interaction.client?.ws.ping)}ms`,
+                        "value": `${Math.round(interaction.client?.ws?.ping)}ms`,
                         "inline": false,
                     },
                 ],
             }],
             "flags": ["Ephemeral"],
         });
-
-        return;
     },
 );

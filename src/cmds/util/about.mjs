@@ -10,6 +10,8 @@ export default new Command(
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel, InteractionContextType.BotDM])
         .setNSFW(false),
     async (interaction, assets, system, db) => {
+        log.info();
+
         await interaction.reply({
             "embeds": [
                 {
@@ -17,8 +19,8 @@ export default new Command(
                         "name": interaction.client?.user?.username,
                         "icon_url": interaction.client?.user?.displayAvatarURL({ "forceStatic": false, "size": 512 }),
                     },
-                    "title": `Bloqbit \`v${process.env.npm_package_version || "0.0.1"}\``,
-                    "description": `Running on Discord bot client **\`${interaction.client?.user?.username}\`**\`#${interaction.client?.user?.discriminator}\` (\`${interaction.client?.user?.id}\`) on shard **#${interaction.client?.shard?.ids[0] || 0}**`,
+                    "title": `Bloqbit \`v${process.env.npm_package_version || "1.0.0"}\``,
+                    "description": `Running under Discord bot client **\`${interaction.client?.user?.username}\`**\`#${interaction.client?.user?.discriminator}\` (\`${interaction.client?.user?.id}\`) on shard **#${interaction.client?.shard?.ids[0] || 0}**`,
                     "color": assets.colors.primary,
                     "fields": [
                         {
@@ -33,4 +35,4 @@ export default new Command(
             ],
         });
     },
-)
+);

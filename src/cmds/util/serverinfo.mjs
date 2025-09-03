@@ -84,8 +84,8 @@ export default new Command(
                     },
                 ],
             });
+        } else {
+            log.error(`Couldn't find owner for guild of ID ${interaction.guild?.id}`);
         };
-
-        return;
     },
 );

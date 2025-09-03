@@ -52,8 +52,6 @@ export default new Command(
                     },
                 ],
             });
-
-            return;
         } else {
             await interaction.reply({
                 "embeds": [
@@ -87,8 +85,6 @@ export default new Command(
                     },
                 ],
             });
-
-            return;
         };
     },
 );

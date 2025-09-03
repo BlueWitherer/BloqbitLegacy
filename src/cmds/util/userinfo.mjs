@@ -84,8 +84,6 @@ export default new Command(
                         },
                     ],
                 });
-
-                return;
             } else {
                 let UserPermissions = Member.permissions instanceof PermissionsBitField
                     ? Member.permissions.toArray().join('` | `')
@@ -143,8 +141,6 @@ export default new Command(
                         },
                     ],
                 });
-
-                return;
             };
         } else {
             const joinedAtU = interaction.member instanceof GuildMember && interaction.member?.joinedTimestamp
@@ -204,7 +200,5 @@ export default new Command(
                 ],
             });
         };
-
-        return;
     },
 );
