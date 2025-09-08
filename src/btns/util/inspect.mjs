@@ -17,7 +17,7 @@ export default new ContextButton(
             await interaction.reply({
                 "embeds": [
                     {
-                        "title": `${assets.icons.info} Message Inspection`,
+                        "title": `:information_source: Message Inspection`,
                         "description": `\`\`\`txt\n${targetM.content}\n\`\`\``,
                         "color": assets.colors.primary,
                         "fields": [
@@ -50,7 +50,7 @@ export default new ContextButton(
             log.error(`Failed to fetch target message for inspection in guild ${interaction.guild?.id} (${interaction.guild?.name}) by user ${interaction.user?.id} (${interaction.user?.username}).`);
 
             await interaction.reply({
-                "content": `${assets.icons.xmark} Unable to fetch the target message.`,
+                "content": `:x: Unable to fetch the target message.`,
                 "flags": ["Ephemeral"],
             });
         };

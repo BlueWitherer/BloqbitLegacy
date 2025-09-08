@@ -30,14 +30,14 @@ export default new ContextButton(
             await interaction.editReply({
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} Users may now choose.`,
+                        "description": `:white_check_mark: Users may now choose.`,
                         "color": assets.colors.primary,
                     },
                 ],
             });
         } else {
             await interaction.reply({
-                "content": `${assets.icons.xmark} Unable to fetch the target message.`,
+                "content": `:x: Unable to fetch the target message.`,
                 "flags": ["Ephemeral"],
             });
         };

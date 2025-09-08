@@ -49,7 +49,7 @@ export default {
                 ],
             });
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
         };
 
         return;

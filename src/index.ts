@@ -28,7 +28,7 @@ export default class Bot {
         try {
             return await this.activate(this.testMode);
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
             return;
         };
     };
@@ -44,7 +44,7 @@ export default class Bot {
             try {
                 log.debug(message);
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
             };
         });
 
@@ -78,7 +78,7 @@ export default class Bot {
                     ],
                 });
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
             };
         });
 
@@ -112,7 +112,7 @@ export default class Bot {
                     ],
                 });
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
             };
         });
 
@@ -133,12 +133,12 @@ export default class Bot {
                             const module: any = (await import(url.pathToFileURL(filePath).href)).default;
                             await callback(module);
                         } catch (err) {
-                            log.trace(err);
+                            console.trace(err);
                             if (testMode) process.exit(1);
                         };
                     };
                 } catch (err) {
-                    log.trace(err);
+                    console.trace(err);
                     process.exit(1);
                 };
             };
@@ -187,11 +187,11 @@ export default class Bot {
 
                     log.info(`Successfully reloaded ${data.length}/${interactions.length} application interactions`);
                 } catch (err) {
-                    log.trace(err);
+                    console.trace(err);
                     if (testMode) process.exit(1);
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
                 process.exit(1);
             };
 
@@ -205,7 +205,7 @@ export default class Bot {
                             try {
                                 await event.execute(bot, ...args);
                             } catch (err) {
-                                log.trace(err);
+                                console.trace(err);
                             };
                         });
                     } else {
@@ -213,7 +213,7 @@ export default class Bot {
                             try {
                                 await event.execute(bot, ...args);
                             } catch (err) {
-                                log.trace(err);
+                                console.trace(err);
                             };
                         });
                     };
@@ -223,7 +223,7 @@ export default class Bot {
 
                 log.info(`Successfully reloaded event listeners`);
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
                 process.exit(1);
             };
 
@@ -233,7 +233,7 @@ export default class Bot {
                         try {
                             await botEvent.execute(bot, ...args);
                         } catch (err) {
-                            log.trace(err);
+                            console.trace(err);
                         };
                     });
 
@@ -253,7 +253,7 @@ export default class Bot {
 
                 log.info(`Successfully reloaded guild event listeners`);
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
                 process.exit(1);
             };
 
@@ -294,7 +294,7 @@ export default class Bot {
                     };
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
                 process.exit(1);
             };
         });
@@ -302,7 +302,7 @@ export default class Bot {
         try {
             await bot.client?.login(bot.token);
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
             process.exit(1);
         };
 
@@ -318,7 +318,7 @@ export const checkEnv: (env: string | undefined, name: string) => string = (env:
             throw new Error(`Missing environment variable '${name}'`, { "cause": "env" });
         };
     } catch (err) {
-        log.trace(err);
+        console.trace(err);
         process.exit(1);
     };
 };
@@ -356,7 +356,7 @@ try {
                     if (process.send) process.send('shutdownComplete');
                     log.debug(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} shutdown complete`);
                 } catch (err) {
-                    log.trace(err);
+                    console.trace(err);
                     if (process.send) process.send('shutdownError');
                 };
                 break;
@@ -367,6 +367,6 @@ try {
         };
     });
 } catch (err) {
-    log.trace(err);
+    console.trace(err);
     process.exit(1);
 };

@@ -47,7 +47,7 @@ export default {
             const srvs = await bot.client?.guilds?.fetch();
             fetch.setPresence(bot.client, `Alpha Testing!`, `Active across ${srvs.size} servers on shard ${clientShard}!`, PresenceUpdateStatus.Online);
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
         };
 
         return;

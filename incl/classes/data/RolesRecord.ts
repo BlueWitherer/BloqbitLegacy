@@ -1,11 +1,11 @@
-export default class RolesRecord {
-    public server: string;
-    public user: string;
+import Record from "./Record.js";
+
+export default class RolesRecord extends Record {
     public roles: string[];
 
     constructor({ server = "", user = "", roles = [] }: Partial<RolesRecord>) {
-        this.server = server;
-        this.user = user;
+        super({ server, user });
+
         this.roles = roles;
 
         return this;

@@ -1,6 +1,6 @@
-import Record from "./Record.js";
+import RecordWithReason from "./RecordWithReason.js";
 
-export default class MuteRecord extends Record {
+export default class MuteRecord extends RecordWithReason {
     public mod: string;
     public until: number;
 

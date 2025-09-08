@@ -15,7 +15,7 @@ export default {
         try {
             return { name, value: description };
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
 
             return {
                 name: "Error",
@@ -38,7 +38,7 @@ export default {
                 warning: { name: object.name, value: object.value },
             };
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
 
             return {
                 punishment: 0,
@@ -154,7 +154,7 @@ export default {
                 return "0";
             };
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
             return "0";
         };
     },

@@ -52,7 +52,7 @@ export default {
                 log.debug(`Cached ${msgs?.size}/${msg.channel?.messages?.cache?.size} messages from guild channel`);
             };
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
         };
 
         return;

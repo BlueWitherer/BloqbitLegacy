@@ -139,7 +139,7 @@ export default new Command(
                             ],
                         });
                     } catch (err) {
-                        log.trace(err);
+                        console.trace(err);
                         log.warn(`Failed to send nickname block DM to user ${User.username} (${User.id}): ${err}`);
                     };
                 } else {
@@ -237,7 +237,7 @@ export default new Command(
                         ],
                     });
                 } catch (err) {
-                    log.trace(err);
+                    console.trace(err);
                     log.warn(`Failed to send nickname unblock DM to user ${User.username} (${User.id}): ${err}`);
                 };
             } else if (subcommand === "set") {
@@ -321,7 +321,7 @@ export default new Command(
                 });
             };
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
 
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - An error occurred while processing the command.`,

@@ -19,7 +19,7 @@ export default new ContextButton(
                 await interaction.reply({
                     "embeds": [
                         {
-                            "description": `${assets.icons.update} *Mocking ${targetM.author?.username}...*`,
+                            "description": `:arrows_counterclockwise: *Mocking ${targetM.author?.username}...*`,
                             "color": assets.colors.primary,
                         },
                     ],
@@ -42,18 +42,18 @@ export default new ContextButton(
                 await interaction.editReply({
                     "embeds": [
                         {
-                            "description": `${assets.icons.check} That ${targetM.author?.username} person has been mocked! Hehehe...`,
+                            "description": `:white_check_mark: That ${targetM.author?.username} person has been mocked! Hehehe...`,
                             "color": assets.colors.primary,
                         },
                     ],
                     "components": [row.toJSON()],
                 });
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
                 await interaction.reply({
                     "embeds": [
                         {
-                            "description": `${assets.icons.xmark} Bot is not installed in this server or is missing permissions.`,
+                            "description": `:x: Bot is not installed in this server or is missing permissions.`,
                             "color": assets.colors.secondary,
                         },
                     ],
@@ -61,7 +61,7 @@ export default new ContextButton(
             };
         } else {
             await interaction.reply({
-                "content": `${assets.icons.xmark} Unable to fetch the target message.`,
+                "content": `:x: Unable to fetch the target message.`,
                 "flags": ["Ephemeral"],
             });
         };

@@ -1,9 +1,9 @@
-import Record from "./Record.js";
+import RecordWithReason from "./RecordWithReason.js";
 
 /**
  * Blocked user display name record class
  */
-export default class NicknameRecord extends Record {
+export default class NicknameRecord extends RecordWithReason {
     public nickname: string;
     public mod: string;
 

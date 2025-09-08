@@ -1,12 +1,12 @@
-export default class EconomyRecord {
-    public server: string;
-    public user: string;
+import Record from "./Record.js";
+
+export default class EconomyRecord extends Record {
     public balance: number;
     public bank: number;
 
     constructor({ server = "", user = "", balance = 0, bank = 0 }: Partial<EconomyRecord>) {
-        this.server = server;
-        this.user = user;
+        super({ server, user });
+
         this.balance = balance;
         this.bank = bank;
 

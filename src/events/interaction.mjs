@@ -27,7 +27,7 @@ export default {
                         log.debug(`Running command /${interaction.commandName} (${interaction.id}) executed by ${interaction.user?.username} (${interaction.user?.id})`);
                         await command.execute(interaction, bot.assets, interactionServer, bot.db);
                     } catch (err) {
-                        log.trace(err);
+                        console.trace(err);
 
                         try {
                             if (interaction.replied || interaction.deferred) {
@@ -42,7 +42,7 @@ export default {
                                 });
                             };
                         } catch (err) {
-                            log.trace(err);
+                            console.trace(err);
                         };
                     } finally {
                         const date = Math.floor(Date.now() / 1000);
@@ -103,7 +103,7 @@ export default {
                         log.debug(`Running command ${interaction.commandName} (${interaction.id}) executed by ${interaction.user?.username} (${interaction.user?.id})`);
                         await button.execute(interaction, bot.assets, interactionServer, bot.db);
                     } catch (err) {
-                        log.trace(err);
+                        console.trace(err);
 
                         try {
                             if (interaction.replied || interaction.deferred) {
@@ -118,7 +118,7 @@ export default {
                                 });
                             };
                         } catch (err) {
-                            log.trace(err);
+                            console.trace(err);
                         } finally {
                             const date = Math.floor(Date.now() / 1000);
 
@@ -158,7 +158,7 @@ export default {
             };
         } catch (err) {
             await fetch.commandErrorResponse(interaction, bot.assets);
-            log.trace(err);
+            console.trace(err);
         };
     },
 };

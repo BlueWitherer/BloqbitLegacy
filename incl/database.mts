@@ -24,7 +24,7 @@ function safeParseJSON<T = unknown>(
             };
         } catch (err) {
             log.error("Couldn't safe parse JSON object");
-            log.trace(err);
+            console.trace(err);
 
             return fallback;
         };
@@ -54,7 +54,7 @@ function safeParseArray<T = unknown>(
             };
         } catch (err) {
             log.error("Couldn't safe parse array");
-            log.trace(err);
+            console.trace(err);
 
             return fallback;
         };
@@ -90,7 +90,7 @@ const database = async (dbConfig: SaveDataClient): Promise<mariadb.PoolConnectio
         return await dbPool.getConnection();
     } catch (err) {
         log.error(`[X] MariaDB connection failed`);
-        log.trace(err);
+        console.trace(err);
 
         return;
     };
@@ -255,7 +255,7 @@ const fetch = async (server: string, db: SaveDataClient): Promise<Config | void>
                 return;
             };
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
             return;
         };
     } else {
@@ -509,7 +509,7 @@ const update = async (system: Config, db: SaveDataClient): Promise<Config | void
                 return;
             };
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
             return;
         };
     } else {

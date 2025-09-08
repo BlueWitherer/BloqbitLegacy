@@ -18,7 +18,7 @@ process.on('uncaughtException', (err) => {
 
 process.on('unhandledRejection', (reason, promise) => {
     if (reason instanceof Error) {
-        log.trace('Unhandled Rejection:', reason.stack || 'No stack trace available', "\n", promise);
+        console.trace('Unhandled Rejection:', reason.stack || 'No stack trace available', "\n", promise);
     } else {
         log.error('Unhandled Rejection:', reason, "\n", promise);
     };
@@ -166,7 +166,7 @@ const start = async () => {
                                             log.print(`Shard ${sh.id + 1} (${shutdownsReceived.size} / ${manager.totalShards}) has completed shutdown`);
                                         };
                                     } catch (err) {
-                                        log.trace(err);
+                                        console.trace(err);
                                     };
                                     break;
 
@@ -174,7 +174,7 @@ const start = async () => {
                                     try {
                                         log.error('A shard reported an error during shutdown');
                                     } catch (err) {
-                                        log.trace(err);
+                                        console.trace(err);
                                     };
                                     break;
 
@@ -189,7 +189,7 @@ const start = async () => {
                         if (process.send) process.send('flushClose');
                     });
                 } catch (err) {
-                    log.trace(err);
+                    console.trace(err);
                     process.exit(1);
                 };
 
@@ -213,14 +213,14 @@ const start = async () => {
                 log.print(`Server running on IP address ${SERVER_IP} with port ${SERVER_PORT}`);
             });
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
             process.exit(1);
         };
     } else {
         log.warn('Sharding is disabled, starting single process (not recommended for production)...');
 
         try {
-            const IndexModule = await import("./src/index");
+            const IndexModule = await import("./src/index.js");
             const Bot = IndexModule.default;
 
             const b = new Bot({
@@ -239,7 +239,7 @@ const start = async () => {
 
             log.info(`Bot client ${b.botModel.client.user?.username} starting with 1 shard...`);
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
             process.exit(1);
         };
     };
@@ -250,7 +250,7 @@ const start = async () => {
     try {
         await start();
     } catch (err) {
-        log.trace(err);
+        console.trace(err);
         return;
     } finally {
         return;

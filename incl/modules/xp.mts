@@ -21,7 +21,7 @@ export default {
         try {
             return { level: level, xp: xp, untilUp: untilUp(level), };
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
 
             return {
                 level: 0,

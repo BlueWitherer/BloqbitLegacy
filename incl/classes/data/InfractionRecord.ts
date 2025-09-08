@@ -1,13 +1,11 @@
 import Record from "./Record.js";
 
-export default class InfractionRecord {
-    public server: string;
-    public user: string;
+export default class InfractionRecord extends Record {
     public data: Record[];
 
     constructor({ server = "", user = "", data = [] }: Partial<InfractionRecord>) {
-        this.server = server;
-        this.user = user;
+        super({ server, user });
+
         this.data = data;
 
         return this;

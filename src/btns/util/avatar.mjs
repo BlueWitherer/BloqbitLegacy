@@ -31,7 +31,7 @@ export default new ContextButton(
         };
 
         await interaction.reply({
-            "content": (targetU && targetM) ? "" : `${assets.icons.exclamation} Failed to get target user`,
+            "content": (targetU && targetM) ? "" : `:x: Failed to get target user`,
             "embeds": [
                 {
                     "title": `${assets.icons.info} ${username}'s Avatar`,

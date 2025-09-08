@@ -1,12 +1,12 @@
-export default class LevelRecord {
-    public server: string;
-    public user: string;
+import Record from "./Record.js";
+
+export default class LevelRecord extends Record {
     public level: number;
     public xp: number;
 
     constructor({ server = "", user = "", level = 1, xp = 0 }: Partial<LevelRecord>) {
-        this.server = server;
-        this.user = user;
+        super({ server, user });
+
         this.level = level;
         this.xp = xp;
 

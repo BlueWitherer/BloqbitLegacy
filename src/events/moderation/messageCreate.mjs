@@ -43,7 +43,7 @@ export default new BotEvent(
                             log.debug(`Message of ID ${msg.id} handled with moderation filters`);
                         };
                     } catch (err) {
-                        log.trace(err);
+                        console.trace(err);
                     };
                 } else {
                     log.warn(`Auto-moderator not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);
@@ -66,7 +66,7 @@ export default new BotEvent(
                             log.warn(`Channel of ID ${msg.channel?.id} not included in auto-publisher`);
                         };
                     } catch (err) {
-                        log.trace(err);
+                        console.trace(err);
                     };
                 } else {
                     log.warn(`Auto-publisher not enabled in guild '${msg.guild?.name}' (${msg.guild?.id})`);

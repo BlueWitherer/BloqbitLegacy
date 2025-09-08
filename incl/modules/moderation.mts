@@ -82,7 +82,7 @@ export default {
                         break;
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
             };
         } else {
             log.error(`[MOD] ${message.guild?.name} - Invalid member`);
@@ -123,7 +123,7 @@ export default {
                     );
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
 
                 return resolve.warnObj(
                     ModeratorActionType.None,
@@ -172,7 +172,7 @@ export default {
                     );
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
 
                 return resolve.warnObj(
                     ModeratorActionType.None,
@@ -221,7 +221,7 @@ export default {
                     );
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
 
                 return resolve.warnObj(
                     ModeratorActionType.None,
@@ -279,7 +279,7 @@ export default {
                     );
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
 
                 return resolve.warnObj(
                     ModeratorActionType.None,

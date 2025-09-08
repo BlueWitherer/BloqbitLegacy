@@ -73,7 +73,7 @@ export default new Command(
                 ],
             });
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
 
             await interaction.reply({
                 "content": `> ${assets.icons.xmark} **${interaction.user?.username}** - Invalid ID`,

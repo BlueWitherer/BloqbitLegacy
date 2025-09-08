@@ -59,7 +59,7 @@ export default {
             try {
                 return await cacheModule.fetch(server, db);
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
                 return;
             };
         } else {
@@ -85,7 +85,7 @@ export default {
                     ephemeral: true,
                 });
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
             };
 
             return;
@@ -114,7 +114,7 @@ export default {
                     await interaction.reply({ embeds: [embed] });
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
             };
         } else {
             log.error(`Command error response not sent, interaction type is not a command`);
@@ -141,7 +141,7 @@ export default {
                 "status": status,
             });
         } catch (err) {
-            log.trace(err);
+            console.trace(err);
             return;
         };
     },
@@ -243,7 +243,7 @@ export default {
 
                 log.info(`Channel scan complete, ${scanned.length}/${channels.length} channels remain`);
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
             };
         } else {
             log.error(`Server not provided, skipping channel scans...`);
@@ -277,7 +277,7 @@ export default {
                     };
                 };
             } catch (err) {
-                log.trace(err);
+                console.trace(err);
             };
         } else {
             log.error(`Server not provided, skipping role scans...`);

@@ -17,7 +17,7 @@ export default new ContextButton(
             await interaction.reply({
                 "embeds": [
                     {
-                        "description": `${assets.icons.update} *Adding reactions for quick poll...*`,
+                        "description": `:arrows_counterclockwise: *Adding reactions for quick poll...*`,
                         "color": assets.colors.primary,
                     },
                 ],
@@ -30,14 +30,14 @@ export default new ContextButton(
             await interaction.editReply({
                 "embeds": [
                     {
-                        "description": `${assets.icons.check} The quick poll has been created.`,
+                        "description": `:white_check_mark: The quick poll has been created.`,
                         "color": assets.colors.primary,
                     },
                 ],
             });
         } else {
             await interaction.reply({
-                "content": `${assets.icons.xmark} Unable to fetch the target message.`,
+                "content": `:x: Unable to fetch the target message.`,
                 "flags": ["Ephemeral"],
             });
         };
