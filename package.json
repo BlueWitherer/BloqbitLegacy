@@ -31,8 +31,8 @@
   ],
   "imports": {
     "#bloqbit/*": [
-      "./incl/*",
-      "./incl/**/*"
+      "./include/*",
+      "./include/**/*"
     ],
     "#assets": [
       "./assets.json"

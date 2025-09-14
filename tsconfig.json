@@ -11,7 +11,7 @@
     "baseUrl": ".",
     "paths": {
       "#bloqbit/*": [
-        "./incl/*",
+        "./include/*",
       ],
     },
     "lib": [
@@ -37,8 +37,8 @@
     "*.mjs",
     "*.js",
     "*.json",
-    "incl/**/*.ts",
-    "incl/**/*.mts",
+    "include/**/*.ts",
+    "include/**/*.mts",
   ],
   "exclude": [
     "node_modules",
