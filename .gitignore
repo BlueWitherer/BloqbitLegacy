@@ -4,6 +4,7 @@
 # Node.js dependencies
 /node_modules
 /npm-debug.log
+**/target
 
 # Logs
 logs
@@ -43,6 +44,7 @@ jspm_packages
 
 # Typescript
 *.tsbuildinfo
+*.node
 
 # Optional npm cache directory
 .npm

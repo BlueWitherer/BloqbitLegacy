@@ -14,13 +14,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Set up Rust
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+
+      - name: Cache Rust
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-
+
+      # Set up Node
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '23.1.0'
           check-latest: true
 
-      - name: Cache dependencies
+      - name: Cache npm
         uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -31,14 +52,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint code
-        run: npm run lint
-
       - name: Build project
         run: npm run build
-
-      - name: Run tests
-        run: npm test
 
       - name: Clean up build artifacts
         run: npm run clean

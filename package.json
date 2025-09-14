@@ -1,7 +1,20 @@
 {
   "name": "bloqbit",
   "displayName": "Bloqbit",
+  "description": "The all-in-one solution for your Discord server.",
+  "version": "1.0.0",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "author": {
+    "name": "Bloqbit Developers",
+    "url": "https://bloqbit.cubicstudios.xyz/",
+    "email": "bloqbit@cubicstudios.xyz"
+  },
   "api": "none",
+  "private": true,
+  "workspaces": [
+    "modules/*"
+  ],
   "badges": [
     {
       "name": "Website",
@@ -16,11 +29,6 @@
       "url": "https://bloqbit.cubicstudios.xyz/"
     }
   ],
-  "description": "The all-in-one solution for your Discord server.",
-  "version": "1.0.0",
-  "author": "Cubic Studios",
-  "license": "GPL-3.0-only",
-  "type": "module",
   "imports": {
     "#bloqbit/*": [
       "./incl/*",
@@ -32,7 +40,7 @@
   },
   "dependencies": {
     "@discordjs/builders": "^1.11.3",
-    "discord-api-types": "^0.38.23",
+    "discord-api-types": "^0.38.24",
     "discord.js": "^14.22.1",
     "fs": "^0.0.1-security",
     "mariadb": "^3.4.5",
@@ -69,22 +77,24 @@
   "devDependencies": {
     "@eslint/js": "^9.35.0",
     "@types/mysql": "^2.15.27",
-    "@types/node": "^24.3.1",
+    "@types/node": "^24.4.0",
     "@typescript-eslint/eslint-plugin": "^8.43.0",
     "@typescript-eslint/parser": "^8.43.0",
     "eslint": "^9.35.0",
-    "globals": "^16.3.0",
+    "globals": "^16.4.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "scripts": {
     "lint": "eslint .",
-    "build": "tsc",
+    "build:ts": "tsc",
+    "build:rust": "cd modules/cache && npx napi build --release",
+    "build": "npm run build:rust && npm run build:ts",
     "test": "echo No test file configured",
     "start": "node --loader ts-node/esm --expose-gc main.ts",
     "dev": "ts-node --esm main.ts",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf --glob 'modules/**/*.node'",
     "build:prepare": "npm run clean && npm run build",
     "prestart": "npm run build:prepare"
   },
