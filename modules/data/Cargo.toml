@@ -1,0 +1,17 @@
+[package]
+name = "data"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.napi]
+binaryName = "index"
+ts-bindings = true
+
+[dependencies]
+chrono = "0.4.42"
+mysql = "26.0.1"
+napi = "3"
+napi-derive = "3"

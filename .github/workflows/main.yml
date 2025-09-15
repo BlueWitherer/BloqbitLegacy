@@ -14,27 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Rust
-      - name: Set up Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-          profile: minimal
-
-      - name: Cache Rust
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/bin
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-rust-
-
-      # Set up Node
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -51,6 +30,40 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Check for native Rust bindings
+        id: check_napi
+        run: |
+          if [ -f native/Cargo.toml ]; then
+            echo "napi=true" >> $GITHUB_OUTPUT
+          else
+            echo "napi=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Rust (only if napi is used)
+        if: steps.check_napi.outputs.napi == 'true'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+
+      - name: Cache Rust (only if napi is used)
+        if: steps.check_napi.outputs.napi == 'true'
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-rust-${{ hashFiles('native/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-
+
+      - name: Build native bindings
+        if: steps.check_napi.outputs.napi == 'true'
+        run: npm run build:napi
 
       - name: Build project
         run: npm run build

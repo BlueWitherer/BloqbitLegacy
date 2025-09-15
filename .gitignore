@@ -4,7 +4,10 @@
 # Node.js dependencies
 /node_modules
 /npm-debug.log
+modules/**/index*
 **/target
+**/build
+*.exe
 
 # Logs
 logs
