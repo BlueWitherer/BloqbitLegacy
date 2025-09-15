@@ -89,7 +89,7 @@
   "scripts": {
     "lint": "eslint .",
     "build:ts": "tsc",
-    "build:rust": "cd modules/cache && npx napi build --release",
+    "build:rust": "for dir in modules/*; do [ -f \"$dir/Cargo.toml\" ] && (cd \"$dir\" && npx napi build --release); done",
     "build": "npm run build:rust && npm run build:ts",
     "test": "echo No test file configured",
     "start": "node --loader ts-node/esm --expose-gc main.ts",

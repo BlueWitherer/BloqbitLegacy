@@ -20,12 +20,11 @@ impl ConfigCache {
     #[napi]
     pub fn set(&mut self, guild_id: String, config: String) {
         Log::debug(
-            format_args!(
+            format!(
                 "Storing guild of ID {} into configuration cache...",
                 guild_id
             )
-            .as_str()
-            .unwrap_or("Storing guild into configuration cache..."),
+            .as_str(),
         );
         self.inner.insert(guild_id, config);
     }
@@ -33,12 +32,11 @@ impl ConfigCache {
     #[napi]
     pub fn get(&self, guild_id: String) -> Option<String> {
         Log::debug(
-            format_args!(
+            format!(
                 "Retrieving guild of ID {} from configuration cache...",
                 guild_id
             )
-            .as_str()
-            .unwrap_or("Retrieving guild from configuration cache..."),
+            .as_str(),
         );
         self.inner.get(&guild_id).cloned()
     }
