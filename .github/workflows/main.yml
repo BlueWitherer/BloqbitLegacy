@@ -33,28 +33,66 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-rust-
 
+      - name: Build Rust modules
+        run: |
+          echo "Building Rust crates under modules/ (release)..."
+          set -e
+          for manifest in $(find modules -name Cargo.toml -print 2>/dev/null); do
+            crate_dir=$(dirname "$manifest")
+            echo "Building crate: $crate_dir"
+            cargo build --manifest-path "$crate_dir/Cargo.toml" --release
+          done
+          mkdir -p dist/native
+        shell: bash
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '23.1.0'
+          node-version: '18'
           check-latest: true
 
       - name: Cache npm
         uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: |
+            ~/.npm
+            node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build napi bindings
         run: npm run build:napi
 
+      - name: Collect native .node artifacts
+        run: |
+          set -e
+          echo "Collecting .node files from target directories and build outputs..."
+          mkdir -p dist/native
+          find modules -type f -name '*.node' -print0 | xargs -0 -I{} bash -c 'cp --parents "{}" dist/native/ || true'
+          find . -type f -path '*/target/*' -name '*.node' -print0 | xargs -0 -I{} bash -c 'cp --parents "{}" dist/native/ || true'
+          find . -type f -name '*.node' -print0 | xargs -0 -I{} bash -c 'cp --parents "{}" dist/native/ || true'
+          echo "Artifacts copied to dist/native"
+        shell: bash
+
       - name: Build project
         run: npm run build
 
-      - name: Clean up build artifacts
-        run: npm run clean
+      - name: Package binary with pkg
+        run: |
+          mkdir -p dist
+          npx pkg . --targets node18-linux-x64 --output dist/bloqbit
+          mkdir -p dist/package
+          cp dist/bloqbit dist/package/
+          if [ -d dist/native ]; then
+            cp -r dist/native dist/package/native
+          fi
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Bloqbit-Output
+          path: dist/package/

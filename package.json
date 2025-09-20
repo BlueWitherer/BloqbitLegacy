@@ -44,7 +44,6 @@
     "discord.js": "^14.22.1",
     "fs": "^0.0.1-security",
     "mariadb": "^3.4.5",
-    "node-cache": "^5.1.2",
     "path": "^0.12.7",
     "tsconfig-paths": "^4.2.0"
   },
