@@ -1,11 +1,8 @@
-import { ConfigCache } from "@bloqbit/cache";
-
 import { SaveDataClient, Config, log } from "#bloqbit/include.ts";
 
 import mariadb from "mariadb";
 
 let dbPool: mariadb.Pool | undefined;
-let cache: ConfigCache = new ConfigCache();
 
 // Safe JSON parse helper
 function safeParseJSON<T = unknown>(
