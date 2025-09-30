@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@discordjs/builders": "^1.11.3",
-    "discord-api-types": "^0.38.25",
+    "discord-api-types": "^0.38.26",
     "discord.js": "^14.22.1",
     "fs": "^0.0.1-security",
     "mariadb": "^3.4.5",
@@ -74,12 +74,12 @@
     }
   },
   "devDependencies": {
-    "@eslint/js": "^9.35.0",
+    "@eslint/js": "^9.36.0",
     "@types/mysql": "^2.15.27",
-    "@types/node": "^24.4.0",
-    "@typescript-eslint/eslint-plugin": "^8.43.0",
-    "@typescript-eslint/parser": "^8.43.0",
-    "eslint": "^9.35.0",
+    "@types/node": "^24.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "eslint": "^9.36.0",
     "globals": "^16.4.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
@@ -87,16 +87,13 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "build:ts": "tsc",
-    "build:rust": "for dir in modules/*; do [ -f \"$dir/Cargo.toml\" ] && (cd \"$dir\" && npx napi build --release); done",
-    "build": "npm run build:rust && npm run build:ts",
+    "build": "tsc",
     "test": "echo No test file configured",
     "start": "node --loader ts-node/esm --expose-gc main.ts",
     "dev": "ts-node --esm main.ts",
-    "clean": "rimraf dist && rimraf --glob 'modules/**/*.node'",
+    "clean": "rimraf dist",
     "build:prepare": "npm run clean && npm run build",
-    "pkg:prepare": "npm run build:rust && npx tsc main.ts --outDir dist --esModuleInterop --module commonjs",
-    "pkg:build": "pkg dist/main.js"
+    "prestart": "npm run build:prepare"
   },
   "bin": "main.js",
   "pkg": {

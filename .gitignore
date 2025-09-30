@@ -71,6 +71,7 @@ jspm_packages
 *.env
 *.env.test
 *.bat
+*.sh
 
 # PM2 PID file
 pm2.pid
