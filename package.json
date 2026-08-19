@@ -1,136 +1,136 @@
 {
-  "name": "bloqbit",
-  "displayName": "Bloqbit",
-  "description": "The all-in-one solution for your Discord server.",
-  "version": "1.0.0",
-  "license": "GPL-3.0-only",
-  "type": "module",
-  "author": {
-    "name": "Bloqbit Developers",
-    "url": "https://bloqbit.cubicstudios.xyz/",
-    "email": "bloqbit@cubicstudios.xyz"
-  },
-  "api": "none",
-  "private": true,
-  "workspaces": [
-    "modules/*"
-  ],
-  "badges": [
-    {
-      "name": "Website",
-      "description": "Visit the official Bloqbit website",
-      "href": "https://bloqbit.cubicstudios.xyz/",
-      "url": "https://bloqbit.cubicstudios.xyz/"
+    "name": "bloqbit",
+    "displayName": "Bloqbit",
+    "description": "The all-in-one solution for your Discord server.",
+    "version": "1.0.0",
+    "license": "GPL-3.0-only",
+    "type": "module",
+    "author": {
+        "name": "Bloqbit Developers",
+        "url": "https://bloqbit.cubicstudios.xyz/",
+        "email": "bloqbit@cubicstudios.xyz"
     },
-    {
-      "name": "GitHub",
-      "description": "View the source code on GitHub",
-      "href": "https://www.github.com/CubicCommunity/Bloqbit/",
-      "url": "https://bloqbit.cubicstudios.xyz/"
-    }
-  ],
-  "imports": {
-    "#bloqbit/*": [
-      "./include/*",
-      "./include/**/*"
+    "api": "none",
+    "private": true,
+    "workspaces": [
+        "modules/*"
     ],
-    "#assets": [
-      "./assets.json"
-    ]
-  },
-  "dependencies": {
-    "@discordjs/builders": "^1.11.3",
-    "discord-api-types": "^0.38.26",
-    "discord.js": "^14.22.1",
-    "fs": "^0.0.1-security",
-    "mariadb": "^3.4.5",
-    "path": "^0.12.7",
-    "tsconfig-paths": "^4.2.0"
-  },
-  "main": "main.ts",
-  "engines": {
-    "node": ">=21.0.0"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@eslint/js",
-      "plugin:node/recommended"
-    ],
-    "env": {
-      "es2021": true,
-      "node": true
-    },
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-    },
-    "rules": {
-      "no-unused-vars": [
-        "error",
+    "badges": [
         {
-          "argsIgnorePattern": "^_"
+            "name": "Website",
+            "description": "Visit the official Bloqbit website",
+            "href": "https://bloqbit.cubicstudios.xyz/",
+            "url": "https://bloqbit.cubicstudios.xyz/"
+        },
+        {
+            "name": "GitHub",
+            "description": "View the source code on GitHub",
+            "href": "https://www.github.com/CubicCommunity/Bloqbit/",
+            "url": "https://bloqbit.cubicstudios.xyz/"
         }
-      ]
-    }
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.36.0",
-    "@types/mysql": "^2.15.27",
-    "@types/node": "^24.6.0",
-    "@typescript-eslint/eslint-plugin": "^8.45.0",
-    "@typescript-eslint/parser": "^8.45.0",
-    "eslint": "^9.36.0",
-    "globals": "^16.4.0",
-    "rimraf": "^6.0.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "build": "tsc",
-    "test": "echo No test file configured",
-    "start": "node --loader ts-node/esm --expose-gc main.ts",
-    "dev": "ts-node --esm main.ts",
-    "clean": "rimraf dist",
-    "build:prepare": "npm run clean && npm run build",
-    "prestart": "npm run build:prepare"
-  },
-  "bin": "main.js",
-  "pkg": {
-    "scripts": "main.js",
-    "assets": [
-      "modules/cache/index.node"
     ],
-    "targets": [
-      "node20-win-x64",
-      "node20-linux-x64",
-      "node20-macos-x64"
+    "imports": {
+        "#bloqbit/*": [
+            "./include/*",
+            "./include/**/*"
+        ],
+        "#assets": [
+            "./assets.json"
+        ]
+    },
+    "main": "main.ts",
+    "engines": {
+        "node": ">=21.0.0"
+    },
+    "eslintConfig": {
+        "extends": [
+            "@eslint/js",
+            "plugin:node/recommended"
+        ],
+        "env": {
+            "es2021": true,
+            "node": true
+        },
+        "parserOptions": {
+            "ecmaVersion": "latest",
+            "sourceType": "module"
+        },
+        "rules": {
+            "no-unused-vars": [
+                "error",
+                {
+                    "argsIgnorePattern": "^_"
+                }
+            ]
+        }
+    },
+    "dependencies": {
+        "@discordjs/builders": "^1.14.1",
+        "discord-api-types": "^0.38.53",
+        "discord.js": "^14.27.0",
+        "fs": "^0.0.2",
+        "mariadb": "^3.5.3",
+        "path": "^0.12.7",
+        "tsconfig-paths": "^4.2.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@types/mysql": "^2.15.27",
+        "@types/node": "^26.2.0",
+        "@typescript-eslint/eslint-plugin": "^8.67.0",
+        "@typescript-eslint/parser": "^8.67.0",
+        "eslint": "^10.8.1",
+        "globals": "^17.11.0",
+        "rimraf": "^6.1.3",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.5.4"
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "build": "tsc",
+        "test": "echo No test file configured",
+        "start": "node --loader ts-node/esm --expose-gc main.ts",
+        "dev": "ts-node --esm main.ts",
+        "clean": "rimraf dist",
+        "build:prepare": "npm run clean && npm run build",
+        "prestart": "npm run build:prepare"
+    },
+    "bin": "main.js",
+    "pkg": {
+        "scripts": "main.js",
+        "assets": [
+            "modules/cache/index.node"
+        ],
+        "targets": [
+            "node20-win-x64",
+            "node20-linux-x64",
+            "node20-macos-x64"
+        ],
+        "outputPath": "dist"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://www.github.com/CubicCommunity/Bloqbit/"
+    },
+    "funding": {
+        "type": "github",
+        "url": "https://www.github.com/sponsors/CubicCommunity/"
+    },
+    "keywords": [
+        "bloqbit",
+        "utility",
+        "moderation",
+        "fun",
+        "discord",
+        "bot"
     ],
-    "outputPath": "dist"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://www.github.com/CubicCommunity/Bloqbit/"
-  },
-  "funding": {
-    "type": "github",
-    "url": "https://www.github.com/sponsors/CubicCommunity/"
-  },
-  "keywords": [
-    "bloqbit",
-    "utility",
-    "moderation",
-    "fun",
-    "discord",
-    "bot"
-  ],
-  "icon": "./favicon.ico",
-  "bugs": {
-    "email": "bloqbit@cubicstudios.xyz",
-    "url": "https://www.github.com/CubicCommunity/Bloqbit/issues/"
-  },
-  "contributors": [
-    "Cheeseworks"
-  ],
-  "homepage": "https://bloqbit.cubicstudios.xyz/"
+    "icon": "./favicon.ico",
+    "bugs": {
+        "email": "bloqbit@cubicstudios.xyz",
+        "url": "https://www.github.com/CubicCommunity/Bloqbit/issues/"
+    },
+    "contributors": [
+        "Cheeseworks"
+    ],
+    "homepage": "https://bloqbit.cubicstudios.xyz/"
 }

@@ -2,7 +2,8 @@ import { SaveDataClient, Config, log } from "#bloqbit/include.ts";
 
 import mariadb from "mariadb";
 
-let dbPool: mariadb.Pool | undefined;
+let dbPool: ReturnType<typeof mariadb.createPool> | undefined
+type PoolConnection = Awaited<ReturnType<ReturnType<typeof mariadb.createPool>["getConnection"]>>;
 
 // Safe JSON parse helper
 function safeParseJSON<T = unknown>(
@@ -69,7 +70,7 @@ function safeParseArray<T = unknown>(
  * 
  * @param dbConfig Database configuration object
  */
-const database = async (dbConfig: SaveDataClient): Promise<mariadb.PoolConnection | undefined> => {
+const database = async (dbConfig: SaveDataClient): Promise<PoolConnection | undefined> => {
     if (dbPool) {
         log.debug(`[I] Reusing existing MariaDB connection pool`);
     } else {

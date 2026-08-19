@@ -323,50 +323,52 @@ export const checkEnv: (env: string | undefined, name: string) => string = (env:
     };
 };
 
-try {
-    const dat = JSON.parse(process.argv[2]);
-    const bloqbit = new BloqbitClient(
-        checkEnv(dat.MAIN_TOKEN, "MAIN_TOKEN"),
-        checkEnv(dat.MAIN_LOG_WH, "MAIN_LOG_WH"),
-        {
-            "host": checkEnv(dat.DB_HOST, "DB_HOST"),
-            "port": parseInt(checkEnv(dat.DB_PORT, "DB_PORT"), 10),
-            "user": checkEnv(dat.DB_USERNAME, "DB_USERNAME"),
-            "password": checkEnv(dat.DB_PASSWORD, "DB_PASSWORD"),
-            "database": checkEnv(dat.DB_DATABASE, "DB_DATABASE"),
-        },
-    );
+if (process.argv[2] !== undefined) {
+    try {
+        const dat = JSON.parse(process.argv[2]);
+        const bloqbit = new BloqbitClient(
+            checkEnv(dat.MAIN_TOKEN, "MAIN_TOKEN"),
+            checkEnv(dat.MAIN_LOG_WH, "MAIN_LOG_WH"),
+            {
+                "host": checkEnv(dat.DB_HOST, "DB_HOST"),
+                "port": parseInt(checkEnv(dat.DB_PORT, "DB_PORT"), 10),
+                "user": checkEnv(dat.DB_USERNAME, "DB_USERNAME"),
+                "password": checkEnv(dat.DB_PASSWORD, "DB_PASSWORD"),
+                "database": checkEnv(dat.DB_DATABASE, "DB_DATABASE"),
+            },
+        );
 
-    const bb = new Bot({ botModel: bloqbit });
+        const bb = new Bot({ botModel: bloqbit });
 
-    process.on("message", async (msg: unknown) => {
-        let eventType: string | undefined;
+        process.on("message", async (msg: unknown) => {
+            let eventType: string | undefined;
 
-        if (typeof msg === "string") {
-            eventType = msg;
-        } else if (typeof msg === "object" && msg !== null && "type" in msg) {
-            eventType = (msg as { type: string }).type;
-        };
+            if (typeof msg === "string") {
+                eventType = msg;
+            } else if (typeof msg === "object" && msg !== null && "type" in msg) {
+                eventType = (msg as { type: string }).type;
+            };
 
-        switch (eventType) {
-            case "flushClose":
-                try {
-                    if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
+            switch (eventType) {
+                case "flushClose":
+                    try {
+                        if (bb.botModel.client && typeof bb.botModel.client.destroy === 'function') await bb.botModel.client.destroy();
 
-                    if (process.send) process.send('shutdownComplete');
-                    log.debug(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} shutdown complete`);
-                } catch (err) {
-                    console.trace(err);
-                    if (process.send) process.send('shutdownError');
-                };
-                break;
+                        if (process.send) process.send('shutdownComplete');
+                        log.debug(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} shutdown complete`);
+                    } catch (err) {
+                        console.trace(err);
+                        if (process.send) process.send('shutdownError');
+                    };
+                    break;
 
-            default:
-                log.error(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} received unknown message:`, msg);
-                break;
-        };
-    });
-} catch (err) {
-    console.trace(err);
-    process.exit(1);
+                default:
+                    log.error(`Shard of ID ${bb.botModel.client?.shard?.ids[0]} received unknown message:`, msg);
+                    break;
+            };
+        });
+    } catch (err) {
+        console.trace(err);
+        process.exit(1);
+    };
 };
