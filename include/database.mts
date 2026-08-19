@@ -78,6 +78,7 @@ const database = async (dbConfig: SaveDataClient): Promise<PoolConnection | unde
 
         dbPool = mariadb.createPool({
             host: dbConfig.host,
+            port: dbConfig.port,
             user: dbConfig.user,
             password: dbConfig.password,
             database: dbConfig.database,
@@ -85,7 +86,7 @@ const database = async (dbConfig: SaveDataClient): Promise<PoolConnection | unde
         });
     };
 
-    log.info(`[O] Connecting to MariaDB database at ${dbConfig.host}`);
+    log.info(`[O] Connecting to MariaDB database at ${dbConfig.host}:${dbConfig.port}`);
 
     try {
         return await dbPool.getConnection();
