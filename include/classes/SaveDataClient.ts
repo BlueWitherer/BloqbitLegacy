@@ -11,7 +11,7 @@ export interface DatabaseConfig {
  */
 export default class SaveDataClient {
     public host: string = "localhost";
-    public port: number = 3306;
+    public port: number = 60672;
     public user: string = "root";
     public password: string = "";
     public database: string = "bloqbit";

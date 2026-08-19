@@ -229,7 +229,7 @@ const start = async () => {
                     IndexModule.checkEnv(process.env.MAIN_LOG_WH, "MAIN_LOG_WH"),
                     {
                         "host": IndexModule.checkEnv(process.env.DB_HOST, "DB_HOST"),
-                        "port": IndexModule.checkEnv(process.env.DB_PORT, "DB_PORT") ? parseInt(IndexModule.checkEnv(process.env.DB_PORT, "DB_PORT"), 10) : 3306,
+                        "port": IndexModule.checkEnv(process.env.DB_PORT, "DB_PORT") ? parseInt(IndexModule.checkEnv(process.env.DB_PORT, "DB_PORT"), 10) : 60672,
                         "user": IndexModule.checkEnv(process.env.DB_USERNAME, "DB_USERNAME"),
                         "password": IndexModule.checkEnv(process.env.DB_PASSWORD, "DB_PASSWORD"),
                         "database": IndexModule.checkEnv(process.env.DB_DATABASE, "DB_DATABASE"),
